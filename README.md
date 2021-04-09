@@ -6,7 +6,7 @@ Repository for DSC-UOS Spring Project Team
 ### @handal95 
 - Position : **ML**
 
-### @Member2
-- Position : **position**
+### @owao
+- Position : **IoT**
 
 ...
