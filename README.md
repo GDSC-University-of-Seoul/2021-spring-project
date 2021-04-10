@@ -9,4 +9,6 @@ Repository for DSC-UOS Spring Project Team
 ### @owao
 - Position : **IoT**
 
+### @edit8080
+- Position " **FE**
 ...
