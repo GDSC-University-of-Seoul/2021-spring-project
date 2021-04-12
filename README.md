@@ -14,5 +14,6 @@ Repository for DSC-UOS Spring Project Team
 
 ### @rxdcxdrnine
 - Position : **BE**
-...
 
+### @YubeenSon
+- Position : **DA**
