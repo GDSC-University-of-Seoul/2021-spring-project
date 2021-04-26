@@ -1,0 +1,7 @@
+app/BE/.vscode/
+app/BE/node_modules/
+app/BE/3321f8531c-certificate.pem.crt.txt
+app/BE/3321f8531c-private.pem.key
+app/BE/3321f8531c-public.pem.key
+app/BE/rootCA.pem
+app/BE/.env
