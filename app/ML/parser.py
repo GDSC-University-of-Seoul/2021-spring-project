@@ -13,10 +13,10 @@ def check_file(file):
         files = glob.glob("./**/" + file, recursive=True)  # find file
 
         FILE_NOT_FOUND_MSG = f"File Not Found: {file}"
-        FILE_NOT_UNIQUE_MSG = f"Multiple files match '{file}', specify exact path: {files}"
+        MULTIPLE_FILE_MSG = f"Multiple files match '{file}', specify exact path:{files}"
 
         assert len(files), FILE_NOT_FOUND_MSG  # assert file was found
-        assert len(files) == 1, FILE_NOT_UNIQUE_MSG  # assert unique
+        assert len(files) == 1, MULTIPLE_FILE_MSG  # assert unique
         return files[0]  # return file
 
 
