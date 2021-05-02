@@ -1,4 +1,4 @@
-require("dotenv").config()
+require("dotenv").config();
 
 module.exports = {
   development: {
@@ -21,5 +21,5 @@ module.exports = {
     host: process.env.DATABASE_HOST,
     database: "kidskeeper_prod",
     dialect: "postgres",
-  }
-}
+  },
+};
