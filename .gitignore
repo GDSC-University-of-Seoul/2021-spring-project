@@ -1,5 +1,9 @@
-app/BE/.vscode/
-app/BE/node_modules/
-app/BE/connect/
-app/BE/.env
-app/BE/.sequelizerc
+# backend
+.vscode
+node_modules
+aws
+
+.env
+.sequelizerc
+.prettierrc
+.eslintrc.json
