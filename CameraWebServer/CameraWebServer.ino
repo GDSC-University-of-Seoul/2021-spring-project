@@ -10,10 +10,10 @@
 //#define CAMERA_MODEL_WROVER_KIT
 //#define CAMERA_MODEL_ESP_EYE
 //#define CAMERA_MODEL_M5STACK_PSRAM
-#define CAMERA_MODEL_AI_THINKER //우리가 기동하는 카메라 모델
+#define CAMERA_MODEL_AI_THINKER  //기동하는 카메라 모델
 
-const char* ssid = "*********"; //와이파이 이름
-const char* password = "*********"; //와이파이 비밀번호(space가 있는 비밀번호 사용 금지)
+const char* ssid = "*********";  //와이파이 이름
+const char* password = "*********";  //와이파이 비밀번호
 
 
 #if defined(CAMERA_MODEL_WROVER_KIT)
@@ -99,7 +99,7 @@ const char* password = "*********"; //와이파이 비밀번호(space가 있는 
 void startCameraServer();
 
 void setup() {
-  Serial.begin(115200); //시리얼 통신 속도 세팅
+  Serial.begin(115200);  //시리얼 통신 속도 세팅
   Serial.setDebugOutput(true);
   Serial.println();
 
@@ -151,9 +151,9 @@ void setup() {
   sensor_t * s = esp_camera_sensor_get();
   s->set_framesize(s, FRAMESIZE_QVGA);
 
-  WiFi.begin(ssid, password); //위에서 입력한 와이파이로 연결
+  WiFi.begin(ssid, password);  //위에서 입력한 와이파이로 연결
 
-  while (WiFi.status() != WL_CONNECTED) { //비밀번호에 space가 있으면 연결이 무한반복...
+  while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
   }
