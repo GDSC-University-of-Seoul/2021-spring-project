@@ -1,0 +1,11 @@
+# backend
+.vscode/
+node_modules/
+aws/
+migrations/
+seeders/
+
+.env
+.sequelizerc
+.prettierrc
+.eslintrc.json
