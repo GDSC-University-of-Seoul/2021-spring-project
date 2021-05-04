@@ -8,12 +8,7 @@ function MapBoxContainer() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    let isMounted = true;
-    if (isMounted) dispatch(getData());
-
-    return () => {
-      isMounted = false;
-    };
+    dispatch(getData());
   }, [dispatch]);
 
   if (loading) return <div>로딩중 ...</div>;

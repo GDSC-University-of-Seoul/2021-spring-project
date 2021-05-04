@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import ReactMapGL, { Popup, Layer, Source } from "react-map-gl";
 import { areaLayer, highlightLayer } from "../utils/mapbox/mapStyle";
 
@@ -12,6 +12,10 @@ function MapBox({ data }) {
     longitude: 127.0016985,
     zoom: 10.5,
   });
+  useEffect(() => {
+    return { data };
+  }, [data]);
+
   const [hoverInfo, setHoverInfo] = useState(null);
 
   const onHover = useCallback((e) => {

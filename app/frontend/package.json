@@ -33,7 +33,8 @@
   "scripts": {
     "start" : "webpack-dev-server --progress --hot --open",
     "build" : "webpack",
-    "deploy": "npm run build && aws s3 sync ./build s3://kids-keeper --profile=kids-keeper"
+    "deploy": "npm run build && aws s3 sync ./build s3://kids-keeper --profile=kids-keeper && npm run invalidate",
+    "invalidate": "aws cloudfront create-invalidation --profile=kids-keeper --distribution-id E1FQZD5KLSZ89S --paths / /index.html /error.html /service-worker.js /manifest.json /favicon.ico"
   },
   "eslintConfig": {
     "extends": [
