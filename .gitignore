@@ -1,9 +1,22 @@
-## python
+## JavaScript
+node_modules/
+
+## Python
 __pycache__/
 
-## local
+## Local development environment
 .venv/
 .vscode/
+.env
 
-## dummy
+## Dummy data
 .dummy/
+
+## etc
+aws/
+migrations/
+seeders/
+
+.sequelizerc
+.prettierrc
+.eslintrc.json
