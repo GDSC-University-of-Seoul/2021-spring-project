@@ -1,11 +1,22 @@
-# backend
-.vscode/
+## JavaScript
 node_modules/
+
+## Python
+__pycache__/
+
+## Local development environment
+.venv/
+.vscode/
+.env
+
+## Dummy data
+.dummy/
+
+## etc
 aws/
 migrations/
 seeders/
 
-.env
 .sequelizerc
 .prettierrc
 .eslintrc.json
