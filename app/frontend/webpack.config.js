@@ -1,6 +1,9 @@
 const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const dotenv = require("dotenv");
+
+dotenv.config();
 
 module.exports = {
   mode: "development",
@@ -37,6 +40,13 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: "./public/index.html",
     }),
-    new webpack.EnvironmentPlugin(["MapboxAccessToken"]),
+    new webpack.DefinePlugin({
+      "process.env": {
+        REACT_APP_MAPBOX: JSON.stringify(process.env.REACT_APP_MAPBOX),
+        REACT_APP_CHILDCARE_KEY: JSON.stringify(
+          process.env.REACT_APP_CHILDCARE_KEY
+        ),
+      },
+    }),
   ],
 };

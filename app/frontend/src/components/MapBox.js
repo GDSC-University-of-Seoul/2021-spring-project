@@ -1,19 +1,8 @@
-import dotenv from "dotenv";
-import React, { useState } from "react";
-import ReactMapGL, { Layer, Source } from "react-map-gl";
+import React, { useCallback, useMemo, useState } from "react";
+import ReactMapGL, { Popup, Layer, Source } from "react-map-gl";
+import { areaLayer, highlightLayer } from "../utils/mapbox/mapStyle";
 
-dotenv.config();
 const MapboxAccessToken = process.env.REACT_APP_MAPBOX;
-
-const layerStyle = {
-  id: "data",
-  type: "fill",
-  paint: {
-    "fill-outline-color": "#ff0000",
-    "fill-color": "#04e40f",
-    "fill-opacity": 0.8,
-  },
-};
 
 function MapBox({ data }) {
   const [viewport, setViewport] = useState({
@@ -23,17 +12,41 @@ function MapBox({ data }) {
     longitude: 127.0016985,
     zoom: 10.5,
   });
+  const [hoverInfo, setHoverInfo] = useState(null);
+
+  const onHover = useCallback((e) => {
+    const hoverArea = e.features && e.features[0];
+    setHoverInfo({
+      longitude: e.lngLat[0],
+      latitude: e.lngLat[1],
+      areaName: hoverArea && hoverArea.properties.sggnm,
+    });
+  }, []);
+  const selectedArea = (hoverInfo && hoverInfo.areaName) || "";
+  const filter = useMemo(() => ["in", "sggnm", selectedArea], [selectedArea]);
 
   return (
     <ReactMapGL
       {...viewport}
       mapStyle="mapbox://styles/mapbox/streets-v11"
       onViewportChange={(nextViewport) => setViewport(nextViewport)}
+      onHover={onHover}
       mapboxApiAccessToken={MapboxAccessToken}
     >
       <Source type="geojson" data={data}>
-        <Layer {...layerStyle} />
+        <Layer {...areaLayer} />
+        <Layer {...highlightLayer} filter={filter} />
       </Source>
+      {selectedArea && (
+        <Popup
+          longitude={hoverInfo.longitude}
+          latitude={hoverInfo.latitude}
+          closeButton={false}
+          className="areaInfo"
+        >
+          {selectedArea}
+        </Popup>
+      )}
     </ReactMapGL>
   );
 }
