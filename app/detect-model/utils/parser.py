@@ -1,6 +1,6 @@
 import xml.etree.ElementTree as ET
 from pathlib import Path
-from utils.files import check_file, search_file
+from utils.files import check_file
 
 
 def parse_xml_tree(root):
@@ -33,12 +33,3 @@ def parse_xml(file: Path):
     doc = ET.parse(file)
     data = parse_xml_tree(doc.getroot())
     return data
-
-
-if __name__ == "__main__":
-    dirpath = "FILEPATH"  # config로 대체 예정
-    files = search_file(dirpath, extension="xml")
-
-    data = list()
-    for file in files:
-        data.append(parse_xml(file))
