@@ -20,3 +20,6 @@ seeders/
 .sequelizerc
 .prettierrc
 .eslintrc.json
+
+## ignorefile
+config.yml
