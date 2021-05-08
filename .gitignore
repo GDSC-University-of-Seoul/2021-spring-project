@@ -19,6 +19,10 @@ yarn-error.log*
 
 ## JavaScript
 node_modules/
+.babelrc
+.sequelizerc
+.prettierrc
+.eslintrc.json
 
 ## Python
 __pycache__/
@@ -35,7 +39,3 @@ __pycache__/
 aws/
 migrations/
 seeders/
-
-.sequelizerc
-.prettierrc
-.eslintrc.json

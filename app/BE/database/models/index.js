@@ -13,12 +13,18 @@ let sequelize;
 if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable], config);
 } else {
-  sequelize = new Sequelize(
-    config.database,
-    config.username,
-    config.password,
-    config
-  );
+  sequelize = new Sequelize(config.database, config.username, config.password, {
+    host: config.host,
+    port: config.port,
+    dialect: config.dialect,
+    dialectOpions: {
+      ssl: config.ssl,
+    },
+    logging: console.log,
+    maxConcurrentQueries: 100,
+    pool: { maxConnections: 5, maxIdleTime: 30 },
+    language: "en",
+  });
 }
 
 readdirSync(__dirname)
@@ -41,4 +47,4 @@ Object.keys(db).forEach((modelName) => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-export default db;
+module.exports = db;
