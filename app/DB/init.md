@@ -28,9 +28,5 @@
 |lng|longitude|
 |opr|operation|  
    
-
-데이터 타입엔 큰 변화가 없어 데이터 타입의 경우 [DB Schema(v1.0.0)](https://2021-spring-dsc-project-team.atlassian.net/wiki/spaces/KDK/pages/6029378/DB+v1.0.0, "confluence - db schema") 을 참고해주시기 바랍니다.
-
-
-피드백사항 종합하여 DB Schema v1.1.1 업로드하겠습니다!
-
+# DB Schema
+[DB Schema(v1.1.3)](https://2021-spring-dsc-project-team.atlassian.net/wiki/spaces/KDK/pages/6029378/DB+v1.0.0, "confluence - db schema")에 데이터타입 및 제약조건에 대한 정보가 있습니다. 
