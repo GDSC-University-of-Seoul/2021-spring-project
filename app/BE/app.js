@@ -2,7 +2,7 @@ import express from "express";
 import morgan from "morgan";
 import swaggerUi from "swagger-ui-express";
 import swaggerJsdoc from "swagger-jsdoc";
-import { sequelize } from "./database/models/index";
+import { sequelize } from "./database/models";
 
 require("dotenv").config();
 
@@ -28,7 +28,7 @@ const swaggerSpecs = swaggerJsdoc(options);
 
 // DB 연결
 sequelize
-  .sync()
+  .sync({ force: false, alter: false })
   .then(() => {
     console.log("DB 연결 성공");
   })
@@ -39,6 +39,8 @@ sequelize
 
 app.use(morgan("dev"));
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
+
+const db = require("./database/models");
 
 // localhost:3000/ 연결
 app.get("/", (req, res) => {

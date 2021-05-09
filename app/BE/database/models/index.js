@@ -20,7 +20,7 @@ if (config.use_env_variable) {
     dialectOpions: {
       ssl: config.ssl,
     },
-    logging: console.log,
+    logging: false,
     maxConcurrentQueries: 100,
     pool: { maxConnections: 5, maxIdleTime: 30 },
     language: "en",
@@ -34,7 +34,10 @@ readdirSync(__dirname)
     );
   })
   .forEach((file) => {
-    const model = require(join(__dirname, file))(sequelize, DataTypes);
+    const model = require(join(__dirname, file)).init(
+      sequelize,
+      Sequelize.DataTypes
+    );
     db[model.name] = model;
   });
 
