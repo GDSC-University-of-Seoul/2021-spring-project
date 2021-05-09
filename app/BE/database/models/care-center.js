@@ -1,6 +1,6 @@
 import Sequelize from "sequelize";
 
-module.exports = class CareCenter extends Sequelize.Model {
+module.exports = class CdrCareCenter extends Sequelize.Model {
   static init(sequelize, DataTypes) {
     return super.init(
       {
@@ -13,9 +13,7 @@ module.exports = class CareCenter extends Sequelize.Model {
           allowNull: false,
         },
         opr_type: {
-          type: DataTypes.ENUM({
-            values: ["one", "two", "three", "four", "five", "six"],
-          }),
+          type: DataTypes.STRING(20),
           allowNull: false,
         },
         zip_code: {
@@ -51,19 +49,19 @@ module.exports = class CareCenter extends Sequelize.Model {
         sequelize,
         timestamps: false,
         paranoid: false,
-        modelName: "CareCenter",
-        tableName: "care_center",
+        modelName: "CdrCareCenter",
+        tableName: "cdrcare_center",
         charset: "utf8",
         collate: "utf8_general_cli",
       }
     );
   }
   static associate(db) {
-    db.CareCenter.belongsTo(db.Area, {
+    db.CdrCareCenter.belongsTo(db.Area, {
       foreignKey: "area_id",
       targetKey: "area_id",
     });
-    db.CareCenter.hasMany(db.CCTV, {
+    db.CdrCareCenter.hasMany(db.CCTV, {
       foreignKey: "center_id",
       sourceKey: "center_id",
     });

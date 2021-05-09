@@ -9,9 +9,7 @@ module.exports = class VideoManagement extends Sequelize.Model {
           primaryKey: true,
         },
         manage_type: {
-          type: DataTypes.ENUM({
-            values: ["one", "two", "three"],
-          }),
+          type: DataTypes.STRING(10),
           allowNull: false,
         },
         manage_date: {
@@ -23,9 +21,7 @@ module.exports = class VideoManagement extends Sequelize.Model {
           allowNull: false,
         },
         purpose: {
-          type: DataTypes.ENUM({
-            values: ["one", "two", "Three"],
-          }),
+          type: DataTypes.STRING(20),
           allowNull: false,
         },
         monitor_time: {

@@ -17,9 +17,7 @@ module.exports = class Video extends Sequelize.Model {
           allowNull: true,
         },
         delete_issue: {
-          type: DataTypes.ENUM({
-            values: ["one", "two", "three"],
-          }),
+          type: DataTypes.STRING(20),
           allowNull: false,
         },
         storage_name: {

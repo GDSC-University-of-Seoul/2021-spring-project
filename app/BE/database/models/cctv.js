@@ -9,9 +9,7 @@ module.exports = class CCTV extends Sequelize.Model {
           primaryKey: true,
         },
         quality: {
-          type: DataTypes.ENUM({
-            values: ["one", "two", "three"],
-          }),
+          type: DataTypes.STRING(15),
           allowNull: false,
         },
         install_date: {
@@ -35,7 +33,7 @@ module.exports = class CCTV extends Sequelize.Model {
     );
   }
   static associate(db) {
-    db.CCTV.belongsTo(db.CareCenter, {
+    db.CCTV.belongsTo(db.CdrCareCenter, {
       foreignKey: "center_id",
       targetKey: "center_id",
     });

@@ -9,9 +9,7 @@ module.exports = class Anomaly extends Sequelize.Model {
           primaryKey: true,
         },
         ano_type: {
-          type: DataTypes.ENUM({
-            values: ["one", "two", "three"],
-          }),
+          type: DataTypes.STRING(10),
           allowNull: false,
         },
         start_time: {
@@ -23,9 +21,7 @@ module.exports = class Anomaly extends Sequelize.Model {
           allowNull: false,
         },
         follow_up: {
-          type: DataTypes.ENUM({
-            values: ["one", "two", "three"],
-          }),
+          type: DataTypes.STRING(20),
           allowNull: false,
         },
       },
