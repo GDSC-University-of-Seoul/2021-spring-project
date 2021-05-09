@@ -7,7 +7,7 @@ const DATA_FAILURE = "mapbox/DATA_FAILURE";
 export const getData = () => async (dispatch) => {
   dispatch({ type: DATA_LOADING });
   try {
-    const fetchData = await axios.get("/Korea_area.geojson");
+    const fetchData = await axios.get("/src/assets/data/Korea_area.geojson");
     dispatch({ type: DATA_SUCCESS, payload: fetchData.data });
   } catch (e) {
     dispatch({ type: DATA_FAILURE, payload: e });

@@ -40,7 +40,7 @@ function MapBox({ data }) {
     try {
       if (selectedArea === "은평구") {
         const fetchChildHouse = await axios.get(
-          "/Eunpyeonggu_childhouse_data.xml"
+          "/src/assets/data/Eunpyeonggu_childhouse_data.xml"
         );
         xmlParser(fetchChildHouse.data).then((data) => {
           const childHouse = data.response.item.filter(
