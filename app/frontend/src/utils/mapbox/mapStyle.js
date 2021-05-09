@@ -13,7 +13,7 @@ export const highlightLayer = {
   type: "fill",
   paint: {
     "fill-outline-color": "#d0ff00",
-    "fill-color": "#ff0000",
+    "fill-color": "#0082ff",
     "fill-opacity": 0.8,
   },
 };

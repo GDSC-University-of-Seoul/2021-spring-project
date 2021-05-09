@@ -1,0 +1,9 @@
+.popup {
+  z-index: 10;
+}
+.marker {
+  background: url("/src/assets/marker.png") no-repeat center / contain;
+  width: 1.5rem;
+  height: 2rem;
+  border: none;
+}

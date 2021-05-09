@@ -3,7 +3,6 @@ import { Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Monitoring from "./pages/Monitoring";
 import Settings from "./pages/Settings";
-import "./styles/main.scss";
 
 function App() {
   return (

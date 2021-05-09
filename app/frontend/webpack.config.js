@@ -1,5 +1,6 @@
 const path = require("path");
 const webpack = require("webpack");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const dotenv = require("dotenv");
 
@@ -11,10 +12,9 @@ module.exports = {
     app: "./src/index.js",
   },
   output: {
-    path: path.resolve(__dirname, "build"),
+    path: path.resolve(__dirname, "dist"),
     filename: "index_bundler.js",
   },
-  devtool: "source-map",
   node: { fs: "empty" },
   module: {
     rules: [
@@ -32,7 +32,16 @@ module.exports = {
       },
       {
         test: /\.s[ac]ss$/i,
-        use: ["style-loader", "css-loader", "sass-loader"],
+        use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
+      },
+      {
+        test: /\.(png|jpg)$/i,
+        use: {
+          loader: "url-loader",
+          options: {
+            name: "[name].[ext]",
+          },
+        },
       },
     ],
   },
@@ -40,6 +49,9 @@ module.exports = {
     historyApiFallback: true,
   },
   plugins: [
+    new MiniCssExtractPlugin({
+      filename: "main.css",
+    }),
     new HtmlWebpackPlugin({
       template: "./public/index.html",
     }),
