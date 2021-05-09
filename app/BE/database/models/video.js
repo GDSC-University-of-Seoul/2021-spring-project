@@ -38,5 +38,18 @@ module.exports = class Video extends Sequelize.Model {
       }
     );
   }
-  static associate(db) {}
+  static associate(db) {
+    db.Video.belongsTo(db.CCTV, {
+      foreignKey: "cctv_id",
+      targetKey: "cctv_id",
+    });
+    db.Video.hasMany(db.VideoManagement, {
+      foreignKey: "video_id",
+      sourceKey: "video_id",
+    });
+    db.Video.hasMany(db.Anomaly, {
+      foreignKey: "video_id",
+      sourceKey: "video_id",
+    });
+  }
 };

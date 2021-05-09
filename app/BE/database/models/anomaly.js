@@ -40,5 +40,10 @@ module.exports = class Anomaly extends Sequelize.Model {
       }
     );
   }
-  static associate(db) {}
+  static associate(db) {
+    db.Anomaly.belongsTo(db.Video, {
+      foreignKey: "video_id",
+      targetKey: "video_id",
+    });
+  }
 };

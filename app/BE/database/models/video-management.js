@@ -48,5 +48,10 @@ module.exports = class VideoManagement extends Sequelize.Model {
       }
     );
   }
-  static associate(db) {}
+  static associate(db) {
+    db.VideoManagement.belongsTo(db.Video, {
+      foreignKey: "video_id",
+      targetKey: "video_id",
+    });
+  }
 };

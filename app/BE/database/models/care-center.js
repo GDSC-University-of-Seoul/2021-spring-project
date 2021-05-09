@@ -58,5 +58,14 @@ module.exports = class CareCenter extends Sequelize.Model {
       }
     );
   }
-  static associate(db) {}
+  static associate(db) {
+    db.CareCenter.belongsTo(db.Area, {
+      foreignKey: "area_id",
+      targetKey: "area_id",
+    });
+    db.CareCenter.hasMany(db.CCTV, {
+      foreignKey: "center_id",
+      sourceKey: "center_id",
+    });
+  }
 };

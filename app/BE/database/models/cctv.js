@@ -34,5 +34,14 @@ module.exports = class CCTV extends Sequelize.Model {
       }
     );
   }
-  static associate(db) {}
+  static associate(db) {
+    db.CCTV.belongsTo(db.CareCenter, {
+      foreignKey: "center_id",
+      targetKey: "center_id",
+    });
+    db.CCTV.hasMany(db.Video, {
+      foreignKey: "cctv_id",
+      sourceKey: "cctv_id",
+    });
+  }
 };
