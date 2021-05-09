@@ -1,14 +1,17 @@
 import express from "express";
 import morgan from "morgan";
+import dotenv from "dotenv";
 import swaggerUi from "swagger-ui-express";
 import swaggerJsdoc from "swagger-jsdoc";
 import { sequelize } from "./database/models";
+import indexRouter from "./routes";
 
-require("dotenv").config();
+dotenv.config();
 
 const app = express();
 app.set("port", process.env.PORT || 3000);
 
+// swagger 문서 정의
 const swaggerDefinition = {
   info: {
     title: "Kids Keeper Dev API",
@@ -38,12 +41,12 @@ sequelize
   });
 
 app.use(morgan("dev"));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 
 // localhost:3000/ 연결
-app.get("/", (req, res) => {
-  res.send("Connnected.");
-});
+app.use("/", indexRouter);
 
 // 포트 연결
 app.listen(app.get("port"), () => {
