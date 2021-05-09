@@ -40,8 +40,6 @@ sequelize
 app.use(morgan("dev"));
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 
-const db = require("./database/models");
-
 // localhost:3000/ 연결
 app.get("/", (req, res) => {
   res.send("Connnected.");
