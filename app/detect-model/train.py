@@ -4,6 +4,24 @@ from utils.parser import parse_xml
 from utils.files import search_file
 
 
+def load_metadata(config):
+    """
+    Load metadata
+    """
+
+    metadata = list()
+
+    # Debug option
+    if config['debug']['load-metadata'] is False:
+        return metadata
+
+    # Search xml file in directory
+    files = search_file(config["train"], extension="xml")  
+    for file in files:
+        metadata.append(parse_xml(file))
+
+    return metadata
+    
 def train(opt):
     """
     Train the model
@@ -12,12 +30,7 @@ def train(opt):
     with open(opt.data) as f:
         config = yaml.safe_load(f)
 
-    # Search xml file in directory
-    files = search_file(config["train"], extension="xml")  
-
-    metadata = list()
-    for file in files:
-        metadata.append(parse_xml(file))
+    load_metadata(config)
 
 
 if __name__ == "__main__":
