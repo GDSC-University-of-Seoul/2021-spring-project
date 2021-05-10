@@ -1,8 +1,7 @@
 import express from "express";
 import morgan from "morgan";
 import dotenv from "dotenv";
-import swaggerUi from "swagger-ui-express";
-import swaggerJsdoc from "swagger-jsdoc";
+import { swaggerUi, swaggerSpecs } from "./swagger";
 import { sequelize } from "./database/models";
 import indexRouter from "./routes";
 
@@ -10,24 +9,6 @@ dotenv.config();
 
 const app = express();
 app.set("port", process.env.PORT || 3000);
-
-// swagger 문서 정의
-const swaggerDefinition = {
-  info: {
-    title: "Kids Keeper Dev API",
-    version: "1.0.0",
-    description: "Kids Keeper Developmenet API with express.",
-  },
-  host: "localhost:3000",
-  basePath: "/",
-};
-
-const options = {
-  swaggerDefinition,
-  apis: [],
-};
-
-const swaggerSpecs = swaggerJsdoc(options);
 
 // DB 연결
 sequelize
