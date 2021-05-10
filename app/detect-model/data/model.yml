@@ -10,3 +10,5 @@ train: E:/dataset/    # DATASET DIRECTORY
 # valid: VALIDATION FILE PATH   
 debug:
   load-metadata: False
+  show-video: False
+  write-video: True
