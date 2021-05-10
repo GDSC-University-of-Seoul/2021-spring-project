@@ -1,0 +1,28 @@
+.sidebar {
+  position: absolute;
+  width: 15rem;
+  height: 100%;
+  background-color: $sidebar;
+
+  header {
+    background-color: $sidebar-header;
+    padding: 1rem 0.5rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+  .sidemenu {
+    &:hover {
+      background-color: $sidebar-hover;
+      transition: background-color 0.2s linear;
+    }
+    a {
+      display: flex;
+      color: $white;
+      padding: 1rem 0.5rem;
+
+      .menu-icon {
+        margin-right: 0.5rem;
+      }
+    }
+  }
+}

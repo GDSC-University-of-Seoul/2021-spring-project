@@ -1,0 +1,44 @@
+# dependencies
+node_modules
+.pnp
+.pnp.js
+
+# testing
+coverage
+
+# production
+build
+
+# misc
+.DS_Store
+.env
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+## JavaScript
+node_modules/
+
+## Python
+__pycache__/
+
+## Local development environment
+.venv/
+.vscode/
+.env
+
+## Dummy data
+.dummy/
+
+## etc
+aws/
+migrations/
+seeders/
+
+.sequelizerc
+.prettierrc
+.eslintrc.json
+
+## ignorefile
+config.yml
