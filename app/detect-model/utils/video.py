@@ -19,25 +19,30 @@ def open_video(config, file):
         int(input_video.get(cv2.CAP_PROP_FRAME_HEIGHT)),
     )
 
-    frame_rates = 100 // fps - 1
-    frames = list()
-    while input_video.isOpened():
-        # Capture frame-by-frame
-        ret, frame = input_video.read()
-        if ret is False:
-            break
-
-        frames.append(frame)
-        # Debug option
-        if config["debug"]["show-video"] is True:
-            resized_frame = cv2.resize(frame, (1280, 720))
-            cv2.imshow("Frame", resized_frame)
-
-            if cv2.waitKey(1) & 0xFF == ord("q"):
+    # frame_rates = 100 // fps - 1
+    # frames = list()
+    
+    # Exception Handling - Out of Memory
+    try:
+        while input_video.isOpened():
+            # Capture frame-by-frame
+            ret, frame = input_video.read()
+            if ret is False:
                 break
 
-    input_video.release()
+            # frames.append(frame)
+            # Debug option
+            if config["debug"]["show-video"] is True:
+                resized_frame = cv2.resize(frame, (1280, 720))
+                cv2.imshow("Frame", resized_frame)
 
-    cv2.destroyAllWindows()
+                if cv2.waitKey(1) & 0xFF == ord("q"):
+                    break
+    except cv2.error:
+        raise
+
+    finally:
+        input_video.release()
+        cv2.destroyAllWindows()
 
     return frame
