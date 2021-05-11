@@ -39,3 +39,6 @@ __pycache__/
 aws/
 migrations/
 seeders/
+
+## ignorefile
+config.yml
