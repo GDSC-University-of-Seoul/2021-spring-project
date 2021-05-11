@@ -21,7 +21,14 @@ module.exports = class Anomaly extends Sequelize.Model {
           allowNull: false,
         },
         follow_up: {
-          type: DataTypes.STRING(20),
+          type: DataTypes.ENUM({
+            values: [
+              "이상행동감지",
+              "영상확인-일상행동",
+              "영상확인-폭력",
+              "영상확인-실신",
+            ],
+          }),
           allowNull: false,
         },
       },

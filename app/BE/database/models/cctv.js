@@ -9,7 +9,9 @@ module.exports = class CCTV extends Sequelize.Model {
           primaryKey: true,
         },
         quality: {
-          type: DataTypes.STRING(15),
+          type: DataTypes.ENUM({
+            values: ["SD", "HD", "FHD", "QHD", "UHD"],
+          }),
           allowNull: false,
         },
         install_date: {
@@ -33,9 +35,9 @@ module.exports = class CCTV extends Sequelize.Model {
     );
   }
   static associate(db) {
-    db.CCTV.belongsTo(db.CdrCareCenter, {
-      foreignKey: "center_id",
-      targetKey: "center_id",
+    db.CCTV.belongsTo(db.Area, {
+      foreignKey: "area_id",
+      targetKey: "area_id",
     });
     db.CCTV.hasMany(db.Video, {
       foreignKey: "cctv_id",

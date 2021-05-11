@@ -29,7 +29,15 @@ module.exports = class Area extends Sequelize.Model {
     );
   }
   static associate(db) {
-    db.Area.hasMany(db.CdrCareCenter, {
+    db.Area.belongsTo(db.CdrCareCenter, {
+      foreignKey: "center_id",
+      targetKey: "center_id",
+    });
+    db.Area.hasMany(db.VideoManagement, {
+      foreignKey: "area_id",
+      sourceKey: "area_id",
+    });
+    db.Area.hasMany(db.CCTV, {
       foreignKey: "area_id",
       sourceKey: "area_id",
     });

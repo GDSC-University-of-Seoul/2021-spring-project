@@ -13,7 +13,17 @@ module.exports = class CdrCareCenter extends Sequelize.Model {
           allowNull: false,
         },
         opr_type: {
-          type: DataTypes.STRING(20),
+          type: DataTypes.ENUM({
+            values: [
+              "국공립",
+              "사회복지법인",
+              "법인 및 단체",
+              "민간",
+              "가정",
+              "협동",
+              "직장",
+            ],
+          }),
           allowNull: false,
         },
         zip_code: {
@@ -57,11 +67,7 @@ module.exports = class CdrCareCenter extends Sequelize.Model {
     );
   }
   static associate(db) {
-    db.CdrCareCenter.belongsTo(db.Area, {
-      foreignKey: "area_id",
-      targetKey: "area_id",
-    });
-    db.CdrCareCenter.hasMany(db.CCTV, {
+    db.CdrCareCenter.hasMany(db.Area, {
       foreignKey: "center_id",
       sourceKey: "center_id",
     });
