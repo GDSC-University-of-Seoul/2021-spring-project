@@ -24,10 +24,10 @@ sequelize
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 
 // localhost:3000/ 연결
-app.use("/", indexRouter);
+app.use("/api/", indexRouter);
+app.use("/api/docs/", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 
 // 포트 연결
 app.listen(app.get("port"), () => {
