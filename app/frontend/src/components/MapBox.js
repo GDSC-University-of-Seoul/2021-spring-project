@@ -99,7 +99,8 @@ function MapBox({ data }) {
             className="marker"
           />
         ))}
-    </ReactMapGL>    
+    </ReactMapGL>
+    <MapBoxCategory />
     </>
   );
 }

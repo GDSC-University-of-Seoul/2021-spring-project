@@ -33,7 +33,7 @@ function MapBoxContainer() {
     );
     const sigunname = filterData[0].sigunname[0];
     const childHouseCnt = filterData.length;
-
+    
     area.features.forEach((element) => {
       element.properties.childHouseCnt =
         element.properties.sggnm === sigunname ? childHouseCnt : 0;

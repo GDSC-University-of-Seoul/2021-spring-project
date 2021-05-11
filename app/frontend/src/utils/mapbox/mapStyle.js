@@ -1,14 +1,14 @@
 // 카테고리 스타일
 export const categoryStyle = [
-  [0, "#e74c3c"],
-  [50, "#e67e22"],
-  [100, "#2ecc71"],
-  [150, "#1abc9c"],
-  [200, "#3498db"],
-  [250, "#9b59b6"],
-  [300, "#bdc3c7"],
-  [350, "#95a5a6"],
-  [400, "#34495e"],
+  [0, "#fab1a0"],
+  [50, "#d35400"],
+  [100, "#f1c40f"],
+  [150, "#27ae60"],
+  [200, "#2980b9"],
+  [250, "#8e44ad"],
+  [300, "#7f8c8d"],
+  [350, "#2c3e50"],
+  [400, "#2f3640"],
 ];
 
 // 기본 렌더링 스타일
@@ -16,12 +16,12 @@ export const areaLayer = {
   id: "area",
   type: "fill",
   paint: {
-    "fill-outline-color": "#d0ff00",
+    "fill-outline-color": "#ffffff",
     "fill-color": {
       property: "childHouseCnt",
       stops: categoryStyle
     },
-    "fill-opacity": 0.5,
+    "fill-opacity": 0.7,
   },
 };
 
@@ -30,11 +30,11 @@ export const highlightLayer = {
   id: "area-highlighted",
   type: "fill",
   paint: {
-    "fill-outline-color": "#d0ff00",
+    "fill-outline-color": "#000000",
     "fill-color": {
       property: "childHouseCnt",
       stops: categoryStyle,
     },
-    "fill-opacity": 0.8,
+    "fill-opacity": 0.9,
   },
 };
