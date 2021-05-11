@@ -21,7 +21,7 @@ def open_video(config, file):
 
     # frame_rates = 100 // fps - 1
     # frames = list()
-    
+
     # Exception Handling - Out of Memory
     try:
         while input_video.isOpened():
