@@ -1,5 +1,14 @@
 .popup {
   z-index: 10;
+  font-size: 0.9rem;
+  padding: 0;
+
+  h1 {
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    text-align: center;
+    font-weight: 600;
+  }
 }
 .marker {
   background: url("/src/assets/image/marker.png") no-repeat center / contain;
