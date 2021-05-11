@@ -1,27 +1,11 @@
 import yaml
 import argparse
-from utils.parser import parse_xml
 from utils.files import search_file
 from utils.video import open_video
+from utils.logger import Logger
+from metadata import load_metadata, print_metadata
 
-
-def load_metadata(config):
-    """
-    Load metadata
-    """
-
-    metadata = list()
-
-    # Debug option
-    if config["debug"]["load-metadata"] is False:
-        return metadata
-
-    # Search xml file in directory
-    files = search_file(config["train"], extension="xml")
-    for file in files:
-        metadata.append(parse_xml(file))
-
-    return metadata
+logger = Logger()
 
 
 def train(opt):
@@ -32,13 +16,18 @@ def train(opt):
     with open(opt.data) as f:
         config = yaml.safe_load(f)
 
-    load_metadata(config)
+    metadata = load_metadata(config)
+
+    for data in metadata:
+        print_metadata(data)
 
     files = search_file(config["train"], extension="mp4")
+
     # FIXME : cv::OutOfMemoryError problem
     # for file in files:
-    #     video_file = open_video(config, file)
-    open_video(config, files[0])  # Debug code
+    # video_file = open_video(config, file)
+    # open_video(config, files[0])  # Debug code
+    # open_video(config, files[1])  # Debug code
 
 
 if __name__ == "__main__":
