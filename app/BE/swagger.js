@@ -9,7 +9,7 @@ const swaggerDefinition = {
     description: "Kids Keeper Developmenet API with express.",
   },
   host: "localhost:3000",
-  basePath: "/",
+  basePath: "/api/doc/",
 };
 
 const options = {
