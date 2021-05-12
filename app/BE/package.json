@@ -24,7 +24,8 @@
         "nodemon": "^2.0.7",
         "prettier": "^2.2.1",
         "swagger-jsdoc": "^6.0.0",
-        "swagger-ui-express": "^4.1.6"
+        "swagger-ui-express": "^4.1.6",
+        "xml2js": "^0.4.23"
     },
     "author": "rxdcxdrnine",
     "license": "MIT",

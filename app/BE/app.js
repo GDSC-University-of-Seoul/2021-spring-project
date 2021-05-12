@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import { swaggerUi, swaggerSpecs } from "./swagger";
 import { sequelize } from "./database/models";
 import indexRouter from "./routes";
+import regionRouter from "./routes/region";
 
 dotenv.config();
 
@@ -28,6 +29,7 @@ app.use(express.urlencoded({ extended: false }));
 // localhost:3000/ 연결
 app.use("/api/", indexRouter);
 app.use("/api/docs/", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
+app.use("/api/region/", regionRouter);
 
 // 포트 연결
 app.listen(app.get("port"), () => {
