@@ -5,7 +5,7 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     const regionCenter = {};
 
-    const xmlData = fs.readFileSync("./data/은평구_data.txt");
+    const xmlData = fs.readFileSync("./samples/은평구_data.txt");
     let result = await xmlParser(xmlData);
 
     for (let obj of result.response.item) {
