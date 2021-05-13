@@ -1,7 +1,10 @@
 import express from "express";
 import morgan from "morgan";
 import dotenv from "dotenv";
-import { swaggerUi, swaggerSpecs } from "./swagger";
+import swaggerUi from "swagger-ui-express";
+import path from "path";
+import yaml from "yamljs";
+
 import { sequelize } from "./database/models";
 import indexRouter from "./routes";
 import regionRouter from "./routes/region";
@@ -28,8 +31,10 @@ app.use(express.urlencoded({ extended: false }));
 
 // localhost:3000/ 연결
 app.use("/api/", indexRouter);
-app.use("/api/docs/", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 app.use("/api/region/", regionRouter);
+
+const swaggerSpecs = yaml.load(path.join(__dirname, "/swagger/build.yaml"));
+app.use("/api/docs/", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 
 // 포트 연결
 app.listen(app.get("port"), () => {

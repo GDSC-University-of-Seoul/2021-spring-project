@@ -1,0 +1,33 @@
+get:
+  tags:
+  - region
+  summary: get all centers by region id
+  description:
+  parameters:
+    - name: id
+      in: path
+      required: true
+      description: region id
+  responses:
+    200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                center_id:
+                  type: integer
+                name:
+                  type: string
+                lat:
+                  type: number
+                lng:
+                  type: number
+                region_id:
+                  type: integer
+                region_name:
+                  type: string
+                

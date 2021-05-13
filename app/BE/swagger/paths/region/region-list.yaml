@@ -1,0 +1,19 @@
+get:
+  tags:
+  - region
+  summary: get all regions
+  description:
+  responses:
+    200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                region_id:
+                  type: integer
+                region_name:
+                  type: string

@@ -1,0 +1,8 @@
+/region/:
+  $ref: "region/region-list.yaml"
+/region/{id}:
+  $ref: "region/region-retrieve.yaml"
+/region/{id}/center/:
+  $ref: "region/region-center-list.yaml"
+/region/{id}/center/{id}:
+  $ref: "region/region-center-retrieve.yaml"

@@ -1,0 +1,127 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Kids Keeper API Docs
+  description: Kids Keeper API 문서
+  license:
+    name: Apache 2.0
+    url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
+servers:
+  - description: dev servers
+    url: 'http://localhost:3000/api/'
+paths:
+  /region/:
+    get:
+      tags:
+        - region
+      summary: get all regions
+      description: null
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    region_id:
+                      type: integer
+                    region_name:
+                      type: string
+  '/region/{id}':
+    get:
+      tags:
+        - region
+      summary: get region by id
+      description: null
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: region id
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  region_id:
+                    type: integer
+                  region_name:
+                    type: string
+  '/region/{id}/center/':
+    get:
+      tags:
+        - region
+      summary: get all centers by region id
+      description: null
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: region id
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    center_id:
+                      type: integer
+                    name:
+                      type: string
+                    lat:
+                      type: number
+                    lng:
+                      type: number
+                    region_id:
+                      type: integer
+                    region_name:
+                      type: string
+  '/region/{id}/center/{id}':
+    get:
+      tags:
+        - region
+      summary: get centers by center id
+      description: null
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: region id
+        - name: center_id
+          in: path
+          required: true
+          description: cdrcare center id
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    center_id:
+                      type: integer
+                    name:
+                      type: string
+                    lat:
+                      type: number
+                    lng:
+                      type: number
+                    region_id:
+                      type: integer
+                    region_name:
+                      type: string
+tags:
+  - name: region

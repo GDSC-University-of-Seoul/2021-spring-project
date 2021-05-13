@@ -1,0 +1,22 @@
+get:
+  tags:
+  - region
+  summary: get region by id
+  description:
+  parameters:
+    - name: id
+      in: path
+      required: true
+      description: region id
+  responses:
+    200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              region_id:
+                type: integer
+              region_name:
+                type: string
