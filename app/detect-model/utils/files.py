@@ -18,7 +18,7 @@ def check_file(file: Path):
         return files[0]  # return file
 
 
-def search_file(directory: Path, recursive=True, extension=None):
+def search_file(directory: Path, filename=None, recursive=True, extension=None):
     """
     Find the target path
     """
@@ -26,9 +26,16 @@ def search_file(directory: Path, recursive=True, extension=None):
     assert Path(directory).is_dir(), "Path should be direcory"
 
     target_file = directory + "/**"
+    if filename:
+        target_file = target_file + "/" + filename
+
     if extension:
         target_file = target_file + "/*." + extension
 
     files = glob.glob(target_file, recursive=recursive)
-    assert len(files), "No files is not founded : "
+    if len(files) == 1:
+        return files[0]
+
+    assert len(files), f"No files is not founded : {target_file}"
     return files
+
