@@ -1,4 +1,6 @@
+import os
 import glob
+import pickle
 from pathlib import Path
 
 
@@ -39,3 +41,19 @@ def search_file(directory: Path, filename=None, recursive=True, extension=None):
     assert len(files), f"No files is not founded : {target_file}"
     return files
 
+
+def load_pkl_file(load_dir, filename):
+    filepath = os.path.join(load_dir, filename)
+    print(f">> Load dataset from ({filepath})")
+
+    with open(check_file(filepath), "rb") as pkl:
+        data = pickle.load(pkl)
+    return data
+
+
+def save_pkl_file(save_dir, filename, data):
+    filepath = os.path.join(save_dir, filename)
+    print(f">> Write dataset to ({filepath})")
+
+    with open(filepath, "wb") as pkl:
+        pickle.dump(data, pkl, protocol=pickle.HIGHEST_PROTOCOL)
