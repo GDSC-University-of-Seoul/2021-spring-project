@@ -1,36 +1,38 @@
+import os
 import yaml
 import argparse
 from utils.files import search_file
 from utils.video import open_video
 from utils.logger import Logger
-from metadata import load_metadata, print_metadata
+from utils.general import check_git_status, check_requirements
+from metadata import load_metadata, MetaData
+
 
 logger = Logger()
 
 
-def train(opt):
+def train(opt, config):
     """
     Train the model
     """
-    # Stage 0. Load the Model Setting
-    with open(opt.data) as f:
-        config = yaml.safe_load(f)
+    # Process id for checking memory
+    logger.log(f"Model Train is start Pid( {os.getpid()} )")
 
-    metadata = load_metadata(config)
+    logger.log(f"Load Metadata Files")
+    metadata = load_metadata(config, external_log=logger)
 
-    for data in metadata:
-        print_metadata(data)
+    logger.log(f"All Metadata Files are converted to Data  : {len(metadata)}")
 
-    files = search_file(config["train"], extension="mp4")
-
-    # FIXME : cv::OutOfMemoryError problem
-    # for file in files:
-    # video_file = open_video(config, file)
-    # open_video(config, files[0])  # Debug code
-    # open_video(config, files[1])  # Debug code
+    for metafile in metadata:
+        video_file = search_file(config["train"], filename=metafile.filename)
+        open_video(config, video_file, metafile)  # Debug code
 
 
 if __name__ == "__main__":
+    # Check status
+    check_git_status()
+    check_requirements()
+
     # Argument options
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -38,4 +40,11 @@ if __name__ == "__main__":
     )
     opt = parser.parse_args()
 
-    train(opt)
+    # Configuration
+    with open(opt.data) as f:
+        config = yaml.safe_load(f)
+
+    try:
+        train(opt, config)
+    except KeyboardInterrupt:
+        logger.warn(f"Abort! (KeyboardInterrupt)")

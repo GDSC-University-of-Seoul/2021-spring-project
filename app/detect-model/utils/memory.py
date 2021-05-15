@@ -9,5 +9,8 @@ while True:
         memoryUse = py.memory_info()[0] / 2.0 ** 30  # memory use in GB...I think
         print(f"memory use: {memoryUse:.4f} GB")
         time.sleep(1)
+    except psutil.NoSuchProcess:
+        print("Process is no longer exists")
+        break
     except KeyboardInterrupt:
         break

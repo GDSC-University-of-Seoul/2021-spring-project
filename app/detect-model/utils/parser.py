@@ -22,12 +22,10 @@ def parse_xml_tree(root):
                     data[tag] = list()
                     data[tag].append(temp)
                 data[tag].append(parse_xml_tree(item))
-                
+
             elif data.get(tag) is None:
                 data[tag] = parse_xml_tree(item)
             else:
-                print(item)
-                print(f"Bamm : {tag}")
                 data[tag] = parse_xml_tree(item)
         else:
             data[tag] = parse_xml_tree(item)

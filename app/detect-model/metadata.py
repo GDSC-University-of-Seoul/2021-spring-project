@@ -45,11 +45,11 @@ class MetaData:
         self.event.eventname = meta_event["eventname"]
         self.event.starttime = meta_event["starttime"]
         self.event.duration = meta_event["duration"]
-        
-        if type(metadata['object']) is list: 
+
+        if type(metadata["object"]) is list:
             self.objects = [self.Obj(obj) for obj in metadata["object"]]
         else:
-            self.objects = [self.Obj(metadata['object'])]
+            self.objects = [self.Obj(metadata["object"])]
 
     def __str__(self):
         return (
@@ -107,11 +107,11 @@ class MetaData:
         def __init__(self, obj):
             self.objectname = obj["objectname"]
             self.position = self.Postion(obj["position"])
-            
-            if type(obj['action']) is list: 
+
+            if type(obj["action"]) is list:
                 self.actions = [self.Action(act) for act in obj["action"]]
             else:
-                self.actions = [self.Action(obj['action'])]
+                self.actions = [self.Action(obj["action"])]
 
         def __str__(self):
             return (
@@ -137,16 +137,18 @@ class MetaData:
 
             def __init__(self, action):
                 self.actionname = action["actionname"]
-                if type(action['frame']) is list: 
-                    self.frames = [(frame["start"], frame["end"]) for frame in action["frame"]]
+                if type(action["frame"]) is list:
+                    self.frames = [
+                        (frame["start"], frame["end"]) for frame in action["frame"]
+                    ]
                 else:
-                    frame = action['frame']
+                    frame = action["frame"]
                     self.frames = [(frame["start"], frame["end"])]
-                
+
             def __str__(self):
                 return (
                     f"      actionname \n{self.actionname} \n"
-                    f"      frame   \n{list_string(self.frames, level=3)}"                    
+                    f"      frame   \n{list_string(self.frames, level=3)}"
                 )
 
 
@@ -170,7 +172,6 @@ def load_metadata(config, limit=None, external_log=None):
 
     for file in xml_files:
         metadata.append(MetaData(parse_xml(file)))
-        print(MetaData(parse_xml(file)))
 
     if external_log:
         external_log.log(f"Metadata xml_files is loaded ({len(metadata)} xml files)")

@@ -1,45 +1,44 @@
+import os
 import cv2
-from utils.files import search_file, check_file
+import time
+import numpy as np
+from imutils.video import FileVideoStream
+from numpy import empty
+from utils.files import search_file, check_file, load_pkl_file, save_pkl_file
 from utils.logger import Logger
 
 logger = Logger()
 
-def open_video(config, file):
+
+def open_video(config, file, meta):
     check_file(file)
-    input_video = cv2.VideoCapture(file)
-    assert input_video.isOpened(), "VIDEO IS NOT OPENED"
+    input_video = FileVideoStream(file)
+    basename = os.path.basename(file[:-4])
 
-    input_video.set(cv2.CAP_PROP_FRAME_WIDTH, 160)
-    input_video.set(cv2.CAP_PROP_FRAME_HEIGHT, 120)
+    video_stream = input_video.start()
+    time.sleep(1.0)
 
-    fps = round(input_video.get(cv2.CAP_PROP_FPS))
-    nframe = int(input_video.get(cv2.CAP_PROP_FRAME_COUNT))
+    nframe = meta.header.frames
+
+    video_config = config["model"]["video"]
     size = (
-        int(input_video.get(cv2.CAP_PROP_FRAME_WIDTH)),
-        int(input_video.get(cv2.CAP_PROP_FRAME_HEIGHT)),
+        (meta.size.width, meta.size.height)
+        if video_config["resize"] is False
+        else (int(video_config.get("width")), int(video_config.get("height")))
     )
 
-    # frame_rates = 100 // fps - 1
     frames = list()
-    logger.log(f'{file} fps: {fps},  nframe: {nframe},  size: {size}')
+    logger.log(f"[{basename}] nframe: {nframe},  size: {size}")
 
-    if config["model"]["frame"]:
-        frame_config = config["model"]["frame"]
-        frame_size = (frame_config["width"], frame_config["height"])
-        size = frame_size
+    while video_stream.more():
+        if len(frames) % 500 == 0:
+            logger.log(f"{len(frames)} frames")
 
-    # Exception Handling - Out of Memory
-    try:
-        count = 0 # Temporary Debug Code 
-        while input_video.isOpened():
-            count+=1
-            if count % 100 == 0:
-                logger.log(f"{count} frames")
-            # Capture frame-by-frame
-            ret, frame = input_video.read()
-            if ret is False:
-                break
-
+        frame = video_stream.read()
+        if not video_stream.more():
+            logger.log(f"{len(frames)} frames")
+            break
+        try:
             frame = cv2.resize(frame, size)
             frames.append(frame)
 
@@ -49,10 +48,15 @@ def open_video(config, file):
 
                 if cv2.waitKey(1) & 0xFF == ord("q"):
                     break
-    except cv2.error:
-        raise
 
-    finally:
-        input_video.release()
-        cv2.destroyAllWindows()
+        except Exception as e:
+            print(e)
+            break
 
+    input_video.stop()
+    cv2.destroyAllWindows()
+
+    pkl_file = f"{os.path.basename(file[:-4])}.pkl"
+    save_pkl_file(save_dir="./data", filename=pkl_file, data=frames)
+
+    return frames
