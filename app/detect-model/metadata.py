@@ -14,8 +14,7 @@ class MetaData:
 
         # Header
         self.header = self.Header()
-        assert len(metadata["header"]) == 1
-        meta_header = metadata["header"][0]
+        meta_header = metadata["header"]
         self.header.duration = meta_header["duration"]
         self.header.fps = meta_header["fps"]
         self.header.frames = meta_header["frames"]
@@ -29,33 +28,36 @@ class MetaData:
 
         # Source
         self.source = self.Soruce()
-        assert len(metadata["source"]) == 1
-        meta_source = metadata["source"][0]
+        meta_source = metadata["source"]
         self.source.database = meta_source["database"]
         self.source.annotation = meta_source["annotation"]
 
         # Size
         self.size = self.Size()
-        assert len(metadata["size"]) == 1
-        meta_size = metadata["size"][0]
+        meta_size = metadata["size"]
         self.size.width = meta_size["width"]
         self.size.height = meta_size["height"]
         self.size.depth = meta_size["depth"]
 
         # Event
         self.event = self.Event()
-        assert len(metadata["event"]) == 1
-        meta_event = metadata["event"][0]
+        meta_event = metadata["event"]
         self.event.eventname = meta_event["eventname"]
         self.event.starttime = meta_event["starttime"]
         self.event.duration = meta_event["duration"]
-
-        self.objects = [self.Obj(obj) for obj in metadata["object"]]
+        
+        if type(metadata['object']) is list: 
+            self.objects = [self.Obj(obj) for obj in metadata["object"]]
+        else:
+            self.objects = [self.Obj(metadata['object'])]
 
     def __str__(self):
         return (
             f"\nFILE <{self.filename}>\n"
             f"  FOLDER     {self.folder} \n"
+            f"  SOURCE \n"
+            f"    Annotation : {self.source.annotation} \n"
+            f"    Database   : {self.source.database} \n"
             f"  SIZE       {self.size.width, self.size.height, self.size.depth} \n"
             f"  Header \n"
             f"    duration   : {self.header.duration} \n"
@@ -68,9 +70,6 @@ class MetaData:
             f"    time       : {self.header.time} \n"
             f"    population : {self.header.population} \n"
             f"    character  : {self.header.character} \n"
-            f"  SOURCE \n"
-            f"    Annotation : {self.source.annotation} \n"
-            f"    Database   : {self.source.database} \n"
             f"  EVENT \n"
             f"    Eventname  : {self.event.eventname}\n"
             f"    Starttime  : {self.event.starttime}\n"
@@ -106,9 +105,13 @@ class MetaData:
 
     class Obj:
         def __init__(self, obj):
-            self.objectname = obj.get("objectname")
+            self.objectname = obj["objectname"]
             self.position = self.Postion(obj["position"])
-            self.actions = [self.Action(act) for act in obj["action"]]
+            
+            if type(obj['action']) is list: 
+                self.actions = [self.Action(act) for act in obj["action"]]
+            else:
+                self.actions = [self.Action(obj['action'])]
 
         def __str__(self):
             return (
@@ -119,8 +122,8 @@ class MetaData:
 
         class Postion:
             def __init__(self, position):
-                self.keyframe = position[0].get("keyframe")
-                self.keypoint = position[0].get("keypoint")[0]
+                self.keyframe = position.get("keyframe")
+                self.keypoint = position.get("keypoint")
 
             def __str__(self):
                 return (
@@ -129,20 +132,25 @@ class MetaData:
                 )
 
         class Action:
+            actionname: str
+            frames: list
+
             def __init__(self, action):
-                self.actionname = action.get("actionname")
-                self.frames = [
-                    (frame["start"], frame["end"]) for frame in action["frame"]
-                ]
-
+                self.actionname = action["actionname"]
+                if type(action['frame']) is list: 
+                    self.frames = [(frame["start"], frame["end"]) for frame in action["frame"]]
+                else:
+                    frame = action['frame']
+                    self.frames = [(frame["start"], frame["end"])]
+                
             def __str__(self):
-                string = f"        {self.actionname}\n"
-                for x in self.frames:
-                    string += f"            {x[0]} - {x[1]}\n"
-                return string[:-1]
+                return (
+                    f"      actionname \n{self.actionname} \n"
+                    f"      frame   \n{list_string(self.frames, level=3)}"                    
+                )
 
 
-def load_metadata(config, limit=None):
+def load_metadata(config, limit=None, external_log=None):
     """
     Load metadata
     """
@@ -154,17 +162,25 @@ def load_metadata(config, limit=None):
         return metadata
 
     # Search xml file in directory
-    files = search_file(config["train"], extension="xml")
+    xml_files = search_file(config["train"], extension="xml")
 
-    limit = len(files) if limit is None else min(len(files), limit)
-    for file in files[:limit]:
-        metadata.append(parse_xml(file))
+    # Set Load metadata file limit
+    limit = len(xml_files) if limit is None else min(len(xml_files), limit)
+    xml_files = xml_files[:limit]
+
+    for file in xml_files:
+        metadata.append(MetaData(parse_xml(file)))
+        print(MetaData(parse_xml(file)))
+
+    if external_log:
+        external_log.log(f"Metadata xml_files is loaded ({len(metadata)} xml files)")
 
     return metadata
 
 
 def list_string(listval, level=0):
+    prefix = "   " * level
     string = ""
     for val in listval:
-        string += f"{val} \n"
+        string += f"{prefix}{val} \n"
     return string[:-2]

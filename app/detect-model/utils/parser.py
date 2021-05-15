@@ -13,13 +13,24 @@ def parse_xml_tree(root):
         return value
 
     data = dict()
-    for item in root:
+    for i, item in enumerate(root):
+        tag = item.tag
         if len(item) > 0:
-            if data.get(item.tag) is None:
-                data[item.tag] = list()
-            data[item.tag].append(parse_xml_tree(item))
+            if tag in data:
+                temp = data[tag]
+                if type(data[tag]) is not list:
+                    data[tag] = list()
+                    data[tag].append(temp)
+                data[tag].append(parse_xml_tree(item))
+                
+            elif data.get(tag) is None:
+                data[tag] = parse_xml_tree(item)
+            else:
+                print(item)
+                print(f"Bamm : {tag}")
+                data[tag] = parse_xml_tree(item)
         else:
-            data[item.tag] = parse_xml_tree(item)
+            data[tag] = parse_xml_tree(item)
 
     return data
 
