@@ -1,26 +1,6 @@
 # 2021-spring-project
+
 Repository for DSC-UOS Spring Project Team
-
-# Member
-
-### @handal95 
-- Team Position : Scrum master
-- Work Position : **ML**
-
-### @edit8080
-- Team Position : Project Manager
-- Position : **FE**
-### @rxdcxdrnine
-- Team Position : Development Team
-- Position : **BE**
-
-### @YubeenSon
-- Team Position : Development Team
-- Position : **DA**
-
-### @owao
-- Team Position : Development Team
-- Position : **IoT**
 
 # Repository structure
 
@@ -29,12 +9,13 @@ Repository for DSC-UOS Spring Project Team
 3. 05월 09일 이후로 모듈 통합과 구조 재정비 작업을 진행합니다.
 
 # File Tree
+
 ```File Tree
-.                 
-└─app             
-    ├─BE          
-    ├─DB          
-    ├─FE          
-    ├─IOT         
-    └─ML          
+.
+└─app
+    ├─BE
+    ├─DB
+    ├─FE
+    ├─IOT
+    └─ML
 ```
