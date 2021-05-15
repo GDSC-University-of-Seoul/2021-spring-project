@@ -1,17 +1,13 @@
 get:
   tags:
-  - region
-  summary: get centers by center id
+  - children care center
+  summary: get all centers
   description:
   parameters:
-    - name: id
-      in: path
-      required: true
-      description: region id
-    - name: center_id
-      in: path
-      required: true
-      description: cdrcare center id
+    - name: region
+      in: query
+      required: false
+      description: 구 이름
   responses:
     200:
       description: OK

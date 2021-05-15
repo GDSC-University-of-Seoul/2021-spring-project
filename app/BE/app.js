@@ -8,6 +8,7 @@ import yaml from "yamljs";
 import { sequelize } from "./database/models";
 import indexRouter from "./routes";
 import regionRouter from "./routes/region";
+import centerRouter from "./routes/cdrcare_center";
 
 dotenv.config();
 
@@ -31,7 +32,8 @@ app.use(express.urlencoded({ extended: false }));
 
 // localhost:3000/ 연결
 app.use("/api/", indexRouter);
-app.use("/api/region/", regionRouter);
+app.use("/api/regions/", regionRouter);
+app.use("/api/centers/", centerRouter);
 
 const swaggerSpecs = yaml.load(path.join(__dirname, "/swagger/build.yaml"));
 app.use("/api/docs/", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));

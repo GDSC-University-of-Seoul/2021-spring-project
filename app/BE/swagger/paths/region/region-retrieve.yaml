@@ -7,7 +7,7 @@ get:
     - name: id
       in: path
       required: true
-      description: region id
+      description: 구 ID
   responses:
     200:
       description: OK

@@ -1,13 +1,13 @@
 get:
   tags:
-  - region
-  summary: get all centers by region id
+  - children care center
+  summary: get centers by center id
   description:
   parameters:
     - name: id
       in: path
       required: true
-      description: region id
+      description: 어린이집 ID
   responses:
     200:
       description: OK

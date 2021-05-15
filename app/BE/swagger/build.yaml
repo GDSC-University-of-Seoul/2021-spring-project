@@ -10,7 +10,7 @@ servers:
   - description: dev servers
     url: 'http://localhost:3000/api/'
 paths:
-  /region/:
+  /regions:
     get:
       tags:
         - region
@@ -30,7 +30,7 @@ paths:
                       type: integer
                     region_name:
                       type: string
-  '/region/{id}':
+  '/regions/{id}':
     get:
       tags:
         - region
@@ -40,7 +40,7 @@ paths:
         - name: id
           in: path
           required: true
-          description: region id
+          description: 구 ID
       responses:
         '200':
           description: OK
@@ -53,17 +53,17 @@ paths:
                     type: integer
                   region_name:
                     type: string
-  '/region/{id}/center/':
+  /centers:
     get:
       tags:
-        - region
-      summary: get all centers by region id
+        - children care center
+      summary: get all centers
       description: null
       parameters:
-        - name: id
-          in: path
-          required: true
-          description: region id
+        - name: region
+          in: query
+          required: false
+          description: 구 이름
       responses:
         '200':
           description: OK
@@ -86,21 +86,17 @@ paths:
                       type: integer
                     region_name:
                       type: string
-  '/region/{id}/center/{id}':
+  '/centers/{id}':
     get:
       tags:
-        - region
+        - children care center
       summary: get centers by center id
       description: null
       parameters:
         - name: id
           in: path
           required: true
-          description: region id
-        - name: center_id
-          in: path
-          required: true
-          description: cdrcare center id
+          description: 어린이집 ID
       responses:
         '200':
           description: OK
@@ -125,3 +121,4 @@ paths:
                       type: string
 tags:
   - name: region
+  - name: children care center
