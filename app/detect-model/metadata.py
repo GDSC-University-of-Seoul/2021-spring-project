@@ -12,6 +12,21 @@ class MetaData:
         # Filename
         self.filename = metadata["filename"]
 
+        # Header
+        self.header = self.Header()
+        assert len(metadata["header"]) == 1
+        meta_header = metadata["header"][0]
+        self.header.duration = meta_header["duration"]
+        self.header.fps = meta_header["fps"]
+        self.header.frames = meta_header["frames"]
+        self.header.inout = meta_header["inout"]
+        self.header.location = meta_header["location"]
+        self.header.season = meta_header["season"]
+        self.header.weather = meta_header["weather"]
+        self.header.time = meta_header["time"]
+        self.header.population = meta_header["population"]
+        self.header.character = meta_header["character"]
+
         # Source
         self.source = self.Soruce()
         assert len(metadata["source"]) == 1
@@ -19,13 +34,13 @@ class MetaData:
         self.source.database = meta_source["database"]
         self.source.annotation = meta_source["annotation"]
 
-        # ImageShape
-        self.shape = self.Shape()
+        # Size
+        self.size = self.Size()
         assert len(metadata["size"]) == 1
         meta_size = metadata["size"][0]
-        self.shape.width = meta_size["width"]
-        self.shape.height = meta_size["height"]
-        self.shape.depth = meta_size["depth"]
+        self.size.width = meta_size["width"]
+        self.size.height = meta_size["height"]
+        self.size.depth = meta_size["depth"]
 
         # Event
         self.event = self.Event()
@@ -41,7 +56,18 @@ class MetaData:
         return (
             f"\nFILE <{self.filename}>\n"
             f"  FOLDER     {self.folder} \n"
-            f"  SIZE       {self.shape.width, self.shape.height, self.shape.depth} \n"
+            f"  SIZE       {self.size.width, self.size.height, self.size.depth} \n"
+            f"  Header \n"
+            f"    duration   : {self.header.duration} \n"
+            f"    fps        : {self.header.fps} \n"
+            f"    frames     : {self.header.frames} \n"
+            f"    inout      : {self.header.inout} \n"
+            f"    location   : {self.header.location} \n"
+            f"    season     : {self.header.season} \n"
+            f"    weather    : {self.header.weather} \n"
+            f"    time       : {self.header.time} \n"
+            f"    population : {self.header.population} \n"
+            f"    character  : {self.header.character} \n"
             f"  SOURCE \n"
             f"    Annotation : {self.source.annotation} \n"
             f"    Database   : {self.source.database} \n"
@@ -56,10 +82,22 @@ class MetaData:
         database: str
         annotation: str
 
-    class Shape:
+    class Size:
         width: int
         height: int
         depth: int
+
+    class Header:
+        duration: str
+        fps: int
+        frames: int
+        inout: str
+        location: str
+        season: str
+        weather: str
+        time: str
+        population: int
+        character: str
 
     class Event:
         eventname: str
@@ -104,7 +142,7 @@ class MetaData:
                 return string[:-1]
 
 
-def load_metadata(config):
+def load_metadata(config, limit=None):
     """
     Load metadata
     """
@@ -117,7 +155,9 @@ def load_metadata(config):
 
     # Search xml file in directory
     files = search_file(config["train"], extension="xml")
-    for file in files[:1]:
+
+    limit = len(files) if limit is None else min(len(files), limit)
+    for file in files[:limit]:
         metadata.append(parse_xml(file))
 
     return metadata
