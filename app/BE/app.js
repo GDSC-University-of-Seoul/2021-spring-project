@@ -1,8 +1,8 @@
 import express from "express";
 import morgan from "morgan";
 import dotenv from "dotenv";
-import swaggerUi from "swagger-ui-express";
 import path from "path";
+import swaggerUi from "swagger-ui-express";
 import yaml from "yamljs";
 
 import { sequelize } from "./database/models";
