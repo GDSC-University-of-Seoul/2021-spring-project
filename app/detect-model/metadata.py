@@ -1,4 +1,3 @@
-from xml.etree.ElementTree import parse
 from utils.parser import parse_xml
 from utils.files import search_file
 

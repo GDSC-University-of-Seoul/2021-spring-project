@@ -1,10 +1,6 @@
-import os
 import cv2
-import time
-import numpy as np
 from imutils.video import FileVideoStream
-from numpy import empty
-from utils.files import search_file, check_file, load_pkl_file, save_pkl_file
+from utils.files import check_file, save_pkl_file
 from utils.logger import Logger
 from pathlib import Path
 
