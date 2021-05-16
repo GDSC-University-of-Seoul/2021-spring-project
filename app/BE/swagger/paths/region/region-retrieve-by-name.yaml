@@ -1,0 +1,22 @@
+get:
+  tags:
+  - region
+  summary: get region by name
+  description:
+  parameters:
+    - name: name
+      in: path
+      required: true
+      description: 구 이름
+  responses:
+    200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              region_id:
+                type: integer
+              region_name:
+                type: string

@@ -1,7 +1,7 @@
-import Sequelize, { DataTypes } from "sequelize";
+import Sequelize from "sequelize";
 
 module.exports = class Region extends Sequelize.Model {
-  static init(sequelize, Datatypes) {
+  static init(sequelize, DataTypes) {
     return super.init(
       {
         region_id: {
