@@ -158,13 +158,12 @@ def load_metadata(config, limit=None, external_log=None):
     """
 
     metadata = list()
-
     # Debug option
-    if config["debug"]["load-metadata"] is False:
+    if config["load"] is False:
         return metadata
 
     # Search xml file in directory
-    xml_files = search_file(config["train"], extension="xml")
+    xml_files = search_file(config["directory"], extension="xml")
 
     # Set Load metadata file limit
     limit = len(xml_files) if limit is None else min(len(xml_files), limit)
