@@ -42,7 +42,10 @@ def search_file(directory: Path, filename=None, recursive=True, extension=None):
     return files
 
 
-def load_pkl_file(load_dir, filename):
+def load_pkl_file(load_dir: Path, filename: Path):
+    """
+    Load Python data structure in order to quickly input data.
+    """
     filepath = os.path.join(load_dir, filename)
     print(f">> Load dataset from ({filepath})")
 
@@ -51,7 +54,10 @@ def load_pkl_file(load_dir, filename):
     return data
 
 
-def save_pkl_file(save_dir, filename, data):
+def save_pkl_file(save_dir: Path, filename: Path, data):
+    """
+    Stores Python data structure in order to quickly input data later.
+    """
     filepath = os.path.join(save_dir, filename)
     print(f">> Write dataset to ({filepath})")
 

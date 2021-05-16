@@ -2,10 +2,10 @@ import os
 import yaml
 import argparse
 from utils.files import search_file
-from utils.video import open_video
+from utils.video import extract_video
 from utils.logger import Logger
 from utils.general import check_git_status, check_requirements
-from metadata import load_metadata, MetaData
+from metadata import load_metadata
 
 
 logger = Logger()
@@ -18,14 +18,15 @@ def train(opt, config):
     # Process id for checking memory
     logger.log(f"Model Train is start Pid( {os.getpid()} )")
 
+    # Load metadata files and convert to data (pkl file)
     logger.log(f"Load Metadata Files")
-    metadata = load_metadata(config, external_log=logger)
-
+    metadata = load_metadata(config["metadata"], external_log=logger)
     logger.log(f"All Metadata Files are converted to Data  : {len(metadata)}")
 
+    # Extract data frame list from video data files
     for metafile in metadata:
-        video_file = search_file(config["train"], filename=metafile.filename)
-        open_video(config, video_file, metafile)  # Debug code
+        videofile = search_file(config["dataset"]["directory"], metafile.filename)
+        extract_video(config["video"], videofile, metafile)
 
 
 if __name__ == "__main__":
