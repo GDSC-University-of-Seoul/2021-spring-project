@@ -18,4 +18,4 @@
 |opr|operation|  
    
 # DB Schema
-[DB Schema(v1.1.4)](https://2021-spring-dsc-project-team.atlassian.net/wiki/spaces/KDK/pages/6029378/DB+v1.0.0, "confluence - db schema")에 데이터타입 및 제약조건에 대한 정보가 있습니다. 
+[DB Schema(v1.2.0)](https://2021-spring-dsc-project-team.atlassian.net/wiki/spaces/KDK/pages/6029378/DB+v1.0.0, "confluence - db schema")에 데이터타입 및 제약조건에 대한 정보가 있습니다. 
