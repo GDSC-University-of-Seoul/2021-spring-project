@@ -1,12 +1,19 @@
-import axios from "axios";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import ReactMapGL, { Popup, Layer, Source, Marker } from "react-map-gl";
+import ReactMapGL, { Layer, Marker, Popup, Source } from "react-map-gl";
 import { areaLayer, highlightLayer } from "../utils/mapbox/mapStyle";
+
 import MapBoxCategory from "./MapBoxCategory";
+import axios from "axios";
 
 const MapboxAccessToken = process.env.REACT_APP_MAPBOX;
 
+/**
+ * `/monitoring`에서 지도를 구성한다.
+ * @param {Object} data KoreaDistrict.geojson에서 Fetch한 데이터
+ * @return {HTMLElement} Mapbox 컴포넌트
+ */
 function MapBox({ data }) {
+  // 지도의 시점
   const [viewport, setViewport] = useState({
     width: 1200,
     height: 800,
@@ -18,7 +25,8 @@ function MapBox({ data }) {
     return { data };
   }, [data]);
 
-  // map 구역 hover 기능 - hover 중인 지역구 표시
+  // 지도 지역구 hover 기능 - hover 중인 지역구 표시
+  // hoverInfo - 지역구 정보 저장
   const [hoverInfo, setHoverInfo] = useState(null);
 
   // Todo : 지역구 어린이집 사건·사고에 대한 레이블 정보 추가
@@ -27,38 +35,34 @@ function MapBox({ data }) {
     setHoverInfo({
       longitude: e.lngLat[0],
       latitude: e.lngLat[1],
-      areaName: hoverArea && hoverArea.properties.sggnm,
+      districtName: hoverArea && hoverArea.properties.sggnm,
       childHouseCnt: hoverArea && hoverArea.properties.childHouseCnt,
     });
   }, []);
-  const selectedArea = (hoverInfo && hoverInfo.areaName) || "";
-  const filter = useMemo(() => ["in", "sggnm", selectedArea], [selectedArea]);
+  const selectedDistrict = (hoverInfo && hoverInfo.districtName) || "";
+  const filter = useMemo(
+    () => ["in", "sggnm", selectedDistrict],
+    [selectedDistrict]
+  );
 
-  // map 구역 click 기능 - 지역구 내에 있는 어린이집 데이터를 통한 설정
+  // 지도 지역구 click 기능 - 지역구 내에 있는 어린이집 데이터를 통한 설정
+  // childHouseInfo - 어린이집 정보 저장
   const [childHouseInfo, setChildHouseInfo] = useState(null);
 
   const clickHandler = useCallback(async () => {
-    // Todo : selectedArea를 시군구 코드로 변환 후 그에 맞춰 DB에서 어린이집 데이터 fetch
-    const region_id = {
-      은평구: "1",
-    };
     try {
-      if (selectedArea === "은평구") {
-        const fetchChildHouse = await axios.get(
-          `${process.env.REACT_APP_API_SERVER}/api/region/${region_id[selectedArea]}/center`
-        );
-        setChildHouseInfo(fetchChildHouse.data);
-        console.log(fetchChildHouse.data);
-      } else {
-        setChildHouseInfo(null);
-      }
+      const fetchChildHouse = await axios.get(
+        `${process.env.REACT_APP_API_SERVER}/api/centers?region=${selectedDistrict}`
+      );
+      setChildHouseInfo(fetchChildHouse.data);
     } catch (err) {
-      console.err(err);
+      console.error(err);
     }
-  }, [selectedArea]);
+  }, [selectedDistrict]);
 
   return (
     <>
+      {/* 지도 렌더링 */}
       <ReactMapGL
         {...viewport}
         mapStyle="mapbox://styles/mapbox/streets-v11"
@@ -67,23 +71,26 @@ function MapBox({ data }) {
         onClick={clickHandler}
         mapboxApiAccessToken={MapboxAccessToken}
       >
+        {/* geojson 데이터를 통해 영역 설정 및 스타일 설정 */}
         <Source type="geojson" data={data}>
           <Layer {...areaLayer} />
           <Layer {...highlightLayer} filter={filter} />
         </Source>
+        {/* 팝업 메세지로 행정구역의 정보 표시 */}
         {/* Todo : 툴팁 메세지 정보 - 지역구, 사건·사고 유형, 발생건수 추가 */}
-        {selectedArea && (
+        {selectedDistrict && (
           <Popup
             longitude={hoverInfo.longitude}
             latitude={hoverInfo.latitude}
             closeButton={false}
             className="popup"
           >
-            <h1>{selectedArea}</h1>
+            <h1>{selectedDistrict}</h1>
             <div>어린이집 개수 : {hoverInfo.childHouseCnt}</div>
           </Popup>
         )}
-        {/* Todo : 마커 표시 - 사건·사고가 발생한 어린이집의 경우 다른 색상의 마커로 표시 */}
+        {/* 어린이집 좌표 정보를 통해 마커 표시 */}
+        {/* Todo : 사건·사고가 발생한 어린이집의 경우 다른 색상의 마커로 표시 */}
         {childHouseInfo &&
           childHouseInfo.map((childHouse, index) => (
             <Marker

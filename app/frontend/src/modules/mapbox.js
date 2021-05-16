@@ -7,24 +7,28 @@ const DATA_FAILURE = "mapbox/DATA_FAILURE";
 export const getData = () => async (dispatch) => {
   dispatch({ type: DATA_LOADING });
   try {
-    const fetchArea = await axios.get("/src/assets/data/Korea_area.geojson");
+    const fetchDistrict = await axios.get(
+      "/src/assets/data/KoreaDistrict.geojson"
+    );
     // Todo : 어린이집 사건·사고 데이터 전체를 Fetch 할 예정 (지도 색상 레이블)
     // 현재는 은평구 어린이집 데이터를 fetch 하여 사용중
-    const fetchChildHouse = await axios.get(
-      "/src/assets/data/Eunpyeonggu_childhouse_data.xml"
+    console.log(`${process.env.REACT_APP_API_SERVER}/api/regions`);
+    const fetchRegions = await axios.get(
+      `${process.env.REACT_APP_API_SERVER}/api/regions`
     );
     dispatch({
       type: DATA_SUCCESS,
-      payload: { area: fetchArea.data, childHouse: fetchChildHouse.data },
+      payload: { district: fetchDistrict.data, regions: fetchRegions.data },
     });
   } catch (e) {
+    console.log(e);
     dispatch({ type: DATA_FAILURE, payload: e });
   }
 };
 
 const initialState = {
   loading: false,
-  data: { area: null, childHouse: null },
+  data: { district: null, regions: null },
   error: null,
 };
 
@@ -34,7 +38,7 @@ export default function mapboxReducer(state = initialState, action) {
       return {
         ...state,
         loading: true,
-        data: { area: null, childHouse: null },
+        data: { district: null, regions: null },
         error: null,
       };
     case DATA_SUCCESS:
@@ -42,8 +46,8 @@ export default function mapboxReducer(state = initialState, action) {
         ...state,
         loading: false,
         data: {
-          area: action.payload.area,
-          childHouse: action.payload.childHouse,
+          district: action.payload.district,
+          regions: action.payload.regions,
         },
         error: null,
       };
@@ -51,7 +55,7 @@ export default function mapboxReducer(state = initialState, action) {
       return {
         ...state,
         loading: false,
-        data: { area: null, childHouse: null },
+        data: { district: null, regions: null },
         error: action.payload,
       };
     default:

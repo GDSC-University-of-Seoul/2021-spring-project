@@ -19,7 +19,7 @@ export const areaLayer = {
     "fill-outline-color": "#ffffff",
     "fill-color": {
       property: "childHouseCnt",
-      stops: categoryStyle
+      stops: categoryStyle,
     },
     "fill-opacity": 0.7,
   },

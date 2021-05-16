@@ -1,12 +1,14 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { Provider } from "react-redux";
-import { createStore, applyMiddleware } from "redux";
-import rootReducers from "./modules";
-import ReduxThunk from "redux-thunk";
+import "./styles/main.scss";
+
+import { applyMiddleware, createStore } from "redux";
+
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
-import "./styles/main.scss";
+import { Provider } from "react-redux";
+import React from "react";
+import ReactDOM from "react-dom";
+import ReduxThunk from "redux-thunk";
+import rootReducers from "./modules";
 
 const store = createStore(rootReducers, applyMiddleware(ReduxThunk));
 

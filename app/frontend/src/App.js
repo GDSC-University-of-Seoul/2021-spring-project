@@ -1,7 +1,7 @@
-import React from "react";
-import { Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Monitoring from "./pages/Monitoring";
+import React from "react";
+import { Route } from "react-router-dom";
 import Settings from "./pages/Settings";
 
 function App() {

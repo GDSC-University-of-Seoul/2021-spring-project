@@ -1,6 +1,7 @@
-import React from "react";
-import { FaHome } from "react-icons/fa";
 import { FiMonitor, FiSettings } from "react-icons/fi";
+
+import { FaHome } from "react-icons/fa";
+import React from "react";
 import SideMenu from "./SideMenu";
 
 function SideBar() {
