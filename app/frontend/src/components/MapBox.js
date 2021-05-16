@@ -2,7 +2,6 @@ import axios from "axios";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import ReactMapGL, { Popup, Layer, Source, Marker } from "react-map-gl";
 import { areaLayer, highlightLayer } from "../utils/mapbox/mapStyle";
-import xmlParser from "../utils/mapbox/xmlParser";
 import MapBoxCategory from "./MapBoxCategory";
 
 const MapboxAccessToken = process.env.REACT_APP_MAPBOX;
@@ -40,21 +39,16 @@ function MapBox({ data }) {
 
   const clickHandler = useCallback(async () => {
     // Todo : selectedArea를 시군구 코드로 변환 후 그에 맞춰 DB에서 어린이집 데이터 fetch
-    const area = {
-      은평구: "Eunpyeonggu",
-      종로구: "Jongnogu",
+    const region_id = {
+      은평구: "1",
     };
     try {
-      if (selectedArea === "은평구" || selectedArea === "종로구") {
+      if (selectedArea === "은평구") {
         const fetchChildHouse = await axios.get(
-          `/src/assets/data/${area[selectedArea]}_childhouse_data.xml`
+          `${process.env.REACT_APP_API_SERVER}/api/region/${region_id[selectedArea]}/center`
         );
-        xmlParser(fetchChildHouse.data).then((data) => {
-          const childHouse = data.response.item.filter(
-            (element) => element.crcargbname[0] === "운영"
-          );
-          setChildHouseInfo(childHouse);
-        });
+        setChildHouseInfo(fetchChildHouse.data);
+        console.log(fetchChildHouse.data);
       } else {
         setChildHouseInfo(null);
       }
@@ -65,42 +59,42 @@ function MapBox({ data }) {
 
   return (
     <>
-    <ReactMapGL
-      {...viewport}
-      mapStyle="mapbox://styles/mapbox/streets-v11"
-      onViewportChange={(nextViewport) => setViewport(nextViewport)}
-      onHover={hoverHandler}
-      onClick={clickHandler}
-      mapboxApiAccessToken={MapboxAccessToken}
-    >
-      <Source type="geojson" data={data}>
-        <Layer {...areaLayer} />
-        <Layer {...highlightLayer} filter={filter} />
-      </Source>
-      {/* Todo : 툴팁 메세지 정보 - 지역구, 사건·사고 유형, 발생건수 추가 */}
-      {selectedArea && (
-        <Popup
-          longitude={hoverInfo.longitude}
-          latitude={hoverInfo.latitude}
-          closeButton={false}
-          className="popup"
-        >
-          <h1>{selectedArea}</h1>
-          <div>어린이집 개수 : {hoverInfo.childHouseCnt}</div>
-        </Popup>
-      )}
-      {/* Todo : 마커 표시 - 사건·사고가 발생한 어린이집의 경우 다른 색상의 마커로 표시 */}
-      {childHouseInfo &&
-        childHouseInfo.map((childHouse, index) => (
-          <Marker
-            key={index}
-            latitude={Number(childHouse.la[0])}
-            longitude={Number(childHouse.lo[0])}
-            className="marker"
-          />
-        ))}
-    </ReactMapGL>
-    <MapBoxCategory />
+      <ReactMapGL
+        {...viewport}
+        mapStyle="mapbox://styles/mapbox/streets-v11"
+        onViewportChange={(nextViewport) => setViewport(nextViewport)}
+        onHover={hoverHandler}
+        onClick={clickHandler}
+        mapboxApiAccessToken={MapboxAccessToken}
+      >
+        <Source type="geojson" data={data}>
+          <Layer {...areaLayer} />
+          <Layer {...highlightLayer} filter={filter} />
+        </Source>
+        {/* Todo : 툴팁 메세지 정보 - 지역구, 사건·사고 유형, 발생건수 추가 */}
+        {selectedArea && (
+          <Popup
+            longitude={hoverInfo.longitude}
+            latitude={hoverInfo.latitude}
+            closeButton={false}
+            className="popup"
+          >
+            <h1>{selectedArea}</h1>
+            <div>어린이집 개수 : {hoverInfo.childHouseCnt}</div>
+          </Popup>
+        )}
+        {/* Todo : 마커 표시 - 사건·사고가 발생한 어린이집의 경우 다른 색상의 마커로 표시 */}
+        {childHouseInfo &&
+          childHouseInfo.map((childHouse, index) => (
+            <Marker
+              key={index}
+              latitude={Number(childHouse.lat)}
+              longitude={Number(childHouse.lng)}
+              className="marker"
+            />
+          ))}
+      </ReactMapGL>
+      <MapBoxCategory />
     </>
   );
 }
