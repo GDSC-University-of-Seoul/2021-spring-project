@@ -16,10 +16,6 @@ module.exports = class VideoManagement extends Sequelize.Model {
           type: DataTypes.DATE,
           allowNull: false,
         },
-        requester: {
-          type: DataTypes.STRING(10),
-          allowNull: false,
-        },
         purpose: {
           type: DataTypes.STRING(20),
           allowNull: false,

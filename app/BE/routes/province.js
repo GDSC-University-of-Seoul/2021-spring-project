@@ -1,24 +1,25 @@
 import express from "express";
-import Region from "../database/models/region";
+import { sequelize, Sequelize } from "../database/models";
+import Province from "../database/models/province";
 
 const router = express.Router();
 
 router.get("/", async (req, res, next) => {
   try {
-    const regions = await Region.findAll();
-    res.json(regions);
+    const province = await Province.findAll({});
+    res.json(province);
   } catch (err) {
     console.error(err);
     next(err);
   }
 });
 
-router.get("/:id", async (req, res, next) => {
+router.get("/:code", async (req, res, next) => {
   try {
-    const region = await Region.findOne({
-      where: { region_id: req.params.id },
+    const province = await Province.findOne({
+      where: { code: req.params.code },
     });
-    res.json(region);
+    res.json(province);
   } catch (err) {
     console.error(err);
     next(err);
@@ -27,10 +28,10 @@ router.get("/:id", async (req, res, next) => {
 
 router.get("/:name", async (req, res, next) => {
   try {
-    const region = await Region.findOne({
+    const province = await Province.findOne({
       where: { region_name: req.params.name },
     });
-    res.json(region);
+    res.json(province);
   } catch (err) {
     console.error(err);
     next(err);

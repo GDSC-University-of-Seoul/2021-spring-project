@@ -1,23 +1,23 @@
 import express from "express";
 import { Sequelize, Op } from "sequelize";
-import Region from "../database/models/region";
+import Province from "../database/models/province";
 import CdrCareCenter from "../database/models/cdrcare-center";
 
 const router = express.Router();
 
 router.get("/", async (req, res, next) => {
   try {
-    const { region } = req.query;
+    const { province } = req.query;
     const filters = {};
-    if (region) {
+    if (province) {
       filters.region_name = {
-        [Op.like]: `%${region}%`,
+        [Op.like]: `%${province}%`,
       };
     }
     const centers = await CdrCareCenter.findAll({
       include: [
         {
-          model: Region,
+          model: Province,
           attributes: [],
         },
       ],
@@ -26,8 +26,8 @@ router.get("/", async (req, res, next) => {
         "name",
         "lat",
         "lng",
-        [Sequelize.col("Region.region_id"), "region_id"],
-        [Sequelize.col("Region.region_name"), "region_name"],
+        [Sequelize.col("Province.code"), "province_code"],
+        [Sequelize.col("Province.name"), "province_name"],
       ],
     });
     res.json(centers);
@@ -48,8 +48,8 @@ router.get("/:id", async (req, res, next) => {
         "name",
         "lat",
         "lng",
-        [Sequelize.col("Region.region_id"), "region_id"],
-        [Sequelize.col("Region.region_name"), "region_name"],
+        [Sequelize.col("Province.code"), "province_code"],
+        [Sequelize.col("Province.name"), "province_name"],
       ],
     });
     res.json(center);

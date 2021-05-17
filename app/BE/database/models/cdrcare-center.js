@@ -71,9 +71,9 @@ module.exports = class CdrCareCenter extends Sequelize.Model {
       foreignKey: "center_id",
       sourceKey: "center_id",
     });
-    db.CdrCareCenter.belongsTo(db.Region, {
-      foreignKey: "region_id",
-      targetKey: "region_id",
+    db.CdrCareCenter.belongsTo(db.Province, {
+      foreignKey: "code",
+      targetKey: "code",
     });
   }
 };
