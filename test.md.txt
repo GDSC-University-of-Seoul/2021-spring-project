@@ -1,5 +1,0 @@
-# Title
-## 1.1 Small Title
-hi
-## 1.2 Small Title 2
-bye
