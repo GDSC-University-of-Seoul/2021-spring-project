@@ -7,10 +7,16 @@ const DATA_FAILURE = "mapbox/DATA_FAILURE";
 export const getData = () => async (dispatch) => {
   dispatch({ type: DATA_LOADING });
   try {
-    const fetchData = await axios.get(
-      "https://raw.githubusercontent.com/vuski/admdongkor/master/ver20210101/HangJeongDong_ver20210101.geojson"
+    const fetchArea = await axios.get("/src/assets/data/Korea_area.geojson");
+    // Todo : 어린이집 사건·사고 데이터 전체를 Fetch 할 예정 (지도 색상 레이블)
+    // 현재는 은평구 어린이집 데이터를 fetch 하여 사용중
+    const fetchChildHouse = await axios.get(
+      "/src/assets/data/Eunpyeonggu_childhouse_data.xml"
     );
-    dispatch({ type: DATA_SUCCESS, payload: fetchData.data });
+    dispatch({
+      type: DATA_SUCCESS,
+      payload: { area: fetchArea.data, childHouse: fetchChildHouse.data },
+    });
   } catch (e) {
     dispatch({ type: DATA_FAILURE, payload: e });
   }
@@ -18,18 +24,36 @@ export const getData = () => async (dispatch) => {
 
 const initialState = {
   loading: false,
-  data: null,
+  data: { area: null, childHouse: null },
   error: null,
 };
 
 export default function mapboxReducer(state = initialState, action) {
   switch (action.type) {
     case DATA_LOADING:
-      return { ...state, loading: true, data: null, error: null };
+      return {
+        ...state,
+        loading: true,
+        data: { area: null, childHouse: null },
+        error: null,
+      };
     case DATA_SUCCESS:
-      return { ...state, loading: false, data: action.payload, error: null };
+      return {
+        ...state,
+        loading: false,
+        data: {
+          area: action.payload.area,
+          childHouse: action.payload.childHouse,
+        },
+        error: null,
+      };
     case DATA_FAILURE:
-      return { ...state, loading: false, data: null, error: action.payload };
+      return {
+        ...state,
+        loading: false,
+        data: { area: null, childHouse: null },
+        error: action.payload,
+      };
     default:
       return state;
   }
