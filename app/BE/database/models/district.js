@@ -1,6 +1,6 @@
 import Sequelize from "sequelize";
 
-module.exports = class Province extends Sequelize.Model {
+module.exports = class District extends Sequelize.Model {
   static init(sequelize, DataTypes) {
     return super.init(
       {
@@ -17,29 +17,29 @@ module.exports = class Province extends Sequelize.Model {
         sequelize,
         timestamps: false,
         paranoid: false,
-        modelName: "Province",
-        tableName: "province",
+        modelName: "District",
+        tableName: "district",
         charset: "utf8",
         collate: "utf8_general_cli",
       }
     );
   }
   static associate(db) {
-    db.Province.hasMany(db.Province, {
+    db.District.hasMany(db.District, {
       foreignKey: {
         name: "parent_code",
         allowNull: true,
       },
       sourceKey: "code",
     });
-    db.Province.belongsTo(db.Province, {
+    db.District.belongsTo(db.District, {
       foreignKey: {
         name: "parent_code",
         allowNull: true,
       },
       targetKey: "code",
     });
-    db.Province.hasMany(db.CdrCareCenter, {
+    db.District.hasMany(db.CdrCareCenter, {
       foreignKey: "code",
       sourceKey: "code",
     });

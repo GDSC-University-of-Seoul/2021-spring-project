@@ -10,11 +10,11 @@ servers:
   - description: dev servers
     url: 'http://localhost:3000/api/'
 paths:
-  /regions:
+  /districts:
     get:
       tags:
-        - region
-      summary: get all regions
+        - district
+      summary: get all districts
       description: null
       responses:
         '200':
@@ -26,21 +26,25 @@ paths:
                 items:
                   type: object
                   properties:
-                    region_id:
-                      type: integer
-                    region_name:
+                    code:
                       type: string
-  '/regions/{id}':
+                    name:
+                      type: string
+                    parent_code:
+                      type: string
+                    count:
+                      type: string
+  '/districts/{code}':
     get:
       tags:
-        - region
-      summary: get region by id
+        - district
+      summary: get district by code
       description: null
       parameters:
-        - name: id
+        - name: code
           in: path
           required: true
-          description: 구 ID
+          description: 행정구역 코드
       responses:
         '200':
           description: OK
@@ -49,21 +53,25 @@ paths:
               schema:
                 type: object
                 properties:
-                  region_id:
-                    type: integer
-                  region_name:
+                  code:
                     type: string
-  '/regions/{name}':
+                  name:
+                    type: string
+                  parent_code:
+                    type: string
+                  count:
+                    type: string
+  '/districts/{name}':
     get:
       tags:
-        - region
-      summary: get region by name
+        - district
+      summary: get district by name
       description: null
       parameters:
         - name: name
           in: path
           required: true
-          description: 구 이름
+          description: 행정구역 이름
       responses:
         '200':
           description: OK
@@ -72,9 +80,13 @@ paths:
               schema:
                 type: object
                 properties:
-                  region_id:
-                    type: integer
-                  region_name:
+                  code:
+                    type: string
+                  name:
+                    type: string
+                  parent_code:
+                    type: string
+                  count:
                     type: string
   /centers:
     get:
@@ -83,10 +95,14 @@ paths:
       summary: get all centers
       description: null
       parameters:
-        - name: region
+        - name: code
           in: query
           required: false
-          description: 구 이름
+          description: 행정구역 코드
+        - name: name
+          in: query
+          required: false
+          description: 행정구역 이름
       responses:
         '200':
           description: OK
@@ -102,18 +118,18 @@ paths:
                     name:
                       type: string
                     lat:
-                      type: number
+                      type: string
                     lng:
-                      type: number
-                    region_id:
-                      type: integer
-                    region_name:
+                      type: string
+                    district_code:
+                      type: string
+                    district_name:
                       type: string
   '/centers/{id}':
     get:
       tags:
         - children care center
-      summary: get centers by center id
+      summary: get center by center id
       description: null
       parameters:
         - name: id
@@ -133,18 +149,18 @@ paths:
                   name:
                     type: string
                   lat:
-                    type: number
+                    type: string
                   lng:
-                    type: number
-                  region_id:
-                    type: integer
-                  region_name:
+                    type: string
+                  district_code:
+                    type: string
+                  district_name:
                     type: string
   '/centers/{name}':
     get:
       tags:
         - children care center
-      summary: get centers by name
+      summary: get center by name
       description: null
       parameters:
         - name: name
@@ -164,13 +180,13 @@ paths:
                   name:
                     type: string
                   lat:
-                    type: number
+                    type: string
                   lng:
-                    type: number
-                  region_id:
-                    type: integer
-                  region_name:
+                    type: string
+                  district_code:
+                    type: string
+                  district_name:
                     type: string
 tags:
-  - name: region
+  - name: district
   - name: children care center

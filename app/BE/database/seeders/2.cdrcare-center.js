@@ -1,6 +1,6 @@
 import xmlParser from "../../utils/xmlParser";
 import { sequelize } from "../models";
-import Province from "../models/province";
+import District from "../models/district";
 import fs from "fs";
 
 module.exports = {
@@ -26,7 +26,7 @@ module.exports = {
     try {
       await sequelize.sync();
       for (let sigunname in regionCenter) {
-        const province = await Province.findOne({
+        const district = await District.findOne({
           where: { name: sigunname },
         });
         for (let obj of regionCenter[sigunname]) {
@@ -35,7 +35,7 @@ module.exports = {
             name: obj.crname,
             lat: String(obj.la),
             lng: String(obj.lo),
-            code: province.code,
+            code: district.code,
             opr_type: "국공립",
             zip_code: "string",
             address: "string",

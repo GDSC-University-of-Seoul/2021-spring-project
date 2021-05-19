@@ -12,5 +12,5 @@ servers:
 paths:
   $ref: "./paths/index.yaml"
 tags:
-  - name: region
+  - name: district
   - name: children care center

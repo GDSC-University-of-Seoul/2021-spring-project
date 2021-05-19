@@ -1,7 +1,7 @@
 get:
   tags:
-  - region
-  summary: get all regions
+  - district
+  summary: get all districts
   description:
   responses:
     200:
@@ -13,7 +13,11 @@ get:
             items:
               type: object
               properties:
-                region_id:
-                  type: integer
-                region_name:
+                code:
+                  type: string
+                name:
+                  type: string
+                parent_code:
+                  type: string
+                count:
                   type: string

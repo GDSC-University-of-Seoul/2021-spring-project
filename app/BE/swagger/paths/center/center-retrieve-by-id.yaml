@@ -1,7 +1,7 @@
 get:
   tags:
   - children care center
-  summary: get centers by center id
+  summary: get center by center id
   description:
   parameters:
     - name: id
@@ -21,11 +21,11 @@ get:
               name:
                 type: string
               lat:
-                type: number
+                type: string
               lng:
-                type: number
-              region_id:
-                type: integer
-              region_name:
+                type: string
+              district_code:
+                type: string
+              district_name:
                 type: string
                 

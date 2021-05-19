@@ -1,13 +1,13 @@
 get:
   tags:
-  - region
-  summary: get region by name
+  - district
+  summary: get district by name
   description:
   parameters:
     - name: name
       in: path
       required: true
-      description: 구 이름
+      description: 행정구역 이름
   responses:
     200:
       description: OK
@@ -16,7 +16,11 @@ get:
           schema:
             type: object
             properties:
-              region_id:
-                type: integer
-              region_name:
+              code:
+                type: string
+              name:
+                type: string
+              parent_code:
+                type: string
+              count:
                 type: string

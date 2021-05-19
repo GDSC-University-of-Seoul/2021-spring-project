@@ -4,10 +4,14 @@ get:
   summary: get all centers
   description:
   parameters:
-    - name: region
+    - name: code
       in: query
       required: false
-      description: 구 이름
+      description: 행정구역 코드
+    - name: name
+      in: query
+      required: false
+      description: 행정구역 이름
   responses:
     200:
       description: OK
@@ -23,11 +27,10 @@ get:
                 name:
                   type: string
                 lat:
-                  type: number
-                lng:
-                  type: number
-                region_id:
-                  type: integer
-                region_name:
                   type: string
-                
+                lng:
+                  type: string
+                district_code:
+                  type: string
+                district_name:
+                  type: string

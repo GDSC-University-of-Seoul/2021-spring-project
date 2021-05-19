@@ -1,33 +1,37 @@
 import express from "express";
 import { Sequelize, Op } from "sequelize";
-import Province from "../database/models/province";
+import District from "../database/models/district";
 import CdrCareCenter from "../database/models/cdrcare-center";
 
 const router = express.Router();
 
 router.get("/", async (req, res, next) => {
   try {
-    const { province } = req.query;
-    const filters = {};
-    if (province) {
-      filters.region_name = {
-        [Op.like]: `%${province}%`,
+    const { code, name } = req.query;
+    const filter = {};
+    if (code) {
+      filter.code = {
+        [Op.like]: `%${code}%`,
+      };
+    }
+    if (name) {
+      filter.name = {
+        [Op.like]: `%${name}%`,
       };
     }
     const centers = await CdrCareCenter.findAll({
-      include: [
-        {
-          model: Province,
-          attributes: [],
-        },
-      ],
+      include: {
+        model: District,
+        attributes: [],
+        where: filter,
+      },
       attributes: [
         "center_id",
         "name",
         "lat",
         "lng",
-        [Sequelize.col("Province.code"), "province_code"],
-        [Sequelize.col("Province.name"), "province_name"],
+        [Sequelize.col("District.code"), "district_code"],
+        [Sequelize.col("District.name"), "district_name"],
       ],
     });
     res.json(centers);
@@ -37,9 +41,13 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.get("/:id", async (req, res, next) => {
+router.get("/:id(\\d+)", async (req, res, next) => {
   try {
     const center = await CdrCareCenter.findOne({
+      include: {
+        model: District,
+        attributes: [],
+      },
       where: {
         center_id: req.params.id,
       },
@@ -48,8 +56,8 @@ router.get("/:id", async (req, res, next) => {
         "name",
         "lat",
         "lng",
-        [Sequelize.col("Province.code"), "province_code"],
-        [Sequelize.col("Province.name"), "province_name"],
+        [Sequelize.col("District.code"), "district_code"],
+        [Sequelize.col("District.name"), "district_name"],
       ],
     });
     res.json(center);
@@ -62,6 +70,10 @@ router.get("/:id", async (req, res, next) => {
 router.get("/:name", async (req, res, next) => {
   try {
     const center = await CdrCareCenter.findOne({
+      include: {
+        model: District,
+        attributes: [],
+      },
       where: {
         name: req.params.name,
       },
@@ -70,8 +82,8 @@ router.get("/:name", async (req, res, next) => {
         "name",
         "lat",
         "lng",
-        [Sequelize.col("Region.region_id"), "region_id"],
-        [Sequelize.col("Region.region_name"), "region_name"],
+        [Sequelize.col("District.code"), "district_code"],
+        [Sequelize.col("District.name"), "district_name"],
       ],
     });
     res.json(center);
