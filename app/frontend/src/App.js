@@ -4,6 +4,11 @@ import React from "react";
 import { Route } from "react-router-dom";
 import Settings from "./pages/Settings";
 
+/**
+ * URL에 따라 렌더링할 컴포넌트 결정
+ *
+ * @return {JSX.Element} 라우팅 컴포넌트
+ */
 function App() {
   return (
     <>

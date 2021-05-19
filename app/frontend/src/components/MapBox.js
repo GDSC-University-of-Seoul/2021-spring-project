@@ -8,12 +8,13 @@ import axios from "axios";
 const MapboxAccessToken = process.env.REACT_APP_MAPBOX;
 
 /**
- * `/monitoring`에서 지도를 구성한다.
- * @param {Object} data KoreaDistrict.geojson에서 Fetch한 데이터
- * @return {HTMLElement} Mapbox 컴포넌트
+ * `/monitoring`에서 지도를 구성
+ *
+ * @param {Object} data: KoreaDistrict.geojson 파일에서 Fetch한 행정구역 영역 데이터
+ * @return {JSX.element} Mapbox 컴포넌트
  */
 function MapBox({ data }) {
-  // 지도의 시점
+  // 지도 초기화
   const [viewport, setViewport] = useState({
     width: 1200,
     height: 800,
@@ -25,8 +26,10 @@ function MapBox({ data }) {
     return { data };
   }, [data]);
 
-  // 지도 지역구 hover 기능 - hover 중인 지역구 표시
-  // hoverInfo - 지역구 정보 저장
+  /*
+   * 지도 지역구 hover 기능 - hover 중인 지역구 표시
+   * hoverInfo - hover 시 지역구 정보 저장
+   */
   const [hoverInfo, setHoverInfo] = useState(null);
 
   // Todo : 지역구 어린이집 사건·사고에 대한 레이블 정보 추가
@@ -45,8 +48,10 @@ function MapBox({ data }) {
     [selectedDistrict]
   );
 
-  // 지도 지역구 click 기능 - 지역구 내에 있는 어린이집 데이터를 통한 설정
-  // childHouseInfo - 어린이집 정보 저장
+  /*
+   * 지도 지역구 click 기능 - 지역구 내에 있는 어린이집 데이터를 통한 설정
+   * childHouseInfo - click 시 어린이집 정보 저장
+   */
   const [childHouseInfo, setChildHouseInfo] = useState(null);
 
   const clickHandler = useCallback(async () => {

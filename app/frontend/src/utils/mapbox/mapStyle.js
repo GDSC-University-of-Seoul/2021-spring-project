@@ -1,4 +1,5 @@
-// 카테고리 스타일
+// 범주 스타일
+// Todo : 어린이집 개수 기준을 사건,사고를 기준으로 설정
 export const categoryStyle = [
   [0, "#fab1a0"],
   [50, "#d35400"],
@@ -11,7 +12,8 @@ export const categoryStyle = [
   [400, "#2f3640"],
 ];
 
-// 기본 렌더링 스타일
+// 행정 구역 기본 렌더링 스타일
+// Todo : 어린이집 개수 기준을 사건,사고를 기준으로 설정
 export const areaLayer = {
   id: "area",
   type: "fill",
@@ -25,7 +27,8 @@ export const areaLayer = {
   },
 };
 
-// hover 시 적용되는 스타일
+// 행정 구역 hover시 적용되는 스타일
+// Todo : 어린이집 개수 기준을 사건,사고를 기준으로 설정
 export const highlightLayer = {
   id: "area-highlighted",
   type: "fill",

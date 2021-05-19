@@ -10,8 +10,10 @@ import ReactDOM from "react-dom";
 import ReduxThunk from "redux-thunk";
 import rootReducers from "./modules";
 
+// Redux 스토어 생성
 const store = createStore(rootReducers, applyMiddleware(ReduxThunk));
 
+// 라우터와 Redux 적용
 ReactDOM.render(
   <BrowserRouter>
     <Provider store={store}>
