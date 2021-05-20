@@ -1,5 +1,6 @@
 import subprocess
 from pathlib import Path
+from utils.strings import colorstr, emojis
 
 
 def check_online():

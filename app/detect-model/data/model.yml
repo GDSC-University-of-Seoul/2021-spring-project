@@ -6,5 +6,24 @@
 # 2) file: path/images.txt, or 
 # 3) list: [path1/images/, path2/images/]
 
-train: E:/dataset/    # DATASET DIRECTORY
-# valid: VALIDATION FILE PATH   
+metadata:
+  # Basic attribute
+  directory: E:/dataset/
+
+  # Debug attribute(s)
+  load: True
+
+dataset:
+  # Basic attribute
+  directory: E:/dataset/
+
+video:
+  # Debug attributes
+  display: False      
+  write: True
+
+  # Basic attributes
+  resize: True 
+  width: 1080
+  height: 720
+  depth: 3
