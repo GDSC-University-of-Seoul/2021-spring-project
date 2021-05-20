@@ -31,39 +31,12 @@ const anomaly_join = {
 
 router.get("/", async (req, res, next) => {
   try {
-    const districts = await District.findAll({
-      include: {
-        model: District,
-        attributes: [],
-        include: anomaly_join,
-      },
-      where: {
-        parent_code: null,
-      },
-      group: ["District.code"],
-      attributes: [
-        "code",
-        "name",
-        "parent_code",
-        [sequelize.fn("COUNT", "anomaly_id"), "count"],
-      ],
-      order: ["code"],
-    });
-    res.json(districts);
-  } catch (err) {
-    console.error(err);
-    next(err);
-  }
-});
-
-router.get("/:code(\\d+)", async (req, res, next) => {
-  try {
-    const district = await District.findOne({
-      where: { code: req.params.code },
-    });
-    if (district.dataValues.parent_code) {
-      const district = await District.findOne({
-        where: { code: req.params.code },
+    const { parent_code } = req.query;
+    if (!parent_code) {
+      const districts = await District.findAll({
+        where: {
+          parent_code: null,
+        },
         include: {
           model: District,
           attributes: [],
@@ -76,16 +49,22 @@ router.get("/:code(\\d+)", async (req, res, next) => {
           "parent_code",
           [sequelize.fn("COUNT", "anomaly_id"), "count"],
         ],
+        order: ["code"],
       });
-      res.json(district);
+      res.json(districts);
     } else {
+      let filters = {};
+      filters.parent_code = {
+        [Sequelize.Op.like]: `%${parent_code}%`,
+      };
       const districts = await District.findAll({
-        where: { parent_code: district.dataValues.code },
+        where: filters,
         include: anomaly_join,
         group: ["District.code"],
         attributes: [
           "code",
           "name",
+          "parent_code",
           [sequelize.fn("COUNT", "anomaly_id"), "count"],
         ],
         order: ["code"],
@@ -98,12 +77,10 @@ router.get("/:code(\\d+)", async (req, res, next) => {
   }
 });
 
-router.get("/:name", async (req, res, next) => {
+router.get("/:code(\\d+)", async (req, res, next) => {
   try {
-    const district = await District.findOne({
-      where: { name: req.params.name },
-    });
-    if (district.dataValues.parent_code) {
+    const { code } = req.params;
+    if (parseInt(code.slice(2, 4)) === 0) {
       const district = await District.findOne({
         where: { code: req.params.code },
         include: {
@@ -121,18 +98,62 @@ router.get("/:name", async (req, res, next) => {
       });
       res.json(district);
     } else {
-      const districts = await District.findAll({
-        where: { parent_code: district.dataValues.code },
+      const district = await District.findOne({
+        where: { code: req.params.code },
         include: anomaly_join,
         group: ["District.code"],
         attributes: [
           "code",
           "name",
+          "parent_code",
           [sequelize.fn("COUNT", "anomaly_id"), "count"],
         ],
-        order: ["code"],
+        logging: console.log,
       });
-      res.json(districts);
+      res.json(district);
+    }
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
+
+router.get("/:name", async (req, res, next) => {
+  try {
+    const obj = await District.findOne({
+      where: { name: req.params.name },
+    });
+    if (!obj.dataValues.parent_code) {
+      const district = await District.findOne({
+        where: { code: obj.dataValues.code },
+        include: {
+          model: District,
+          attributes: [],
+          include: anomaly_join,
+        },
+        group: ["District.code"],
+        attributes: [
+          "code",
+          "name",
+          "parent_code",
+          [sequelize.fn("COUNT", "anomaly_id"), "count"],
+        ],
+      });
+      res.json(district);
+    } else {
+      const district = await District.findOne({
+        where: { code: obj.dataValues.code },
+        include: anomaly_join,
+        group: ["District.code"],
+        attributes: [
+          "code",
+          "name",
+          "parent_code",
+          [sequelize.fn("COUNT", "anomaly_id"), "count"],
+        ],
+        logging: console.log,
+      });
+      res.json(district);
     }
   } catch (err) {
     console.error(err);

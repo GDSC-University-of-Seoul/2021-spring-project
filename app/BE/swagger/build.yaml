@@ -16,6 +16,11 @@ paths:
         - district
       summary: get all districts
       description: null
+      parameters:
+        - name: parent_code
+          in: query
+          required: false
+          description: 상위 행정구역 코드
       responses:
         '200':
           description: OK
