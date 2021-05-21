@@ -9,6 +9,10 @@ import { sequelize } from "./database/models";
 import indexRouter from "./routes";
 import districtRouter from "./routes/district";
 import centerRouter from "./routes/cdrcare_center";
+import areaRouter from "./routes/area";
+import cctvRouter from "./routes/cctv";
+import videoRouter from "./routes/video";
+import anomalyRouter from "./routes/anomaly";
 
 dotenv.config();
 
@@ -34,6 +38,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use("/api/", indexRouter);
 app.use("/api/districts/", districtRouter);
 app.use("/api/centers/", centerRouter);
+app.use("/api/areas/", areaRouter);
+app.use("/api/cctvs/", cctvRouter);
+app.use("/api/videos/", videoRouter);
+app.use("/api/anomalies/", anomalyRouter);
 
 const swaggerSpecs = yaml.load(path.join(__dirname, "/swagger/build.yaml"));
 app.use("/api/docs/", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));

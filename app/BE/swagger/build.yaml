@@ -130,14 +130,14 @@ paths:
                       type: string
                     district_name:
                       type: string
-  '/centers/{id}':
+  '/centers/{center_id}':
     get:
       tags:
         - children care center
       summary: get center by center id
       description: null
       parameters:
-        - name: id
+        - name: center_id
           in: path
           required: true
           description: 어린이집 ID
@@ -161,14 +161,14 @@ paths:
                     type: string
                   district_name:
                     type: string
-  '/centers/{name}':
+  '/centers/{center_name}':
     get:
       tags:
         - children care center
       summary: get center by name
       description: null
       parameters:
-        - name: name
+        - name: center_name
           in: path
           required: true
           description: 어린이집 이름
@@ -192,6 +192,250 @@ paths:
                     type: string
                   district_name:
                     type: string
+  /areas:
+    get:
+      tags:
+        - area
+      summary: get all areas
+      description: null
+      parameters:
+        - name: center_id
+          in: query
+          required: false
+          description: 어린이집 id
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    area_id:
+                      type: integer
+                    area_name:
+                      type: string
+                    use_of_area:
+                      type: string
+                    center_id:
+                      type: integer
+  '/areas/{area_id}':
+    get:
+      tags:
+        - area
+      summary: get area by area id
+      description: null
+      parameters:
+        - name: area_id
+          in: path
+          required: true
+          description: 촬영구역 ID
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  area_id:
+                    type: integer
+                  area_name:
+                    type: string
+                  use_of_area:
+                    type: string
+                  center_id:
+                    type: integer
+  /cctvs:
+    get:
+      tags:
+        - cctv
+      summary: get all cctvs
+      description: null
+      parameters:
+        - name: area_id
+          in: query
+          required: false
+          description: 촬영구역 id
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    cctv_id:
+                      type: integer
+                    quaity:
+                      type: string
+                    install_date:
+                      type: date
+                    uninstall_date:
+                      type: date
+                    area_id:
+                      type: integer
+  '/cctvs/{cctv_id}':
+    get:
+      tags:
+        - cctv
+      summary: get cctv by cctv id
+      description: null
+      parameters:
+        - name: cctv_id
+          in: path
+          required: true
+          description: CCTV id
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  cctv_id:
+                    type: integer
+                  quaity:
+                    type: string
+                  install_date:
+                    type: date
+                  uninstall_date:
+                    type: date
+                  area_id:
+                    type: integer
+  /videos:
+    get:
+      tags:
+        - video
+      summary: get all videos
+      description: null
+      parameters:
+        - name: cctv_id
+          in: query
+          required: false
+          description: CCTV id
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    video_id:
+                      type: integer
+                    record_date:
+                      type: date
+                    delete_date:
+                      type: date
+                    delete_issue:
+                      type: string
+                    storage_name:
+                      type: string
+                    cctv_id:
+                      type: integer
+  '/videos/{video_id}':
+    get:
+      tags:
+        - video
+      summary: get video by video id
+      description: null
+      parameters:
+        - name: video_id
+          in: path
+          required: true
+          description: 비디오 id
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  video_id:
+                    type: integer
+                  record_date:
+                    type: date
+                  delete_date:
+                    type: date
+                  delete_issue:
+                    type: string
+                  storage_name:
+                    type: string
+                  cctv_id:
+                    type: integer
+  /anomalies:
+    get:
+      tags:
+        - anomaly
+      summary: get all anomalies
+      description: null
+      parameters:
+        - name: video_id
+          in: query
+          required: false
+          description: 비디오 id
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    ano_id:
+                      type: integer
+                    start_time:
+                      type: date
+                    end_time:
+                      type: date
+                    follow_up:
+                      type: string
+                    video_id:
+                      type: integer
+  '/anomalies/{anomaly_id}':
+    get:
+      tags:
+        - anomaly
+      summary: get anomaly by anomaly id
+      description: null
+      parameters:
+        - name: anomaly_id
+          in: path
+          required: false
+          description: 이상행동감지 id
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ano_id:
+                    type: integer
+                  start_time:
+                    type: date
+                  end_time:
+                    type: date
+                  follow_up:
+                    type: string
+                  video_id:
+                    type: integer
 tags:
   - name: district
   - name: children care center
+  - name: area
+  - name: cctv
+  - name: video
+  - name: anomaly

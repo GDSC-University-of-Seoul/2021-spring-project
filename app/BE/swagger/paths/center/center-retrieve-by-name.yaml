@@ -4,7 +4,7 @@ get:
   summary: get center by name
   description:
   parameters:
-    - name: name
+    - name: center_name
       in: path
       required: true
       description: 어린이집 이름

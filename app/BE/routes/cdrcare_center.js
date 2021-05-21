@@ -41,7 +41,7 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.get("/:id(\\d+)", async (req, res, next) => {
+router.get("/:center_id(\\d+)", async (req, res, next) => {
   try {
     const center = await CdrCareCenter.findOne({
       include: {
@@ -49,7 +49,7 @@ router.get("/:id(\\d+)", async (req, res, next) => {
         attributes: [],
       },
       where: {
-        center_id: req.params.id,
+        center_id: req.params.center_id,
       },
       attributes: [
         "center_id",
@@ -67,7 +67,7 @@ router.get("/:id(\\d+)", async (req, res, next) => {
   }
 });
 
-router.get("/:name", async (req, res, next) => {
+router.get("/:center_name", async (req, res, next) => {
   try {
     const center = await CdrCareCenter.findOne({
       include: {
@@ -75,7 +75,7 @@ router.get("/:name", async (req, res, next) => {
         attributes: [],
       },
       where: {
-        name: req.params.name,
+        name: req.params.center_name,
       },
       attributes: [
         "center_id",

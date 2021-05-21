@@ -1,0 +1,26 @@
+get:
+  tags:
+  - area
+  summary: get area by area id
+  description:
+  parameters:
+    - name: area_id
+      in: path
+      required: true
+      description: 촬영구역 ID
+  responses:
+    200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              area_id:
+                  type: integer
+              area_name:
+                type: string
+              use_of_area:
+                type: string
+              center_id:
+                type: integer

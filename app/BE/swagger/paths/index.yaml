@@ -6,7 +6,23 @@
   $ref: "district/district-retrieve-by-name.yaml"
 /centers:
   $ref: "center/center-list.yaml"
-/centers/{id}:
+/centers/{center_id}:
   $ref: "center/center-retrieve-by-id.yaml"
-/centers/{name}:
+/centers/{center_name}:
   $ref: "center/center-retrieve-by-name.yaml"
+/areas:
+  $ref: "area/area-list.yaml"
+/areas/{area_id}:
+  $ref: "area/area-retrieve-by-id.yaml"
+/cctvs:
+  $ref: "cctv/cctv-list.yaml"
+/cctvs/{cctv_id}:
+  $ref: "cctv/cctv-retrieve-by-id.yaml"
+/videos:
+  $ref: "video/video-list.yaml"
+/videos/{video_id}:
+  $ref: "video/video-retrieve-by-id.yaml"
+/anomalies:
+  $ref: "anomaly/anomaly-list.yaml"
+/anomalies/{anomaly_id}:
+  $ref: "anomaly/anomaly-retrieve-by-id.yaml"

@@ -1,0 +1,28 @@
+get:
+  tags:
+  - cctv
+  summary: get cctv by cctv id
+  description:
+  parameters:
+    - name: cctv_id
+      in: path
+      required: true
+      description: CCTV id
+  responses:
+    200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              cctv_id:
+                type: integer
+              quaity:
+                type: string
+              install_date:
+                type: date
+              uninstall_date:
+                type: date
+              area_id:
+                type: integer

@@ -8,6 +8,27 @@ import Video from "../database/models/video";
 import Anomaly from "../database/models/anomaly";
 
 const router = express.Router();
+
+const upper_districts = [
+  "서울특별시",
+  "부산광역시",
+  "대구광역시",
+  "인천광역시",
+  "광주광역시",
+  "대전광역시",
+  "울산광역시",
+  "세종특별자치시",
+  "경기도",
+  "강원도",
+  "충청북도",
+  "충청남도",
+  "전라남도",
+  "전라북도",
+  "경상북도",
+  "경상남도",
+  "제주특별자치도",
+];
+
 const anomaly_join = {
   model: CdrCareCenter,
   attributes: [],
@@ -32,16 +53,14 @@ const anomaly_join = {
 router.get("/", async (req, res, next) => {
   try {
     const { parent_code } = req.query;
-    if (!parent_code) {
+    let filters = {};
+    if (parent_code) {
+      filters.parent_code = {
+        [Sequelize.Op.like]: `%${parent_code}%`,
+      };
       const districts = await District.findAll({
-        where: {
-          parent_code: null,
-        },
-        include: {
-          model: District,
-          attributes: [],
-          include: anomaly_join,
-        },
+        where: filters,
+        include: anomaly_join,
         group: ["District.code"],
         attributes: [
           "code",
@@ -53,13 +72,14 @@ router.get("/", async (req, res, next) => {
       });
       res.json(districts);
     } else {
-      let filters = {};
-      filters.parent_code = {
-        [Sequelize.Op.like]: `%${parent_code}%`,
-      };
+      filters.parent_code = null;
       const districts = await District.findAll({
         where: filters,
-        include: anomaly_join,
+        include: {
+          model: District,
+          attributes: [],
+          include: anomaly_join,
+        },
         group: ["District.code"],
         attributes: [
           "code",
@@ -119,12 +139,9 @@ router.get("/:code(\\d+)", async (req, res, next) => {
 
 router.get("/:name", async (req, res, next) => {
   try {
-    const obj = await District.findOne({
-      where: { name: req.params.name },
-    });
-    if (!obj.dataValues.parent_code) {
-      const district = await District.findOne({
-        where: { code: obj.dataValues.code },
+    if (upper_districts.includes(req.params.name)) {
+      const districts = await District.findAll({
+        where: { name: req.params.name },
         include: {
           model: District,
           attributes: [],
@@ -137,11 +154,12 @@ router.get("/:name", async (req, res, next) => {
           "parent_code",
           [sequelize.fn("COUNT", "anomaly_id"), "count"],
         ],
+        raw: true,
       });
-      res.json(district);
+      res.json(districts);
     } else {
-      const district = await District.findOne({
-        where: { code: obj.dataValues.code },
+      const districts = await District.findAll({
+        where: { name: req.params.name },
         include: anomaly_join,
         group: ["District.code"],
         attributes: [
@@ -150,8 +168,9 @@ router.get("/:name", async (req, res, next) => {
           "parent_code",
           [sequelize.fn("COUNT", "anomaly_id"), "count"],
         ],
+        raw: true,
       });
-      res.json(district);
+      res.json(districts);
     }
   } catch (err) {
     console.error(err);
