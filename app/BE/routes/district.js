@@ -154,7 +154,7 @@ router.get("/:name", async (req, res, next) => {
           "parent_code",
           [sequelize.fn("COUNT", "anomaly_id"), "count"],
         ],
-        raw: true,
+        plain: true,
       });
       res.json(districts);
     } else {
@@ -168,7 +168,7 @@ router.get("/:name", async (req, res, next) => {
           "parent_code",
           [sequelize.fn("COUNT", "anomaly_id"), "count"],
         ],
-        raw: true,
+        plain: true,
       });
       res.json(districts);
     }
