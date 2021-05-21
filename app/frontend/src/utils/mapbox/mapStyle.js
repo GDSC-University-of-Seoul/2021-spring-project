@@ -14,13 +14,13 @@ export const categoryStyle = [
 
 // 행정 구역 기본 렌더링 스타일
 // Todo : 어린이집 개수 기준을 사건,사고를 기준으로 설정
-export const areaLayer = {
+export const sidoLayer = {
   id: "area",
   type: "fill",
   paint: {
     "fill-outline-color": "#ffffff",
     "fill-color": {
-      property: "childHouseCnt",
+      property: "sido_cnt",
       stops: categoryStyle,
     },
     "fill-opacity": 0.7,
@@ -29,13 +29,42 @@ export const areaLayer = {
 
 // 행정 구역 hover시 적용되는 스타일
 // Todo : 어린이집 개수 기준을 사건,사고를 기준으로 설정
-export const highlightLayer = {
+export const sidoHighlightLayer = {
   id: "area-highlighted",
   type: "fill",
   paint: {
     "fill-outline-color": "#000000",
     "fill-color": {
-      property: "childHouseCnt",
+      property: "sido_cnt",
+      stops: categoryStyle,
+    },
+    "fill-opacity": 0.9,
+  },
+};
+// 행정 구역 기본 렌더링 스타일
+// Todo : 어린이집 개수 기준을 사건,사고를 기준으로 설정
+export const sggLayer = {
+  id: "area",
+  type: "fill",
+  paint: {
+    "fill-outline-color": "#ffffff",
+    "fill-color": {
+      property: "sgg_cnt",
+      stops: categoryStyle,
+    },
+    "fill-opacity": 0.7,
+  },
+};
+
+// 행정 구역 hover시 적용되는 스타일
+// Todo : 어린이집 개수 기준을 사건,사고를 기준으로 설정
+export const sggHighlightLayer = {
+  id: "area-highlighted",
+  type: "fill",
+  paint: {
+    "fill-outline-color": "#000000",
+    "fill-color": {
+      property: "sgg_cnt",
       stops: categoryStyle,
     },
     "fill-opacity": 0.9,
