@@ -4,31 +4,37 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class cdrcare_center extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
-      // define association here
+      cdrcare_center.hasMany(models.area, {
+        foreignKey: 'center_id',
+        sourceKey: 'center_id'
+      });
+      cdrcare_center.belongsTo(models.district, {
+        foreignKey: 'code',
+        targetKey: 'code',
+      });
     }
   };
-  cdrcare_center.init(
-    {
-      center_id: {
-        type: DataTypes.STRING,
-        primaryKey: true,
-      },
-      name: DataTypes.STRING,
-      opr_type: DataTypes.ENUM({values : ["국공립", "사회복지법인", "법인 및 단체"]}),
-      zipcode:DataTypes.STRING
-    }, 
-    {
-      sequelize,
-      modelName: 'cdrcare_center',
-      freezeTableName: true,
-      timestamps: false,
-    }
-  );
+  cdrcare_center.init({
+    center_id: {
+      type: DataTypes.STRING,
+      primaryKey: true, 
+    },
+    name: DataTypes.STRING,
+    opr_type: DataTypes.ENUM({values: ["국공립", "사회복지법인", "법인 및 단체", "민간", "가정", "협동", "직장"]}),
+    zipcode: DataTypes.STRING,
+    address: DataTypes.STRING,
+    phone: DataTypes.STRING,
+    fax: DataTypes.STRING,
+    web_page: DataTypes.STRING,
+    lat: DataTypes.STRING,
+    lng: DataTypes.STRING
+  }, {
+    sequelize,
+    modelName: 'cdrcare_center',
+    tableName: 'cdrcare_center',
+    freezeTableName: false,
+    timestamps: false,
+  });
   return cdrcare_center;
 };
