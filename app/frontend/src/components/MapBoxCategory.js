@@ -9,7 +9,7 @@ import { categoryOptions } from "../utils/mapbox/mapStyle";
  */
 function MapBoxCategory({ level }) {
   const { sidoDiff, sggDiff, colors } = categoryOptions;
-  const categoryTitle = level === 1 ? "도·광역시" : "시·구";
+  const categoryTitle = level === 1 ? "도·광역시" : "시·군·구";
   const diff = level === 1 ? sidoDiff : sggDiff;
 
   let current = -diff;
