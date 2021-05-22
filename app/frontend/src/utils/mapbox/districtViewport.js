@@ -1,3 +1,4 @@
+// 도, 광역시 기준 Viewport 설정
 const districtViewport = {
   대한민국: { lat: 36.38, lng: 127.51, zoom: 7 },
   서울특별시: { lat: 37.540705, lng: 126.956764, zoom: 10.5 },

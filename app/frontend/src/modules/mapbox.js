@@ -5,10 +5,9 @@ const DATA_SUCCESS = "mapbox/DATA_SUCCESS";
 const DATA_FAILURE = "mapbox/DATA_FAILURE";
 
 /**
- * 사용할 데이터를 Fetch하고 각 상태에 따른 리듀서 동작을 수행하는 액션 함수
- * 비동기 fetch 작업을 위해 redux-thunk를 사용
+ * 지도를 초기화하기 위해 사용할 데이터를 Fetch하는 액션 함수
  *
- * @params {function} dispatch: 제공된 액션 객체의 타입을 통해 리듀서에서 지정된 동작을 호출
+ * @param {function} dispatch: 제공된 액션 객체의 타입을 통해 리듀서에서 지정된 동작을 호출
  */
 export const getData = () => async (dispatch) => {
   dispatch({ type: DATA_LOADING });
@@ -40,14 +39,15 @@ const initialState = {
 };
 
 /**
- * 액션 타입에 따라 상태를 변경하는 리듀서 함수
+ * 액션 타입에 따라 상태를 업데이트하는 리듀서 함수
  *
- * @params {Object} state : 변경할 상태
- * @params {Object} action : 수행할 리듀서 동작을 지정하는 액션 객체
+ * @param {Object} state : 변경할 상태
+ * @param {Object} action : 수행할 리듀서 동작을 지정하는 액션 객체
  * @return {Object} 변경된 상태
  */
 export default function mapboxReducer(state = initialState, action) {
   switch (action.type) {
+    // 데이터 로딩중
     case DATA_LOADING:
       return {
         ...state,
@@ -55,6 +55,7 @@ export default function mapboxReducer(state = initialState, action) {
         data: { districtsGeojson: null, districts: null },
         error: null,
       };
+    // 데이터 Fetch 완료
     case DATA_SUCCESS:
       return {
         ...state,
@@ -65,6 +66,7 @@ export default function mapboxReducer(state = initialState, action) {
         },
         error: null,
       };
+    // 에러 발생
     case DATA_FAILURE:
       return {
         ...state,

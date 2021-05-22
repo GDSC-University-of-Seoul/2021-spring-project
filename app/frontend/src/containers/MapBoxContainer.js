@@ -33,12 +33,10 @@ function MapBoxContainer() {
   // Todo : geojson 데이터에 어린이집 사건·사고 property 추가
   districtsGeojson.features.forEach((districtGeojson) => {
     districts.forEach((district) => {
-      // Todo : 구에 맞는 개수 삽입 100 -> region.childHountCnt
       if (districtGeojson.properties.sidonm === district.name)
         districtGeojson.properties.sido_cnt = parseInt(district.count, 10);
     });
   });
-
-  return <MapBox geojsonData={districtsGeojson} />;
+  return <MapBox geojson={districtsGeojson} />;
 }
 export default MapBoxContainer;
