@@ -23,10 +23,20 @@ module.exports = (sequelize, DataTypes) => {
     area_id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
+      allowNull: false
     },
-    area_name: DataTypes.STRING,
-    use_of_area: DataTypes.STRING,
-    center_id: DataTypes.STRING
+    area_name: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    use_of_area: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    center_id: {
+      type: DataTypes.STRING,
+      allowNull: false
+    }
   }, {
     sequelize,
     modelName: 'area',

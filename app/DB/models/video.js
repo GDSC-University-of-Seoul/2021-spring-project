@@ -22,13 +22,29 @@ module.exports = (sequelize, DataTypes) => {
   video.init({
     video_id: {
       type: DataTypes.INTEGER,
-      primaryKey: true
+      primaryKey: true,
+      allowNull: false
     },
-    record_date: DataTypes.DATE,
-    delete_date: DataTypes.DATE,
-    delete_issue: DataTypes.STRING,
-    storage_name: DataTypes.STRING,
-    cctv_id: DataTypes.INTEGER
+    record_date: {
+      type: DataTypes.DATE,
+      allowNull: false
+    },
+    delete_date: {
+      type: DataTypes.DATE,
+      allowNull: true
+    },
+    delete_issue: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    storage_name: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    cctv_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    }
   }, {
     sequelize,
     modelName: 'video',

@@ -19,12 +19,25 @@ module.exports = (sequelize, DataTypes) => {
   cctv.init({
     cctv_id: {
       type: DataTypes.INTEGER,
-      primaryKey: true
+      primaryKey: true,
+      allowNull: false
     },
-    area_id: DataTypes.INTEGER,
-    install_date: DataTypes.DATE,
-    quality: DataTypes.ENUM({values: ["SD", "HD", "FHD", "QHD", "UHD"]}),
-    uninstall_date: DataTypes.DATE
+    area_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    install_date: {
+      type: DataTypes.DATE,
+      allowNull: false
+    },
+    quality: {
+      type: DataTypes.ENUM({values: ["SD", "HD", "FHD", "QHD", "UHD"]}),
+      allowNull: false
+    },
+    uninstall_date: {
+      type: DataTypes.DATE,
+      allowNull: true
+    }
   }, {
     sequelize,
     modelName: 'cctv',

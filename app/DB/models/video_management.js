@@ -17,21 +17,42 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'requester_id',
         targetKey: 'requester_id',
       });
-      // define association here
     }
   };
   video_management.init({
     manage_id: {
       type: DataTypes.INTEGER,
-      primaryKey: true
+      primaryKey: true,
+      allowNull: false
     },
-    manage_type: DataTypes.ENUM({values: ["열람", "이용", "파기"]}),
-    manage_date: DataTypes.DATE,
-    requester_id: DataTypes.INTEGER,
-    video_id: DataTypes.INTEGER,
-    purpose: DataTypes.ENUM({values: ["보호자의 열람신청", "관계공무원의 열람신청", "아동보호기관의 열람신청", "기타"]}),
-    monitor_time: DataTypes.TIME,
-    area_id: DataTypes.INTEGER
+    manage_type: {
+      type: DataTypes.ENUM({values: ["열람", "이용", "파기"]}),
+      allowNull: false
+    },
+    manage_date: {
+      type: DataTypes.DATE,
+      allowNull: false
+    },
+    requester_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    video_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    purpose: {
+      type: DataTypes.ENUM({values: ["보호자의 열람신청", "관계공무원의 열람신청", "아동보호기관의 열람신청", "기타"]}),
+      allowNull: false
+    },
+    monitor_time: {
+      type: DataTypes.TIME,
+      allowNull: false
+    },
+    area_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    }
   }, {
     sequelize,
     modelName: 'video_management',

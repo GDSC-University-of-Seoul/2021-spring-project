@@ -21,10 +21,17 @@ module.exports = (sequelize, DataTypes) => {
   district.init({
     code: {
       type: DataTypes.STRING,
-      primaryKey: true,  
+      primaryKey: true,
+      allowNull: false  
     },
-    name: DataTypes.STRING,
-    parent_code: DataTypes.STRING
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    parent_code: {
+      type: DataTypes.STRING,
+      allowNull: true
+    }
   }, {
     sequelize,
     modelName: 'district',

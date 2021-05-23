@@ -18,17 +18,45 @@ module.exports = (sequelize, DataTypes) => {
   cdrcare_center.init({
     center_id: {
       type: DataTypes.STRING,
-      primaryKey: true, 
+      primaryKey: true,
+      allowNull: false 
     },
-    name: DataTypes.STRING,
-    opr_type: DataTypes.ENUM({values: ["국공립", "사회복지법인", "법인 및 단체", "민간", "가정", "협동", "직장"]}),
-    zipcode: DataTypes.STRING,
-    address: DataTypes.STRING,
-    phone: DataTypes.STRING,
-    fax: DataTypes.STRING,
-    web_page: DataTypes.STRING,
-    lat: DataTypes.STRING,
-    lng: DataTypes.STRING
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    opr_type: {
+      type: DataTypes.ENUM({values: ["국공립", "사회복지법인", "법인 및 단체", "민간", "가정", "협동", "직장"]}),
+      allowNull: false
+    },
+    zipcode: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    address: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    phone: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    fax: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    web_page: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    lat: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    lng: {
+      type: DataTypes.STRING,
+      allowNull: false
+    }
   }, {
     sequelize,
     modelName: 'cdrcare_center',

@@ -14,11 +14,21 @@ module.exports = (sequelize, DataTypes) => {
   requester.init({
     requester_id: {
       type: DataTypes.INTEGER,
-      primaryKey: true
+      primaryKey: true,
+      allowNull: false
     },
-    name: DataTypes.STRING,
-    phone: DataTypes.STRING,
-    requester_type: DataTypes.ENUM({values: ["아동보호자", "보육교사", "원장", "수사기관"]})
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    phone: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    requester_type: {
+      type: DataTypes.ENUM({values: ["아동보호자", "보육교사", "원장", "수사기관"]}),
+      allowNull: false
+    }
   }, {
     sequelize,
     modelName: 'requester',
