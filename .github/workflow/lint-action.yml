@@ -1,6 +1,6 @@
 name: Lint Action
 
-on: push
+on: [push, pull_request]
 
 jobs:
   run-linters:
@@ -21,9 +21,11 @@ jobs:
       - name: Install Node.js dependencies
         run: npm ci
 
-      - name: Run linters
+      - name: Run JavaScript linters
         uses: wearerequired/lint-action@v1
         with:
+          github_token: ${{ secrets.github_token }}
+          auto_fix: ${{ github.event_name == 'pull_request' }}
           eslint: true
           prettier: true
 
@@ -37,9 +39,10 @@ jobs:
       - name: Install Python dependencies
         run: pip install black flake8
 
-      - name: Run linters
+      - name: Run Python linters
         uses: wearerequired/lint-action@v1
         with:
+          github_token: ${{ secrets.github_token }}
+          auto_fix: ${{ github.event_name == 'pull_request' }}
           black: true
           flake8: true
-
