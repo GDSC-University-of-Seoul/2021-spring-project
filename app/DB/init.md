@@ -22,4 +22,4 @@
 ![ERD(v2.0.1).png](./ERD(v2.0.1).png)
    
 # DB Schema
-[DB Schema(v1.2.1)](https://2021-spring-dsc-project-team.atlassian.net/wiki/spaces/KDK/pages/6029378/DB+v1.0.0, "confluence - db schema")에 데이터타입 및 제약조건에 대한 정보가 있습니다. 
+[DB Schema(v2.0.1)](https://2021-spring-dsc-project-team.atlassian.net/wiki/spaces/KDK/pages/6029378/DB+v1.0.0, "confluence - db schema")에 데이터타입 및 제약조건에 대한 정보가 있습니다. 
