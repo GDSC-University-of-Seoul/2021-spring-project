@@ -1,12 +1,3 @@
----
-name: PULL REQUEST TEMPLATE - DEVELOP FEATURE 
-about: Templates for the feature developing PR
-title: "#KDSK-XXX"
-labels: "PR :computer:  DRAFT, Priority ❕ Low, Type \U0001F6E0 FEATURE"
-assignees: 
-
----
-
 <!-- 
     PR 작성 시 체크리스트 
     1. JIRA Backlog에 작업내용이 등록되어 있는지 확인
