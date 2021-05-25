@@ -61,6 +61,7 @@ module.exports = {
         REACT_APP_CHILDCARE_KEY: JSON.stringify(
           process.env.REACT_APP_CHILDCARE_KEY
         ),
+        REACT_APP_API_SERVER: JSON.stringify(process.env.REACT_APP_API_SERVER),
       },
     }),
   ],
