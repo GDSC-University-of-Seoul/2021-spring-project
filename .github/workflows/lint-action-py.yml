@@ -1,4 +1,4 @@
-name: Lint Action
+name: Lint Action - PY
 
 on: [push, pull_request]
 
@@ -11,24 +11,7 @@ jobs:
       - name: Check out Git repository
         uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: 12
-
-      # JavaScript Lint 
-      # ESLint and Prettier must be in `package.json`
-      - name: Install Node.js dependencies
-        run: npm ci
-
-      - name: Run JavaScript linters
-        uses: wearerequired/lint-action@v1
-        with:
-          eslint: true
-          prettier: true
-
       # Python Lint
-      # Flake8 and Black
       - name: Set up Python
         uses: actions/setup-python@v1
         with:
@@ -37,6 +20,7 @@ jobs:
       - name: Install Python dependencies
         run: pip install black flake8
 
+      # Flake8 and Black
       - name: Run Python linters
         uses: wearerequired/lint-action@v1
         with:
