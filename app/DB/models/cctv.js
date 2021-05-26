@@ -1,4 +1,17 @@
 "use strict";
+/*
+  설치된 cctv에 관한 정보
+
+  fields                DATA TYPE         INDEX   NULLABLE
+      cctv_id            : Integer         PK      FALSE
+      install_date       : Date                    FALSE
+      quality            : Enum                    FALSE
+      uninstall_date     : Date                    TRUE
+  relationship          Column
+      area               : area_id         FK      FALSE
+  backref               Column
+      video              : this.cctv_id    FK
+*/
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class cctv extends Model {
@@ -13,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
   }
+
   cctv.init(
     {
       cctv_id: {

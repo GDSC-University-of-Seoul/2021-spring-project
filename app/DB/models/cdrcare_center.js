@@ -1,4 +1,23 @@
 "use strict";
+/*
+  어린이집 관련 테이블
+
+  fields                DATA TYPE         INDEX   NULLABLE
+      center_id          : String          PK       FALSE
+      name               : String                   FALSE
+      opr_type           : Enum                     FALSE
+      zipcode            : String                   FALSE
+      address            : String                   FALSE
+      phone              : String                   TRUE
+      fax                : String                   TRUE
+      web_page           : String                   TRUE
+      lat                : String                   FALSE
+      lng                : String                   FALSE
+  relationship          Column
+      district           : code            FK       FALSE
+  backref               Column
+      area               : this.center_id  FK
+*/
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class cdrcare_center extends Model {
@@ -13,6 +32,7 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
   }
+
   cdrcare_center.init(
     {
       center_id: {

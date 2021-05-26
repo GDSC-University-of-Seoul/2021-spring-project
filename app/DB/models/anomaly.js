@@ -1,4 +1,15 @@
 "use strict";
+/*
+  이상행동 발생 데이터 관련 테이블
+
+  fields                DATA TYPE         INDEX   NULLABLE
+      ano_id             : Integer          PK      FALSE
+      start_time         : Date                     FALSE
+      end_time           : Date                     FALSE
+      follow_up          : Enum                     FALSE
+  relationship          Column
+      video              : video_id         FK      FALSE
+*/
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class anomaly extends Model {
@@ -9,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
   }
+
   anomaly.init(
     {
       ano_id: {
@@ -47,6 +59,6 @@ module.exports = (sequelize, DataTypes) => {
       freezeTableName: false,
       timestamps: false,
     }
-  ); // linter
+  );
   return anomaly;
 };

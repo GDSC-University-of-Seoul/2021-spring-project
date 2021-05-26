@@ -1,4 +1,16 @@
 "use strict";
+/*
+  어린이집 내 공간에 대한 테이블
+
+  fields                DATA TYPE         INDEX   NULLABLE
+      area_id            : Integer          PK      FALSE
+      area_name          : String                   FALSE
+      use_of_area        : String                   TRUE
+  relationship          Column
+      cdrcare_center     : center_id        FK      FALSE
+  backref               Column
+      cctv               : this.area_id     FK
+*/
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class area extends Model {
@@ -17,6 +29,7 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
   }
+
   area.init(
     {
       area_id: {
