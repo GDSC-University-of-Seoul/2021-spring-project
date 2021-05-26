@@ -40,7 +40,6 @@ __pycache__/
 
 ## etc
 aws/
-migrations/
 seeders/
 
 ## ignorefile
