@@ -24,8 +24,6 @@ jobs:
       - name: Run JavaScript linters
         uses: wearerequired/lint-action@v1
         with:
-          github_token: ${{ secrets.github_token }}
-          auto_fix: ${{ github.event_name == 'pull_request' }}
           eslint: true
           prettier: true
 
@@ -42,7 +40,5 @@ jobs:
       - name: Run Python linters
         uses: wearerequired/lint-action@v1
         with:
-          github_token: ${{ secrets.github_token }}
-          auto_fix: ${{ github.event_name == 'pull_request' }}
           black: true
           flake8: true
