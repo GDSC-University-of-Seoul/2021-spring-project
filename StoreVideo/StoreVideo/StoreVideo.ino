@@ -70,7 +70,7 @@
 
 //#include <WiFi.h>   // redundant
 
-#include "ESP32FtpServer.h"
+#include "ESP32FTPServer.h"
 #include <HTTPClient.h>
 
 FtpServer ftpSrv;   //set #define FTP_DEBUG in ESP32FtpServer.h to see ftp verbose on serial
@@ -137,10 +137,10 @@ int overtime_count = 0;
 //
 // 
 // EDIT ssid and password
-//
+// 연결할 와이파이 아이디&패스워드
 // zzz
-const char* ssid = "ssid123";
-const char* password = "ssidpassword";
+const char* ssid = "ssid name";
+const char* password = "ssid password";
 
 // these are just declarations -- look below to edit defaults 
 
@@ -365,6 +365,7 @@ void setup() {
 //
 // if we have no camera, or sd card, then flash rear led on and off to warn the human SOS - SOS
 //
+// 카메라 or SD card 등이 연결되지 않음을 감지하면 major_fail 상태로 돌입(깜빡거리는 신호)
 void major_fail() {
   while (1) {
     digitalWrite(33, LOW);
@@ -404,12 +405,14 @@ void major_fail() {
 }
 
 
+//wifi 설정 함수
 bool init_wifi()
 {
   int connAttempts = 0;
 
   // zzz
   // Set your Static IP address
+  // 본인 IP 주소 설정 가능
   IPAddress local_IP(192, 168, 1, 222);
   
   // Set your Gateway IP address
@@ -426,7 +429,7 @@ bool init_wifi()
     major_fail();
   }
 
-  WiFi.begin(ssid, password);
+  WiFi.begin(ssid, password);  //위에서 입력한 ID와 패스워드로 동작
   while (WiFi.status() != WL_CONNECTED ) {
     delay(500);
     Serial.print(".");
@@ -447,6 +450,7 @@ void init_time()
   sntp_init();
   
   // wait for time to be set
+  // 현재 오류가 나는 부분
   time_t now = 0;
   timeinfo = { 0 };
   int retry = 0;
@@ -463,6 +467,7 @@ void init_time()
   }
 }
 
+//SD 카드 사용 준비
 static esp_err_t init_sdcard()
 {
   esp_err_t ret = ESP_FAIL;
@@ -490,6 +495,7 @@ static esp_err_t init_sdcard()
 //////////////////////////////////////////////////////////////
 // save photo stuff not currently used
 
+//사진을 캡쳐해서 저장
 static esp_err_t save_photo_numbered()
 {
   file_number++;
@@ -514,7 +520,7 @@ static esp_err_t save_photo_numbered()
 }
 
 
-
+//사진을 찍은 일시 저장
 static esp_err_t save_photo_dated()
 {
   Serial.println("Taking a picture...");
@@ -552,6 +558,8 @@ static esp_err_t save_photo_dated()
 
 }
 
+
+//위의 두 함수를 이용해 사진을 동시 저장
 void save_photo()
 {
   if (timeinfo.tm_year < (2016 - 1900) || internet_connected == false) { // if no internet or time not set
@@ -599,7 +607,7 @@ void make_avi( ) {
 
   // we are recording, but no file is open
 
-  if (newfile == 0 && recording == 1) {                                     // open the file
+  if (newfile == 0 && recording == 1) {                                     // open the file: recording 신호가 들어오면 start_avi 함수를 실행시킴
 
     //save_photo_dated();
 
@@ -616,7 +624,7 @@ void make_avi( ) {
 
     // we have a file open, but not recording
 
-    if (newfile == 1 && recording == 0) {                                  // got command to close file
+    if (newfile == 1 && recording == 0) {                                  // got command to close file: reconrding=0이면 녹화를 종료
       digitalWrite(33, LOW);
 
       end_avi();
@@ -681,8 +689,6 @@ void make_avi( ) {
 
             frames_so_far = frames_so_far + 1;
             frame_cnt++;
-
-            another_pic_avi();
           }
         }
       }
@@ -822,81 +828,7 @@ static esp_err_t start_avi() {
 } // end of start avi
 
 
-static esp_err_t another_pic_avi() {
-
-  digitalWrite(33, LOW);
-
-  bp = millis();
-  fb = esp_camera_fb_get();
-  totalp = totalp + millis() - bp;
-
-  jpeg_size = fb->len;
-  movi_size += jpeg_size; // Update totals
-  uVideoLen += jpeg_size;   
-
-  size_t dc_err = fwrite(dc_buf, 1, 4, avifile);
-  size_t ze_err = fwrite(zero_buf, 1, 4, avifile);
-
-  bw = millis();
-  size_t err = fwrite(fb->buf, 1, fb->len, avifile);
-
-  totalw = totalw + millis() - bw;
-
-  digitalWrite(33, HIGH);  // red led is on durng the photo and the write
-
-  if (millis() - bigdelta > capture_interval * 1.25  ) {        // how many are 25 % overtime
-    overtime_count = overtime_count + 1;
-    //Serial.print(millis()-bigdelta);Serial.print(",");
-  }
-
-  if (millis() - bigdelta > capture_interval * 2 ) {           // if we are 100% overtime
-
-    //if (frame_cnt % 10 == 1) {
-
-    Serial.print("Frame: "); Serial.print(frame_cnt);
-    Serial.print(" size ");  Serial.print(err);
-    Serial.print(" delta "); Serial.print(millis() - bigdelta);
-    Serial.print(" > "); Serial.print(capture_interval);
-
-    Serial.print(" avg pic "); Serial.print( totalp / frame_cnt );
-    Serial.print(" avg wrt "); Serial.print( totalw / frame_cnt );
-
-    Serial.print(" overtime "); Serial.print( overtime_count ); Serial.print(" "); Serial.print( 100.0 * overtime_count / frame_cnt, 1 ); Serial.println(" %");
-
-  }
-  bigdelta = millis();
-
-  remnant = (4 - (jpeg_size & 0x00000003)) & 0x00000003;
-
-  print_quartet(idx_offset, idxfile);
-  print_quartet(jpeg_size, idxfile);
-
-  idx_offset = idx_offset + jpeg_size + remnant + 8;
-
-  jpeg_size = jpeg_size + remnant;
-  movi_size = movi_size + remnant;
-  if (remnant > 0) {
-    size_t rem_err = fwrite(zero_buf, 1, remnant, avifile);
-  }
-  esp_camera_fb_return(fb);
-
-  fileposition = ftell (avifile);       // Here, we are at end of chunk (after padding)
-  fseek(avifile, fileposition - jpeg_size - 4, SEEK_SET);    // Here we are the the 4-bytes blank placeholder
-
-  print_quartet(jpeg_size, avifile);    // Overwrite placeholder with actual frame size (without padding)
-
-  fileposition = ftell (avifile);
-
-  fseek(avifile, fileposition + 6, SEEK_SET);    // Here is the FOURCC "JFIF" (JPEG header)
-  // Overwrite "JFIF" (still images) with more appropriate "AVI1"
-
-  size_t av_err = fwrite(avi1_buf, 1, 4, avifile);
-
-  fileposition = ftell (avifile);
-  fseek(avifile, fileposition + jpeg_size - 10 , SEEK_SET);
-
-
-} // end of another_pic_avi
+/////another_pic_avi 삭제
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1010,32 +942,6 @@ static esp_err_t do_fb() {
   esp_camera_fb_return(fb);
 }
 
-void do_time() {
-  //Serial.println(" ... wake up wifi stack ... ");
-
-  //WiFi.reconnect();
-
-  /*
-    int numberOfNetworks = WiFi.scanNetworks();
-    Serial.print("Number of networks found: ");
-    Serial.println(numberOfNetworks);
-    HTTPClient http_wake;
-    http_wake.begin("http://postman-echo.com/time/now");
-    //http_wake.begin("http://192.168.1.254");
-    //http_wake.begin("http://google.com");
-    int httpCode = http_wake.GET();                                   
-    if (httpCode > 0) { //Check for the returning code
-    String payload = http_wake.getString();
-    Serial.println(httpCode);
-    Serial.println(payload);
-    }
-    else {
-    Serial.println("Error on HTTP request");
-    }
-    http_wake.end(); //Free the resources)
-  */
-
-}
 
 ////////////////////////////////////////////////////////////////////////////////////
 //
@@ -1046,7 +952,7 @@ long wakeup;
 long last_wakeup = 0;
 
 
-void loop()
+void loop()  //루프가 지속되면서 신호를 받으면 영상을 찍음
 {
 
   if (WiFi.status() != WL_CONNECTED) {
