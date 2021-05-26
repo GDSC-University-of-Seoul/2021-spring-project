@@ -18,8 +18,14 @@
 1. 변수명 구체화  
   requester, child_care_center에 phone, name이라는 이름의 컬럼이 공통으로 존재했습니다. 혼동을 방지하기 위해 requester_name, requester_phone, center_phone으로 구체화하였습니다.
 
+# 변경사항(v2.0.2)
+
+1. 변수명 구체화    
+  어린이집 운영 현황(정상, 휴지, 폐지, 재개, 공백)을 보여주는 column을 추가하였습니다.   
+  초기 생성시엔 운영중인 어린이집에 대한 정보만 db에 넣겠다는 생각에 해당 컬럼을 제외시켰지만, PR review를 통해 '휴지', '재개' 항목이 있다는 것을 파악하여 보강하였습니다. 
+
 # ERD
-![ERD(v2.0.1).png](./ERD(v2.0.1).png)
+![ERD(v2.0.2).png](./ERD(v2.0.2).png)
    
 # DB Schema
-[DB Schema(v2.0.1)](https://2021-spring-dsc-project-team.atlassian.net/wiki/spaces/KDK/pages/6029378/DB+v1.0.0, "confluence - db schema")에 데이터타입 및 제약조건에 대한 정보가 있습니다. 
+[DB Schema(v2.0.2)](https://2021-spring-dsc-project-team.atlassian.net/wiki/spaces/KDK/pages/6029378/DB+v1.0.0, "confluence - db schema")에 데이터타입 및 제약조건에 대한 정보가 있습니다. 
