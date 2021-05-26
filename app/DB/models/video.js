@@ -1,4 +1,19 @@
 "use strict";
+/*
+  CCTV 영상 비디오 관련 테이블
+
+  fields                DATA TYPE         INDEX   NULLABLE
+      video_id           : Integer         PK      FALSE
+      record_date        : Date                    FALSE
+      delete_date        : Date                    TRUE
+      delete_issue       : String                  TRUE
+      storage_name       : String                  FALSE
+  relationship          Column
+      cctv               : cctv_id         FK      TRUE
+  backref               Column
+      anomaly            : this.video_id   FK
+      video_management   : this.video_id   FK      
+*/
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class video extends Model {

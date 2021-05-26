@@ -1,4 +1,15 @@
 "use strict";
+/*
+  열람, 파기 요청자 관련 테이블
+
+  fields                DATA TYPE             INDEX   NULLABLE
+      requester_id       : Integer             PK      FALSE
+      name               : String                      FALSE
+      phone              : String                      FALSE
+      requester_type     : Enum                        FALSE
+  backref               Column
+      video_management   : this.requester_id   FK
+*/
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class requester extends Model {

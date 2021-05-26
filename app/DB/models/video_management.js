@@ -1,4 +1,18 @@
 "use strict";
+/*
+  영상 관리대장(열람, 파기, 이용) 관련 테이블
+
+  fields                DATA TYPE         INDEX   NULLABLE
+      manage_id          : Integer         PK      FALSE
+      manage_type        : Enum                    FALSE
+      manage_date        : Date                    FALSE
+      purpose            : Enum                    FALSE
+      monitor_time       : Time                    FALSE
+  relationship          Column
+      video              : video_id        FK      FALSE
+      area               : area_id         FK      FALSE
+      requester          : requester_id    FK      FALSE   
+*/
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class video_management extends Model {

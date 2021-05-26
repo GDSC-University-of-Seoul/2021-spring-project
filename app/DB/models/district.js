@@ -1,4 +1,16 @@
 "use strict";
+/*
+  행정구역 관련 테이블
+
+  fields                DATA TYPE         INDEX   NULLABLE
+      code               : String          PK      FALSE
+      name               : String                  FALSE
+  relationship          Column
+      district           : parent_code     FK      TRUE
+  backref               Column
+      cdrcare_center     : this.code       FK
+      district           : this.code       FK      
+*/
 const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
