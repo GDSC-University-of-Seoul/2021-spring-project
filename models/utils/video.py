@@ -117,4 +117,4 @@ def extract_video(config, file, meta):
 
     # FIXME : TEMPORARY CODE
     if config["write"]:
-       save_pkl_file(save_dir="./data/pkl_dir", filename=basename, data=frames)
+        save_pkl_file(save_dir="./data/pkl_dir", filename=basename, data=frames)
