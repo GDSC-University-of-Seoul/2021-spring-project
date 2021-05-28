@@ -3,7 +3,7 @@ name: Lint Action - JS
 on: [push, pull_request]
 defaults:
   run:
-    working-directory: frontend
+    working-directory: app/frontend
 
 jobs:
   build:
