@@ -139,8 +139,8 @@ int overtime_count = 0;
 // EDIT ssid and password
 // 연결할 와이파이 아이디&패스워드
 // zzz
-const char* ssid = "ssid name";
-const char* password = "ssid password";
+const char* ssid = "cafeyeoneuil_0";
+const char* password = "24680111";
 
 // these are just declarations -- look below to edit defaults 
 
