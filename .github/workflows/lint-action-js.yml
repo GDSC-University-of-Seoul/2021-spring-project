@@ -2,6 +2,10 @@ name: Lint Action - JS
 
 on: [push, pull_request]
 
+defaults:
+  run:
+    working-directory: BE
+
 jobs:
   run-linters:
     name: Run linters
@@ -21,24 +25,20 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Install dependencies
-        working-directory : ./BE
         run: yarn install
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GPR_AUTH_TOKEN }}
           CI: true
 
       - name: Run Build
-        working-directory : ./BE
         run: yarn build
 
       - name: Run Tests
-        working-directory : ./BE
         run: yarn run test:ci
 
       # ESLint and Prettier must be in `package.json`
       - name: Run JavaScript linters
         uses: wearerequired/lint-action@v1
         with:
-          working-directory : ./BE
           eslint: true
           prettier: true
