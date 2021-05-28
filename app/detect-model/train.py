@@ -8,12 +8,12 @@ def train(opt):
     """
     Train the model
     """
-    # Stage 0. Load the Model Setting 
+    # Stage 0. Load the Model Setting
     with open(opt.data) as f:
         config = yaml.safe_load(f)
 
     # Search xml file in directory
-    files = search_file(config["train"], extension="xml")  
+    files = search_file(config["train"], extension="xml")
 
     metadata = list()
     for file in files:
