@@ -3,7 +3,7 @@ name: Lint Action - JS
 on: [push, pull_request]
 defaults:
   run:
-    working-directory: app/frontend
+    working-directory: [app/frontend, app/BE, app/DB]
 
 jobs:
   build:
@@ -12,17 +12,19 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [12.x]
+        node-version: [14.x]
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Check out Git repository
+      uses: actions/checkout@v2
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm install
-    - name: Run JavaScript linters
-      uses: wearerequired/lint-action@v1
-      with:
-          eslint: true
-          prettier: true
+        
+    - name: Run NPM Package Install 
+      run: npm install
+
+    - name: Run ESLint
+      run: npx eslint .
