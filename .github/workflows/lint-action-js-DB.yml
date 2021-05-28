@@ -1,4 +1,4 @@
-name: Lint Action - JS
+name: Lint Action - JS(DB)
 
 on: 
   push:
@@ -7,7 +7,7 @@ on:
   pull_request:
     branches:
       - develop
-      
+
 defaults:
   run:
     working-directory: app/DB
