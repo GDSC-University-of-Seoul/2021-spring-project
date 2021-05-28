@@ -1,22 +1,22 @@
 /* font */
-@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap");
 
 /* config */
-@import 'config/reset.scss';
-@import 'config/variable';
+@import "config/reset.scss";
+@import "config/variable";
 
 /* pages */
-@import 'pages/pages';
+@import "pages/pages";
 
 /* components */
-@import 'components/sideBar';
-@import 'components/mapbox';
-@import 'components/mapboxCategory';
+@import "components/sideBar";
+@import "components/mapbox";
+@import "components/mapboxCategory";
 
 * {
   box-sizing: border-box;
 }
 body {
   font-size: 16px;
-  font-family: 'Nanum Gothic', sans-serif;
+  font-family: "Nanum Gothic", sans-serif;
 }

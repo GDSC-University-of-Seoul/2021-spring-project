@@ -35,3 +35,6 @@ jobs:
 
     - name: Run ESLint
       run: npx eslint .
+
+    - name: Run Prettier
+      run: npx prettier . --write
