@@ -120,9 +120,7 @@ void startCameraServer();
 httpd_handle_t camera_httpd = NULL;
 
 char the_page[3000];
-
 char localip[20];
-WiFiEventId_t eventID;
 
 void setup() {
   //WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0); //disable brownout detector  // creates other problems
@@ -131,28 +129,11 @@ void setup() {
 
   Serial.setDebugOutput(true);
   
-  // zzz
-  Serial.println("                                    ");
-  Serial.println("-------------------------------------");
-  Serial.println("ESP-CAM Video Recorder v23");
-  Serial.println(" ip 192.168.1.222 ");
-  Serial.println("-------------------------------------");
+  print_local_address();
 
   pinMode(33, OUTPUT);    // little red led on back of chip
 
   digitalWrite(33, LOW);           // turn on the red LED on the back of chip
-
-  eventID = WiFi.onEvent([](WiFiEvent_t event, WiFiEventInfo_t info) {
-    Serial.print("WiFi lost connection. Reason: ");
-    Serial.println(info.disconnected.reason);
-
-    if (WiFi.status() == WL_CONNECTED) {
-      Serial.println("*** connected/disconnected issue!   WiFi disconnected ???...");
-      WiFi.disconnect();
-    } else {
-      Serial.println("*** WiFi disconnected ???...");
-    }
-  }, WiFiEvent_t::SYSTEM_EVENT_STA_DISCONNECTED);
   
   if (init_wifi())
   { // Connected to WiFi
@@ -860,26 +841,13 @@ static esp_err_t do_fb()
 // some globals for the loop()
 //
 
-long wakeup;
-long last_wakeup = 0;
-
-void loop() //루프가 지속되면서 신호를 받으면 영상을 찍음
+//루프가 지속되면서 신호를 받으면 영상을 찍음
+void loop()
 {
-
   if (WiFi.status() != WL_CONNECTED)
   {
     init_wifi();
     Serial.println("***** WiFi reconnect *****");
-  }
-
-  wakeup = millis();
-  if (wakeup - last_wakeup > (10 * 60 * 1000))
-  { // 10 minutes
-    last_wakeup = millis();
-
-    //init_wifi();
-    //Serial.println("... wakeup call ...");
-    //do_time();
   }
 
   ftpSrv.handleFTP();

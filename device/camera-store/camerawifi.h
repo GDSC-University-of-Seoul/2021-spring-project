@@ -47,6 +47,15 @@ void wifi_major_fail()
   }
 }
 
+void print_local_address(){
+  //zzz
+  Serial.println("                                    ");
+  Serial.println("-------------------------------------");
+  Serial.println("ESP-CAM Video Recorder v23");
+  Serial.println(" ip 192.168.1.222 ");
+  Serial.println("-------------------------------------");
+}
+
 //wifi 설정 함수
 bool init_wifi()
 {
