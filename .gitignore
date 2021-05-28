@@ -40,7 +40,8 @@ __pycache__/
 
 ## etc
 aws/
-seeders/
+migrations/
+samples/
 
 ## ignorefile
 config.yml
