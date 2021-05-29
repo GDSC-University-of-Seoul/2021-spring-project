@@ -1,6 +1,6 @@
 get:
   tags:
-  - video
+    - video
   summary: get video by video id
   description:
   parameters:

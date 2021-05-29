@@ -1,6 +1,6 @@
 get:
   tags:
-  - area
+    - area
   summary: get area by area id
   description:
   parameters:
@@ -17,7 +17,7 @@ get:
             type: object
             properties:
               area_id:
-                  type: integer
+                type: integer
               area_name:
                 type: string
               use_of_area:

@@ -1,6 +1,6 @@
 get:
   tags:
-  - children care center
+    - children care center
   summary: get center by center id
   description:
   parameters:
@@ -28,4 +28,3 @@ get:
                 type: string
               district_name:
                 type: string
-                
