@@ -8,6 +8,10 @@ on:
     branches:
       - develop
 
+defaults:
+  run:
+    working-directory: models
+
 jobs:
   run-linters:
     name: Run linters
