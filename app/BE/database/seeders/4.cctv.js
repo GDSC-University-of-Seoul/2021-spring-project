@@ -1,5 +1,5 @@
 import { sequelize } from "../models";
-import Area from "../models/area";
+import FacilityArea from "../models/facility-area";
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -9,7 +9,7 @@ module.exports = {
 
     try {
       await sequelize.sync();
-      const areas = await Area.findAll();
+      const areas = await FacilityArea.findAll();
 
       for (let area of areas) {
         for (let i = 0; i < NUM_CCTV; i++) {

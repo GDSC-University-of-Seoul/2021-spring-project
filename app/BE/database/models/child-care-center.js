@@ -1,6 +1,6 @@
 import Sequelize from "sequelize";
 
-module.exports = class CdrCareCenter extends Sequelize.Model {
+module.exports = class ChildCareCenter extends Sequelize.Model {
   static init(sequelize, DataTypes) {
     return super.init(
       {
@@ -8,11 +8,11 @@ module.exports = class CdrCareCenter extends Sequelize.Model {
           type: DataTypes.INTEGER,
           primaryKey: true,
         },
-        name: {
+        center_name: {
           type: DataTypes.STRING(150),
           allowNull: false,
         },
-        opr_type: {
+        operation_type: {
           type: DataTypes.ENUM({
             values: [
               "국공립",
@@ -26,6 +26,12 @@ module.exports = class CdrCareCenter extends Sequelize.Model {
           }),
           allowNull: false,
         },
+        operation_status: {
+          type: DataTypes.ENUM({
+            values: ["정상", "휴지", "폐지", "재개", "공백"],
+          }),
+          allowNull: false,
+        },
         zip_code: {
           type: DataTypes.STRING(6),
           allowNull: false,
@@ -34,23 +40,23 @@ module.exports = class CdrCareCenter extends Sequelize.Model {
           type: DataTypes.STRING(300),
           allowNull: false,
         },
-        phone: {
+        center_phone: {
           type: DataTypes.STRING(14),
-          allowNull: false,
+          allowNull: true,
         },
         fax: {
           type: DataTypes.STRING(14),
-          allowNull: false,
+          allowNull: true,
         },
         web_page: {
           type: DataTypes.STRING(150),
-          allowNull: false,
+          allowNull: true,
         },
-        lat: {
+        latitude: {
           type: DataTypes.STRING(30),
           allowNull: false,
         },
-        lng: {
+        longtitude: {
           type: DataTypes.STRING(30),
           allowNull: false,
         },
@@ -59,21 +65,21 @@ module.exports = class CdrCareCenter extends Sequelize.Model {
         sequelize,
         timestamps: false,
         paranoid: false,
-        modelName: "CdrCareCenter",
-        tableName: "cdrcare_center",
+        modelName: "ChildCareCenter",
+        tableName: "child_care_center",
         charset: "utf8",
         collate: "utf8_general_cli",
       }
     );
   }
   static associate(db) {
-    db.CdrCareCenter.hasMany(db.Area, {
+    db.ChildCareCenter.hasMany(db.FacilityArea, {
       foreignKey: "center_id",
       sourceKey: "center_id",
     });
-    db.CdrCareCenter.belongsTo(db.District, {
-      foreignKey: "code",
-      targetKey: "code",
+    db.ChildCareCenter.belongsTo(db.District, {
+      foreignKey: "district_code",
+      targetKey: "district_code",
     });
   }
 };

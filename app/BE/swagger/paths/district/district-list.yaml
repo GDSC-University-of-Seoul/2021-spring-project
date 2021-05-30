@@ -18,9 +18,9 @@ get:
             items:
               type: object
               properties:
-                code:
+                district_code:
                   type: string
-                name:
+                district_name:
                   type: string
                 parent_code:
                   type: string

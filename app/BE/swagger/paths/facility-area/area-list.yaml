@@ -1,7 +1,7 @@
 get:
   tags:
-    - area
-  summary: get all areas
+    - facility area
+  summary: get all facility areas
   description:
   parameters:
     - name: center_id
@@ -22,7 +22,7 @@ get:
                   type: integer
                 area_name:
                   type: string
-                use_of_area:
+                area_usage:
                   type: string
                 center_id:
                   type: integer

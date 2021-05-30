@@ -1,7 +1,7 @@
 import express from "express";
 import { sequelize, Sequelize } from "../database/models";
-import Area from "../database/models/area";
-import CdrCareCenter from "../database/models/cdrcare-center";
+import FacilityArea from "../database/models/facility-area";
+import ChildCareCenter from "../database/models/child-care-center";
 
 const router = express.Router();
 
@@ -15,9 +15,9 @@ router.get("/", async (req, res, next) => {
     if (center_name) {
       filters.name = center_name;
     }
-    const areas = await Area.findAll({
+    const areas = await FacilityArea.findAll({
       include: {
-        model: CdrCareCenter,
+        model: ChildCareCenter,
         attributes: [],
         where: filters,
       },
@@ -31,7 +31,7 @@ router.get("/", async (req, res, next) => {
 
 router.get("/:area_id", async (req, res, next) => {
   try {
-    const area = await Area.findOne({
+    const area = await FacilityArea.findOne({
       where: { area_id: req.params.area_id },
     });
     res.json(area);

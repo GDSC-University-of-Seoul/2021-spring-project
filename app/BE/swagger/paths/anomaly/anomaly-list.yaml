@@ -18,7 +18,7 @@ get:
             items:
               type: object
               properties:
-                ano_id:
+                anomaly_id:
                   type: integer
                 start_time:
                   type: date

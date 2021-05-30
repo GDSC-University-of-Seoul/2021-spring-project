@@ -6,6 +6,7 @@ module.exports = class VideoManagement extends Sequelize.Model {
       {
         manage_id: {
           type: DataTypes.INTEGER,
+          autoIncrement: true,
           primaryKey: true,
         },
         manage_type: {
@@ -24,10 +25,6 @@ module.exports = class VideoManagement extends Sequelize.Model {
           type: DataTypes.DATE,
           allowNull: false,
         },
-        monitor_room: {
-          type: DataTypes.STRING(10),
-          allowNull: false,
-        },
       },
       {
         sequelize,
@@ -41,10 +38,6 @@ module.exports = class VideoManagement extends Sequelize.Model {
     );
   }
   static associate(db) {
-    db.VideoManagement.belongsTo(db.Area, {
-      foreignKey: "area_id",
-      targetKey: "area_id",
-    });
     db.VideoManagement.belongsTo(db.Video, {
       foreignKey: "video_id",
       targetKey: "video_id",

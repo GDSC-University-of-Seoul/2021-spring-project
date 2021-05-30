@@ -1,6 +1,6 @@
 import Sequelize from "sequelize";
 
-module.exports = class Area extends Sequelize.Model {
+module.exports = class FacilityArea extends Sequelize.Model {
   static init(sequelize, DataTypes) {
     return super.init(
       {
@@ -12,7 +12,7 @@ module.exports = class Area extends Sequelize.Model {
           type: DataTypes.STRING(20),
           allowNull: false,
         },
-        use_of_area: {
+        area_usage: {
           type: DataTypes.STRING(10),
           allowNull: true,
         },
@@ -21,23 +21,19 @@ module.exports = class Area extends Sequelize.Model {
         sequelize,
         timestamps: false,
         paranoids: false,
-        modelName: "Area",
-        tableName: "area",
+        modelName: "FacilityArea",
+        tableName: "facility_area",
         charset: "utf8",
         collate: "utf8_general_cli",
       }
     );
   }
   static associate(db) {
-    db.Area.belongsTo(db.CdrCareCenter, {
+    db.FacilityArea.belongsTo(db.ChildCareCenter, {
       foreignKey: "center_id",
       targetKey: "center_id",
     });
-    db.Area.hasMany(db.VideoManagement, {
-      foreignKey: "area_id",
-      sourceKey: "area_id",
-    });
-    db.Area.hasMany(db.CCTV, {
+    db.FacilityArea.hasMany(db.CCTV, {
       foreignKey: "area_id",
       sourceKey: "area_id",
     });

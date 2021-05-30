@@ -1,25 +1,25 @@
 import express from "express";
 import { Sequelize, Op } from "sequelize";
 import District from "../database/models/district";
-import CdrCareCenter from "../database/models/cdrcare-center";
+import CdrCareCenter from "../database/models/child-care-center";
 
 const router = express.Router();
 
 router.get("/", async (req, res, next) => {
   try {
-    const { code, name } = req.query;
+    const { district_code, district_name } = req.query;
     const filter = {};
-    if (code) {
-      filter.code = {
-        [Op.like]: `%${code}%`,
+    if (district_code) {
+      filter.district_code = {
+        [Op.like]: `%${district_code}%`,
       };
     }
-    if (name) {
-      filter.name = {
-        [Op.like]: `%${name}%`,
+    if (district_name) {
+      filter.district_name = {
+        [Op.like]: `%${district_name}%`,
       };
     }
-    const centers = await CdrCareCenter.findAll({
+    const centers = await ChildCareCenter.findAll({
       include: {
         model: District,
         attributes: [],
@@ -27,11 +27,11 @@ router.get("/", async (req, res, next) => {
       },
       attributes: [
         "center_id",
-        "name",
-        "lat",
-        "lng",
-        [Sequelize.col("District.code"), "district_code"],
-        [Sequelize.col("District.name"), "district_name"],
+        "center_name",
+        "latitude",
+        "longtitude",
+        [Sequelize.col("District.district_code"), "district_code"],
+        [Sequelize.col("District.district_name"), "district_name"],
       ],
     });
     res.json(centers);
@@ -43,7 +43,7 @@ router.get("/", async (req, res, next) => {
 
 router.get("/:center_id(\\d+)", async (req, res, next) => {
   try {
-    const center = await CdrCareCenter.findOne({
+    const center = await ChildCareCenter.findOne({
       include: {
         model: District,
         attributes: [],
@@ -53,11 +53,11 @@ router.get("/:center_id(\\d+)", async (req, res, next) => {
       },
       attributes: [
         "center_id",
-        "name",
-        "lat",
-        "lng",
-        [Sequelize.col("District.code"), "district_code"],
-        [Sequelize.col("District.name"), "district_name"],
+        "center_name",
+        "latitude",
+        "longtitude",
+        [Sequelize.col("District.district_code"), "district_code"],
+        [Sequelize.col("District.district_name"), "district_name"],
       ],
     });
     res.json(center);
@@ -69,7 +69,7 @@ router.get("/:center_id(\\d+)", async (req, res, next) => {
 
 router.get("/:center_name", async (req, res, next) => {
   try {
-    const center = await CdrCareCenter.findOne({
+    const center = await ChildCareCenter.findOne({
       include: {
         model: District,
         attributes: [],
@@ -79,11 +79,11 @@ router.get("/:center_name", async (req, res, next) => {
       },
       attributes: [
         "center_id",
-        "name",
-        "lat",
-        "lng",
-        [Sequelize.col("District.code"), "district_code"],
-        [Sequelize.col("District.name"), "district_name"],
+        "center_name",
+        "latitude",
+        "longtitude",
+        [Sequelize.col("District.district_code"), "district_code"],
+        [Sequelize.col("District.district_name"), "district_name"],
       ],
     });
     res.json(center);

@@ -5,15 +5,15 @@
 /districts/{name}:
   $ref: "district/district-retrieve-by-name.yaml"
 /centers:
-  $ref: "center/center-list.yaml"
+  $ref: "child-care-center/center-list.yaml"
 /centers/{center_id}:
-  $ref: "center/center-retrieve-by-id.yaml"
+  $ref: "child-care-center/center-retrieve-by-id.yaml"
 /centers/{center_name}:
-  $ref: "center/center-retrieve-by-name.yaml"
+  $ref: "child-care-center/center-retrieve-by-name.yaml"
 /areas:
-  $ref: "area/area-list.yaml"
+  $ref: "facility-area/area-list.yaml"
 /areas/{area_id}:
-  $ref: "area/area-retrieve-by-id.yaml"
+  $ref: "facility-area/area-retrieve-by-id.yaml"
 /cctvs:
   $ref: "cctv/cctv-list.yaml"
 /cctvs/{cctv_id}:

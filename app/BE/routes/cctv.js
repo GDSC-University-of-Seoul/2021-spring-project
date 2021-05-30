@@ -1,6 +1,6 @@
 import express from "express";
 import { sequelize, Sequelize } from "../database/models";
-import Area from "../database/models/area";
+import Area from "../database/models/facility-area";
 import CCTV from "../database/models/cctv";
 
 const router = express.Router();
