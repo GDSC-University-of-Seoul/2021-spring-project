@@ -1,3 +1,4 @@
+import LineGraphContainer from "../containers/LineGraphContainer";
 import React from "react";
 import SideBar from "../components/SideBar";
 
@@ -11,7 +12,7 @@ function Home() {
     <>
       <SideBar />
       <section className="section">
-        <div>홈 페이지</div>
+        <LineGraphContainer />
       </section>
     </>
   );
