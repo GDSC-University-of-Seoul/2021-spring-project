@@ -31,7 +31,6 @@ module.exports = {
       }
     });
 
-    console.log(districts);
     await queryInterface.bulkInsert("district", districts, {});
   },
 
