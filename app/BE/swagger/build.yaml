@@ -39,7 +39,7 @@ paths:
                       type: string
                     count:
                       type: string
-  '/districts/{code}':
+  '/districts/{district_code}':
     get:
       tags:
         - district
@@ -66,7 +66,7 @@ paths:
                     type: string
                   count:
                     type: string
-  '/districts/{name}':
+  '/districts/{district_name}':
     get:
       tags:
         - district

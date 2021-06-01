@@ -1,8 +1,8 @@
 /districts:
   $ref: "district/district-list.yaml"
-/districts/{code}:
+/districts/{district_code}:
   $ref: "district/district-retrieve-by-code.yaml"
-/districts/{name}:
+/districts/{district_name}:
   $ref: "district/district-retrieve-by-name.yaml"
 /centers:
   $ref: "child-care-center/center-list.yaml"
