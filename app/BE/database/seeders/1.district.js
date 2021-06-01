@@ -16,7 +16,7 @@ module.exports = {
         });
       } else if (parseInt(key.slice(4, key.length)) === 0) {
         const upper = districts.filter(
-          (obj) => obj.name === regions[level - 1]
+          (obj) => obj.district_name === regions[level - 1]
         );
 
         let parent_code = null;
@@ -30,6 +30,8 @@ module.exports = {
         });
       }
     });
+
+    console.log(districts);
     await queryInterface.bulkInsert("district", districts, {});
   },
 

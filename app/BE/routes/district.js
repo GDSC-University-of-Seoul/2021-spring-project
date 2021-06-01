@@ -99,9 +99,9 @@ router.get("/", async (req, res, next) => {
 
 router.get("/:district_code(\\d+)", async (req, res, next) => {
   try {
-    if (parseInt(district_code.slice(2, 4)) === 0) {
+    if (parseInt(req.params.district_code.slice(2, 4)) === 0) {
       const district = await District.findOne({
-        where: { code: req.params.district_code },
+        where: { district_code: req.params.district_code },
         include: {
           model: District,
           attributes: [],
@@ -118,7 +118,7 @@ router.get("/:district_code(\\d+)", async (req, res, next) => {
       res.json(district);
     } else {
       const district = await District.findOne({
-        where: { code: req.params.district_code },
+        where: { district_code: req.params.district_code },
         include: anomaly_join,
         group: ["District.district_code"],
         attributes: [
@@ -140,7 +140,7 @@ router.get("/:district_name", async (req, res, next) => {
   try {
     if (upper_districts.includes(req.params.district_name)) {
       const districts = await District.findAll({
-        where: { name: req.params.district_name },
+        where: { district_name: req.params.district_name },
         include: {
           model: District,
           attributes: [],
