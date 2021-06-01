@@ -136,7 +136,7 @@ router.get("/:district_code(\\d+)", async (req, res, next) => {
   }
 });
 
-router.get("/:name", async (req, res, next) => {
+router.get("/:district_name", async (req, res, next) => {
   try {
     if (upper_districts.includes(req.params.district_name)) {
       const districts = await District.findAll({

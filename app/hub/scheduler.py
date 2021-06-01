@@ -38,18 +38,17 @@ class Scheduler:
     def __del__(self):
         self.sched.shutdown()
 
-    def start(self):
+    def start_scheduler(self):
         self.sched.start()
-        return
 
-    def kill(self, job_id):
+    def kill_scheduler(self, job_id):
         try:
             self.sched.remove_job(job_id)
         except JobLookupError as e:
             print(f"fail to stop Scheduler: {e}")
             return
 
-    def add(self, type):
+    def add_scheduler(self, type):
         print(f"{type} Scheduler Start")
         if type == "interval":
             self.sched.add_job(self.request_job, type, seconds=5, id="hub_interval")
@@ -58,16 +57,28 @@ class Scheduler:
 
     def request_job(self):
         self.url = "http://localhost:3000/api/anomalies/"
-        print(self.data)
-
         res = requests.post(
             self.url,
             headers={"Content-Type": "application/json; charset=utf-8"},
             data=self.data,
         )
-        print(res.json())
-        print(f'scheduled job : {time.strftime("%H:%M:%S")}')
 
     def get_data(self, data):
         self.data = data
         return
+
+
+if __name__ == "__main__":
+
+    sample_filename = "20210530_1_LOCAL.wmv"
+    sample_data = {
+        "start_time": "2021-05-30 12:00:00",
+        "end_time": "2021-05-30 12:00:30",
+        "follow_up": "이상행동감지",
+    }
+    anomaly_data = dump_anomaly_data(sample_filename, **sample_data)
+
+    sched = Scheduler()
+    sched.get_data(anomaly_data)
+    sched.add_scheduler("interval")
+    sched.start_scheduler()
