@@ -1,4 +1,4 @@
-import LineGraphContainer from "../containers/LineGraphContainer";
+import ChartContainer from "../containers/ChartContainer";
 import React from "react";
 import SideBar from "../components/SideBar";
 
@@ -12,7 +12,7 @@ function Home() {
     <>
       <SideBar />
       <section className="section">
-        <LineGraphContainer />
+        <ChartContainer />
       </section>
     </>
   );

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import ReactMapGL, { Layer, Marker, Popup, Source } from "react-map-gl";
 import {
-  resetClick,
+  reset,
   setGeojsonData,
   sggClick,
   sggHover,
@@ -55,11 +55,12 @@ function MapBox({ geojson }) {
   });
 
   useEffect(() => {
+    dispatch(reset(districtArea));
     return {
       geojson,
       Layer,
     };
-  }, [geojson]);
+  }, [dispatch, districtArea, geojson]);
 
   if (!geojsonData) dispatch(setGeojsonData(districtArea));
 
@@ -134,7 +135,7 @@ function MapBox({ geojson }) {
       longitude: districtViewport["대한민국"].lng,
       zoom: districtViewport["대한민국"].zoom,
     });
-    dispatch(resetClick(districtArea));
+    dispatch(reset(districtArea));
   }, [dispatch, districtArea]);
 
   if (error) <div>지도 오류 발생</div>;
@@ -179,8 +180,8 @@ function MapBox({ geojson }) {
           cdrCentersInfo.map((cdrCenter, index) => (
             <Marker
               key={index}
-              latitude={Number(cdrCenter.lat)}
-              longitude={Number(cdrCenter.lng)}
+              latitude={Number(cdrCenter.latitude)}
+              longitude={Number(cdrCenter.longtitude)}
               className="marker"
             />
           ))}

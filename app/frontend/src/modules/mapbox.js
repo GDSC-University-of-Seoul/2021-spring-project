@@ -23,22 +23,21 @@ export const fetchData = () => async (dispatch) => {
       `${process.env.REACT_APP_API_SERVER}/api/districts`
     );
     districts = districts.data;
-    /*
-    console.log(districts); 
+
     // geojson 데이터에 어린이집 개수 property 추가
     // Todo : geojson 데이터에 어린이집 사건·사고 property 추가
     districtsGeojson.features.forEach((districtGeojson) => {
       districts.forEach((district) => {
-        if (districtGeojson.properties.sidonm === district.name)
+        if (districtGeojson.properties.sidonm === district.district_name)
           districtGeojson.properties.sido_cnt = parseInt(district.count, 10);
       });
     });
-    */
+
     dispatch({
       type: FETCH_DATA_SUCCESS,
       payload: {
-        districtsGeojson: districtsGeojson.data,
-        districts: districts.data,
+        districtsGeojson,
+        districts,
       },
     });
   } catch (e) {
@@ -48,7 +47,7 @@ export const fetchData = () => async (dispatch) => {
 
 const initialState = {
   loading: false,
-  data: { districtsGeojson: null, districts: null },
+  data: { districtsGeojson: [], districts: [] },
   error: null,
 };
 

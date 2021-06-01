@@ -4,7 +4,7 @@ const SET_GEOJSON_DATA = "mapboxEvent/SET_GEOJSON_DATA";
 const SET_HOVER_INFO = "mapboxEvent/SET_HOVER_INFO";
 const SIDO_CLICK = "mapboxEvent/SIDO_CLICK";
 const SGG_CLICK = "mapboxEvent/SGG_CLICK";
-const RESET_CLICK = "mapboxEvent/RESET_CLICK";
+const RESET = "mapboxEvent/RESET";
 const ERROR = "mapboxEvent/ERROR";
 
 /**
@@ -37,7 +37,8 @@ export const sidoHover = (e) => (dispatch) => {
     longitude: e.lngLat[0],
     latitude: e.lngLat[1],
     districtName: hoverArea.properties.sidonm,
-    districtCode: hoverArea.properties.sido,
+    districtCode:
+      hoverArea.properties.sido && hoverArea.properties.sido + "00000000",
     districtCount: hoverArea.properties.sido_cnt,
   };
   dispatch({ type: SET_HOVER_INFO, payload: hoverInfo });
@@ -54,7 +55,8 @@ export const sggHover = (e) => (dispatch) => {
     longitude: e.lngLat[0],
     latitude: e.lngLat[1],
     districtName: hoverArea.properties.sggnm,
-    districtCode: hoverArea.properties.sgg,
+    districtCode:
+      hoverArea.properties.sgg && hoverArea.properties.sgg + "00000",
     districtCount: hoverArea.properties.sgg_cnt,
   };
   dispatch({ type: SET_HOVER_INFO, payload: hoverInfo });
@@ -86,7 +88,7 @@ export const sidoClick =
       // geojson 데이터에 시,군,구 어린이집 개수(sgg_cnt) 정보 저장
       sggsFeatures.forEach((sggFeatures) => {
         sggsDistrictData.data.forEach((sggDistrictData) => {
-          if (sggFeatures.properties.sggnm === sggDistrictData.name)
+          if (sggFeatures.properties.sggnm === sggDistrictData.district_name)
             sggFeatures.properties.sgg_cnt = parseInt(
               sggDistrictData.count,
               10
@@ -129,8 +131,8 @@ export const sggClick = (selectedDistrictInfo) => async (dispatch) => {
  *
  * @param {Object} selectedDistrictInfo hover 중인 영역의 정보 (지역명, 코드)
  */
-export const resetClick = (geojsonData) => async (dispatch) => {
-  dispatch({ type: RESET_CLICK, payload: geojsonData });
+export const reset = (geojsonData) => async (dispatch) => {
+  dispatch({ type: RESET, payload: geojsonData });
 };
 const initialState = {
   data: {
@@ -189,8 +191,8 @@ export default function mapboxEventReducer(state = initialState, action) {
         },
         error: null,
       };
-    // reset 버튼 클릭 이벤트
-    case RESET_CLICK:
+    // reset 이벤트
+    case RESET:
       return {
         data: {
           ...state.data,
