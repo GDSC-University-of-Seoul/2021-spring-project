@@ -6,34 +6,34 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       ano_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       start_time: {
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       end_time: {
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       follow_up: {
-        type: Sequelize.ENUM
+        type: Sequelize.ENUM,
       },
       video_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('anomalies');
-  }
+  },
 };

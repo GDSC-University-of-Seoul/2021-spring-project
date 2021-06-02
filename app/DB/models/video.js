@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 /*
   CCTV 영상 비디오 관련 테이블
 
@@ -14,21 +14,21 @@
       anomaly            : this.video_id   FK
       video_management   : this.video_id   FK      
 */
-const { Model } = require("sequelize");
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class video extends Model {
     static associate(models) {
       video.hasMany(models.video_management, {
-        foreignKey: "video_id",
-        sourceKey: "video_id",
+        foreignKey: 'video_id',
+        sourceKey: 'video_id',
       });
       video.hasMany(models.anomaly, {
-        foreignKey: "video_id",
-        sourceKey: "video_id",
+        foreignKey: 'video_id',
+        sourceKey: 'video_id',
       });
       video.belongsTo(models.cctv, {
-        foreignKey: "cctv_id",
-        targetKey: "cctv_id",
+        foreignKey: 'cctv_id',
+        targetKey: 'cctv_id',
       });
     }
   }
@@ -62,11 +62,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "video",
-      tableName: "video",
+      modelName: 'video',
+      tableName: 'video',
       freezeTableName: false,
       timestamps: false,
-    }
+    },
   );
   return video;
 };

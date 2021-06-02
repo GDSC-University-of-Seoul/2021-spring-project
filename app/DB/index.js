@@ -1,1 +1,1 @@
-console.log("initial commit for PR");
+console.log('initial commit for PR');

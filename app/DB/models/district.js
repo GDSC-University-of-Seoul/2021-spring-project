@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 /*
   행정구역 관련 테이블
 
@@ -11,22 +11,22 @@
       cdrcare_center     : this.code       FK
       district           : this.code       FK      
 */
-const { Model } = require("sequelize");
+const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class district extends Model {
     static associate(models) {
       district.hasMany(models.cdrcare_center, {
-        foreignKey: "code",
-        sourceKey: "code",
+        foreignKey: 'code',
+        sourceKey: 'code',
       });
       district.hasMany(models.district, {
-        foreignKey: "parent_code",
-        sourceKey: "code",
+        foreignKey: 'parent_code',
+        sourceKey: 'code',
       });
       district.belongsTo(models.district, {
-        foreignKey: "parent_code",
-        targetKey: "code",
+        foreignKey: 'parent_code',
+        targetKey: 'code',
       });
     }
   }
@@ -48,11 +48,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "district",
-      tableName: "district",
+      modelName: 'district',
+      tableName: 'district',
       freezeTableName: false,
       timestamps: false,
-    }
+    },
   );
 
   console.log(district === sequelize.models.district);

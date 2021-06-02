@@ -1,7 +1,7 @@
-"use strict";
+'use strict';
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
+Object.defineProperty(exports, '__esModule', {
+  value: true,
 });
 exports.production = exports.test = exports.development = void 0;
 
@@ -12,7 +12,7 @@ var development = {
   username: process.env.DATABASE_USERNAME_DEV,
   password: process.env.DATABASE_PASSWORD_DEV,
   host: process.env.DATABASE_HOST_DEV,
-  dialect: 'postgres'
+  dialect: 'postgres',
 };
 exports.development = development;
 var test = {
@@ -20,7 +20,7 @@ var test = {
   username: process.env.DATABASE_USERNAME_TEST,
   password: process.env.DATABASE_PASSWORD_TEST,
   host: process.env.DATABASE_HOST_TEST,
-  dialect: 'postgres'
+  dialect: 'postgres',
 };
 exports.test = test;
 var production = {
@@ -28,6 +28,6 @@ var production = {
   username: process.env.DATABASE_USERNAME_PROD,
   password: process.env.DATABASE_PASSWORD_PROD,
   host: process.env.DATABASE_HOST_PROD,
-  dialect: 'postgres'
+  dialect: 'postgres',
 };
 exports.production = production;
