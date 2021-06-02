@@ -16,12 +16,6 @@ FtpServer ftpSrv;
 #include "lwip/err.h"
 #include "lwip/apps/sntp.h"
 
-// MicroSD
-#include "driver/sdmmc_host.h"
-#include "driver/sdmmc_defs.h"
-#include "sdmmc_cmd.h"
-#include "esp_vfs_fat.h"
-
 #include "soc/soc.h"
 #include "soc/rtc_cntl_reg.h"
 
