@@ -56,7 +56,7 @@ module.exports = class ChildCareCenter extends Sequelize.Model {
           type: DataTypes.STRING(30),
           allowNull: false,
         },
-        longtitude: {
+        longitude: {
           type: DataTypes.STRING(30),
           allowNull: false,
         },

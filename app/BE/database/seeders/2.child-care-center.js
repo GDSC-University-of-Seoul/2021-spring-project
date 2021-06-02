@@ -34,7 +34,7 @@ module.exports = {
             center_id: centerId,
             center_name: obj.crname,
             latitude: String(obj.la),
-            longtitude: String(obj.lo),
+            longitude: String(obj.lo),
             district_code: district.district_code,
             operation_type: "국공립",
             operation_status: "정상",
