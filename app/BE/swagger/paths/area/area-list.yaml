@@ -1,6 +1,6 @@
 get:
   tags:
-  - area
+    - area
   summary: get all areas
   description:
   parameters:
@@ -26,4 +26,3 @@ get:
                   type: string
                 center_id:
                   type: integer
-                  

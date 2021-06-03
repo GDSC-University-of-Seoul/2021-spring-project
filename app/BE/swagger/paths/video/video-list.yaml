@@ -1,6 +1,6 @@
 get:
   tags:
-  - video
+    - video
   summary: get all videos
   description:
   parameters:
@@ -30,4 +30,3 @@ get:
                   type: string
                 cctv_id:
                   type: integer
-                  

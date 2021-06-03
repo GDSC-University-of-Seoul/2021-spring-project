@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 /*
   열람, 파기 요청자 관련 테이블
 
@@ -10,13 +10,13 @@
   backref               Column
       video_management   : this.requester_id   FK
 */
-const { Model } = require("sequelize");
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class requester extends Model {
     static associate(models) {
       requester.hasMany(models.video_management, {
-        foreignKey: "requester_id",
-        sourceKey: "requester_id",
+        foreignKey: 'requester_id',
+        sourceKey: 'requester_id',
       });
     }
   }
@@ -37,18 +37,18 @@ module.exports = (sequelize, DataTypes) => {
       },
       requester_type: {
         type: DataTypes.ENUM({
-          values: ["아동보호자", "보육교사", "원장", "수사기관"],
+          values: ['아동보호자', '보육교사', '원장', '수사기관'],
         }),
         allowNull: false,
       },
     },
     {
       sequelize,
-      modelName: "requester",
-      tableName: "requester",
+      modelName: 'requester',
+      tableName: 'requester',
       freezeTableName: false,
       timestamps: false,
-    }
+    },
   );
   return requester;
 };

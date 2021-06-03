@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 /*
   설치된 cctv에 관한 정보
 
@@ -12,17 +12,17 @@
   backref               Column
       video              : this.cctv_id    FK
 */
-const { Model } = require("sequelize");
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class cctv extends Model {
     static associate(models) {
       cctv.belongsTo(models.area, {
-        foreignKey: "area_id",
-        targetKey: "area_id",
+        foreignKey: 'area_id',
+        targetKey: 'area_id',
       });
       cctv.hasMany(models.video, {
-        foreignKey: "cctv_id",
-        sourceKey: "cctv_id",
+        foreignKey: 'cctv_id',
+        sourceKey: 'cctv_id',
       });
     }
   }
@@ -43,7 +43,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       quality: {
-        type: DataTypes.ENUM({ values: ["SD", "HD", "FHD", "QHD", "UHD"] }),
+        type: DataTypes.ENUM({ values: ['SD', 'HD', 'FHD', 'QHD', 'UHD'] }),
         allowNull: false,
       },
       uninstall_date: {
@@ -53,11 +53,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "cctv",
-      tableName: "cctv",
+      modelName: 'cctv',
+      tableName: 'cctv',
       freezeTableName: false,
       timestamps: false,
-    }
+    },
   );
   return cctv;
 };

@@ -1,6 +1,6 @@
 get:
   tags:
-  - anomaly
+    - anomaly
   summary: get all anomalies
   description:
   parameters:
@@ -28,4 +28,3 @@ get:
                   type: string
                 video_id:
                   type: integer
-                  

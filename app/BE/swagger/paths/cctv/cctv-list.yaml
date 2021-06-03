@@ -1,6 +1,6 @@
 get:
   tags:
-  - cctv
+    - cctv
   summary: get all cctvs
   description:
   parameters:
@@ -28,4 +28,3 @@ get:
                   type: date
                 area_id:
                   type: integer
-                  

@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 /*
   이상행동 발생 데이터 관련 테이블
 
@@ -10,13 +10,13 @@
   relationship          Column
       video              : video_id         FK      FALSE
 */
-const { Model } = require("sequelize");
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class anomaly extends Model {
     static associate(models) {
       anomaly.belongsTo(models.video, {
-        foreignKey: "video_id",
-        targetKey: "video_id",
+        foreignKey: 'video_id',
+        targetKey: 'video_id',
       });
     }
   }
@@ -38,12 +38,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       follow_up: {
         type: DataTypes.ENUM({
-          values: [
-            "이상행동감지",
-            "영상확인-일상행동",
-            "영상확인-폭행",
-            "영상확인-실신",
-          ],
+          values: ['이상행동감지', '영상확인-일상행동', '영상확인-폭행', '영상확인-실신'],
         }),
         allowNull: false,
       },
@@ -54,11 +49,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "anomaly",
-      tableName: "anomaly",
+      modelName: 'anomaly',
+      tableName: 'anomaly',
       freezeTableName: false,
       timestamps: false,
-    }
+    },
   );
   return anomaly;
 };

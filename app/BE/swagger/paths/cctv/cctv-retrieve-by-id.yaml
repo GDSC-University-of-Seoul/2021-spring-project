@@ -1,6 +1,6 @@
 get:
   tags:
-  - cctv
+    - cctv
   summary: get cctv by cctv id
   description:
   parameters:

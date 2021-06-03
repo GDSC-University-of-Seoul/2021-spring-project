@@ -5,10 +5,10 @@ info:
   description: Kids Keeper API 문서
   license:
     name: Apache 2.0
-    url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
+    url: "https://www.apache.org/licenses/LICENSE-2.0.html"
 servers:
   - description: dev servers
-    url: 'http://localhost:3000/api/'
+    url: "http://localhost:3000/api/"
 paths:
   /districts:
     get:
@@ -22,7 +22,7 @@ paths:
           required: false
           description: 상위 행정구역 코드
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -39,7 +39,7 @@ paths:
                       type: string
                     count:
                       type: string
-  '/districts/{code}':
+  "/districts/{code}":
     get:
       tags:
         - district
@@ -51,7 +51,7 @@ paths:
           required: true
           description: 행정구역 코드
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -66,7 +66,7 @@ paths:
                     type: string
                   count:
                     type: string
-  '/districts/{name}':
+  "/districts/{name}":
     get:
       tags:
         - district
@@ -78,7 +78,7 @@ paths:
           required: true
           description: 행정구역 이름
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -109,7 +109,7 @@ paths:
           required: false
           description: 행정구역 이름
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -130,7 +130,7 @@ paths:
                       type: string
                     district_name:
                       type: string
-  '/centers/{center_id}':
+  "/centers/{center_id}":
     get:
       tags:
         - children care center
@@ -142,7 +142,7 @@ paths:
           required: true
           description: 어린이집 ID
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -161,7 +161,7 @@ paths:
                     type: string
                   district_name:
                     type: string
-  '/centers/{center_name}':
+  "/centers/{center_name}":
     get:
       tags:
         - children care center
@@ -173,7 +173,7 @@ paths:
           required: true
           description: 어린이집 이름
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -204,7 +204,7 @@ paths:
           required: false
           description: 어린이집 id
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -221,7 +221,7 @@ paths:
                       type: string
                     center_id:
                       type: integer
-  '/areas/{area_id}':
+  "/areas/{area_id}":
     get:
       tags:
         - area
@@ -233,7 +233,7 @@ paths:
           required: true
           description: 촬영구역 ID
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -260,7 +260,7 @@ paths:
           required: false
           description: 촬영구역 id
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -279,7 +279,7 @@ paths:
                       type: date
                     area_id:
                       type: integer
-  '/cctvs/{cctv_id}':
+  "/cctvs/{cctv_id}":
     get:
       tags:
         - cctv
@@ -291,7 +291,7 @@ paths:
           required: true
           description: CCTV id
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -320,7 +320,7 @@ paths:
           required: false
           description: CCTV id
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -341,7 +341,7 @@ paths:
                       type: string
                     cctv_id:
                       type: integer
-  '/videos/{video_id}':
+  "/videos/{video_id}":
     get:
       tags:
         - video
@@ -353,7 +353,7 @@ paths:
           required: true
           description: 비디오 id
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -384,7 +384,7 @@ paths:
           required: false
           description: 비디오 id
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -403,7 +403,7 @@ paths:
                       type: string
                     video_id:
                       type: integer
-  '/anomalies/{anomaly_id}':
+  "/anomalies/{anomaly_id}":
     get:
       tags:
         - anomaly
@@ -415,7 +415,7 @@ paths:
           required: false
           description: 이상행동감지 id
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:

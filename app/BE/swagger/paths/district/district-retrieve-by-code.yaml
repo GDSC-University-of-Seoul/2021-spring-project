@@ -1,6 +1,6 @@
 get:
   tags:
-  - district
+    - district
   summary: get district by code
   description:
   parameters:
