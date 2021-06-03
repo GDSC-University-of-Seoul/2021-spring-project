@@ -1,0 +1,28 @@
+get:
+  tags:
+    - district
+  summary: get all districts
+  description:
+  parameters:
+    - name: parent_code
+      in: query
+      required: false
+      description: 상위 행정구역 코드
+  responses:
+    200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                code:
+                  type: string
+                name:
+                  type: string
+                parent_code:
+                  type: string
+                count:
+                  type: string

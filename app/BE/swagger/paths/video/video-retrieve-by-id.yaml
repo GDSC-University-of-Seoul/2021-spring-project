@@ -1,0 +1,30 @@
+get:
+  tags:
+    - video
+  summary: get video by video id
+  description:
+  parameters:
+    - name: video_id
+      in: path
+      required: true
+      description: 비디오 id
+  responses:
+    200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              video_id:
+                type: integer
+              record_date:
+                type: date
+              delete_date:
+                type: date
+              delete_issue:
+                type: string
+              storage_name:
+                type: string
+              cctv_id:
+                type: integer

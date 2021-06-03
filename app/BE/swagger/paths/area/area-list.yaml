@@ -1,0 +1,28 @@
+get:
+  tags:
+    - area
+  summary: get all areas
+  description:
+  parameters:
+    - name: center_id
+      in: query
+      required: false
+      description: 어린이집 id
+  responses:
+    200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                area_id:
+                  type: integer
+                area_name:
+                  type: string
+                use_of_area:
+                  type: string
+                center_id:
+                  type: integer

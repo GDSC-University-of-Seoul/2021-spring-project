@@ -1,0 +1,28 @@
+get:
+  tags:
+    - anomaly
+  summary: get anomaly by anomaly id
+  description:
+  parameters:
+    - name: anomaly_id
+      in: path
+      required: false
+      description: 이상행동감지 id
+  responses:
+    200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              ano_id:
+                type: integer
+              start_time:
+                type: date
+              end_time:
+                type: date
+              follow_up:
+                type: string
+              video_id:
+                type: integer

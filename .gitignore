@@ -17,8 +17,15 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# webpack
+dist
+
 ## JavaScript
 node_modules/
+.babelrc
+.sequelizerc
+.prettierrc
+.eslintrc.json
 
 ## Python
 __pycache__/
@@ -34,11 +41,7 @@ __pycache__/
 ## etc
 aws/
 migrations/
-seeders/
-
-.sequelizerc
-.prettierrc
-.eslintrc.json
+samples/
 
 ## ignorefile
 config.yml
