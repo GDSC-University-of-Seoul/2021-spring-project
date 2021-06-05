@@ -17,6 +17,7 @@ from pycocotools.cocoeval import COCOeval
 
 class DataLogger(object):
     """Average data logger."""
+
     def __init__(self):
         self.clear()
 
@@ -62,11 +63,15 @@ def calc_iou(pred, target):
 
 
 def mask_cross_entropy(pred, target):
-    return F.binary_cross_entropy_with_logits(
-        pred, target, reduction='mean')[None]
+    return F.binary_cross_entropy_with_logits(pred, target, reduction="mean")[None]
 
 
-def evaluate_mAP(res_file, ann_type='bbox', ann_file='./data/coco/annotations/person_keypoints_val2017.json', silence=True):
+def evaluate_mAP(
+    res_file,
+    ann_type="bbox",
+    ann_file="./data/coco/annotations/person_keypoints_val2017.json",
+    silence=True,
+):
     """Evaluate mAP result for coco dataset.
 
     Parameters
@@ -81,6 +86,7 @@ def evaluate_mAP(res_file, ann_type='bbox', ann_file='./data/coco/annotations/pe
         True: disable running log.
 
     """
+
     class NullWriter(object):
         def write(self, arg):
             pass
@@ -102,23 +108,43 @@ def evaluate_mAP(res_file, ann_type='bbox', ann_file='./data/coco/annotations/pe
 
     if silence:
         sys.stdout = oldstdout  # enable output
-    
+
     if isinstance(cocoEval.stats[0], dict):
-        stats_names = ['AP', 'Ap .5', 'AP .75', 'AP (M)', 'AP (L)',
-                       'AR', 'AR .5', 'AR .75', 'AR (M)', 'AR (L)']
-        parts = ['body', 'face', 'hand', 'fullbody']
+        stats_names = [
+            "AP",
+            "Ap .5",
+            "AP .75",
+            "AP (M)",
+            "AP (L)",
+            "AR",
+            "AR .5",
+            "AR .75",
+            "AR (M)",
+            "AR (L)",
+        ]
+        parts = ["body", "face", "hand", "fullbody"]
 
         info = {}
         for i, part in enumerate(parts):
             info[part] = cocoEval.stats[i][part][0]
         return info
     else:
-        stats_names = ['AP', 'Ap .5', 'AP .75', 'AP (M)', 'AP (L)',
-                       'AR', 'AR .5', 'AR .75', 'AR (M)', 'AR (L)']
+        stats_names = [
+            "AP",
+            "Ap .5",
+            "AP .75",
+            "AP (M)",
+            "AP (L)",
+            "AR",
+            "AR .5",
+            "AR .75",
+            "AR (M)",
+            "AR (L)",
+        ]
         info_str = {}
         for ind, name in enumerate(stats_names):
             info_str[name] = cocoEval.stats[ind]
-        return info_str['AP']
+        return info_str["AP"]
 
 
 def calc_accuracy(preds, labels):
@@ -153,11 +179,16 @@ def calc_accuracy(preds, labels):
         return 0
 
 
-def calc_integral_accuracy(preds, labels, label_masks, output_3d=False, norm_type='softmax'):
+def calc_integral_accuracy(
+    preds, labels, label_masks, output_3d=False, norm_type="softmax"
+):
     """Calculate integral coordinates accuracy."""
+
     def integral_op(hm_1d):
-        hm_1d = hm_1d * torch.cuda.comm.broadcast(torch.arange(hm_1d.shape[-1]).type(
-            torch.cuda.FloatTensor), devices=[hm_1d.device.index])[0]
+        hm_1d = hm_1d * torch.cuda.comm.broadcast(
+            torch.arange(hm_1d.shape[-1]).type(torch.cuda.FloatTensor),
+            devices=[hm_1d.device.index],
+        )[0]
         return hm_1d
 
     preds = preds.detach()
@@ -172,7 +203,16 @@ def calc_integral_accuracy(preds, labels, label_masks, output_3d=False, norm_typ
         num_joints = preds.shape[1]
 
     with torch.no_grad():
-        pred_jts, _ = _integral_tensor(preds, num_joints, output_3d, hm_width, hm_height, hm_depth, integral_op, norm_type=norm_type)
+        pred_jts, _ = _integral_tensor(
+            preds,
+            num_joints,
+            output_3d,
+            hm_width,
+            hm_height,
+            hm_depth,
+            integral_op,
+            norm_type=norm_type,
+        )
 
     coords = pred_jts.detach().cpu().numpy()
     coords = coords.astype(float)
@@ -185,7 +225,9 @@ def calc_integral_accuracy(preds, labels, label_masks, output_3d=False, norm_typ
 
     if output_3d:
         labels = labels.cpu().data.numpy().reshape(preds.shape[0], num_joints, 3)
-        label_masks = label_masks.cpu().data.numpy().reshape(preds.shape[0], num_joints, 3)
+        label_masks = (
+            label_masks.cpu().data.numpy().reshape(preds.shape[0], num_joints, 3)
+        )
 
         labels[:, :, 0] = (labels[:, :, 0] + 0.5) * hm_width
         labels[:, :, 1] = (labels[:, :, 1] + 0.5) * hm_height
@@ -194,7 +236,9 @@ def calc_integral_accuracy(preds, labels, label_masks, output_3d=False, norm_typ
         coords[:, :, 2] = (coords[:, :, 2] + 0.5) * hm_depth
     else:
         labels = labels.cpu().data.numpy().reshape(preds.shape[0], num_joints, 2)
-        label_masks = label_masks.cpu().data.numpy().reshape(preds.shape[0], num_joints, 2)
+        label_masks = (
+            label_masks.cpu().data.numpy().reshape(preds.shape[0], num_joints, 2)
+        )
 
         labels[:, :, 0] = (labels[:, :, 0] + 0.5) * hm_width
         labels[:, :, 1] = (labels[:, :, 1] + 0.5) * hm_height
@@ -203,7 +247,11 @@ def calc_integral_accuracy(preds, labels, label_masks, output_3d=False, norm_typ
     labels = labels * label_masks
 
     if output_3d:
-        norm = np.ones((preds.shape[0], 3)) * np.array([hm_width, hm_height, hm_depth]) / 10
+        norm = (
+            np.ones((preds.shape[0], 3))
+            * np.array([hm_width, hm_height, hm_depth])
+            / 10
+        )
     else:
         norm = np.ones((preds.shape[0], 2)) * np.array([hm_width, hm_height]) / 10
 

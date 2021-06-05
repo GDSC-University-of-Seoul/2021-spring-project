@@ -74,10 +74,10 @@ def decode_box_outputs(rel_codes, anchors, output_xyxy=False):
     h = torch.exp(th) * ha
     ycenter = ty * ha + ycenter_a
     xcenter = tx * wa + xcenter_a
-    ymin = ycenter - h / 2.
-    xmin = xcenter - w / 2.
-    ymax = ycenter + h / 2.
-    xmax = xcenter + w / 2.
+    ymin = ycenter - h / 2.0
+    xmin = xcenter - w / 2.0
+    ymax = ycenter + h / 2.0
+    xmax = xcenter + w / 2.0
     if output_xyxy:
         out = torch.stack([xmin, ymin, xmax, ymax], dim=1)
     else:
@@ -110,7 +110,9 @@ def _generate_anchor_configs(min_level, max_level, num_scales, aspect_ratios):
         anchor_configs[level] = []
         for scale_octave in range(num_scales):
             for aspect in aspect_ratios:
-                anchor_configs[level].append((2 ** level, scale_octave / float(num_scales), aspect))
+                anchor_configs[level].append(
+                    (2 ** level, scale_octave / float(num_scales), aspect)
+                )
     return anchor_configs
 
 
@@ -150,8 +152,14 @@ def _generate_anchor_boxes(image_size, anchor_scale, anchor_configs):
             xv = xv.reshape(-1)
             yv = yv.reshape(-1)
 
-            boxes = np.vstack((yv - anchor_size_y_2, xv - anchor_size_x_2,
-                               yv + anchor_size_y_2, xv + anchor_size_x_2))
+            boxes = np.vstack(
+                (
+                    yv - anchor_size_y_2,
+                    xv - anchor_size_x_2,
+                    yv + anchor_size_y_2,
+                    xv + anchor_size_x_2,
+                )
+            )
             boxes = np.swapaxes(boxes, 0, 1)
             boxes_level.append(np.expand_dims(boxes, axis=1))
         # concat anchors on the same level to the reshape NxAx4
@@ -162,7 +170,16 @@ def _generate_anchor_boxes(image_size, anchor_scale, anchor_configs):
     return anchor_boxes
 
 
-def generate_detections(cls_outputs, box_outputs, anchor_boxes, indices, classes, image_scale, nms_thres=0.5, max_dets=100):
+def generate_detections(
+    cls_outputs,
+    box_outputs,
+    anchor_boxes,
+    indices,
+    classes,
+    image_scale,
+    nms_thres=0.5,
+    max_dets=100,
+):
     """Generates detections with RetinaNet model outputs and anchors.
 
     Args:
@@ -218,18 +235,26 @@ def generate_detections(cls_outputs, box_outputs, anchor_boxes, indices, classes
     # stack em and pad out to MAX_DETECTIONS_PER_IMAGE if necessary
     detections = torch.cat([boxes, scores, classes.float()], dim=1)
     if len(top_detection_idx) < max_dets:
-        detections = torch.cat([
-            detections,
-            torch.zeros(
-                (max_dets - len(top_detection_idx), 6), device=detections.device, dtype=detections.dtype)
-        ], dim=0)
+        detections = torch.cat(
+            [
+                detections,
+                torch.zeros(
+                    (max_dets - len(top_detection_idx), 6),
+                    device=detections.device,
+                    dtype=detections.dtype,
+                ),
+            ],
+            dim=0,
+        )
     return detections
 
 
 class Anchors(nn.Module):
     """RetinaNet Anchors class."""
 
-    def __init__(self, min_level, max_level, num_scales, aspect_ratios, anchor_scale, image_size):
+    def __init__(
+        self, min_level, max_level, num_scales, aspect_ratios, anchor_scale, image_size
+    ):
         """Constructs multiscale RetinaNet anchors.
 
         Args:
@@ -260,11 +285,13 @@ class Anchors(nn.Module):
         self.anchor_scale = anchor_scale
         self.image_size = image_size
         self.config = self._generate_configs()
-        self.register_buffer('boxes', self._generate_boxes())
+        self.register_buffer("boxes", self._generate_boxes())
 
     def _generate_configs(self):
         """Generate configurations of anchor boxes."""
-        return _generate_anchor_configs(self.min_level, self.max_level, self.num_scales, self.aspect_ratios)
+        return _generate_anchor_configs(
+            self.min_level, self.max_level, self.num_scales, self.aspect_ratios
+        )
 
     def _generate_boxes(self):
         """Generates multiscale anchor boxes."""
@@ -278,8 +305,7 @@ class Anchors(nn.Module):
 
 # FIXME PyTorch port of this class and subclasses not tested yet, needed for training
 class AnchorLabeler(nn.Module):
-    """Labeler for multiscale anchor boxes.
-    """
+    """Labeler for multiscale anchor boxes."""
 
     def __init__(self, anchors, num_classes, match_threshold=0.5):
         """Constructs anchor labeler to assign labels to anchors.
@@ -298,10 +324,13 @@ class AnchorLabeler(nn.Module):
             match_threshold,
             unmatched_threshold=match_threshold,
             negatives_lower_than_unmatched=True,
-            force_match_for_each_row=True)
+            force_match_for_each_row=True,
+        )
         box_coder = faster_rcnn_box_coder.FasterRcnnBoxCoder()
 
-        self.target_assigner = target_assigner.TargetAssigner(similarity_calc, matcher, box_coder)
+        self.target_assigner = target_assigner.TargetAssigner(
+            similarity_calc, matcher, box_coder
+        )
         self.anchors = anchors
         self.match_threshold = match_threshold
         self.num_classes = num_classes
@@ -317,7 +346,8 @@ class AnchorLabeler(nn.Module):
             indices = torch.arange(count, count + steps, device=labels.device)
             count += steps
             labels_unpacked.append(
-                torch.index_select(labels, 0, indices).view([feat_size, feat_size, -1]))
+                torch.index_select(labels, 0, indices).view([feat_size, feat_size, -1])
+            )
         return labels_unpacked
 
     def label_anchors(self, gt_boxes, gt_labels):
@@ -344,7 +374,9 @@ class AnchorLabeler(nn.Module):
         anchor_box_list = box_list.BoxList(self.anchors.boxes)
 
         # cls_weights, box_weights are not used
-        cls_targets, _, box_targets, _, matches = self.target_assigner.assign(anchor_box_list, gt_box_list, gt_labels)
+        cls_targets, _, box_targets, _, matches = self.target_assigner.assign(
+            anchor_box_list, gt_box_list, gt_labels
+        )
 
         # class labels start from 1 and the background class = -1
         cls_targets -= 1

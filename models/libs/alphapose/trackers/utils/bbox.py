@@ -41,7 +41,7 @@ def int_box(box):
 # for display
 ############################
 def _to_color(indx, base):
-    """ return (b, r, g) tuple"""
+    """return (b, r, g) tuple"""
     base2 = base * base
     b = 2 - indx / base2
     r = 2 - (indx % base2) / base
@@ -52,7 +52,7 @@ def _to_color(indx, base):
 def get_color(indx, cls_num=1):
     if indx >= cls_num:
         return (23 * indx % 255, 47 * indx % 255, 137 * indx % 255)
-    base = int(np.ceil(pow(cls_num, 1. / 3)))
+    base = int(np.ceil(pow(cls_num, 1.0 / 3)))
     return _to_color(indx, base)
 
 
@@ -70,18 +70,23 @@ def draw_detection(im, bboxes, scores=None, cls_inds=None, cls_name=None):
         color = get_color(cls_indx, cls_num)
 
         thick = int((h + w) / 600)
-        cv2.rectangle(imgcv,
-                      (box[0], box[1]), (box[2], box[3]),
-                      color, thick)
+        cv2.rectangle(imgcv, (box[0], box[1]), (box[2], box[3]), color, thick)
 
         if cls_indx is not None:
             score = scores[i] if scores is not None else 1
             name = cls_name[cls_indx] if cls_name is not None else str(cls_indx)
-            mess = '%s: %.3f' % (name, score) if cls_inds is not None else '%.3f' % (score, )
-            cv2.putText(imgcv, mess, (box[0], box[1] - 12),
-                        0, 1e-3 * h, color, thick // 3)
+            mess = (
+                "%s: %.3f" % (name, score)
+                if cls_inds is not None
+                else "%.3f" % (score,)
+            )
+            cv2.putText(
+                imgcv, mess, (box[0], box[1] - 12), 0, 1e-3 * h, color, thick // 3
+            )
 
     return imgcv
+
+
 def _box_to_center_scale(x, y, w, h, aspect_ratio=1.0, scale_mult=1.25):
     """Convert box coordinates to center and scale.
     adapted from https://github.com/Microsoft/human-pose-estimation.pytorch
@@ -95,8 +100,7 @@ def _box_to_center_scale(x, y, w, h, aspect_ratio=1.0, scale_mult=1.25):
         h = w / aspect_ratio
     elif w < aspect_ratio * h:
         w = h * aspect_ratio
-    scale = np.array(
-        [w * 1.0 / pixel_std, h * 1.0 / pixel_std], dtype=np.float32)
+    scale = np.array([w * 1.0 / pixel_std, h * 1.0 / pixel_std], dtype=np.float32)
     if center[0] != -1:
         scale = scale * scale_mult
     return center, scale
@@ -112,6 +116,8 @@ def _center_scale_to_box(center, scale):
     ymax = ymin + h
     bbox = [xmin, ymin, xmax, ymax]
     return bbox
+
+
 def transformBoxInvert(pt, bbox, resH, resW):
     center = torch.zeros(2)
     center[0] = (bbox[2] - 1 - bbox[0]) / 2

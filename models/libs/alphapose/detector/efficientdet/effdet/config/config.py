@@ -12,8 +12,8 @@ import six
 
 
 def eval_str_fn(val):
-    if val in {'true', 'false'}:
-        return val == 'true'
+    if val in {"true", "false"}:
+        return val == "true"
     try:
         return ast.literal_eval(val)
     except ValueError:
@@ -55,7 +55,7 @@ class Config(object):
                 if allow_new_keys:
                     self.__setattr__(k, v)
                 else:
-                    raise KeyError('Key `{}` does not exist for overriding. '.format(k))
+                    raise KeyError("Key `{}` does not exist for overriding. ".format(k))
             else:
                 if isinstance(v, dict):
                     self.__dict__[k]._update(v, allow_new_keys)
@@ -76,7 +76,7 @@ class Config(object):
         elif isinstance(config_dict_or_str, dict):
             config_dict = config_dict_or_str
         else:
-            raise ValueError('Unknown value type: {}'.format(config_dict_or_str))
+            raise ValueError("Unknown value type: {}".format(config_dict_or_str))
 
         self._update(config_dict, allow_new_keys=False)
 
@@ -86,14 +86,14 @@ class Config(object):
             return {}
         config_dict = {}
         try:
-            for kv_pair in config_str.split(','):
+            for kv_pair in config_str.split(","):
                 if not kv_pair:  # skip empty string
                     continue
-                k, v = kv_pair.split('=')
+                k, v = kv_pair.split("=")
                 config_dict[k.strip()] = eval_str_fn(v.strip())
             return config_dict
         except ValueError:
-            raise ValueError('Invalid config_str: {}'.format(config_str))
+            raise ValueError("Invalid config_str: {}".format(config_str))
 
     def as_dict(self):
         """Returns a dict representation."""
@@ -111,7 +111,7 @@ def default_detection_configs():
     h = Config()
 
     # model name.
-    h.name = 'tf_efficientdet_d1'
+    h.name = "tf_efficientdet_d1"
 
     # input preprocessing parameters
     h.image_size = 640
@@ -131,7 +131,7 @@ def default_detection_configs():
     h.num_scales = 3
     h.aspect_ratios = [(1.0, 1.0), (1.4, 0.7), (0.7, 1.4)]
     h.anchor_scale = 4.0
-    h.pad_type = 'same'
+    h.pad_type = "same"
 
     # is batchnorm training mode
     h.is_training_bn = True
@@ -174,12 +174,12 @@ def default_detection_configs():
 
     # No stochastic depth in default.
     h.survival_prob = None  # FIXME remove
-    h.drop_path_rate = 0.
+    h.drop_path_rate = 0.0
 
-    h.lr_decay_method = 'cosine'
+    h.lr_decay_method = "cosine"
     h.moving_average_decay = 0.9998
     h.ckpt_var_scope = None
-    h.backbone_name = 'tf_efficientnet_b1'
+    h.backbone_name = "tf_efficientnet_b1"
     h.backbone_config = None
 
     # RetinaNet.
@@ -188,85 +188,77 @@ def default_detection_configs():
 
 
 efficientdet_model_param_dict = {
-    'efficientdet_d0':
-        dict(
-            name='efficientdet_d0',
-            backbone_name='tf_efficientnet_b0',
-            image_size=512,
-            fpn_channels=64,
-            fpn_cell_repeats=3,
-            box_class_repeats=3,
-        ),
-    'efficientdet_d1':
-        dict(
-            name='efficientdet_d1',
-            backbone_name='tf_efficientnet_b1',
-            image_size=640,
-            fpn_channels=88,
-            fpn_cell_repeats=4,
-            box_class_repeats=3,
-        ),
-    'efficientdet_d2':
-        dict(
-            name='efficientdet_d2',
-            backbone_name='tf_efficientnet_b2',
-            image_size=768,
-            fpn_channels=112,
-            fpn_cell_repeats=5,
-            box_class_repeats=3,
-        ),
-    'efficientdet_d3':
-        dict(
-            name='efficientdet_d3',
-            backbone_name='tf_efficientnet_b3',
-            image_size=896,
-            fpn_channels=160,
-            fpn_cell_repeats=6,
-            box_class_repeats=4,
-        ),
-    'efficientdet_d4':
-        dict(
-            name='efficientdet_d4',
-            backbone_name='tf_efficientnet_b4',
-            image_size=1024,
-            fpn_channels=224,
-            fpn_cell_repeats=7,
-            box_class_repeats=4,
-        ),
-    'efficientdet_d5':
-        dict(
-            name='efficientdet_d5',
-            backbone_name='tf_efficientnet_b5',
-            image_size=1280,
-            fpn_channels=288,
-            fpn_cell_repeats=7,
-            box_class_repeats=4,
-        ),
-    'efficientdet_d6':
-        dict(
-            name='efficientdet_d6',
-            backbone_name='tf_efficientnet_b6',
-            image_size=1280,
-            fpn_channels=384,
-            fpn_cell_repeats=8,
-            box_class_repeats=5,
-            fpn_name='bifpn_sum',  # Use unweighted sum for training stability.
-        ),
-    'efficientdet_d7':
-        dict(
-            name='efficientdet_d7',
-            backbone_name='tf_efficientnet_b6',
-            image_size=1536,
-            fpn_channels=384,
-            fpn_cell_repeats=8,
-            box_class_repeats=5,
-            anchor_scale=5.0,
-            fpn_name='bifpn_sum',  # Use unweighted sum for training stability.
-        ),
+    "efficientdet_d0": dict(
+        name="efficientdet_d0",
+        backbone_name="tf_efficientnet_b0",
+        image_size=512,
+        fpn_channels=64,
+        fpn_cell_repeats=3,
+        box_class_repeats=3,
+    ),
+    "efficientdet_d1": dict(
+        name="efficientdet_d1",
+        backbone_name="tf_efficientnet_b1",
+        image_size=640,
+        fpn_channels=88,
+        fpn_cell_repeats=4,
+        box_class_repeats=3,
+    ),
+    "efficientdet_d2": dict(
+        name="efficientdet_d2",
+        backbone_name="tf_efficientnet_b2",
+        image_size=768,
+        fpn_channels=112,
+        fpn_cell_repeats=5,
+        box_class_repeats=3,
+    ),
+    "efficientdet_d3": dict(
+        name="efficientdet_d3",
+        backbone_name="tf_efficientnet_b3",
+        image_size=896,
+        fpn_channels=160,
+        fpn_cell_repeats=6,
+        box_class_repeats=4,
+    ),
+    "efficientdet_d4": dict(
+        name="efficientdet_d4",
+        backbone_name="tf_efficientnet_b4",
+        image_size=1024,
+        fpn_channels=224,
+        fpn_cell_repeats=7,
+        box_class_repeats=4,
+    ),
+    "efficientdet_d5": dict(
+        name="efficientdet_d5",
+        backbone_name="tf_efficientnet_b5",
+        image_size=1280,
+        fpn_channels=288,
+        fpn_cell_repeats=7,
+        box_class_repeats=4,
+    ),
+    "efficientdet_d6": dict(
+        name="efficientdet_d6",
+        backbone_name="tf_efficientnet_b6",
+        image_size=1280,
+        fpn_channels=384,
+        fpn_cell_repeats=8,
+        box_class_repeats=5,
+        fpn_name="bifpn_sum",  # Use unweighted sum for training stability.
+    ),
+    "efficientdet_d7": dict(
+        name="efficientdet_d7",
+        backbone_name="tf_efficientnet_b6",
+        image_size=1536,
+        fpn_channels=384,
+        fpn_cell_repeats=8,
+        box_class_repeats=5,
+        anchor_scale=5.0,
+        fpn_name="bifpn_sum",  # Use unweighted sum for training stability.
+    ),
 }
 
 
-def get_efficientdet_config(model_name='efficientdet_d1'):
+def get_efficientdet_config(model_name="efficientdet_d1"):
     """Get the default config for EfficientDet based on model name."""
     h = default_detection_configs()
     h.override(efficientdet_model_param_dict[model_name])

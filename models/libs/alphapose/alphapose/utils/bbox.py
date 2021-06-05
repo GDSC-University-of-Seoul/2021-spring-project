@@ -57,18 +57,23 @@ def bbox_xywh_to_xyxy(xywh):
     if isinstance(xywh, (tuple, list)):
         if not len(xywh) == 4:
             raise IndexError(
-                "Bounding boxes must have 4 elements, given {}".format(len(xywh)))
+                "Bounding boxes must have 4 elements, given {}".format(len(xywh))
+            )
         w, h = np.maximum(xywh[2] - 1, 0), np.maximum(xywh[3] - 1, 0)
         return (xywh[0], xywh[1], xywh[0] + w, xywh[1] + h)
     elif isinstance(xywh, np.ndarray):
         if not xywh.size % 4 == 0:
             raise IndexError(
-                "Bounding boxes must have n * 4 elements, given {}".format(xywh.shape))
+                "Bounding boxes must have n * 4 elements, given {}".format(xywh.shape)
+            )
         xyxy = np.hstack((xywh[:, :2], xywh[:, :2] + np.maximum(0, xywh[:, 2:4] - 1)))
         return xyxy
     else:
         raise TypeError(
-            'Expect input xywh a list, tuple or numpy.ndarray, given {}'.format(type(xywh)))
+            "Expect input xywh a list, tuple or numpy.ndarray, given {}".format(
+                type(xywh)
+            )
+        )
 
 
 def bbox_xyxy_to_xywh(xyxy):
@@ -91,18 +96,23 @@ def bbox_xyxy_to_xywh(xyxy):
     if isinstance(xyxy, (tuple, list)):
         if not len(xyxy) == 4:
             raise IndexError(
-                "Bounding boxes must have 4 elements, given {}".format(len(xyxy)))
+                "Bounding boxes must have 4 elements, given {}".format(len(xyxy))
+            )
         x1, y1 = xyxy[0], xyxy[1]
         w, h = xyxy[2] - x1 + 1, xyxy[3] - y1 + 1
         return (x1, y1, w, h)
     elif isinstance(xyxy, np.ndarray):
         if not xyxy.size % 4 == 0:
             raise IndexError(
-                "Bounding boxes must have n * 4 elements, given {}".format(xyxy.shape))
+                "Bounding boxes must have n * 4 elements, given {}".format(xyxy.shape)
+            )
         return np.hstack((xyxy[:, :2], xyxy[:, 2:4] - xyxy[:, :2] + 1))
     else:
         raise TypeError(
-            'Expect input xywh a list, tuple or numpy.ndarray, given {}'.format(type(xyxy)))
+            "Expect input xywh a list, tuple or numpy.ndarray, given {}".format(
+                type(xyxy)
+            )
+        )
 
 
 def bbox_clip_xyxy(xyxy, width, height):
@@ -130,7 +140,8 @@ def bbox_clip_xyxy(xyxy, width, height):
     if isinstance(xyxy, (tuple, list)):
         if not len(xyxy) == 4:
             raise IndexError(
-                "Bounding boxes must have 4 elements, given {}".format(len(xyxy)))
+                "Bounding boxes must have 4 elements, given {}".format(len(xyxy))
+            )
         x1 = np.minimum(width - 1, np.maximum(0, xyxy[0]))
         y1 = np.minimum(height - 1, np.maximum(0, xyxy[1]))
         x2 = np.minimum(width - 1, np.maximum(0, xyxy[2]))
@@ -139,7 +150,8 @@ def bbox_clip_xyxy(xyxy, width, height):
     elif isinstance(xyxy, np.ndarray):
         if not xyxy.size % 4 == 0:
             raise IndexError(
-                "Bounding boxes must have n * 4 elements, given {}".format(xyxy.shape))
+                "Bounding boxes must have n * 4 elements, given {}".format(xyxy.shape)
+            )
         x1 = np.minimum(width - 1, np.maximum(0, xyxy[:, 0]))
         y1 = np.minimum(height - 1, np.maximum(0, xyxy[:, 1]))
         x2 = np.minimum(width - 1, np.maximum(0, xyxy[:, 2]))
@@ -147,7 +159,10 @@ def bbox_clip_xyxy(xyxy, width, height):
         return np.hstack((x1, y1, x2, y2))
     else:
         raise TypeError(
-            'Expect input xywh a list, tuple or numpy.ndarray, given {}'.format(type(xyxy)))
+            "Expect input xywh a list, tuple or numpy.ndarray, given {}".format(
+                type(xyxy)
+            )
+        )
 
 
 def transformBox(pt, bbox, input_size, output_size):
@@ -207,8 +222,7 @@ def _box_to_center_scale(x, y, w, h, aspect_ratio=1.0, scale_mult=1.25):
         h = w / aspect_ratio
     elif w < aspect_ratio * h:
         w = h * aspect_ratio
-    scale = np.array(
-        [w * 1.0 / pixel_std, h * 1.0 / pixel_std], dtype=np.float32)
+    scale = np.array([w * 1.0 / pixel_std, h * 1.0 / pixel_std], dtype=np.float32)
     if center[0] != -1:
         scale = scale * scale_mult
     return center, scale

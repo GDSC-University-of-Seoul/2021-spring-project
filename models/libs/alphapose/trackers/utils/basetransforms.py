@@ -24,7 +24,7 @@ def box_transform(bbox, sf, imgwidth, imght, train):
     width = bbox[2] - bbox[0]
     ht = bbox[3] - bbox[1]
     if train:
-        scaleRate = 0.25 * np.clip(np.random.randn() * sf, - sf, sf)
+        scaleRate = 0.25 * np.clip(np.random.randn() * sf, -sf, sf)
 
         bbox[0] = max(0, bbox[0] - width * scaleRate / 2)
         bbox[1] = max(0, bbox[1] - ht * scaleRate / 2)
@@ -49,7 +49,7 @@ def addDPG(bbox, imgwidth, imght):
 
     if PatchScale > 0.85:
         ratio = ht / width
-        if (width < ht):
+        if width < ht:
             patchWidth = PatchScale * width
             patchHt = patchWidth * ratio
         else:
@@ -61,10 +61,17 @@ def addDPG(bbox, imgwidth, imght):
         xmax = xmin + patchWidth + 1
         ymax = ymin + patchHt + 1
     else:
-        xmin = max(1, min(bbox[0] + np.random.normal(-0.0142, 0.1158) * width, imgwidth - 3))
+        xmin = max(
+            1, min(bbox[0] + np.random.normal(-0.0142, 0.1158) * width, imgwidth - 3)
+        )
         ymin = max(1, min(bbox[1] + np.random.normal(0.0043, 0.068) * ht, imght - 3))
-        xmax = min(max(xmin + 2, bbox[2] + np.random.normal(0.0154, 0.1337) * width), imgwidth - 3)
-        ymax = min(max(ymin + 2, bbox[3] + np.random.normal(-0.0013, 0.0711) * ht), imght - 3)
+        xmax = min(
+            max(xmin + 2, bbox[2] + np.random.normal(0.0154, 0.1337) * width),
+            imgwidth - 3,
+        )
+        ymax = min(
+            max(ymin + 2, bbox[3] + np.random.normal(-0.0013, 0.0711) * ht), imght - 3
+        )
 
     bbox[0] = xmin
     bbox[1] = ymin
@@ -116,26 +123,26 @@ def torch_to_im(img):
 
 def load_image(img_path):
     # H x W x C => C x H x W
-    return im_to_torch(cv2.cvtColor(cv2.imread(img_path), cv2.COLOR_BGR2RGB))#scipy.misc.imread(img_path, mode='RGB'))
+    return im_to_torch(
+        cv2.cvtColor(cv2.imread(img_path), cv2.COLOR_BGR2RGB)
+    )  # scipy.misc.imread(img_path, mode='RGB'))
 
 
 def to_numpy(tensor):
     # torch.Tensor => numpy.ndarray
     if torch.is_tensor(tensor):
         return tensor.cpu().numpy()
-    elif type(tensor).__module__ != 'numpy':
-        raise ValueError("Cannot convert {} to numpy array"
-                         .format(type(tensor)))
+    elif type(tensor).__module__ != "numpy":
+        raise ValueError("Cannot convert {} to numpy array".format(type(tensor)))
     return tensor
 
 
 def to_torch(ndarray):
     # numpy.ndarray => torch.Tensor
-    if type(ndarray).__module__ == 'numpy':
+    if type(ndarray).__module__ == "numpy":
         return torch.from_numpy(ndarray)
     elif not torch.is_tensor(ndarray):
-        raise ValueError("Cannot convert {} to torch tensor"
-                         .format(type(ndarray)))
+        raise ValueError("Cannot convert {} to torch tensor".format(type(ndarray)))
     return ndarray
 
 
@@ -171,7 +178,7 @@ def cv_cropBox(img, bbox, input_size):
     pad_size = [(lenH - box_shape[0]) // 2, (lenW - box_shape[1]) // 2]
     # Padding Zeros
     img[:, :ymin, :], img[:, :, :xmin] = 0, 0
-    img[:, ymax + 1:, :], img[:, :, xmax + 1:] = 0, 0
+    img[:, ymax + 1 :, :], img[:, :, xmax + 1 :] = 0, 0
 
     src = np.zeros((3, 2), dtype=np.float32)
     dst = np.zeros((3, 2), dtype=np.float32)
@@ -185,8 +192,9 @@ def cv_cropBox(img, bbox, input_size):
     dst[2:, :] = get_3rd_point(dst[0, :], dst[1, :])
 
     trans = cv2.getAffineTransform(np.float32(src), np.float32(dst))
-    dst_img = cv2.warpAffine(torch_to_im(img), trans,
-                             (resW, resH), flags=cv2.INTER_LINEAR)
+    dst_img = cv2.warpAffine(
+        torch_to_im(img), trans, (resW, resH), flags=cv2.INTER_LINEAR
+    )
     if dst_img.ndim == 2:
         dst_img = dst_img[:, :, np.newaxis]
 
@@ -239,8 +247,9 @@ def cv_cropBox_rot(img, bbox, input_size, rot):
     dst[2:, :] = get_3rd_point(dst[0, :], dst[1, :])
 
     trans = cv2.getAffineTransform(np.float32(src), np.float32(dst))
-    dst_img = cv2.warpAffine(torch_to_im(img), trans,
-                             (resW, resH), flags=cv2.INTER_LINEAR)
+    dst_img = cv2.warpAffine(
+        torch_to_im(img), trans, (resW, resH), flags=cv2.INTER_LINEAR
+    )
     if dst_img.ndim == 2:
         dst_img = dst_img[:, :, np.newaxis]
 
@@ -389,8 +398,9 @@ def cv_cropBoxInverse(inp, bbox, img_size, output_size):
     dst[2:, :] = get_3rd_point(dst[0, :], dst[1, :])
 
     trans = cv2.getAffineTransform(np.float32(src), np.float32(dst))
-    dst_img = cv2.warpAffine(torch_to_im(inp), trans,
-                             (imgW, imgH), flags=cv2.INTER_LINEAR)
+    dst_img = cv2.warpAffine(
+        torch_to_im(inp), trans, (imgW, imgH), flags=cv2.INTER_LINEAR
+    )
     if dst_img.ndim == 3 and dst_img.shape[2] == 1:
         dst_img = dst_img[:, :, 0]
         return dst_img
@@ -438,8 +448,9 @@ def cv_rotate(img, rot, input_size):
 
     trans = cv2.getAffineTransform(np.float32(src), np.float32(dst))
 
-    dst_img = cv2.warpAffine(torch_to_im(img), trans,
-                             (resW, resH), flags=cv2.INTER_LINEAR)
+    dst_img = cv2.warpAffine(
+        torch_to_im(img), trans, (resW, resH), flags=cv2.INTER_LINEAR
+    )
     if dst_img.ndim == 2:
         dst_img = dst_img[:, :, np.newaxis]
 
@@ -448,16 +459,18 @@ def cv_rotate(img, rot, input_size):
 
 def count_visible(bbox, joints_3d):
     """Count number of visible joints given bound box."""
-    vis = np.logical_and.reduce((
-        joints_3d[:, 0, 0] > 0,
-        joints_3d[:, 0, 0] > bbox[0],
-        joints_3d[:, 0, 0] < bbox[2],
-        joints_3d[:, 1, 0] > 0,
-        joints_3d[:, 1, 0] > bbox[1],
-        joints_3d[:, 1, 0] < bbox[3],
-        joints_3d[:, 0, 1] > 0,
-        joints_3d[:, 1, 1] > 0
-    ))
+    vis = np.logical_and.reduce(
+        (
+            joints_3d[:, 0, 0] > 0,
+            joints_3d[:, 0, 0] > bbox[0],
+            joints_3d[:, 0, 0] < bbox[2],
+            joints_3d[:, 1, 0] > 0,
+            joints_3d[:, 1, 0] > bbox[1],
+            joints_3d[:, 1, 0] < bbox[3],
+            joints_3d[:, 0, 1] > 0,
+            joints_3d[:, 1, 1] > 0,
+        )
+    )
     return np.sum(vis), vis
 
 
@@ -485,7 +498,7 @@ def drawGaussian(img, pt, sigma):
     ul = [int(pt[0] - tmpSize), int(pt[1] - tmpSize)]
     br = [int(pt[0] + tmpSize + 1), int(pt[1] + tmpSize + 1)]
 
-    if (ul[0] >= img.shape[1] or ul[1] >= img.shape[0] or br[0] < 0 or br[1] < 0):
+    if ul[0] >= img.shape[1] or ul[1] >= img.shape[0] or br[0] < 0 or br[1] < 0:
         # If not, just return the image as is
         return to_torch(img)
 
@@ -495,7 +508,7 @@ def drawGaussian(img, pt, sigma):
     y = x[:, np.newaxis]
     x0 = y0 = size // 2
     # The gaussian is not normalized, we want the center value to equal 1
-    g = np.exp(- ((x - x0) ** 2 + (y - y0) ** 2) / (2 * sigma ** 2))
+    g = np.exp(-((x - x0) ** 2 + (y - y0) ** 2) / (2 * sigma ** 2))
 
     # Usable gaussian range
     g_x = max(0, -ul[0]), min(br[0], img.shape[1]) - ul[0]
@@ -504,12 +517,12 @@ def drawGaussian(img, pt, sigma):
     img_x = max(0, ul[0]), min(br[0], img.shape[1])
     img_y = max(0, ul[1]), min(br[1], img.shape[0])
 
-    img[img_y[0]:img_y[1], img_x[0]:img_x[1]] = g[g_y[0]:g_y[1], g_x[0]:g_x[1]]
+    img[img_y[0] : img_y[1], img_x[0] : img_x[1]] = g[g_y[0] : g_y[1], g_x[0] : g_x[1]]
     return to_torch(img)
 
 
 def flip(x):
-    assert (x.dim() == 3 or x.dim() == 4)
+    assert x.dim() == 3 or x.dim() == 4
     dim = x.dim() - 1
 
     return x.flip(dims=(dim,))
@@ -533,7 +546,7 @@ def flip_heatmap(heatmap, joint_pairs, shift=False):
         Flipped heatmap.
 
     """
-    assert (heatmap.dim() == 3 or heatmap.dim() == 4)
+    assert heatmap.dim() == 3 or heatmap.dim() == 4
     out = flip(heatmap)
 
     for pair in joint_pairs:
@@ -576,10 +589,14 @@ def flip_joints_3d(joints_3d, width, joint_pairs):
     joints[:, 0, 0] = width - joints[:, 0, 0] - 1
     # change left-right parts
     for pair in joint_pairs:
-        joints[pair[0], :, 0], joints[pair[1], :, 0] = \
-            joints[pair[1], :, 0], joints[pair[0], :, 0].copy()
-        joints[pair[0], :, 1], joints[pair[1], :, 1] = \
-            joints[pair[1], :, 1], joints[pair[0], :, 1].copy()
+        joints[pair[0], :, 0], joints[pair[1], :, 0] = (
+            joints[pair[1], :, 0],
+            joints[pair[0], :, 0].copy(),
+        )
+        joints[pair[0], :, 1], joints[pair[1], :, 1] = (
+            joints[pair[1], :, 1],
+            joints[pair[0], :, 1].copy(),
+        )
 
     joints[:, :, 0] *= joints[:, :, 1]
     return joints
@@ -598,7 +615,9 @@ def heatmap_to_coord_rmpe(hms, bbox):
         px = int(round(float(coords[p][0])))
         py = int(round(float(coords[p][1])))
         if 1 < px < hm_w - 1 and 1 < py < hm_h - 1:
-            diff = np.array((hm[py][px + 1] - hm[py][px - 1], hm[py + 1][px] - hm[py - 1][px]))
+            diff = np.array(
+                (hm[py][px + 1] - hm[py][px - 1], hm[py + 1][px] - hm[py - 1][px])
+            )
             coords[p] += np.sign(diff) * 0.25
 
     preds = np.zeros(coords.shape)
@@ -620,9 +639,10 @@ def heatmap_to_coord_simple(hms, bbox):
         px = int(round(float(coords[p][0])))
         py = int(round(float(coords[p][1])))
         if 1 < px < hm_w - 1 and 1 < py < hm_h - 1:
-            diff = np.array((hm[py][px + 1] - hm[py][px - 1],
-                             hm[py + 1][px] - hm[py - 1][px]))
-            coords[p] += np.sign(diff) * .25
+            diff = np.array(
+                (hm[py][px + 1] - hm[py][px - 1], hm[py + 1][px] - hm[py - 1][px])
+            )
+            coords[p] += np.sign(diff) * 0.25
 
     preds = np.zeros_like(coords)
 
@@ -634,8 +654,7 @@ def heatmap_to_coord_simple(hms, bbox):
     scale = np.array([w, h])
     # Transform back
     for i in range(coords.shape[0]):
-        preds[i] = transform_preds(coords[i], center, scale,
-                                   [hm_w, hm_h])
+        preds[i] = transform_preds(coords[i], center, scale, [hm_w, hm_h])
 
     return preds, maxvals
 
@@ -694,10 +713,11 @@ def process_peak(candidate_points, hm, bbox, hm_h, hm_w):
             py = int(round(float(y)))
 
             if 1 < px < hm_w - 1 and 1 < py < hm_h - 1:
-                diff = np.array((hm[py][px + 1] - hm[py][px - 1],
-                                 hm[py + 1][px] - hm[py - 1][px]))
-                x += np.sign(diff)[0] * .25
-                y += np.sign(diff)[1] * .25
+                diff = np.array(
+                    (hm[py][px + 1] - hm[py][px - 1], hm[py + 1][px] - hm[py - 1][px])
+                )
+                x += np.sign(diff)[0] * 0.25
+                y += np.sign(diff)[1] * 0.25
 
             pt = np.array((x, y))
             pt = transform_preds(pt, center, scale, [hm_w, hm_h])
@@ -765,12 +785,9 @@ def get_max_pred_batch(batch_heatmaps):
     return preds, maxvals
 
 
-def get_affine_transform(center,
-                         scale,
-                         rot,
-                         output_size,
-                         shift=np.array([0, 0], dtype=np.float32),
-                         inv=0):
+def get_affine_transform(
+    center, scale, rot, output_size, shift=np.array([0, 0], dtype=np.float32), inv=0
+):
     if not isinstance(scale, np.ndarray) and not isinstance(scale, list):
         scale = np.array([scale, scale])
 
@@ -802,15 +819,19 @@ def get_affine_transform(center,
 
 
 def affine_transform(pt, t):
-    new_pt = np.array([pt[0], pt[1], 1.]).T
+    new_pt = np.array([pt[0], pt[1], 1.0]).T
     new_pt = np.dot(t, new_pt)
     return new_pt[:2]
 
 
 def get_func_heatmap_to_coord(cfg):
-    if cfg.MODEL.EXTRA.PRESET == 'rmpe':
+    if cfg.MODEL.EXTRA.PRESET == "rmpe":
         return heatmap_to_coord_rmpe
-    elif cfg.MODEL.EXTRA.PRESET == 'simple' or cfg.MODEL.EXTRA.PRESET == 'multi_simple' or cfg.MODEL.EXTRA.PRESET == 'simple_dense':
+    elif (
+        cfg.MODEL.EXTRA.PRESET == "simple"
+        or cfg.MODEL.EXTRA.PRESET == "multi_simple"
+        or cfg.MODEL.EXTRA.PRESET == "simple_dense"
+    ):
         return heatmap_to_coord_simple
     else:
         raise NotImplementedError

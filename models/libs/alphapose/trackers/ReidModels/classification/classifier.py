@@ -15,12 +15,14 @@ def _factor_closest(num, factor, is_ceil=True):
     return int(num) * factor
 
 
-def crop_with_factor(im, dest_size, factor=32, pad_val=0, basedon='min'):
+def crop_with_factor(im, dest_size, factor=32, pad_val=0, basedon="min"):
     im_size_min, im_size_max = np.min(im.shape[0:2]), np.max(im.shape[0:2])
-    im_base = {'min': im_size_min,
-               'max': im_size_max,
-               'w': im.shape[1],
-               'h': im.shape[0]}
+    im_base = {
+        "min": im_size_min,
+        "max": im_size_max,
+        "w": im.shape[1],
+        "h": im.shape[0],
+    }
     im_scale = float(dest_size) / im_base.get(basedon, im_size_min)
 
     # Scale the image.
@@ -42,8 +44,8 @@ class PatchClassifier(object):
     def __init__(self, gpu=0):
         self.gpu = gpu
 
-        ckpt = 'data/squeezenet_small40_coco_mot16_ckpt_10.h5'
-        model = CLSModel(extractor='squeezenet')
+        ckpt = "data/squeezenet_small40_coco_mot16_ckpt_10.h5"
+        model = CLSModel(extractor="squeezenet")
 
         # from mcmtt.network.experiments.rfcn_cls2 import Model as CLSModel
         # ckpt = '/extra/models/resnet50_small40_coco_kitti/ckpt_31.h5'
@@ -52,9 +54,9 @@ class PatchClassifier(object):
         net_utils.load_net(ckpt, model)
         model = model.eval()
         self.model = model.cuda(self.gpu)
-        print('load cls model from: {}'.format(ckpt))
+        print("load cls model from: {}".format(ckpt))
         self.score_map = None
-        self.im_scale = 1.
+        self.im_scale = 1.0
 
     @staticmethod
     def im_preprocess(image):
@@ -64,11 +66,13 @@ class PatchClassifier(object):
             real_inp_size = 640
         else:
             real_inp_size = 368
-        im_pad, im_scale, real_shape = crop_with_factor(image, real_inp_size, factor=16, pad_val=0, basedon='min')
+        im_pad, im_scale, real_shape = crop_with_factor(
+            image, real_inp_size, factor=16, pad_val=0, basedon="min"
+        )
 
         # preprocess image
         im_croped = cv2.cvtColor(im_pad, cv2.COLOR_BGR2RGB)
-        im_croped = im_croped.astype(np.float32) / 255. - 0.5
+        im_croped = im_croped.astype(np.float32) / 255.0 - 0.5
 
         return im_croped, im_pad, real_shape, im_scale
 
@@ -81,7 +85,7 @@ class PatchClassifier(object):
         im_data = im_data.unsqueeze(0)
 
         # forward
-        if LooseVersion(torch.__version__) > LooseVersion('0.3.1'):
+        if LooseVersion(torch.__version__) > LooseVersion("0.3.1"):
             with torch.no_grad():
                 im_var = Variable(im_data).cuda(self.gpu)
                 self.score_map = self.model(im_var)
@@ -104,7 +108,9 @@ class PatchClassifier(object):
         clipped_boxes = bbox_utils.clip_boxes(rois, self.ori_image_shape)
 
         ori_areas = (rois[:, 2] - rois[:, 0]) * (rois[:, 3] - rois[:, 1])
-        areas = (clipped_boxes[:, 2] - clipped_boxes[:, 0]) * (clipped_boxes[:, 3] - clipped_boxes[:, 1])
+        areas = (clipped_boxes[:, 2] - clipped_boxes[:, 0]) * (
+            clipped_boxes[:, 3] - clipped_boxes[:, 1]
+        )
         ratios = areas / np.clip(ori_areas, a_min=1e-4, a_max=None)
         cls_scores[ratios < 0.5] = 0
 

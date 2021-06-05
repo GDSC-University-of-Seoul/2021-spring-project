@@ -11,18 +11,25 @@ import torch.multiprocessing as mp
 from alphapose.utils.presets import SimpleTransform
 
 
-class WebCamDetectionLoader():
+class WebCamDetectionLoader:
     def __init__(self, input_source, detector, cfg, opt, queueSize=1):
         self.cfg = cfg
         self.opt = opt
 
         stream = cv2.VideoCapture(int(input_source))
-        assert stream.isOpened(), 'Cannot capture source'
+        assert stream.isOpened(), "Cannot capture source"
         self.path = input_source
         self.fourcc = int(stream.get(cv2.CAP_PROP_FOURCC))
         self.fps = stream.get(cv2.CAP_PROP_FPS)
-        self.frameSize = (int(stream.get(cv2.CAP_PROP_FRAME_WIDTH)), int(stream.get(cv2.CAP_PROP_FRAME_HEIGHT)))
-        self.videoinfo = {'fourcc': self.fourcc, 'fps': self.fps, 'frameSize': self.frameSize}
+        self.frameSize = (
+            int(stream.get(cv2.CAP_PROP_FRAME_WIDTH)),
+            int(stream.get(cv2.CAP_PROP_FRAME_HEIGHT)),
+        )
+        self.videoinfo = {
+            "fourcc": self.fourcc,
+            "fps": self.fps,
+            "frameSize": self.frameSize,
+        }
         stream.release()
 
         self.detector = detector
@@ -32,13 +39,17 @@ class WebCamDetectionLoader():
 
         self._sigma = cfg.DATA_PRESET.SIGMA
 
-        if cfg.DATA_PRESET.TYPE == 'simple':
+        if cfg.DATA_PRESET.TYPE == "simple":
             self.transformation = SimpleTransform(
-                self, scale_factor=0,
+                self,
+                scale_factor=0,
                 input_size=self._input_size,
                 output_size=self._output_size,
-                rot=0, sigma=self._sigma,
-                train=False, add_dpg=False)
+                rot=0,
+                sigma=self._sigma,
+                train=False,
+                add_dpg=False,
+            )
 
         # initialize the queue used to store data
         """
@@ -48,7 +59,7 @@ class WebCamDetectionLoader():
             self._stopped = False
             self.pose_queue = Queue(maxsize=queueSize)
         else:
-            self._stopped = mp.Value('b', False)
+            self._stopped = mp.Value("b", False)
             self.pose_queue = mp.Queue(maxsize=queueSize)
 
     def start_worker(self, target):
@@ -93,7 +104,7 @@ class WebCamDetectionLoader():
 
     def frame_preprocess(self):
         stream = cv2.VideoCapture(self.path)
-        assert stream.isOpened(), 'Cannot capture source'
+        assert stream.isOpened(), "Cannot capture source"
 
         # keep looping infinitely
         for i in count():
@@ -106,7 +117,9 @@ class WebCamDetectionLoader():
                 # if the `grabbed` boolean is `False`, then we have
                 # reached the end of the video file
                 if not grabbed:
-                    self.wait_and_put(self.pose_queue, (None, None, None, None, None, None, None))
+                    self.wait_and_put(
+                        self.pose_queue, (None, None, None, None, None, None, None)
+                    )
                     stream.release()
                     return
 
@@ -122,13 +135,15 @@ class WebCamDetectionLoader():
                 im_dim_list_k = frame.shape[1], frame.shape[0]
 
                 orig_img = frame[:, :, ::-1]
-                im_name = str(i) + '.jpg'
+                im_name = str(i) + ".jpg"
                 # im_dim_list = im_dim_list_k
 
                 with torch.no_grad():
                     # Record original image resolution
                     im_dim_list_k = torch.FloatTensor(im_dim_list_k).repeat(1, 2)
-                img_det = self.image_detection((img_k, orig_img, im_name, im_dim_list_k))
+                img_det = self.image_detection(
+                    (img_k, orig_img, im_name, im_dim_list_k)
+                )
                 self.image_postprocess(img_det)
 
     def image_detection(self, inputs):
@@ -155,16 +170,28 @@ class WebCamDetectionLoader():
             return (orig_img, im_name, None, None, None, None, None)
         inps = torch.zeros(boxes_k.size(0), 3, *self._input_size)
         cropped_boxes = torch.zeros(boxes_k.size(0), 4)
-        return (orig_img, im_name, boxes_k, scores[dets[:, 0] == 0], ids[dets[:, 0] == 0], inps, cropped_boxes)
+        return (
+            orig_img,
+            im_name,
+            boxes_k,
+            scores[dets[:, 0] == 0],
+            ids[dets[:, 0] == 0],
+            inps,
+            cropped_boxes,
+        )
 
     def image_postprocess(self, inputs):
         with torch.no_grad():
             (orig_img, im_name, boxes, scores, ids, inps, cropped_boxes) = inputs
             if orig_img is None or self.stopped:
-                self.wait_and_put(self.pose_queue, (None, None, None, None, None, None, None))
+                self.wait_and_put(
+                    self.pose_queue, (None, None, None, None, None, None, None)
+                )
                 return
             if boxes is None or boxes.nelement() == 0:
-                self.wait_and_put(self.pose_queue, (None, orig_img, im_name, boxes, scores, ids, None))
+                self.wait_and_put(
+                    self.pose_queue, (None, orig_img, im_name, boxes, scores, ids, None)
+                )
                 return
             # imght = orig_img.shape[0]
             # imgwidth = orig_img.shape[1]
@@ -174,7 +201,10 @@ class WebCamDetectionLoader():
 
             # inps, cropped_boxes = self.transformation.align_transform(orig_img, boxes)
 
-            self.wait_and_put(self.pose_queue, (inps, orig_img, im_name, boxes, scores, ids, cropped_boxes))
+            self.wait_and_put(
+                self.pose_queue,
+                (inps, orig_img, im_name, boxes, scores, ids, cropped_boxes),
+            )
 
     def read(self):
         return self.wait_and_get(self.pose_queue)
@@ -190,5 +220,4 @@ class WebCamDetectionLoader():
     def joint_pairs(self):
         """Joint pairs which defines the pairs of joint to be swapped
         when the image is flipped horizontally."""
-        return [[1, 2], [3, 4], [5, 6], [7, 8],
-                [9, 10], [11, 12], [13, 14], [15, 16]]
+        return [[1, 2], [3, 4], [5, 6], [7, 8], [9, 10], [11, 12], [13, 14], [15, 16]]

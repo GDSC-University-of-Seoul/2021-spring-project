@@ -13,37 +13,65 @@ from .layers.Resnet import ResNet
 class SimplePose(nn.Module):
     def __init__(self, norm_layer=nn.BatchNorm2d, **cfg):
         super(SimplePose, self).__init__()
-        self._preset_cfg = cfg['PRESET']
-        self.deconv_dim = cfg['NUM_DECONV_FILTERS']
+        self._preset_cfg = cfg["PRESET"]
+        self.deconv_dim = cfg["NUM_DECONV_FILTERS"]
         self._norm_layer = norm_layer
 
         self.preact = ResNet(f"resnet{cfg['NUM_LAYERS']}")
 
         # Imagenet pretrain model
-        import torchvision.models as tm   # noqa: F401,F403
-        assert cfg['NUM_LAYERS'] in [18, 34, 50, 101, 152]
+        import torchvision.models as tm  # noqa: F401,F403
+
+        assert cfg["NUM_LAYERS"] in [18, 34, 50, 101, 152]
         x = eval(f"tm.resnet{cfg['NUM_LAYERS']}(pretrained=True)")
 
         model_state = self.preact.state_dict()
-        state = {k: v for k, v in x.state_dict().items()
-                 if k in self.preact.state_dict() and v.size() == self.preact.state_dict()[k].size()}
+        state = {
+            k: v
+            for k, v in x.state_dict().items()
+            if k in self.preact.state_dict()
+            and v.size() == self.preact.state_dict()[k].size()
+        }
         model_state.update(state)
         self.preact.load_state_dict(model_state)
 
         self.deconv_layers = self._make_deconv_layer()
         self.final_layer = nn.Conv2d(
-            self.deconv_dim[2], self._preset_cfg['NUM_JOINTS'], kernel_size=1, stride=1, padding=0)
+            self.deconv_dim[2],
+            self._preset_cfg["NUM_JOINTS"],
+            kernel_size=1,
+            stride=1,
+            padding=0,
+        )
 
     def _make_deconv_layer(self):
         deconv_layers = []
         deconv1 = nn.ConvTranspose2d(
-            2048, self.deconv_dim[0], kernel_size=4, stride=2, padding=int(4 / 2) - 1, bias=False)
+            2048,
+            self.deconv_dim[0],
+            kernel_size=4,
+            stride=2,
+            padding=int(4 / 2) - 1,
+            bias=False,
+        )
         bn1 = self._norm_layer(self.deconv_dim[0])
         deconv2 = nn.ConvTranspose2d(
-            self.deconv_dim[0], self.deconv_dim[1], kernel_size=4, stride=2, padding=int(4 / 2) - 1, bias=False)
+            self.deconv_dim[0],
+            self.deconv_dim[1],
+            kernel_size=4,
+            stride=2,
+            padding=int(4 / 2) - 1,
+            bias=False,
+        )
         bn2 = self._norm_layer(self.deconv_dim[1])
         deconv3 = nn.ConvTranspose2d(
-            self.deconv_dim[1], self.deconv_dim[2], kernel_size=4, stride=2, padding=int(4 / 2) - 1, bias=False)
+            self.deconv_dim[1],
+            self.deconv_dim[2],
+            kernel_size=4,
+            stride=2,
+            padding=int(4 / 2) - 1,
+            bias=False,
+        )
         bn3 = self._norm_layer(self.deconv_dim[2])
 
         deconv_layers.append(deconv1)

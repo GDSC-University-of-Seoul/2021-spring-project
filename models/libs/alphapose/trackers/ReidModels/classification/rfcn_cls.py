@@ -12,20 +12,22 @@ from models.psroi_pooling.modules.psroi_pool import PSRoIPool
 class Model(nn.Module):
     feat_stride = 4
 
-    def __init__(self, extractor='squeezenet', pretrained=False, transform_input=False):
+    def __init__(self, extractor="squeezenet", pretrained=False, transform_input=False):
         super(Model, self).__init__()
 
-        if extractor == 'squeezenet':
+        if extractor == "squeezenet":
             feature_extractor = FeatExtractorSqueezeNetx16(pretrained)
         else:
-            assert False, 'invalid feature extractor: {}'.format(extractor)
+            assert False, "invalid feature extractor: {}".format(extractor)
 
         self.feature_extractor = feature_extractor
 
         in_channels = self.feature_extractor.n_feats[-1]
         self.stage_0 = nn.Sequential(
             nn.Dropout2d(inplace=True),
-            nn.Conv2d(in_channels=in_channels, out_channels=256, kernel_size=3, padding=1),
+            nn.Conv2d(
+                in_channels=in_channels, out_channels=256, kernel_size=3, padding=1
+            ),
             nn.ReLU(inplace=True),
         )
 
@@ -34,24 +36,31 @@ class Model(nn.Module):
         out_cs = [128, 256]
         for i in range(1, len(n_feats)):
             out_channels = out_cs[-i]
-            setattr(self, 'upconv_{}'.format(i),
-                    nn.Sequential(
-                        nn.Conv2d(in_channels, out_channels, 3, padding=1, bias=True),
-                        nn.BatchNorm2d(out_channels),
-                        nn.ReLU(inplace=True),
-                        nn.Upsample(scale_factor=2, mode='bilinear', align_corners=False),
-                    ))
-
-            feat_channels = n_feats[-1-i]
-            setattr(self, 'proj_{}'.format(i), nn.Sequential(
-                net_utils.ConcatAddTable(
-                    DilationLayer(feat_channels, out_channels // 2, 3, dilation=1),
-                    DilationLayer(feat_channels, out_channels // 2, 5, dilation=1),
+            setattr(
+                self,
+                "upconv_{}".format(i),
+                nn.Sequential(
+                    nn.Conv2d(in_channels, out_channels, 3, padding=1, bias=True),
+                    nn.BatchNorm2d(out_channels),
+                    nn.ReLU(inplace=True),
+                    nn.Upsample(scale_factor=2, mode="bilinear", align_corners=False),
                 ),
-                nn.Conv2d(out_channels // 2, out_channels // 2, 1),
-                nn.BatchNorm2d(out_channels // 2),
-                nn.ReLU(inplace=True)
-            ))
+            )
+
+            feat_channels = n_feats[-1 - i]
+            setattr(
+                self,
+                "proj_{}".format(i),
+                nn.Sequential(
+                    net_utils.ConcatAddTable(
+                        DilationLayer(feat_channels, out_channels // 2, 3, dilation=1),
+                        DilationLayer(feat_channels, out_channels // 2, 5, dilation=1),
+                    ),
+                    nn.Conv2d(out_channels // 2, out_channels // 2, 1),
+                    nn.BatchNorm2d(out_channels // 2),
+                    nn.ReLU(inplace=True),
+                ),
+            )
             in_channels = out_channels + out_channels // 2
 
         roi_size = 7
@@ -59,10 +68,11 @@ class Model(nn.Module):
             nn.Conv2d(in_channels, in_channels, 3, padding=1),
             nn.BatchNorm2d(in_channels),
             nn.ReLU(inplace=True),
-
-            nn.Conv2d(in_channels, roi_size * roi_size, 1, padding=1)
+            nn.Conv2d(in_channels, roi_size * roi_size, 1, padding=1),
         )
-        self.psroipool_cls = PSRoIPool(roi_size, roi_size, 1./self.feat_stride, roi_size, 1)
+        self.psroipool_cls = PSRoIPool(
+            roi_size, roi_size, 1.0 / self.feat_stride, roi_size, 1
+        )
         self.avg_pool = nn.AvgPool2d(roi_size, roi_size)
 
     def get_cls_score(self, cls_feat, rois):
@@ -106,8 +116,8 @@ class Model(nn.Module):
         # up conv
         n_feats = self.feature_extractor.n_feats[1:]
         for i in range(1, len(n_feats)):
-            x_depth_out = getattr(self, 'upconv_{}'.format(i))(x_in)
-            x_project = getattr(self, 'proj_{}'.format(i))(feats[-1-i])
+            x_depth_out = getattr(self, "upconv_{}".format(i))(x_in)
+            x_project = getattr(self, "proj_{}".format(i))(feats[-1 - i])
             x_in = torch.cat((x_depth_out, x_project), 1)
 
         # cls features

@@ -56,9 +56,9 @@ class Match(object):
             ValueError: if match_results does not have rank 1 or is not an integer int32 scalar tensor
         """
         if len(match_results.shape) != 1:
-            raise ValueError('match_results should have rank 1')
+            raise ValueError("match_results should have rank 1")
         if match_results.dtype not in (torch.int32, torch.int64):
-            raise ValueError('match_results should be an int32 or int64 scalar tensor')
+            raise ValueError("match_results should be an int32 or int64 scalar tensor")
         self._match_results = match_results
 
     @property
@@ -157,7 +157,9 @@ class Match(object):
         Returns:
             row_indices: int32 tensor of shape [K] with row indices.
         """
-        return self._reshape_and_cast(torch.gather(self._match_results, 0, self.matched_column_indices()))
+        return self._reshape_and_cast(
+            torch.gather(self._match_results, 0, self.matched_column_indices())
+        )
 
     def _reshape_and_cast(self, t):
         return torch.reshape(t, [-1]).long()
@@ -189,8 +191,8 @@ class Match(object):
 
 
 class Matcher(object):
-    """Abstract base class for matcher.
-    """
+    """Abstract base class for matcher."""
+
     __metaclass__ = ABCMeta
 
     def match(self, similarity_matrix, **params):

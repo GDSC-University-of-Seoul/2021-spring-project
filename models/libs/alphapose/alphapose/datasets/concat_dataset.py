@@ -27,23 +27,21 @@ class ConcatDataset(data.Dataset):
     cfg: dict, dataset configuration.
     """
 
-    def __init__(self,
-                 train=True,
-                 dpg=False,
-                 skip_empty=True,
-                 **cfg):
+    def __init__(self, train=True, dpg=False, skip_empty=True, **cfg):
 
         self._cfg = cfg
-        self._subset_cfg_list = cfg['SET_LIST']
-        self._preset_cfg = cfg['PRESET']
-        self._mask_id = [item['MASK_ID'] for item in self._subset_cfg_list]
+        self._subset_cfg_list = cfg["SET_LIST"]
+        self._preset_cfg = cfg["PRESET"]
+        self._mask_id = [item["MASK_ID"] for item in self._subset_cfg_list]
 
-        self.num_joints = self._preset_cfg['NUM_JOINTS']
+        self.num_joints = self._preset_cfg["NUM_JOINTS"]
 
         self._subsets = []
         self._subset_size = [0]
         for _subset_cfg in self._subset_cfg_list:
-            subset = build_dataset(_subset_cfg, preset_cfg=self._preset_cfg, train=train)
+            subset = build_dataset(
+                _subset_cfg, preset_cfg=self._preset_cfg, train=train
+            )
             self._subsets.append(subset)
             self._subset_size.append(len(subset))
         self.cumulative_sizes = self.cumsum(self._subset_size)
@@ -58,10 +56,18 @@ class ConcatDataset(data.Dataset):
         img, label, label_mask, img_id, bbox = sample
 
         K = label.shape[0]  # num_joints from `_subsets[dataset_idx]`
-        expend_label = torch.zeros((self.num_joints, *label.shape[1:]), dtype=label.dtype)
-        expend_label_mask = torch.zeros((self.num_joints, *label_mask.shape[1:]), dtype=label_mask.dtype)
-        expend_label[self._mask_id[dataset_idx]:self._mask_id[dataset_idx] + K] = label
-        expend_label_mask[self._mask_id[dataset_idx]:self._mask_id[dataset_idx] + K] = label_mask
+        expend_label = torch.zeros(
+            (self.num_joints, *label.shape[1:]), dtype=label.dtype
+        )
+        expend_label_mask = torch.zeros(
+            (self.num_joints, *label_mask.shape[1:]), dtype=label_mask.dtype
+        )
+        expend_label[
+            self._mask_id[dataset_idx] : self._mask_id[dataset_idx] + K
+        ] = label
+        expend_label_mask[
+            self._mask_id[dataset_idx] : self._mask_id[dataset_idx] + K
+        ] = label_mask
 
         return img, expend_label, expend_label_mask, img_id, bbox
 

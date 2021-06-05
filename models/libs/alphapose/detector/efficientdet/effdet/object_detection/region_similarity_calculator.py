@@ -72,11 +72,14 @@ def iou(boxlist1, boxlist2):
     areas1 = area(boxlist1)
     areas2 = area(boxlist2)
     unions = areas1.unsqueeze(1) + areas2.unsqueeze(0) - intersections
-    return torch.where(intersections == 0.0, torch.zeros_like(intersections), intersections / unions)
+    return torch.where(
+        intersections == 0.0, torch.zeros_like(intersections), intersections / unions
+    )
 
 
 class RegionSimilarityCalculator(object):
     """Abstract base class for region similarity calculator."""
+
     __metaclass__ = ABCMeta
 
     def compare(self, boxlist1, boxlist2):

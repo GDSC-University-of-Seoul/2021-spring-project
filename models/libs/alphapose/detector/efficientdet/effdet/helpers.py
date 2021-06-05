@@ -1,6 +1,7 @@
 import torch
 import os
 from collections import OrderedDict
+
 try:
     from torch.hub import load_state_dict_from_url
 except ImportError:
@@ -11,10 +12,10 @@ def load_checkpoint(model, checkpoint_path):
     if checkpoint_path and os.path.isfile(checkpoint_path):
         print("=> Loading checkpoint '{}'".format(checkpoint_path))
         checkpoint = torch.load(checkpoint_path)
-        if isinstance(checkpoint, dict) and 'state_dict' in checkpoint:
+        if isinstance(checkpoint, dict) and "state_dict" in checkpoint:
             new_state_dict = OrderedDict()
-            for k, v in checkpoint['state_dict'].items():
-                if k.startswith('module'):
+            for k, v in checkpoint["state_dict"].items():
+                if k.startswith("module"):
                     name = k[7:]  # remove `module.`
                 else:
                     name = k
@@ -32,7 +33,7 @@ def load_pretrained(model, url, filter_fn=None, strict=True):
     if not url:
         print("=> Warning: Pretrained model URL is empty, using random initialization.")
         return
-    state_dict = load_state_dict_from_url(url, progress=False, map_location='cpu')
+    state_dict = load_state_dict_from_url(url, progress=False, map_location="cpu")
     if filter_fn is not None:
         state_dict = filter_fn(state_dict)
     model.load_state_dict(state_dict, strict=strict)

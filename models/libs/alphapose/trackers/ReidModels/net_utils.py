@@ -24,7 +24,7 @@ class ConcatAddTable(nn.Module):
 
     def __getitem__(self, idx):
         if idx < 0 or idx >= len(self._modules):
-            raise IndexError('index {} is out of range'.format(idx))
+            raise IndexError("index {} is out of range".format(idx))
         it = iter(self._modules.values())
         for i in range(idx):
             next(it)
@@ -50,7 +50,7 @@ def set_optimizer_state_devices(state, device_id=None):
     """
     for k, v in state.items():
         for k2 in v.keys():
-            if hasattr(v[k2], 'cuda'):
+            if hasattr(v[k2], "cuda"):
                 if device_id is None:
                     v[k2] = v[k2].cpu()
                 else:
@@ -61,20 +61,23 @@ def set_optimizer_state_devices(state, device_id=None):
 
 def save_net(fname, net, epoch=-1, optimizers=None, rm_prev_opt=False, max_n_ckpts=-1):
     import h5py
-    with h5py.File(fname, mode='w') as h5f:
+
+    with h5py.File(fname, mode="w") as h5f:
         for k, v in net.state_dict().items():
             h5f.create_dataset(k, data=v.cpu().numpy())
-        h5f.attrs['epoch'] = epoch
+        h5f.attrs["epoch"] = epoch
 
     if optimizers is not None:
         state_dicts = []
         for optimizer in optimizers:
             state_dict = deepcopy(optimizer.state_dict())
-            state_dict['state'] = set_optimizer_state_devices(state_dict['state'], device_id=None)
+            state_dict["state"] = set_optimizer_state_devices(
+                state_dict["state"], device_id=None
+            )
             state_dicts.append(state_dict)
 
-        state_file = fname + '.optimizer_state.pk'
-        with open(state_file, 'wb') as f:
+        state_file = fname + ".optimizer_state.pk"
+        with open(state_file, "wb") as f:
             pickle.dump(state_dicts, f)
 
         # remove
@@ -82,58 +85,67 @@ def save_net(fname, net, epoch=-1, optimizers=None, rm_prev_opt=False, max_n_ckp
             root = os.path.split(fname)[0]
             for filename in os.listdir(root):
                 filename = os.path.join(root, filename)
-                if filename.endswith('.optimizer_state.pk') and filename != state_file:
-                    logger.info(('Remove {}'.format(filename)))
+                if filename.endswith(".optimizer_state.pk") and filename != state_file:
+                    logger.info(("Remove {}".format(filename)))
                     os.remove(filename)
 
         # remove ckpt
         if max_n_ckpts > 0:
             root = os.path.split(fname)[0]
-            ckpts = [fname for fname in os.listdir(root) if os.path.splitext(fname)[-1] == '.h5']
-            ckpts = sorted(ckpts, key=lambda name: int(os.path.splitext(name)[0].split('_')[-1]))
+            ckpts = [
+                fname
+                for fname in os.listdir(root)
+                if os.path.splitext(fname)[-1] == ".h5"
+            ]
+            ckpts = sorted(
+                ckpts, key=lambda name: int(os.path.splitext(name)[0].split("_")[-1])
+            )
             if len(ckpts) > max_n_ckpts:
                 for ckpt in ckpts[0:-max_n_ckpts]:
                     filename = os.path.join(root, ckpt)
-                    logger.info('Remove {}'.format(filename))
+                    logger.info("Remove {}".format(filename))
                     os.remove(filename)
 
 
-def load_net(fname, net, prefix='', load_state_dict=False):
+def load_net(fname, net, prefix="", load_state_dict=False):
     import h5py
-    with h5py.File(fname, mode='r') as h5f:
+
+    with h5py.File(fname, mode="r") as h5f:
         h5f_is_module = True
         for k in h5f.keys():
-            if not str(k).startswith('module.'):
+            if not str(k).startswith("module."):
                 h5f_is_module = False
                 break
-        if prefix == '' and not isinstance(net, nn.DataParallel) and h5f_is_module:
-            prefix = 'module.'
+        if prefix == "" and not isinstance(net, nn.DataParallel) and h5f_is_module:
+            prefix = "module."
 
         for k, v in net.state_dict().items():
             k = prefix + k
             if k in h5f:
                 param = torch.from_numpy(np.asarray(h5f[k]))
                 if v.size() != param.size():
-                    logger.warning('Inconsistent shape: {}, {}'.format(v.size(), param.size()))
+                    logger.warning(
+                        "Inconsistent shape: {}, {}".format(v.size(), param.size())
+                    )
                 else:
                     v.copy_(param)
             else:
-                logger.warning('No layer: {}'.format(k))
+                logger.warning("No layer: {}".format(k))
 
-        epoch = h5f.attrs['epoch'] if 'epoch' in h5f.attrs else -1
+        epoch = h5f.attrs["epoch"] if "epoch" in h5f.attrs else -1
 
         if not load_state_dict:
-            if 'learning_rates' in h5f.attrs:
-                lr = h5f.attrs['learning_rates']
+            if "learning_rates" in h5f.attrs:
+                lr = h5f.attrs["learning_rates"]
             else:
-                lr = h5f.attrs.get('lr', -1)
+                lr = h5f.attrs.get("lr", -1)
                 lr = np.asarray([lr] if lr > 0 else [], dtype=np.float)
 
             return epoch, lr
 
-        state_file = fname + '.optimizer_state.pk'
+        state_file = fname + ".optimizer_state.pk"
         if os.path.isfile(state_file):
-            with open(state_file, 'rb') as f:
+            with open(state_file, "rb") as f:
                 state_dicts = pickle.load(f)
                 if not isinstance(state_dicts, list):
                     state_dicts = [state_dicts]

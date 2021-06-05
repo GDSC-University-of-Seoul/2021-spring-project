@@ -6,11 +6,12 @@ import torch
 import cv2
 import numpy as np
 
-#from .functional import to_tensor
-#from .transforms import *
+# from .functional import to_tensor
+# from .transforms import *
+
 
 class RandomErasing(object):
-    """ Randomly selects a rectangle region in an image and erases its pixels.
+    """Randomly selects a rectangle region in an image and erases its pixels.
         'Random Erasing Data Augmentation' by Zhong et al.
         See https://arxiv.org/pdf/1708.04896.pdf
     Args:
@@ -21,7 +22,14 @@ class RandomErasing(object):
         mean: Erasing value.
     """
 
-    def __init__(self, probability=0.5, sl=0.02, sh=0.4, r1=0.3, mean=255 * (0.49735, 0.4822, 0.4465)):
+    def __init__(
+        self,
+        probability=0.5,
+        sl=0.02,
+        sh=0.4,
+        r1=0.3,
+        mean=255 * (0.49735, 0.4822, 0.4465),
+    ):
         self.probability = probability
         self.mean = mean
         self.sl = sl
@@ -45,13 +53,15 @@ class RandomErasing(object):
                 x1 = random.randint(0, img.shape[0] - h)
                 y1 = random.randint(0, img.shape[1] - w)
                 if img.shape[2] == 3:
-                    img[x1:x1 + h, y1:y1 + w, 0] = self.mean[0]
-                    img[x1:x1 + h, y1:y1 + w, 1] = self.mean[1]
-                    img[x1:x1 + h, y1:y1 + w, 2] = self.mean[2]
+                    img[x1 : x1 + h, y1 : y1 + w, 0] = self.mean[0]
+                    img[x1 : x1 + h, y1 : y1 + w, 1] = self.mean[1]
+                    img[x1 : x1 + h, y1 : y1 + w, 2] = self.mean[2]
                 else:
-                    img[x1:x1 + h, y1:y1 + w, 0] = self.mean[0]
+                    img[x1 : x1 + h, y1 : y1 + w, 0] = self.mean[0]
                 return img
         return img
+
+
 def to_tensor(pic):
     """Convert a ``PIL Image`` or ``numpy.ndarray`` to tensor.
 
@@ -77,20 +87,20 @@ def to_tensor(pic):
             return img
 
     # handle PIL Image
-    if pic.mode == 'I':
+    if pic.mode == "I":
         img = torch.from_numpy(np.array(pic, np.int32, copy=False))
-    elif pic.mode == 'I;16':
+    elif pic.mode == "I;16":
         img = torch.from_numpy(np.array(pic, np.int16, copy=False))
-    elif pic.mode == 'F':
+    elif pic.mode == "F":
         img = torch.from_numpy(np.array(pic, np.float32, copy=False))
-    elif pic.mode == '1':
+    elif pic.mode == "1":
         img = 255 * torch.from_numpy(np.array(pic, np.uint8, copy=False))
     else:
         img = torch.ByteTensor(torch.ByteStorage.from_buffer(pic.tobytes()))
     # PIL image mode: L, LA, P, I, F, RGB, YCbCr, RGBA, CMYK
-    if pic.mode == 'YCbCr':
+    if pic.mode == "YCbCr":
         nchannel = 3
-    elif pic.mode == 'I;16':
+    elif pic.mode == "I;16":
         nchannel = 1
     else:
         nchannel = len(pic.mode)
@@ -102,6 +112,8 @@ def to_tensor(pic):
         return img.float()
     else:
         return img
+
+
 class ToTensor(object):
     """Convert a ``PIL Image`` or ``numpy.ndarray`` to tensor.
 
@@ -124,7 +136,9 @@ class ToTensor(object):
         return to_tensor(pic)
 
     def __repr__(self):
-        return self.__class__.__name__ + '()'
+        return self.__class__.__name__ + "()"
+
+
 def build_transforms(cfg, is_train=True):
     res = []
     res.append(T.ToPILImage(mode=None))
@@ -139,16 +153,17 @@ def build_transforms(cfg, is_train=True):
         padding_mode = cfg["PADDING_MODE"]
         # random erasing
         do_re = cfg["RE_ENABLED"]
-        #re_prob = cfg["RE_PROB"]
-        #re_mean = cfg["RE_MEAN"]
+        # re_prob = cfg["RE_PROB"]
+        # re_mean = cfg["RE_MEAN"]
         res.append(T.Resize(size_train, interpolation=3))
         if do_flip:
             res.append(T.RandomHorizontalFlip(p=flip_prob))
         if do_pad:
-            res.extend([T.Pad(padding, padding_mode=padding_mode),
-                        T.RandomCrop(size_train)])
+            res.extend(
+                [T.Pad(padding, padding_mode=padding_mode), T.RandomCrop(size_train)]
+            )
         if do_re:
-            #res.append(T.RandomErasing(probability=re_prob, mean=re_mean))
+            # res.append(T.RandomErasing(probability=re_prob, mean=re_mean))
             res.append(RandomErasing())
         # if cfg.INPUT.CUTOUT.DO:
         #     res.append(Cutout(probability=cfg.INPUT.CUTOUT.PROB, size=cfg.INPUT.CUTOUT.SIZE,

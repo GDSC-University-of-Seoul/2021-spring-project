@@ -5,12 +5,25 @@ from torchvision import models
 
 
 class DilationLayer(nn.Module):
-    def __init__(self, in_channels, out_channels, kernel_size=3, padding='same_padding', dilation=1, bn=False):
+    def __init__(
+        self,
+        in_channels,
+        out_channels,
+        kernel_size=3,
+        padding="same_padding",
+        dilation=1,
+        bn=False,
+    ):
         super(DilationLayer, self).__init__()
-        if padding == 'same_padding':
+        if padding == "same_padding":
             padding = int((kernel_size - 1) / 2 * dilation)
-        self.Dconv = nn.Conv2d(in_channels=in_channels, out_channels=out_channels, kernel_size=kernel_size,
-                               padding=padding, dilation=dilation)
+        self.Dconv = nn.Conv2d(
+            in_channels=in_channels,
+            out_channels=out_channels,
+            kernel_size=kernel_size,
+            padding=padding,
+            dilation=dilation,
+        )
         self.Drelu = nn.ReLU(inplace=True)
         self.Dbn = nn.BatchNorm2d(out_channels) if bn else None
 

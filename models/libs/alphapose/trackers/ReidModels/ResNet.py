@@ -13,18 +13,18 @@ from torch.utils import model_zoo
 
 
 model_urls = {
-    18: 'https://download.pytorch.org/models/resnet18-5c106cde.pth',
-    34: 'https://download.pytorch.org/models/resnet34-333f7ec4.pth',
-    50: 'https://download.pytorch.org/models/resnet50-19c8e357.pth',
-    101: 'https://download.pytorch.org/models/resnet101-5d3b4d8f.pth',
-    152: 'https://download.pytorch.org/models/resnet152-b121ed2d.pth',
+    18: "https://download.pytorch.org/models/resnet18-5c106cde.pth",
+    34: "https://download.pytorch.org/models/resnet34-333f7ec4.pth",
+    50: "https://download.pytorch.org/models/resnet50-19c8e357.pth",
+    101: "https://download.pytorch.org/models/resnet101-5d3b4d8f.pth",
+    152: "https://download.pytorch.org/models/resnet152-b121ed2d.pth",
     # 'resnext50_32x4d': 'https://download.pytorch.org/models/resnext50_32x4d-7cdf4587.pth',
     # 'resnext101_32x8d': 'https://download.pytorch.org/models/resnext101_32x8d-8ba56ff5.pth',
     # 'wide_resnet50_2': 'https://download.pytorch.org/models/wide_resnet50_2-95faca4d.pth',
     # 'wide_resnet101_2': 'https://download.pytorch.org/models/wide_resnet101_2-32ee1156.pth',
 }
 
-__all__ = ['ResNet', 'Bottleneck']
+__all__ = ["ResNet", "Bottleneck"]
 
 
 class IBN(nn.Module):
@@ -54,8 +54,9 @@ class Bottleneck(nn.Module):
             self.bn1 = IBN(planes)
         else:
             self.bn1 = nn.BatchNorm2d(planes)
-        self.conv2 = nn.Conv2d(planes, planes, kernel_size=3, stride=stride,
-                               padding=1, bias=False)
+        self.conv2 = nn.Conv2d(
+            planes, planes, kernel_size=3, stride=stride, padding=1, bias=False
+        )
         self.bn2 = nn.BatchNorm2d(planes)
         self.conv3 = nn.Conv2d(planes, planes * 4, kernel_size=1, bias=False)
         self.bn3 = nn.BatchNorm2d(planes * 4)
@@ -91,14 +92,17 @@ class ResNet(nn.Module):
         scale = 64
         self.inplanes = scale
         super().__init__()
-        self.conv1 = nn.Conv2d(3, 64, kernel_size=7, stride=2, padding=3,
-                               bias=False)
+        self.conv1 = nn.Conv2d(3, 64, kernel_size=7, stride=2, padding=3, bias=False)
         self.bn1 = nn.BatchNorm2d(64)
         self.relu = nn.ReLU(inplace=True)
         self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
         self.layer1 = self._make_layer(block, scale, layers[0], with_ibn=with_ibn)
-        self.layer2 = self._make_layer(block, scale * 2, layers[1], stride=2, with_ibn=with_ibn)
-        self.layer3 = self._make_layer(block, scale * 4, layers[2], stride=2, with_ibn=with_ibn)
+        self.layer2 = self._make_layer(
+            block, scale * 2, layers[1], stride=2, with_ibn=with_ibn
+        )
+        self.layer3 = self._make_layer(
+            block, scale * 4, layers[2], stride=2, with_ibn=with_ibn
+        )
         self.layer4 = self._make_layer(block, scale * 8, layers[3], stride=last_stride)
 
         self.random_init()
@@ -107,8 +111,13 @@ class ResNet(nn.Module):
         downsample = None
         if stride != 1 or self.inplanes != planes * block.expansion:
             downsample = nn.Sequential(
-                nn.Conv2d(self.inplanes, planes * block.expansion,
-                          kernel_size=1, stride=stride, bias=False),
+                nn.Conv2d(
+                    self.inplanes,
+                    planes * block.expansion,
+                    kernel_size=1,
+                    stride=stride,
+                    bias=False,
+                ),
                 nn.BatchNorm2d(planes * block.expansion),
             )
 
@@ -139,13 +148,15 @@ class ResNet(nn.Module):
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
                 n = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
-                nn.init.normal_(m.weight, 0, math.sqrt(2. / n))
+                nn.init.normal_(m.weight, 0, math.sqrt(2.0 / n))
             elif isinstance(m, nn.BatchNorm2d):
                 nn.init.constant_(m.weight, 1)
                 nn.init.constant_(m.bias, 0)
 
 
-def build_resnet_backbone(pretrain_path='',last_stride=1,with_ibn=False,with_se=False,depth=50):
+def build_resnet_backbone(
+    pretrain_path="", last_stride=1, with_ibn=False, with_se=False, depth=50
+):
     """
     Create a ResNet instance from config.
     Returns:

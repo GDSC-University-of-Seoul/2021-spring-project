@@ -13,12 +13,17 @@ import torch
 from torch.utils.data import Dataset
 from utils.utils import xyxy2xywh
 
+
 class LoadImages:  # for inference
     def __init__(self, path, img_size=(1088, 608)):
         if os.path.isdir(path):
-            image_format = ['.jpg', '.jpeg', '.png', '.tif']
-            self.files = sorted(glob.glob('%s/*.*' % path))
-            self.files = list(filter(lambda x: os.path.splitext(x)[1].lower() in image_format, self.files))
+            image_format = [".jpg", ".jpeg", ".png", ".tif"]
+            self.files = sorted(glob.glob("%s/*.*" % path))
+            self.files = list(
+                filter(
+                    lambda x: os.path.splitext(x)[1].lower() in image_format, self.files
+                )
+            )
         elif os.path.isfile(path):
             self.files = [path]
 
@@ -27,7 +32,7 @@ class LoadImages:  # for inference
         self.height = img_size[1]
         self.count = 0
 
-        assert self.nF > 0, 'No images found in ' + path
+        assert self.nF > 0, "No images found in " + path
 
     def __iter__(self):
         self.count = -1
@@ -41,7 +46,7 @@ class LoadImages:  # for inference
 
         # Read image
         img0 = cv2.imread(img_path)  # BGR
-        assert img0 is not None, 'Failed to load ' + img_path
+        assert img0 is not None, "Failed to load " + img_path
 
         # Padded resize
         img, _, _, _ = letterbox(img0, height=self.height, width=self.width)
@@ -53,14 +58,14 @@ class LoadImages:  # for inference
 
         # cv2.imwrite(img_path + '.letterbox.jpg', 255 * img.transpose((1, 2, 0))[:, :, ::-1])  # save letterbox image
         return img_path, img, img0
-    
+
     def __getitem__(self, idx):
-        idx = idx % self.nF 
+        idx = idx % self.nF
         img_path = self.files[idx]
 
         # Read image
         img0 = cv2.imread(img_path)  # BGR
-        assert img0 is not None, 'Failed to load ' + img_path
+        assert img0 is not None, "Failed to load " + img_path
 
         # Padded resize
         img, _, _, _ = letterbox(img0, height=self.height, width=self.width)
@@ -78,7 +83,7 @@ class LoadImages:  # for inference
 
 class LoadVideo:  # for inference
     def __init__(self, path, img_size=(1088, 608)):
-        self.cap = cv2.VideoCapture(path)        
+        self.cap = cv2.VideoCapture(path)
         self.frame_rate = int(round(self.cap.get(cv2.CAP_PROP_FPS)))
         self.vw = int(self.cap.get(cv2.CAP_PROP_FRAME_WIDTH))
         self.vh = int(self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
@@ -89,12 +94,12 @@ class LoadVideo:  # for inference
         self.count = 0
 
         self.w, self.h = self.get_size(self.vw, self.vh, self.width, self.height)
-        print('Lenth of the video: {:d} frames'.format(self.vn))
+        print("Lenth of the video: {:d} frames".format(self.vn))
 
     def get_size(self, vw, vh, dw, dh):
         wa, ha = float(dw) / vw, float(dh) / vh
         a = min(wa, ha)
-        return int(vw *a), int(vh*a)
+        return int(vw * a), int(vh * a)
 
     def __iter__(self):
         self.count = -1
@@ -106,7 +111,7 @@ class LoadVideo:  # for inference
             raise StopIteration
         # Read image
         res, img0 = self.cap.read()  # BGR
-        assert img0 is not None, 'Failed to load frame {:d}'.format(self.count)
+        assert img0 is not None, "Failed to load frame {:d}".format(self.count)
         img0 = cv2.resize(img0, (self.w, self.h))
 
         # Padded resize
@@ -119,27 +124,30 @@ class LoadVideo:  # for inference
 
         # cv2.imwrite(img_path + '.letterbox.jpg', 255 * img.transpose((1, 2, 0))[:, :, ::-1])  # save letterbox image
         return self.count, img, img0
-    
+
     def __len__(self):
         return self.vn  # number of files
 
 
 class LoadImagesAndLabels:  # for training
-    def __init__(self, path, img_size=(1088,608),  augment=False, transforms=None):
-        with open(path, 'r') as file:
+    def __init__(self, path, img_size=(1088, 608), augment=False, transforms=None):
+        with open(path, "r") as file:
             self.img_files = file.readlines()
-            self.img_files = [x.replace('\n', '') for x in self.img_files]
+            self.img_files = [x.replace("\n", "") for x in self.img_files]
             self.img_files = list(filter(lambda x: len(x) > 0, self.img_files))
 
-        self.label_files = [x.replace('images', 'labels_with_ids').replace('.png', '.txt').replace('.jpg', '.txt')
-                            for x in self.img_files]
+        self.label_files = [
+            x.replace("images", "labels_with_ids")
+            .replace(".png", ".txt")
+            .replace(".jpg", ".txt")
+            for x in self.img_files
+        ]
 
         self.nF = len(self.img_files)  # number of image files
         self.width = img_size[0]
         self.height = img_size[1]
         self.augment = augment
         self.transforms = transforms
-
 
     def __getitem__(self, files_index):
         img_path = self.img_files[files_index]
@@ -151,7 +159,7 @@ class LoadImagesAndLabels:  # for training
         width = self.width
         img = cv2.imread(img_path)  # BGR
         if img is None:
-            raise ValueError('File corrupt {}'.format(img_path))
+            raise ValueError("File corrupt {}".format(img_path))
         augment_hsv = True
         if self.augment and augment_hsv:
             # SV augmentation by 50%
@@ -192,24 +200,28 @@ class LoadImagesAndLabels:  # for training
 
         # Augment image and labels
         if self.augment:
-            img, labels, M = random_affine(img, labels, degrees=(-5, 5), translate=(0.10, 0.10), scale=(0.50, 1.20))
+            img, labels, M = random_affine(
+                img, labels, degrees=(-5, 5), translate=(0.10, 0.10), scale=(0.50, 1.20)
+            )
 
         plotFlag = False
         if plotFlag:
             import matplotlib
-            matplotlib.use('Agg')
+
+            matplotlib.use("Agg")
             import matplotlib.pyplot as plt
-            plt.figure(figsize=(50, 50)) 
+
+            plt.figure(figsize=(50, 50))
             plt.imshow(img[:, :, ::-1])
-            plt.plot(labels[:, [1, 3, 3, 1, 1]].T, labels[:, [2, 2, 4, 4, 2]].T, '.-')
-            plt.axis('off')
-            plt.savefig('test.jpg')
+            plt.plot(labels[:, [1, 3, 3, 1, 1]].T, labels[:, [2, 2, 4, 4, 2]].T, ".-")
+            plt.axis("off")
+            plt.savefig("test.jpg")
             time.sleep(10)
 
         nL = len(labels)
         if nL > 0:
             # convert xyxy to xywh
-            labels[:, 2:6] = xyxy2xywh(labels[:, 2:6].copy()) #/ height
+            labels[:, 2:6] = xyxy2xywh(labels[:, 2:6].copy())  # / height
             labels[:, 2] /= width
             labels[:, 3] /= height
             labels[:, 4] /= width
@@ -221,8 +233,8 @@ class LoadImagesAndLabels:  # for training
                 img = np.fliplr(img)
                 if nL > 0:
                     labels[:, 2] = 1 - labels[:, 2]
-       
-        img = np.ascontiguousarray(img[ :, :, ::-1]) # BGR to RGB
+
+        img = np.ascontiguousarray(img[:, :, ::-1])  # BGR to RGB
         if self.transforms is not None:
             img = self.transforms(img)
 
@@ -232,21 +244,35 @@ class LoadImagesAndLabels:  # for training
         return self.nF  # number of batches
 
 
-def letterbox(img, height=608, width=1088, color=(127.5, 127.5, 127.5)):  # resize a rectangular image to a padded rectangular 
+def letterbox(
+    img, height=608, width=1088, color=(127.5, 127.5, 127.5)
+):  # resize a rectangular image to a padded rectangular
     shape = img.shape[:2]  # shape = [height, width]
-    ratio = min(float(height)/shape[0], float(width)/shape[1])
-    new_shape = (round(shape[1] * ratio), round(shape[0] * ratio)) # new_shape = [width, height]
+    ratio = min(float(height) / shape[0], float(width) / shape[1])
+    new_shape = (
+        round(shape[1] * ratio),
+        round(shape[0] * ratio),
+    )  # new_shape = [width, height]
     dw = (width - new_shape[0]) / 2  # width padding
     dh = (height - new_shape[1]) / 2  # height padding
     top, bottom = round(dh - 0.1), round(dh + 0.1)
     left, right = round(dw - 0.1), round(dw + 0.1)
     img = cv2.resize(img, new_shape, interpolation=cv2.INTER_AREA)  # resized, no border
-    img = cv2.copyMakeBorder(img, top, bottom, left, right, cv2.BORDER_CONSTANT, value=color)  # padded rectangular
+    img = cv2.copyMakeBorder(
+        img, top, bottom, left, right, cv2.BORDER_CONSTANT, value=color
+    )  # padded rectangular
     return img, ratio, dw, dh
 
 
-def random_affine(img, targets=None, degrees=(-10, 10), translate=(.1, .1), scale=(.9, 1.1), shear=(-2, 2),
-                  borderValue=(127.5, 127.5, 127.5)):
+def random_affine(
+    img,
+    targets=None,
+    degrees=(-10, 10),
+    translate=(0.1, 0.1),
+    scale=(0.9, 1.1),
+    shear=(-2, 2),
+    borderValue=(127.5, 127.5, 127.5),
+):
     # torchvision.transforms.RandomAffine(degrees=(-10, 10), translate=(.1, .1), scale=(.9, 1.1), shear=(-10, 10))
     # https://medium.com/uruvideo/dataset-augmentation-with-random-homographies-a8f4b44830d4
 
@@ -259,21 +285,32 @@ def random_affine(img, targets=None, degrees=(-10, 10), translate=(.1, .1), scal
     a = random.random() * (degrees[1] - degrees[0]) + degrees[0]
     # a += random.choice([-180, -90, 0, 90])  # 90deg rotations added to small rotations
     s = random.random() * (scale[1] - scale[0]) + scale[0]
-    R[:2] = cv2.getRotationMatrix2D(angle=a, center=(img.shape[1] / 2, img.shape[0] / 2), scale=s)
+    R[:2] = cv2.getRotationMatrix2D(
+        angle=a, center=(img.shape[1] / 2, img.shape[0] / 2), scale=s
+    )
 
     # Translation
     T = np.eye(3)
-    T[0, 2] = (random.random() * 2 - 1) * translate[0] * img.shape[0] + border  # x translation (pixels)
-    T[1, 2] = (random.random() * 2 - 1) * translate[1] * img.shape[1] + border  # y translation (pixels)
+    T[0, 2] = (random.random() * 2 - 1) * translate[0] * img.shape[
+        0
+    ] + border  # x translation (pixels)
+    T[1, 2] = (random.random() * 2 - 1) * translate[1] * img.shape[
+        1
+    ] + border  # y translation (pixels)
 
     # Shear
     S = np.eye(3)
-    S[0, 1] = math.tan((random.random() * (shear[1] - shear[0]) + shear[0]) * math.pi / 180)  # x shear (deg)
-    S[1, 0] = math.tan((random.random() * (shear[1] - shear[0]) + shear[0]) * math.pi / 180)  # y shear (deg)
+    S[0, 1] = math.tan(
+        (random.random() * (shear[1] - shear[0]) + shear[0]) * math.pi / 180
+    )  # x shear (deg)
+    S[1, 0] = math.tan(
+        (random.random() * (shear[1] - shear[0]) + shear[0]) * math.pi / 180
+    )  # y shear (deg)
 
     M = S @ T @ R  # Combined rotation matrix. ORDER IS IMPORTANT HERE!!
-    imw = cv2.warpPerspective(img, M, dsize=(width, height), flags=cv2.INTER_LINEAR,
-                              borderValue=borderValue)  # BGR order borderValue
+    imw = cv2.warpPerspective(
+        img, M, dsize=(width, height), flags=cv2.INTER_LINEAR, borderValue=borderValue
+    )  # BGR order borderValue
 
     # Return warped points also
     if targets is not None:
@@ -284,13 +321,17 @@ def random_affine(img, targets=None, degrees=(-10, 10), translate=(.1, .1), scal
 
             # warp points
             xy = np.ones((n * 4, 3))
-            xy[:, :2] = points[:, [0, 1, 2, 3, 0, 3, 2, 1]].reshape(n * 4, 2)  # x1y1, x2y2, x1y2, x2y1
+            xy[:, :2] = points[:, [0, 1, 2, 3, 0, 3, 2, 1]].reshape(
+                n * 4, 2
+            )  # x1y1, x2y2, x1y2, x2y1
             xy = (xy @ M.T)[:, :2].reshape(n, 8)
 
             # create new boxes
             x = xy[:, [0, 2, 4, 6]]
             y = xy[:, [1, 3, 5, 7]]
-            xy = np.concatenate((x.min(1), y.min(1), x.max(1), y.max(1))).reshape(4, n).T
+            xy = (
+                np.concatenate((x.min(1), y.min(1), x.max(1), y.max(1))).reshape(4, n).T
+            )
 
             # apply angle-based reduction
             radians = a * math.pi / 180
@@ -299,7 +340,11 @@ def random_affine(img, targets=None, degrees=(-10, 10), translate=(.1, .1), scal
             y = (xy[:, 3] + xy[:, 1]) / 2
             w = (xy[:, 2] - xy[:, 0]) * reduction
             h = (xy[:, 3] - xy[:, 1]) * reduction
-            xy = np.concatenate((x - w / 2, y - h / 2, x + w / 2, y + h / 2)).reshape(4, n).T
+            xy = (
+                np.concatenate((x - w / 2, y - h / 2, x + w / 2, y + h / 2))
+                .reshape(4, n)
+                .T
+            )
 
             # reject warped points outside of image
             np.clip(xy[:, 0], 0, width, out=xy[:, 0])
@@ -319,6 +364,7 @@ def random_affine(img, targets=None, degrees=(-10, 10), translate=(.1, .1), scal
     else:
         return imw
 
+
 def collate_fn(batch):
     imgs, labels, paths, sizes = zip(*batch)
     batch_size = len(labels)
@@ -330,7 +376,7 @@ def collate_fn(batch):
 
     for i in range(batch_size):
         isize = labels[i].shape[0]
-        if len(labels[i])>0:
+        if len(labels[i]) > 0:
             filled_labels[i, :isize, :] = labels[i]
         labels_len[i] = isize
 
@@ -338,21 +384,31 @@ def collate_fn(batch):
 
 
 class JointDataset(LoadImagesAndLabels):  # for training
-    def __init__(self, root, paths, img_size=(1088,608), augment=False, transforms=None):
-        
+    def __init__(
+        self, root, paths, img_size=(1088, 608), augment=False, transforms=None
+    ):
+
         dataset_names = paths.keys()
         self.img_files = OrderedDict()
         self.label_files = OrderedDict()
         self.tid_num = OrderedDict()
         self.tid_start_index = OrderedDict()
         for ds, path in paths.items():
-            with open(path, 'r') as file:
+            with open(path, "r") as file:
                 self.img_files[ds] = file.readlines()
-                self.img_files[ds] = [osp.join(root, x.strip()) for x in self.img_files[ds]]
-                self.img_files[ds] = list(filter(lambda x: len(x) > 0, self.img_files[ds]))
+                self.img_files[ds] = [
+                    osp.join(root, x.strip()) for x in self.img_files[ds]
+                ]
+                self.img_files[ds] = list(
+                    filter(lambda x: len(x) > 0, self.img_files[ds])
+                )
 
-            self.label_files[ds] = [x.replace('images', 'labels_with_ids').replace('.png', '.txt').replace('.jpg', '.txt')
-                                for x in self.img_files[ds]]
+            self.label_files[ds] = [
+                x.replace("images", "labels_with_ids")
+                .replace(".png", ".txt")
+                .replace(".jpg", ".txt")
+                for x in self.img_files[ds]
+            ]
 
         for ds, label_paths in self.label_files.items():
             max_index = -1
@@ -363,17 +419,17 @@ class JointDataset(LoadImagesAndLabels):  # for training
                 if len(lb.shape) < 2:
                     img_max = lb[1]
                 else:
-                    img_max = np.max(lb[:,1])
-                if img_max >max_index:
-                    max_index = img_max 
+                    img_max = np.max(lb[:, 1])
+                if img_max > max_index:
+                    max_index = img_max
             self.tid_num[ds] = max_index + 1
-        
+
         last_index = 0
         for i, (k, v) in enumerate(self.tid_num.items()):
             self.tid_start_index[k] = last_index
             last_index += v
-        
-        self.nID = int(last_index+1)
+
+        self.nID = int(last_index + 1)
         self.nds = [len(x) for x in self.img_files.values()]
         self.cds = [sum(self.nds[:i]) for i in range(len(self.nds))]
         self.nF = sum(self.nds)
@@ -381,31 +437,28 @@ class JointDataset(LoadImagesAndLabels):  # for training
         self.height = img_size[1]
         self.augment = augment
         self.transforms = transforms
-        
-        print('='*80)
-        print('dataset summary')
+
+        print("=" * 80)
+        print("dataset summary")
         print(self.tid_num)
-        print('total # identities:', self.nID)
-        print('start index')
+        print("total # identities:", self.nID)
+        print("start index")
         print(self.tid_start_index)
-        print('='*80)
-        
+        print("=" * 80)
 
     def __getitem__(self, files_index):
 
         for i, c in enumerate(self.cds):
-            if files_index >= c: 
+            if files_index >= c:
                 ds = list(self.label_files.keys())[i]
                 start_index = c
 
         img_path = self.img_files[ds][files_index - start_index]
         label_path = self.label_files[ds][files_index - start_index]
-        
-        imgs, labels, img_path, (h, w) = self.get_data(img_path, label_path) 
+
+        imgs, labels, img_path, (h, w) = self.get_data(img_path, label_path)
         for i, _ in enumerate(labels):
-            if labels[i,1] > -1:
-                labels[i,1] += self.tid_start_index[ds]
-        
-        return imgs, labels, img_path, (h, w) 
+            if labels[i, 1] > -1:
+                labels[i, 1] += self.tid_start_index[ds]
 
-
+        return imgs, labels, img_path, (h, w)

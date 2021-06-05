@@ -10,15 +10,19 @@ import cv2
 import numpy as np
 import torch
 
-from ..bbox import (_box_to_center_scale, _center_scale_to_box,
-                    _clip_aspect_ratio)
-from ..transforms import (addDPG, affine_transform, flip_joints_3d,
-                          get_affine_transform, im_to_torch)
+from ..bbox import _box_to_center_scale, _center_scale_to_box, _clip_aspect_ratio
+from ..transforms import (
+    addDPG,
+    affine_transform,
+    flip_joints_3d,
+    get_affine_transform,
+    im_to_torch,
+)
 
 # Only windows visual studio 2013 ~2017 support compile c/cuda extensions
 # If you force to compile extension on Windows and ensure appropriate visual studio
 # is intalled, you can try to use these ext_modules.
-if platform.system() != 'Windows':
+if platform.system() != "Windows":
     from ..roi_align import RoIAlign
 
 
@@ -50,9 +54,19 @@ class SimpleTransform(object):
         True for training trasformation.
     """
 
-    def __init__(self, dataset, scale_factor, add_dpg,
-                 input_size, output_size, rot, sigma,
-                 train, gpu_device=None, loss_type='MSELoss'):
+    def __init__(
+        self,
+        dataset,
+        scale_factor,
+        add_dpg,
+        input_size,
+        output_size,
+        rot,
+        sigma,
+        train,
+        gpu_device=None,
+        loss_type="MSELoss",
+    ):
         self._joint_pairs = dataset.joint_pairs
         self._scale_factor = scale_factor
         self._rot = rot
@@ -76,7 +90,7 @@ class SimpleTransform(object):
 
             self.upper_body_ids = dataset.upper_body_ids
             self.lower_body_ids = dataset.lower_body_ids
-        if platform.system() != 'Windows':
+        if platform.system() != "Windows":
             self.roi_align = RoIAlign(self._input_size, sample_num=-1)
             if gpu_device is not None:
                 self.roi_align = self.roi_align.to(gpu_device)
@@ -84,14 +98,17 @@ class SimpleTransform(object):
     def test_transform(self, src, bbox):
         xmin, ymin, xmax, ymax = bbox
         center, scale = _box_to_center_scale(
-            xmin, ymin, xmax - xmin, ymax - ymin, self._aspect_ratio)
+            xmin, ymin, xmax - xmin, ymax - ymin, self._aspect_ratio
+        )
         scale = scale * 1.0
 
         input_size = self._input_size
         inp_h, inp_w = input_size
 
         trans = get_affine_transform(center, scale, 0, [inp_w, inp_h])
-        img = cv2.warpAffine(src, trans, (int(inp_w), int(inp_h)), flags=cv2.INTER_LINEAR)
+        img = cv2.warpAffine(
+            src, trans, (int(inp_w), int(inp_h)), flags=cv2.INTER_LINEAR
+        )
         bbox = _center_scale_to_box(center, scale)
 
         img = im_to_torch(img)
@@ -120,14 +137,17 @@ class SimpleTransform(object):
         tensor_img[2].add_(-0.480)
 
         new_boxes = _clip_aspect_ratio(boxes, self._aspect_ratio)
-        cropped_img = self.roi_align(tensor_img.unsqueeze(0).to(self._gpu_device), new_boxes.to(self._gpu_device))
+        cropped_img = self.roi_align(
+            tensor_img.unsqueeze(0).to(self._gpu_device), new_boxes.to(self._gpu_device)
+        )
         return cropped_img, new_boxes[:, 1:]
 
     def _target_generator(self, joints_3d, num_joints):
         target_weight = np.ones((num_joints, 1), dtype=np.float32)
         target_weight[:, 0] = joints_3d[:, 0, 1]
-        target = np.zeros((num_joints, self._heatmap_size[0], self._heatmap_size[1]),
-                          dtype=np.float32)
+        target = np.zeros(
+            (num_joints, self._heatmap_size[0], self._heatmap_size[1]), dtype=np.float32
+        )
         tmp_size = self._sigma * 3
 
         for i in range(num_joints):
@@ -136,7 +156,12 @@ class SimpleTransform(object):
             # check if any part of the gaussian is in-bounds
             ul = [int(mu_x - tmp_size), int(mu_y - tmp_size)]
             br = [int(mu_x + tmp_size + 1), int(mu_y + tmp_size + 1)]
-            if (ul[0] >= self._heatmap_size[1] or ul[1] >= self._heatmap_size[0] or br[0] < 0 or br[1] < 0):
+            if (
+                ul[0] >= self._heatmap_size[1]
+                or ul[1] >= self._heatmap_size[0]
+                or br[0] < 0
+                or br[1] < 0
+            ):
                 # return image as is
                 target_weight[i] = 0
                 continue
@@ -158,11 +183,15 @@ class SimpleTransform(object):
 
             v = target_weight[i]
             if v > 0.5:
-                target[i, img_y[0]:img_y[1], img_x[0]:img_x[1]] = g[g_y[0]:g_y[1], g_x[0]:g_x[1]]
+                target[i, img_y[0] : img_y[1], img_x[0] : img_x[1]] = g[
+                    g_y[0] : g_y[1], g_x[0] : g_x[1]
+                ]
 
         return target, np.expand_dims(target_weight, -1)
 
-    def _integral_target_generator(self, joints_3d, num_joints, patch_height, patch_width, source=None):
+    def _integral_target_generator(
+        self, joints_3d, num_joints, patch_height, patch_width, source=None
+    ):
         target_weight = np.ones((num_joints, 2), dtype=np.float32)
         target_weight[:, 0] = joints_3d[:, 0, 1]
         target_weight[:, 1] = joints_3d[:, 0, 1]
@@ -170,13 +199,20 @@ class SimpleTransform(object):
             target_weight[:26, :] = target_weight[:26, :] * 2
         elif num_joints == 133:
             target_weight[:23, :] = target_weight[:23, :] * 2
-        
-        if source == 'frei' or source == 'partX' or source == 'OneHand' or source == 'hand_labels_synth' \
-        or source == 'hand143_panopticdb' or source == 'RHD_published_v2' or source == 'interhand':
-            if target_weight[-21:,:].sum() > 0 and target_weight[-42:-21].sum() == 0:
+
+        if (
+            source == "frei"
+            or source == "partX"
+            or source == "OneHand"
+            or source == "hand_labels_synth"
+            or source == "hand143_panopticdb"
+            or source == "RHD_published_v2"
+            or source == "interhand"
+        ):
+            if target_weight[-21:, :].sum() > 0 and target_weight[-42:-21].sum() == 0:
                 target_weight[-42:-21] += 1
-            elif target_weight[-21:,:].sum() == 0 and target_weight[-42:-21].sum() > 0:
-                target_weight[-21:,:] += 1
+            elif target_weight[-21:, :].sum() == 0 and target_weight[-42:-21].sum() > 0:
+                target_weight[-21:, :] += 1
 
         target = np.zeros((num_joints, 2), dtype=np.float32)
         target[:, 0] = joints_3d[:, 0, 0] / patch_width - 0.5
@@ -187,10 +223,10 @@ class SimpleTransform(object):
         return target, target_weight
 
     def __call__(self, src, label, source=None):
-        bbox = list(label['bbox'])
-        gt_joints = label['joints_3d']
+        bbox = list(label["bbox"])
+        gt_joints = label["joints_3d"]
 
-        imgwidth, imght = label['width'], label['height']
+        imgwidth, imght = label["width"], label["height"]
         assert imgwidth == src.shape[1] and imght == src.shape[0]
         self.num_joints = gt_joints.shape[0]
 
@@ -204,10 +240,14 @@ class SimpleTransform(object):
 
         xmin, ymin, xmax, ymax = bbox
         center, scale = _box_to_center_scale(
-            xmin, ymin, xmax - xmin, ymax - ymin, self._aspect_ratio)
+            xmin, ymin, xmax - xmin, ymax - ymin, self._aspect_ratio
+        )
 
         # half body transform
-        if self._train and (np.sum(joints_vis[:, 0]) > self.num_joints_half_body and np.random.rand() < self.prob_half_body):
+        if self._train and (
+            np.sum(joints_vis[:, 0]) > self.num_joints_half_body
+            and np.random.rand() < self.prob_half_body
+        ):
             c_half_body, s_half_body = self.half_body_transform(
                 gt_joints[:, :, 0], joints_vis
             )
@@ -224,11 +264,20 @@ class SimpleTransform(object):
 
         # rotation
         if self._train:
-            if source == 'frei' or source == 'partX' or source == 'OneHand' or source == 'interhand':
+            if (
+                source == "frei"
+                or source == "partX"
+                or source == "OneHand"
+                or source == "interhand"
+            ):
                 rf = 180
             else:
                 rf = self._rot
-            r = np.clip(np.random.randn() * rf, -rf * 2, rf * 2) if random.random() <= 0.6 else 0
+            r = (
+                np.clip(np.random.randn() * rf, -rf * 2, rf * 2)
+                if random.random() <= 0.6
+                else 0
+            )
         else:
             r = 0
 
@@ -244,7 +293,9 @@ class SimpleTransform(object):
 
         inp_h, inp_w = input_size
         trans = get_affine_transform(center, scale, r, [inp_w, inp_h])
-        img = cv2.warpAffine(src, trans, (int(inp_w), int(inp_h)), flags=cv2.INTER_LINEAR)
+        img = cv2.warpAffine(
+            src, trans, (int(inp_w), int(inp_h)), flags=cv2.INTER_LINEAR
+        )
 
         # deal with joints visibility
         for i in range(self.num_joints):
@@ -252,10 +303,12 @@ class SimpleTransform(object):
                 joints[i, 0:2, 0] = affine_transform(joints[i, 0:2, 0], trans)
 
         # generate training targets
-        if self._loss_type == 'MSELoss':
+        if self._loss_type == "MSELoss":
             target, target_weight = self._target_generator(joints, self.num_joints)
-        elif 'JointRegression' in self._loss_type:
-            target, target_weight = self._integral_target_generator(joints, self.num_joints, inp_h, inp_w, source)
+        elif "JointRegression" in self._loss_type:
+            target, target_weight = self._integral_target_generator(
+                joints, self.num_joints, inp_h, inp_w, source
+            )
 
         bbox = _center_scale_to_box(center, scale)
 
@@ -264,7 +317,12 @@ class SimpleTransform(object):
         img[1].add_(-0.457)
         img[2].add_(-0.480)
 
-        return img, torch.from_numpy(target), torch.from_numpy(target_weight), torch.Tensor(bbox)
+        return (
+            img,
+            torch.from_numpy(target),
+            torch.from_numpy(target_weight),
+            torch.Tensor(bbox),
+        )
 
     def half_body_transform(self, joints, joints_vis):
         upper_joints = []
@@ -279,8 +337,7 @@ class SimpleTransform(object):
         if np.random.randn() < 0.5 and len(upper_joints) > 2:
             selected_joints = upper_joints
         else:
-            selected_joints = lower_joints \
-                if len(lower_joints) > 2 else upper_joints
+            selected_joints = lower_joints if len(lower_joints) > 2 else upper_joints
 
         if len(selected_joints) < 2:
             return None, None
@@ -300,11 +357,7 @@ class SimpleTransform(object):
             w = h * self._aspect_ratio
 
         scale = np.array(
-            [
-                w * 1.0 / self.pixel_std,
-                h * 1.0 / self.pixel_std
-            ],
-            dtype=np.float32
+            [w * 1.0 / self.pixel_std, h * 1.0 / self.pixel_std], dtype=np.float32
         )
 
         scale = scale * 1.5
