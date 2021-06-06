@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 /*
   영상 관리대장(열람, 파기, 이용) 관련 테이블
 
@@ -13,21 +13,21 @@
       area               : area_id         FK      FALSE
       requester          : requester_id    FK      FALSE   
 */
-const { Model } = require("sequelize");
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class video_management extends Model {
     static associate(models) {
       video_management.belongsTo(models.area, {
-        foreignKey: "area_id",
-        targetKey: "area_id",
+        foreignKey: 'area_id',
+        targetKey: 'area_id',
       });
       video_management.belongsTo(models.video, {
-        foreignKey: "video_id",
-        targetKey: "video_id",
+        foreignKey: 'video_id',
+        targetKey: 'video_id',
       });
       video_management.belongsTo(models.requester, {
-        foreignKey: "requester_id",
-        targetKey: "requester_id",
+        foreignKey: 'requester_id',
+        targetKey: 'requester_id',
       });
     }
   }
@@ -39,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       manage_type: {
-        type: DataTypes.ENUM({ values: ["열람", "이용", "파기"] }),
+        type: DataTypes.ENUM({ values: ['열람', '이용', '파기'] }),
         allowNull: false,
       },
       manage_date: {
@@ -56,12 +56,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       purpose: {
         type: DataTypes.ENUM({
-          values: [
-            "보호자의 열람신청",
-            "관계공무원의 열람신청",
-            "아동보호기관의 열람신청",
-            "기타",
-          ],
+          values: ['보호자의 열람신청', '관계공무원의 열람신청', '아동보호기관의 열람신청', '기타'],
         }),
         allowNull: false,
       },
@@ -76,11 +71,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "video_management",
-      tableName: "video_management",
+      modelName: 'video_management',
+      tableName: 'video_management',
       freezeTableName: false,
       timestamps: false,
-    }
+    },
   );
   return video_management;
 };

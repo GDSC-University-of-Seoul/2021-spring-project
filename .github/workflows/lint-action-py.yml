@@ -1,6 +1,16 @@
-name: Lint Action - PY
+name: Lint Action - PY(ML)
 
-on: [push, pull_request]
+on: 
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - develop
+
+defaults:
+  run:
+    working-directory: models
 
 jobs:
   run-linters:
