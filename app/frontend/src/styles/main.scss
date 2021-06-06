@@ -3,11 +3,11 @@
 
 /* config */
 @import "config/reset.scss";
-@import "config/variable";
 
 /* pages */
 @import "pages/pages";
 @import "pages/home";
+@import "pages/monitoring";
 
 /* components */
 @import "components/sideBar";

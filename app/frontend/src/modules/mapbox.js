@@ -47,7 +47,7 @@ export const fetchData = () => async (dispatch) => {
 
 const initialState = {
   loading: false,
-  data: { districtsGeojson: [], districts: [] },
+  data: { districtsGeojson: null, districts: [] },
   error: null,
 };
 
@@ -65,7 +65,6 @@ export default function mapboxReducer(state = initialState, action) {
       return {
         ...state,
         loading: true,
-        data: { districtsGeojson: null, districts: null },
         error: false,
       };
     // 데이터 Fetch 완료
@@ -84,7 +83,6 @@ export default function mapboxReducer(state = initialState, action) {
       return {
         ...state,
         loading: false,
-        data: { districtsGeojson: null, districts: null },
         error: true,
       };
     default:

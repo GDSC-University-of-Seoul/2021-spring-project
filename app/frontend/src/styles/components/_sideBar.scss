@@ -2,23 +2,23 @@
   position: fixed;
   width: 12rem;
   height: 100%;
-  background-color: $sidebar;
+  background-color: #304152;
   z-index: 10;
 
   header {
-    background-color: $sidebar-header;
+    background-color: #0099ff;
     padding: 1rem 0.5rem;
     font-size: 1.25rem;
     font-weight: 700;
   }
   .sidemenu {
     &:hover {
-      background-color: $sidebar-hover;
+      background-color: #465e77;
       transition: background-color 0.2s linear;
     }
     a {
       display: flex;
-      color: $white;
+      color: white;
       padding: 1rem 0.5rem;
 
       .menu-icon {

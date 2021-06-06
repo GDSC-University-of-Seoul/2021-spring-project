@@ -11,8 +11,11 @@ function Monitoring() {
   return (
     <>
       <SideBar />
-      <section className="section">
-        <MapBoxContainer />
+      <section className="section monitoring">
+        <div className="container map-section">
+          <MapBoxContainer />
+        </div>
+        <div className="container select-section">선택 정보 영역</div>
       </section>
     </>
   );

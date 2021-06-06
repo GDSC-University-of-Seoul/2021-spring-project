@@ -15,8 +15,8 @@ function ChartContainer({ sido }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchData());
-  }, [dispatch]);
+    if (districts.length === 0) dispatch(fetchData());
+  }, [districts, dispatch]);
 
   if (loading) return <div className="chart">로딩중</div>;
   if (error) return <div className="chart">에러발생!</div>;
@@ -30,11 +30,16 @@ function ChartContainer({ sido }) {
   filterData.forEach((district) => {
     chartData.push({
       시·도: axisName[district.district_name],
-      개수: parseInt(district.count, 10),
+      사건: parseInt(district.count, 10) % 100,
+      사고: parseInt(district.count, 10) % 10,
     });
   });
 
-  return <BarChart data={chartData} keys={["개수"]} indexBy="시·도" />;
+  return (
+    <div className="chart">
+      <BarChart data={chartData} keys={["사건", "사고"]} indexBy="시·도" />
+    </div>
+  );
 }
 
 export default ChartContainer;

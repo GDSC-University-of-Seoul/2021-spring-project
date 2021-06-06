@@ -16,7 +16,6 @@ import {
 } from "../utils/mapbox/mapStyle";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 
-import { BsArrowCounterclockwise } from "react-icons/bs";
 import MapBoxCategory from "./MapBoxCategory";
 import districtViewport from "../utils/mapbox/districtViewport";
 
@@ -47,7 +46,7 @@ function MapBox({ geojson }) {
   const dispatch = useDispatch();
 
   const [viewport, setViewport] = useState({
-    width: 1200,
+    width: "100%",
     height: 800,
     latitude: districtViewport["대한민국"].lat,
     longitude: districtViewport["대한민국"].lng,
@@ -105,7 +104,7 @@ function MapBox({ geojson }) {
           dispatch(sidoClick(districtArea, selectedDistrictInfo));
 
           setViewport({
-            width: 1200,
+            width: "100%",
             height: 800,
             latitude: districtViewport[selectedDistrictInfo.name].lat,
             longitude: districtViewport[selectedDistrictInfo.name].lng,
@@ -129,7 +128,7 @@ function MapBox({ geojson }) {
    */
   const resetClickHandler = useCallback(() => {
     setViewport({
-      width: 1200,
+      width: "100%",
       height: 800,
       latitude: districtViewport["대한민국"].lat,
       longitude: districtViewport["대한민국"].lng,
@@ -190,7 +189,7 @@ function MapBox({ geojson }) {
       {level && <MapBoxCategory level={level} />}
       {/* 도, 광역시 기준으로 초기화하는 버튼 */}
       <button onClick={resetClickHandler} className="reset-button">
-        <BsArrowCounterclockwise />
+        Reset
       </button>
     </>
   );

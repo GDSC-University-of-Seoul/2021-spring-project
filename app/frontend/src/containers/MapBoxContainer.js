@@ -20,8 +20,8 @@ function MapBoxContainer() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchData());
-  }, [dispatch]);
+    if (!districtsGeojson || districts.length === 0) dispatch(fetchData());
+  }, [districtsGeojson, districts, dispatch]);
 
   // 로딩, 에러, 데이터 상태에 따른 렌더링
   if (loading) return <div>로딩중 ...</div>;

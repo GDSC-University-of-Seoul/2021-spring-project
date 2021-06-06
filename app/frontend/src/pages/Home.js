@@ -1,4 +1,5 @@
 import ChartContainer from "../containers/ChartContainer";
+import LogTable from "../components/LogTable";
 import React from "react";
 import SideBar from "../components/SideBar";
 
@@ -40,7 +41,9 @@ function Home() {
           <div className="chart-title">도 어린이집 사건·사고 발생 건수</div>
           <ChartContainer sido={"도"} />
         </div>
-        <div className="container log-section" />
+        <div className="container log-section">
+          <LogTable />
+        </div>
       </section>
     </>
   );
