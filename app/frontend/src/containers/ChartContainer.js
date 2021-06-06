@@ -2,9 +2,10 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import BarChart from "../components/BarChart";
+import axisName from "../utils/chart/axisName";
 import { fetchData } from "../modules/mapbox";
 
-function ChartContainer() {
+function ChartContainer({ sido }) {
   const {
     loading,
     data: { districts },
@@ -17,27 +18,23 @@ function ChartContainer() {
     dispatch(fetchData());
   }, [dispatch]);
 
-  if (loading) return <div>로딩중</div>;
-  if (error) return <div>에러발생!</div>;
+  if (loading) return <div className="chart">로딩중</div>;
+  if (error) return <div className="chart">에러발생!</div>;
+
+  const filterData = districts.filter((district) => {
+    const len = district.district_name.length;
+    return district.district_name[len - 1] === sido;
+  });
 
   const chartData = [];
-
-  districts.forEach((district) => {
+  filterData.forEach((district) => {
     chartData.push({
-      sido: district.district_name,
-      count: parseInt(district.count, 10),
+      시·도: axisName[district.district_name],
+      개수: parseInt(district.count, 10),
     });
   });
 
-  return (
-    <BarChart
-      data={chartData}
-      keys={["count"]}
-      indexBy="sido"
-      bottomLegend="도·광역시"
-      leftLegend="어린이집 개수"
-    />
-  );
+  return <BarChart data={chartData} keys={["개수"]} indexBy="시·도" />;
 }
 
 export default ChartContainer;

@@ -181,7 +181,7 @@ function MapBox({ geojson }) {
             <Marker
               key={index}
               latitude={Number(cdrCenter.latitude)}
-              longitude={Number(cdrCenter.longtitude)}
+              longitude={Number(cdrCenter.longitude)}
               className="marker"
             />
           ))}
