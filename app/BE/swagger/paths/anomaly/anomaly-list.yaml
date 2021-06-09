@@ -1,0 +1,30 @@
+get:
+  tags:
+    - anomaly
+  summary: get all anomalies
+  description:
+  parameters:
+    - name: video_id
+      in: query
+      required: false
+      description: 비디오 id
+  responses:
+    200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                ano_id:
+                  type: integer
+                start_time:
+                  type: date
+                end_time:
+                  type: date
+                follow_up:
+                  type: string
+                video_id:
+                  type: integer

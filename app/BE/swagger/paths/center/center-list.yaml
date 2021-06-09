@@ -1,0 +1,36 @@
+get:
+  tags:
+    - children care center
+  summary: get all centers
+  description:
+  parameters:
+    - name: code
+      in: query
+      required: false
+      description: 행정구역 코드
+    - name: name
+      in: query
+      required: false
+      description: 행정구역 이름
+  responses:
+    200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                center_id:
+                  type: integer
+                name:
+                  type: string
+                lat:
+                  type: string
+                lng:
+                  type: string
+                district_code:
+                  type: string
+                district_name:
+                  type: string

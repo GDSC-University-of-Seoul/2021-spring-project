@@ -17,6 +17,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# webpack
+dist
+
 ## JavaScript
 node_modules/
 .babelrc
@@ -38,7 +41,7 @@ __pycache__/
 ## etc
 aws/
 migrations/
-seeders/
+samples/
 
 ## ignorefile
 config.yml

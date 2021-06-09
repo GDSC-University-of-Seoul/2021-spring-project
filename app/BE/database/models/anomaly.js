@@ -8,10 +8,6 @@ module.exports = class Anomaly extends Sequelize.Model {
           type: DataTypes.INTEGER,
           primaryKey: true,
         },
-        ano_type: {
-          type: DataTypes.STRING(10),
-          allowNull: false,
-        },
         start_time: {
           type: DataTypes.DATE,
           allowNull: false,

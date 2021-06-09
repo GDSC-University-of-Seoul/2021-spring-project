@@ -22,26 +22,39 @@
   "devDependencies": {
     "@babel/core": "^7.14.0",
     "@babel/preset-react": "^7.13.13",
+    "babel-eslint": "^10.1.0",
     "babel-loader": "^8.2.2",
     "css-loader": "^5.2.4",
+    "eslint": "^7.27.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-config-react-app": "^6.0.0",
+    "eslint-plugin-flowtype": "^5.7.2",
+    "eslint-plugin-import": "^2.23.3",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-react": "^7.23.2",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "mini-css-extract-plugin": "1.3.0",
+    "prettier": "^2.3.0",
     "sass-loader": "10.0.5",
-    "style-loader": "^2.0.0",
+    "url-loader": "2.0.0",
     "webpack": "4.44.2",
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.2"
   },
   "scripts": {
-    "start" : "webpack-dev-server --progress --hot --open",
-    "build" : "webpack",
-    "deploy": "npm run build && aws s3 sync ./build s3://kids-keeper --profile=kids-keeper && npm run invalidate",
+    "start": "webpack-dev-server --progress --hot --open",
+    "build": "webpack",
+    "deploy": "aws s3 sync ./dist s3://kids-keeper --profile=kids-keeper && npm run invalidate",
     "invalidate": "aws cloudfront create-invalidation --profile=kids-keeper --distribution-id E1FQZD5KLSZ89S --paths / /index.html /error.html /service-worker.js /manifest.json /favicon.ico"
   },
   "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "extends": "react-app"
   },
+  "eslintIgnore": [
+    "node_modules",
+    "dist"
+  ],
   "browserslist": {
     "production": [
       ">0.2%",
