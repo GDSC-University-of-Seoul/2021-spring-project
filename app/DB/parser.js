@@ -9,8 +9,8 @@ var district_name = [];
 var parent_code = [];
 
 for (let i = 0; i < len; i++) {
-  address = json.존재[keys[i]]; // type : string
-  addressSplit = address.split(' ');
+  var address = json.존재[keys[i]]; // type : string
+  var addressSplit = address.split(' ');
 
   if (addressSplit.length == 1) {
     district_name.push(address);
@@ -22,7 +22,7 @@ for (let i = 0; i < len; i++) {
     if (addressSplit[0] == '세종특별자치시') {
       continue;
     }
-    parentCode = keys[i].slice(0, 2) + '00000000';
+    var parentCode = keys[i].slice(0, 2) + '00000000';
     district_name.push(addressSplit[1]);
     district_code.push(keys[i]);
     parent_code.push(parentCode);
@@ -32,4 +32,6 @@ for (let i = 0; i < len; i++) {
   }
 }
 
-export { district_code, district_name, parent_code };
+exports.district_code = district_code;
+exports.district_name = district_name;
+exports.parent_code = parent_code;
