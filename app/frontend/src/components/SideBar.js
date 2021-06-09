@@ -1,5 +1,6 @@
 import { FiMonitor, FiSettings } from "react-icons/fi";
 
+import { AiOutlineFileText } from "react-icons/ai";
 import { FaHome } from "react-icons/fa";
 import React from "react";
 import SideMenu from "./SideMenu";
@@ -19,6 +20,9 @@ function SideBar() {
       </SideMenu>
       <SideMenu menu="Monitoring" route="/monitoring">
         <FiMonitor className="menu-icon" />
+      </SideMenu>
+      <SideMenu menu="Logs" route="/logs">
+        <AiOutlineFileText className="menu-icon" />
       </SideMenu>
       <SideMenu menu="Settings" route="/settings">
         <FiSettings className="menu-icon" />

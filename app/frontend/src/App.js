@@ -1,4 +1,5 @@
 import Home from "./pages/Home";
+import Logs from "./pages/Logs";
 import Monitoring from "./pages/Monitoring";
 import React from "react";
 import { Route } from "react-router-dom";
@@ -14,6 +15,7 @@ function App() {
     <>
       <Route path="/" component={Home} exact />
       <Route path="/monitoring" component={Monitoring} />
+      <Route path="/logs" component={Logs} />
       <Route path="/settings" component={Settings} />
     </>
   );
