@@ -17,7 +17,7 @@ def train(opt):
 
     metadata = list()
     for file in files:
-        metadata.append(parse_xml(file))
+         metadata.append(parse_xml(file))
 
 
 if __name__ == "__main__":
