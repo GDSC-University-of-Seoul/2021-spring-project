@@ -11,7 +11,7 @@ function BarGraph({ data, keys, indexBy }) {
       keys={keys}
       indexBy={indexBy}
       theme={theme}
-      margin={{ top: 20, right: 65, bottom: 40, left: 55 }}
+      margin={{ top: 20, right: 75, bottom: 40, left: 40 }}
       padding={0.3}
       valueScale={{ type: "linear" }}
       colors={{ scheme: "nivo" }}
