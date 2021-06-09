@@ -31,3 +31,5 @@ for (let i = 0; i < len; i++) {
     // console.log(parentCode);
   }
 }
+
+export { district_code, district_name, parent_code };
