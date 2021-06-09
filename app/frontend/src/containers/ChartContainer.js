@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import BarChart from "../components/BarChart";
+import Loading from "../components/Loading";
 import axisName from "../utils/chart/axisName";
 import { fetchData } from "../modules/mapbox";
 
@@ -18,8 +19,8 @@ function ChartContainer({ sido }) {
     if (districts.length === 0) dispatch(fetchData());
   }, [districts, dispatch]);
 
-  if (loading) return <div className="chart">로딩중</div>;
-  if (error) return <div className="chart">에러발생!</div>;
+  if (loading) return <Loading />;
+  if (error) return <div>에러발생!</div>;
 
   const filterData = districts.filter((district) => {
     const len = district.district_name.length;
@@ -35,11 +36,7 @@ function ChartContainer({ sido }) {
     });
   });
 
-  return (
-    <div className="chart">
-      <BarChart data={chartData} keys={["사건", "사고"]} indexBy="시·도" />
-    </div>
-  );
+  return <BarChart data={chartData} keys={["사건", "사고"]} indexBy="시·도" />;
 }
 
 export default ChartContainer;

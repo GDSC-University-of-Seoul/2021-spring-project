@@ -1,0 +1,44 @@
+@keyframes rotate-loading {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes loading-text-opacity {
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.loading-container {
+  position: relative;
+}
+.loading {
+  width: 100px;
+  height: 100px;
+  border: 3px solid transparent;
+  border-color: transparent #304151 transparent #304151;
+  border-radius: 100%;
+  transition: all 0.5s ease-in-out;
+  animation: rotate-loading 1.5s linear 0s infinite normal;
+}
+.loading-text {
+  position: absolute;
+  top: 40px;
+  width: 100px;
+  text-align: center;
+  color: #304151;
+  font-size: 1.2rem;
+  font-weight: 600;
+  animation: loading-text-opacity 1.5s linear 0s infinite normal;
+}

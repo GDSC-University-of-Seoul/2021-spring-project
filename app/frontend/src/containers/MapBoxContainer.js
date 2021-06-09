@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
+import Loading from "../components/Loading";
 import MapBox from "../components/MapBox";
 import { fetchData } from "../modules/mapbox";
 
@@ -24,7 +25,7 @@ function MapBoxContainer() {
   }, [districtsGeojson, districts, dispatch]);
 
   // 로딩, 에러, 데이터 상태에 따른 렌더링
-  if (loading) return <div>로딩중 ...</div>;
+  if (loading) return <Loading />;
   if (error) return <div>에러 발생 </div>;
   if (!districtsGeojson) return <div>행정 구역 데이터 불러오기 실패</div>;
   if (!districts) return <div>API 연결 실패</div>;

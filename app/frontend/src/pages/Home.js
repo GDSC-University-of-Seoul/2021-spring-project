@@ -35,11 +35,15 @@ function Home() {
           <div className="chart-title">
             특별시·광역시 어린이집 사건·사고 발생 건수
           </div>
-          <ChartContainer sido={"시"} />
+          <div className="chart">
+            <ChartContainer sido={"시"} />
+          </div>
         </div>
         <div className="container chart-section">
           <div className="chart-title">도 어린이집 사건·사고 발생 건수</div>
-          <ChartContainer sido={"도"} />
+          <div className="chart">
+            <ChartContainer sido={"도"} />
+          </div>
         </div>
         <div className="container log-section">
           <LogTable />
