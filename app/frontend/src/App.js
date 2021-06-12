@@ -4,6 +4,7 @@ import Monitoring from "./pages/Monitoring";
 import React from "react";
 import { Route } from "react-router-dom";
 import Settings from "./pages/Settings";
+import SideBar from "./components/SideBar";
 
 /**
  * URL에 따라 렌더링할 컴포넌트 결정
@@ -13,6 +14,7 @@ import Settings from "./pages/Settings";
 function App() {
   return (
     <>
+      <SideBar />
       <Route path="/" component={Home} exact />
       <Route path="/monitoring" component={Monitoring} />
       <Route path="/logs" component={Logs} />

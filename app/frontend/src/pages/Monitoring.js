@@ -1,6 +1,5 @@
 import MapBoxContainer from "../containers/MapBoxContainer";
 import React from "react";
-import SideBar from "../components/SideBar";
 
 /**
  * `/monitoring` 페이지 렌더링
@@ -10,7 +9,6 @@ import SideBar from "../components/SideBar";
 function Monitoring() {
   return (
     <>
-      <SideBar />
       <section className="section monitoring">
         <div className="container map-section">
           <MapBoxContainer />

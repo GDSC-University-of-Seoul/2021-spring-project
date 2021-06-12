@@ -1,7 +1,6 @@
 import ChartContainer from "../containers/ChartContainer";
 import LogTable from "../components/LogTable";
 import React from "react";
-import SideBar from "../components/SideBar";
 
 /**
  * `/` 페이지 렌더링
@@ -11,7 +10,6 @@ import SideBar from "../components/SideBar";
 function Home() {
   return (
     <>
-      <SideBar />
       <section className="section home">
         <div className="container header">
           <div className="header-item">
