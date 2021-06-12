@@ -28,8 +28,5 @@ for (let i = 0; i < len; i++) {
   }
 }
 
-<<<<<<< HEAD
 exports.districts = districts;
-=======
-export { district_code, district_name, parent_code };
->>>>>>> add export variables
+exports.districts = districts;
