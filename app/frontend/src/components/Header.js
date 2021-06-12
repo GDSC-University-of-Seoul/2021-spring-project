@@ -25,8 +25,6 @@ function Header() {
         minutes: time.getMinutes(),
         seconds: time.getSeconds(),
       };
-      console.log(time.getDay());
-
       setDate(format(timeInfo));
     }, 1000);
 
