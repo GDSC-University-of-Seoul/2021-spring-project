@@ -6,49 +6,49 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       center_id: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       name: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       opr_type: {
-        type: Sequelize.ENUM
+        type: Sequelize.ENUM,
       },
       zipcode: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       address: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       phone: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       fax: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       web_page: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       lat: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       lng: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('cdrcare_centers');
-  }
+  },
 };

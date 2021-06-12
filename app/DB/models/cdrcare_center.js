@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 /*
   어린이집 관련 테이블
 
@@ -18,17 +18,17 @@
   backref               Column
       area               : this.center_id  FK
 */
-const { Model } = require("sequelize");
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class cdrcare_center extends Model {
     static associate(models) {
       cdrcare_center.hasMany(models.area, {
-        foreignKey: "center_id",
-        sourceKey: "center_id",
+        foreignKey: 'center_id',
+        sourceKey: 'center_id',
       });
       cdrcare_center.belongsTo(models.district, {
-        foreignKey: "code",
-        targetKey: "code",
+        foreignKey: 'code',
+        targetKey: 'code',
       });
     }
   }
@@ -46,15 +46,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       opr_type: {
         type: DataTypes.ENUM({
-          values: [
-            "국공립",
-            "사회복지법인",
-            "법인 및 단체",
-            "민간",
-            "가정",
-            "협동",
-            "직장",
-          ],
+          values: ['국공립', '사회복지법인', '법인 및 단체', '민간', '가정', '협동', '직장'],
         }),
         allowNull: false,
       },
@@ -89,11 +81,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "cdrcare_center",
-      tableName: "cdrcare_center",
+      modelName: 'cdrcare_center',
+      tableName: 'cdrcare_center',
       freezeTableName: false,
       timestamps: false,
-    }
+    },
   );
   return cdrcare_center;
 };

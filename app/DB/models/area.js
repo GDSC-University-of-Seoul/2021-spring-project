@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 /*
   어린이집 내 공간에 대한 테이블
 
@@ -11,21 +11,21 @@
   backref               Column
       cctv               : this.area_id     FK
 */
-const { Model } = require("sequelize");
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class area extends Model {
     static associate(models) {
       area.belongsTo(models.cdrcare_center, {
-        foreignKey: "center_id",
-        targetKey: "center_id",
+        foreignKey: 'center_id',
+        targetKey: 'center_id',
       });
       area.hasMany(models.video_management, {
-        foreignKey: "area_id",
-        sourceKey: "area_id",
+        foreignKey: 'area_id',
+        sourceKey: 'area_id',
       });
       area.hasMany(models.cctv, {
-        foreignKey: "area_id",
-        sourceKey: "area_id",
+        foreignKey: 'area_id',
+        sourceKey: 'area_id',
       });
     }
   }
@@ -52,11 +52,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "area",
-      tableName: "area",
+      modelName: 'area',
+      tableName: 'area',
       freezeTableName: false,
       timestamps: false,
-    }
+    },
   );
   return area;
 };

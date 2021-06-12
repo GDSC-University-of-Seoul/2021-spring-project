@@ -6,34 +6,34 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       cctv_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       area_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       install_date: {
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       quality: {
-        type: Sequelize.ENUM
+        type: Sequelize.ENUM,
       },
       uninstall_date: {
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('cctvs');
-  }
+  },
 };

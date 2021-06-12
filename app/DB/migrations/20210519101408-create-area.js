@@ -6,31 +6,31 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       area_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       area_name: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       use_of_area: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       center_id: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('areas');
-  }
+  },
 };
