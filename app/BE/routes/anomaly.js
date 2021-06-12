@@ -1,4 +1,8 @@
 import express from "express";
+import { Sequelize } from "sequelize";
+import ChildCareCenter from "../database/models/child-care-center";
+import FacilityArea from "../database/models/facility-area";
+import CCTV from "../database/models/cctv";
 import Video from "../database/models/video";
 import Anomaly from "../database/models/anomaly";
 
@@ -8,17 +12,47 @@ router
   .route("/")
   .get(async (req, res, next) => {
     try {
-      const { video_id } = req.query;
+      const { center_id, center_name } = req.query;
       let filters = {};
-      if (video_id) {
-        filters.video_id = video_id;
+      if (center_id) {
+        filters.center_id = center_id;
+      }
+      if (center_name) {
+        filters.center_name = center_name;
       }
       const anomalies = await Anomaly.findAll({
         include: {
           model: Video,
           attributes: [],
-          where: filters,
+          include: {
+            model: CCTV,
+            attributes: [],
+            include: {
+              model: FacilityArea,
+              attributes: [],
+              include: {
+                model: ChildCareCenter,
+                attributes: ["center_name", "address"],
+                where: filters,
+              },
+            },
+          },
         },
+        attributes: [
+          "start_time",
+          "end_time",
+          "follow_up",
+          [
+            Sequelize.col(
+              "Video.CCTV.FacilityArea.ChildCareCenter.center_name"
+            ),
+            "center_name",
+          ],
+          [
+            Sequelize.col("Video.CCTV.FacilityArea.ChildCareCenter.address"),
+            "address",
+          ],
+        ],
       });
       res.json(anomalies);
     } catch (err) {
