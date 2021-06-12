@@ -1,3 +1,4 @@
+import Header from "./components/Header";
 import Home from "./pages/Home";
 import Logs from "./pages/Logs";
 import Monitoring from "./pages/Monitoring";
@@ -14,6 +15,7 @@ import SideBar from "./components/SideBar";
 function App() {
   return (
     <>
+      <Header />
       <SideBar />
       <Route path="/" component={Home} exact />
       <Route path="/monitoring" component={Monitoring} />

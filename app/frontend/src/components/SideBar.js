@@ -13,7 +13,7 @@ import SideMenu from "./SideMenu";
 function SideBar() {
   return (
     <nav className="sidebar">
-      <header>Menu</header>
+      <div className="sidebar-header">Menu</div>
 
       <SideMenu menu="Home" route="/">
         <FaHome className="menu-icon" />

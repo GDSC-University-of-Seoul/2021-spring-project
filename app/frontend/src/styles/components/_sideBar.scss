@@ -1,11 +1,12 @@
 .sidebar {
   position: fixed;
+  top: 50px;
   width: 12rem;
   height: 100%;
   background-color: #304152;
   z-index: 10;
 
-  header {
+  .sidebar-header {
     background-color: #0099ff;
     padding: 1rem 0.5rem;
     font-size: 1.25rem;
