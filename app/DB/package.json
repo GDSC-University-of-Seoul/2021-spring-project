@@ -7,6 +7,7 @@
     "@babel/node": "^7.14.2",
     "@babel/preset-env": "^7.14.4",
     "dotenv": "^10.0.0",
+    "path": "^0.12.7",
     "pg": "^8.6.0",
     "pg-hstore": "^2.3.3",
     "sequelize": "^6.6.2",
