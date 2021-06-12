@@ -78,7 +78,6 @@ def extract_video(config, file, meta):
     nframe, size = get_video_metainfo(config, meta)
     logger.log(f"[{basename}] nframe: {nframe}, frame size: {size}")
 
-
     action_frame_list = list()
     for obj in meta.objects:
         action_frames = get_object_actions(meta, obj)
@@ -87,7 +86,7 @@ def extract_video(config, file, meta):
     # Check the video file is actually exist
     input_video = FileVideoStream(check_file(file))
 
-    fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+    fourcc = cv2.VideoWriter_fourcc(*"mp4v")
     output_video = cv2.VideoWriter("resize2.mp4", fourcc, 30.0, size)
 
     output_frames = list()
@@ -120,5 +119,4 @@ def extract_video(config, file, meta):
         input_video.stop()
         cv2.destroyAllWindows()
 
-    input('wait')
-    
+    input("wait")
