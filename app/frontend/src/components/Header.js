@@ -19,12 +19,14 @@ function Header() {
       const time = new Date();
       const timeInfo = {
         year: time.getFullYear(),
-        month: time.getMonth(),
-        day: time.getDay(),
+        month: time.getMonth() + 1,
+        day: time.getDate(),
         hours: time.getHours(),
         minutes: time.getMinutes(),
         seconds: time.getSeconds(),
       };
+      console.log(time.getDay());
+
       setDate(format(timeInfo));
     }, 1000);
 
