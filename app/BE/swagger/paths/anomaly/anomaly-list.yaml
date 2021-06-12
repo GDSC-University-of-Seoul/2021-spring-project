@@ -4,7 +4,7 @@ get:
   summary: get all anomalies
   description:
   parameters:
-    - name: video_id
+    - name: center_id
       in: query
       required: false
       description: 어린이집 id
