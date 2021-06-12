@@ -19,11 +19,11 @@ dataset:
 
 video:
   # Debug attributes
-  display: False      
+  display: False   
   write: True
 
   # Basic attributes
   resize: True 
-  width: 1080
-  height: 720
+  width: 640
+  height: 360
   depth: 3
