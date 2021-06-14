@@ -1,7 +1,15 @@
 import React from "react";
 import { ResponsiveBar } from "@nivo/bar";
 
+/**
+ * 차트를 생성하기 위한 컴포넌트
+ *
+ * @param {Object} data: 차트 구성 데이터, keys: 구성할 데이터, indexBy: x축 기준
+ * @return {JSX.Element} 차트 컴포넌트
+ */
+
 function BarGraph({ data, keys, indexBy }) {
+  // 차트 내 스타일 설정
   const theme = {
     fontSize: 14,
   };

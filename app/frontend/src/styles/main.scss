@@ -8,6 +8,7 @@
 @import "pages/pages";
 @import "pages/home";
 @import "pages/monitoring";
+@import "pages/cctvs";
 @import "pages/logs";
 
 /* components */
@@ -16,6 +17,7 @@
 @import "components/mapboxCategory";
 @import "components/loading";
 @import "components/header";
+@import "components/table";
 
 * {
   box-sizing: border-box;

@@ -1,4 +1,4 @@
-import DetailLogTable from "../components/DetailLogTable";
+import DetailLogTableContainer from "../containers/DetailLogTableContainer";
 import React from "react";
 
 /**
@@ -11,7 +11,7 @@ function Logs() {
     <>
       <section className="section logs">
         <div className="container logs-section">
-          <DetailLogTable />
+          <DetailLogTableContainer />
         </div>
       </section>
     </>

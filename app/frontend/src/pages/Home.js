@@ -1,5 +1,5 @@
 import ChartContainer from "../containers/ChartContainer";
-import LogTable from "../components/LogTable";
+import LogTableContainer from "../containers/LogTableContainer";
 import React from "react";
 
 /**
@@ -44,7 +44,7 @@ function Home() {
           </div>
         </div>
         <div className="container log-section">
-          <LogTable />
+          <LogTableContainer />
         </div>
       </section>
     </>

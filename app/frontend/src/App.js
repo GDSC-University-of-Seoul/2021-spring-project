@@ -1,3 +1,4 @@
+import Cctvs from "./pages/Cctvs";
 import Header from "./components/Header";
 import Home from "./pages/Home";
 import Logs from "./pages/Logs";
@@ -19,6 +20,7 @@ function App() {
       <SideBar />
       <Route path="/" component={Home} exact />
       <Route path="/monitoring" component={Monitoring} />
+      <Route path="/cctvs" component={Cctvs} />
       <Route path="/logs" component={Logs} />
       <Route path="/settings" component={Settings} />
     </>

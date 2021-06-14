@@ -1,9 +1,17 @@
 import { FaBell, FaUser } from "react-icons/fa";
 import React, { useCallback, useEffect, useState } from "react";
 
+/**
+ * 홈페이지 헤더부 구성
+ *
+ * @returns {JSX.Element} 홈페이지 헤더부 컴포넌트
+ */
+
 function Header() {
+  // 날짜·시간 정보 저장
   const [date, setDate] = useState(null);
 
+  // 날짜·시간 포맷팅 (yyyy-mm-dd hh:mm:ss)
   const format = useCallback((timeInfo) => {
     Object.keys(timeInfo).forEach((key) => {
       timeInfo[key] =
@@ -14,6 +22,7 @@ function Header() {
     return timeInfo;
   }, []);
 
+  //  날짜·시간 표기 함수 (1초 마다 비동기 처리)
   useEffect(() => {
     const getTime = setInterval(() => {
       const time = new Date();
