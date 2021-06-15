@@ -1,5 +1,4 @@
 import express from "express";
-import { sequelize, Sequelize } from "../database/models";
 import FacilityArea from "../database/models/facility-area";
 import ChildCareCenter from "../database/models/child-care-center";
 

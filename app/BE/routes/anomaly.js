@@ -1,5 +1,5 @@
 import express from "express";
-import { Sequelize } from "sequelize";
+import { Sequelize, Op } from "sequelize";
 import ChildCareCenter from "../database/models/child-care-center";
 import FacilityArea from "../database/models/facility-area";
 import CCTV from "../database/models/cctv";
@@ -13,17 +13,28 @@ router
   .get(async (req, res, next) => {
     try {
       const { center_id, center_name } = req.query;
-      let filters = {};
+      let centerFilters = {};
       if (center_id) {
-        filters.center_id = center_id;
+        centerFilters.center_id = center_id;
       }
       if (center_name) {
-        filters.center_name = center_name;
+        centerFilters.center_name = center_name;
       }
+
+      let startDate = new Date();
+      const endDate = new Date();
+      startDate.setDate(endDate.getDate() - 60);
+      const videoFilters = {
+        record_date: {
+          [Op.between]: [startDate, endDate],
+        },
+      };
+
       const anomalies = await Anomaly.findAll({
         include: {
           model: Video,
           attributes: [],
+          where: videoFilters,
           include: {
             model: CCTV,
             attributes: [],
@@ -33,7 +44,7 @@ router
               include: {
                 model: ChildCareCenter,
                 attributes: ["center_name", "address"],
-                where: filters,
+                where: centerFilters,
               },
             },
           },
