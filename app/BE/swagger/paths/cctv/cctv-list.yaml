@@ -1,30 +1,31 @@
-get:
-  tags:
-    - cctv
-  summary: get all cctvs
-  description:
-  parameters:
-    - name: area_id
-      in: query
-      required: false
-      description: 촬영구역 id
-  responses:
-    200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            type: array
-            items:
-              type: object
-              properties:
-                cctv_id:
-                  type: integer
-                quaity:
-                  type: string
-                install_date:
-                  type: date
-                uninstall_date:
-                  type: date
-                area_id:
-                  type: integer
+tags:
+  - cctv
+summary: get all cctvs
+description:
+parameters:
+  - name: area_id
+    in: query
+    required: false
+    description: 촬영구역 id
+responses:
+  200:
+    description: OK
+    content:
+      application/json:
+        schema:
+          type: array
+          items:
+            type: object
+            properties:
+              cctv_id:
+                type: integer
+              quaity:
+                type: string
+              install_date:
+                type: string
+                format: date
+              uninstall_date:
+                type: string
+                format: date
+              area_id:
+                type: integer

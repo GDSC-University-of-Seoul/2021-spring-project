@@ -19,9 +19,11 @@ get:
               video_id:
                 type: integer
               record_date:
-                type: date
+                  type: string
+                  format: date
               delete_date:
-                type: date
+                  type: string
+                  format: date
               delete_issue:
                 type: string
               storage_name:

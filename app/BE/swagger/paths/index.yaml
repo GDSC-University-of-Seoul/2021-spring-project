@@ -11,11 +11,17 @@
 /centers/{center_name}:
   $ref: "child-care-center/center-retrieve-by-name.yaml"
 /areas:
-  $ref: "facility-area/area-list.yaml"
+  get:
+    $ref: "facility-area/area-list.yaml"
+  post:
+    $ref: "facility-area/area-create.yaml"
 /areas/{area_id}:
   $ref: "facility-area/area-retrieve-by-id.yaml"
 /cctvs:
-  $ref: "cctv/cctv-list.yaml"
+  get:
+    $ref: "cctv/cctv-list.yaml"
+  post:
+    $ref: "cctv/cctv-create.yaml"
 /cctvs/{cctv_id}:
   $ref: "cctv/cctv-retrieve-by-id.yaml"
 /videos:

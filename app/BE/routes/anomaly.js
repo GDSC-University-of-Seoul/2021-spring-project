@@ -87,7 +87,7 @@ router
         video_id: video_obj.video_id,
         ...anomaly,
       });
-      res.json(anomaly_obj);
+      res.status(201).json(anomaly_obj);
     } catch (err) {
       console.error(err);
       next(err);

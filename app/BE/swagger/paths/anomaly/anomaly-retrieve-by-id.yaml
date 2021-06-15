@@ -19,9 +19,11 @@ get:
               anomaly_id:
                 type: integer
               start_time:
-                type: date
+                type: string
+                format: date-time
               end_time:
-                type: date
+                type: string
+                format: date-time
               follow_up:
                 type: string
               video_id:

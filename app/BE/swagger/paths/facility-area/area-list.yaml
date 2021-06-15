@@ -1,28 +1,31 @@
-get:
-  tags:
-    - facility area
-  summary: get all facility areas
-  description:
-  parameters:
-    - name: center_id
-      in: query
-      required: false
-      description: 어린이집 id
-  responses:
-    200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            type: array
-            items:
-              type: object
-              properties:
-                area_id:
-                  type: integer
-                area_name:
-                  type: string
-                area_usage:
-                  type: string
-                center_id:
-                  type: integer
+tags:
+  - facility area
+summary: get all facility areas
+description:
+parameters:
+  - name: center_id
+    in: query
+    required: false
+    description: 어린이집 id
+  - name: center_name
+    in: query
+    required: false
+    description: 어린이집 이름
+responses:
+  200:
+    description: OK
+    content:
+      application/json:
+        schema:
+          type: array
+          items:
+            type: object
+            properties:
+              area_id:
+                type: integer
+              area_name:
+                type: string
+              area_usage:
+                type: string
+              center_id:
+                type: integer

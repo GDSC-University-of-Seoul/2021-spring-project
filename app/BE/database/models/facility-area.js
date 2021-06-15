@@ -6,6 +6,7 @@ module.exports = class FacilityArea extends Sequelize.Model {
       {
         area_id: {
           type: DataTypes.INTEGER,
+          autoIncrement: true,
           primaryKey: true,
         },
         area_name: {

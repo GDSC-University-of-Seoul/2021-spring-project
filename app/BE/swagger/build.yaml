@@ -203,6 +203,10 @@ paths:
           in: query
           required: false
           description: 어린이집 id
+        - name: center_name
+          in: query
+          required: false
+          description: 어린이집 이름
       responses:
         '200':
           description: OK
@@ -221,6 +225,39 @@ paths:
                       type: string
                     center_id:
                       type: integer
+    post:
+      tags:
+        - facility area
+      summary: create facility area
+      description: null
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                area_name:
+                  type: string
+                area_usage:
+                  type: string
+                center_id:
+                  type: integer
+      responses:
+        '201':
+          description: CREATED
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  area_id:
+                    type: integer
+                  area_name:
+                    type: string
+                  area_usage:
+                    type: string
+                  center_id:
+                    type: integer
   '/areas/{area_id}':
     get:
       tags:
@@ -274,11 +311,48 @@ paths:
                     quaity:
                       type: string
                     install_date:
-                      type: date
+                      type: string
+                      format: date
                     uninstall_date:
-                      type: date
+                      type: string
+                      format: date
                     area_id:
                       type: integer
+    post:
+      tags:
+        - cctv
+      summary: create cctv
+      description: null
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quality:
+                  type: string
+                install_date:
+                  type: string
+                  format: date
+                area_id:
+                  type: integer
+      responses:
+        '201':
+          description: CREATED
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  cctv_id:
+                    type: integer
+                  quality:
+                    type: string
+                  install_date:
+                    type: string
+                    format: date
+                  area_id:
+                    type: integer
   '/cctvs/{cctv_id}':
     get:
       tags:
@@ -303,9 +377,11 @@ paths:
                   quaity:
                     type: string
                   install_date:
-                    type: date
+                    type: string
+                    format: date
                   uninstall_date:
-                    type: date
+                    type: string
+                    format: date
                   area_id:
                     type: integer
   /videos:
@@ -332,9 +408,11 @@ paths:
                     video_id:
                       type: integer
                     record_date:
-                      type: date
+                      type: string
+                      format: date
                     delete_date:
-                      type: date
+                      type: string
+                      format: date
                     delete_issue:
                       type: string
                     storage_name:
@@ -363,9 +441,11 @@ paths:
                   video_id:
                     type: integer
                   record_date:
-                    type: date
+                    type: string
+                    format: date
                   delete_date:
-                    type: date
+                    type: string
+                    format: date
                   delete_issue:
                     type: string
                   storage_name:
@@ -400,9 +480,11 @@ paths:
                     anomaly_id:
                       type: integer
                     start_time:
-                      type: date
+                      type: string
+                      format: date-time
                     end_time:
-                      type: date
+                      type: string
+                      format: date-time
                     follow_up:
                       type: string
                     video_id:
@@ -429,9 +511,11 @@ paths:
                   anomaly_id:
                     type: integer
                   start_time:
-                    type: date
+                    type: string
+                    format: date-time
                   end_time:
-                    type: date
+                    type: string
+                    format: date-time
                   follow_up:
                     type: string
                   video_id:
