@@ -1,5 +1,8 @@
-import React from "react";
-import { categoryOptions } from "../utils/mapbox/mapStyle";
+import React, { useCallback } from "react";
+import { controlSggDiff, controlSidoDiff } from "../modules/mapboxCategory";
+import { useDispatch, useSelector } from "react-redux";
+
+import Slider from "@material-ui/core/Slider";
 
 /**
  * 어린이집 개수에 기반해 범주를 생성
@@ -8,28 +11,44 @@ import { categoryOptions } from "../utils/mapbox/mapStyle";
  * @return {JSX.Element} 범주 컴포넌트
  */
 function MapBoxCategory({ level }) {
-  const { sidoDiff, sggDiff, colors } = categoryOptions;
+  const { sidoDiff, sggDiff } = useSelector(
+    (state) => state.mapboxCategoryReducer
+  );
+  const dispatch = useDispatch();
   const categoryTitle = level === 1 ? "도·광역시" : "시·군·구";
-  const diff = level === 1 ? sidoDiff : sggDiff;
 
-  let current = -diff;
+  /**
+   * 슬라이더 조작 이벤트 핸들러
+   * - 사용자 입력에 따른 상태 업데이트 수행
+   *
+   * @param {Object} e 이벤트 객체
+   * @param {Number} value 슬라이더를 통한 사용자 입력
+   */
+  const changeHandler = useCallback(
+    (e, value) => {
+      level === 1
+        ? dispatch(controlSidoDiff(value))
+        : dispatch(controlSggDiff(value));
+    },
+    [level, dispatch]
+  );
 
   return (
     <div className="category">
       {/* Todo : 어린이집 개수가 아닌 사건, 사고에 기반하여 범주 작성 */}
-      <div className="category-title">{categoryTitle} 어린이집 개수</div>
+      <h1 className="category-title">{categoryTitle} 어린이집 개수</h1>
       {/* Todo : 컨트롤 옵션 기능 추가 */}
-      <ul>
-        {colors.map((color, idx) => {
-          current += diff;
-          return (
-            <li key={idx} className="category-item">
-              <div className="colorbox" style={{ backgroundColor: color }} />
-              {current} ~ {idx !== colors.length - 1 ? current + diff : ""}
-            </li>
-          );
-        })}
-      </ul>
+      {/* 영역 색상 변경 슬라이더 */}
+      <Slider
+        value={level === 1 ? sidoDiff : sggDiff}
+        onChange={changeHandler}
+        aria-labelledby="diff-control"
+        valueLabelDisplay="auto"
+        step={level === 1 ? 10 : 1}
+        marks
+        min={level === 1 ? 10 : 1}
+        max={level === 1 ? 100 : 10}
+      />
     </div>
   );
 }

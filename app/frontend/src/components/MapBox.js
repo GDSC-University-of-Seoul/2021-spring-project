@@ -1,6 +1,12 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import ReactMapGL, { Layer, Marker, Popup, Source } from "react-map-gl";
 import {
+  getSggHighlightLayer,
+  getSggLayer,
+  getSidoHighlightLayer,
+  getSidoLayer,
+} from "../utils/mapbox/mapStyle";
+import {
   reset,
   setGeojsonData,
   sggClick,
@@ -8,12 +14,6 @@ import {
   sidoClick,
   sidoHover,
 } from "../modules/mapboxEvent";
-import {
-  sggHighlightLayer,
-  sggLayer,
-  sidoHighlightLayer,
-  sidoLayer,
-} from "../utils/mapbox/mapStyle";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 
 import MapBoxCategory from "./MapBoxCategory";
@@ -44,6 +44,15 @@ function MapBox({ geojson }) {
     error,
   } = useSelector((state) => state.mapboxEventReducer, shallowEqual);
   const dispatch = useDispatch();
+
+  /*
+   * 사용자 영역 기준 변경 정보 → 영역 색상 렌더링에 사용
+   * - sidoDiff : 도,광역시 영역 기준
+   * - sggDiff : 시,군,구 영역 기준
+   */
+  const { sidoDiff, sggDiff } = useSelector(
+    (state) => state.mapboxCategoryReducer
+  );
 
   const [viewport, setViewport] = useState({
     width: "100%",
@@ -153,11 +162,15 @@ function MapBox({ geojson }) {
         {/* geojson 데이터를 통해 영역 설정 및 스타일 설정 */}
         {geojsonData && level && (
           <Source type="geojson" data={geojsonData}>
-            {level === 1 && <Layer {...sidoLayer} />}
-            {level === 1 && <Layer {...sidoHighlightLayer} filter={filter} />}
+            {level === 1 && <Layer {...getSidoLayer(sidoDiff)} />}
+            {level === 1 && (
+              <Layer {...getSidoHighlightLayer(sidoDiff)} filter={filter} />
+            )}
 
-            {level === 2 && <Layer {...sggLayer} />}
-            {level === 2 && <Layer {...sggHighlightLayer} filter={filter} />}
+            {level === 2 && <Layer {...getSggLayer(sggDiff)} />}
+            {level === 2 && (
+              <Layer {...getSggHighlightLayer(sggDiff)} filter={filter} />
+            )}
           </Source>
         )}
         {/* 팝업 메세지로 행정구역의 정보 표시 */}
