@@ -47,10 +47,10 @@ function MapBox({ geojson }) {
 
   /*
    * 사용자 영역 기준 변경 정보 → 영역 색상 렌더링에 사용
-   * - sidoDiff : 도,광역시 영역 기준
-   * - sggDiff : 시,군,구 영역 기준
+   * - sidoControl : 도,광역시 영역 기준
+   * - sggControl : 시,군,구 영역 기준
    */
-  const { sidoDiff, sggDiff } = useSelector(
+  const { sidoControl, sggControl } = useSelector(
     (state) => state.mapboxCategoryReducer
   );
 
@@ -162,14 +162,20 @@ function MapBox({ geojson }) {
         {/* geojson 데이터를 통해 영역 설정 및 스타일 설정 */}
         {geojsonData && level && (
           <Source type="geojson" data={geojsonData}>
-            {level === 1 && <Layer {...getSidoLayer(sidoDiff)} />}
+            {level === 1 && <Layer {...getSidoLayer(sidoControl.diff)} />}
             {level === 1 && (
-              <Layer {...getSidoHighlightLayer(sidoDiff)} filter={filter} />
+              <Layer
+                {...getSidoHighlightLayer(sidoControl.diff)}
+                filter={filter}
+              />
             )}
 
-            {level === 2 && <Layer {...getSggLayer(sggDiff)} />}
+            {level === 2 && <Layer {...getSggLayer(sggControl.diff)} />}
             {level === 2 && (
-              <Layer {...getSggHighlightLayer(sggDiff)} filter={filter} />
+              <Layer
+                {...getSggHighlightLayer(sggControl.diff)}
+                filter={filter}
+              />
             )}
           </Source>
         )}
