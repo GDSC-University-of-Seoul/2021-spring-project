@@ -160,10 +160,7 @@ class WebCamDetectionLoader:
             dets = dets.cpu()
             boxes = dets[:, 1:5]
             scores = dets[:, 5:6]
-            if self.opt.tracking:
-                ids = dets[:, 6:7]
-            else:
-                ids = torch.zeros(scores.shape)
+            ids = torch.zeros(scores.shape)
 
         boxes_k = boxes[dets[:, 0] == 0]
         if isinstance(boxes_k, int) or boxes_k.shape[0] == 0:

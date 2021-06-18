@@ -275,10 +275,7 @@ class DetectionLoader:
                 dets = dets.cpu()
                 boxes = dets[:, 1:5]
                 scores = dets[:, 5:6]
-                if self.opt.tracking:
-                    ids = dets[:, 6:7]
-                else:
-                    ids = torch.zeros(scores.shape)
+                ids = torch.zeros(scores.shape)
 
             for k in range(len(orig_imgs)):
                 boxes_k = boxes[dets[:, 0] == k]

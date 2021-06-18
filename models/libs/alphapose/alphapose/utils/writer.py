@@ -48,13 +48,6 @@ class DataWriter:
             if not os.path.exists(opt.outputpath + "/vis"):
                 os.mkdir(opt.outputpath + "/vis")
 
-        if opt.pose_flow:
-            from trackers.PoseFlow.poseflow_infer import PoseFlowWrapper
-
-            self.pose_flow_wrapper = PoseFlowWrapper(
-                save_path=os.path.join(opt.outputpath, "poseflow")
-            )
-
     def start_worker(self, target):
         if self.opt.sp:
             p = Thread(target=target, args=())
@@ -150,15 +143,14 @@ class DataWriter:
                     pose_scores.append(torch.from_numpy(pose_score).unsqueeze(0))
                 preds_img = torch.cat(pose_coords)
                 preds_scores = torch.cat(pose_scores)
-                if not self.opt.pose_track:
-                    boxes, scores, ids, preds_img, preds_scores, pick_ids = pose_nms(
-                        boxes,
-                        scores,
-                        ids,
-                        preds_img,
-                        preds_scores,
-                        self.opt.min_box_area,
-                    )
+                boxes, scores, ids, preds_img, preds_scores, pick_ids = pose_nms(
+                    boxes,
+                    scores,
+                    ids,
+                    preds_img,
+                    preds_scores,
+                    self.opt.min_box_area,
+                )
 
                 _result = []
                 for k in range(len(scores)):
@@ -180,11 +172,6 @@ class DataWriter:
                     )
 
                 result = {"imgname": im_name, "result": _result}
-
-                if self.opt.pose_flow:
-                    poseflow_result = self.pose_flow_wrapper.step(orig_img, result)
-                    for i in range(len(poseflow_result)):
-                        result["result"][i]["idx"] = poseflow_result[i]["idx"]
 
                 final_result.append(result)
                 if self.opt.save_img or self.save_video or self.opt.vis:
