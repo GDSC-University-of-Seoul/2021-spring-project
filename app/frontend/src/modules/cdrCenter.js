@@ -3,18 +3,23 @@ import axios from "axios";
 const FETCH_CDRENTER_LOADING = "cdrCenter/FETCH_CDRENTER_LOADING";
 const FETCH_CDRCENTER_DATA = "cdrCenter/FETCH_CDRCENTER_DATA";
 const FETCH_CDRCENTER_ERROR = "cdrCenter/FETCH_CDRCENTER_ERROR";
+const RESET_CDRCENTER = "cdrCenter/RESET_CDRCENTER";
 
-export const fetchCdrCenter = (cdrCenterId) => (dispatch) => {
+export const fetchCdrCenter = (cdrCenterId) => async (dispatch) => {
   try {
     dispatch({ type: FETCH_CDRENTER_LOADING });
 
-    const cdrCenterInfo = axios.get(
+    const cdrCenterInfo = await axios.get(
       `${process.env.REACT_APP_API_SERVER}/api/centers/${cdrCenterId}`
     );
     dispatch({ type: FETCH_CDRCENTER_DATA, payload: cdrCenterInfo.data });
   } catch (e) {
     dispatch({ type: FETCH_CDRCENTER_ERROR, payload: e });
   }
+};
+
+export const resetCdrCenter = () => (dispatch) => {
+  dispatch({ type: RESET_CDRCENTER });
 };
 
 const initialState = {
@@ -38,7 +43,6 @@ export default function cdrCenterReducer(state = initialState, action) {
       return {
         ...state,
         loading: true,
-        data: null,
         error: null,
       };
     case FETCH_CDRCENTER_DATA:
@@ -55,6 +59,8 @@ export default function cdrCenterReducer(state = initialState, action) {
         data: null,
         error: action.payload,
       };
+    case RESET_CDRCENTER:
+      return initialState;
     default:
       return state;
   }

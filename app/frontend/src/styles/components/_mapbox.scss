@@ -15,6 +15,12 @@
   width: 1.5rem;
   height: 2rem;
   border: none;
+  cursor: pointer !important;
+
+  &:hover {
+    width: 2rem;
+    height: 3rem;
+  }
 }
 .reset-button {
   display: flex;

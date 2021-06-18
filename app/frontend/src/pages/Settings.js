@@ -17,7 +17,7 @@ function Settings() {
     userId: "leetaehee0205",
     permission: "시·군·구",
   };
-  const [userInfo, setUserInfo] = useState(fetchUser);
+  const [userInfo] = useState(fetchUser);
 
   return (
     <>

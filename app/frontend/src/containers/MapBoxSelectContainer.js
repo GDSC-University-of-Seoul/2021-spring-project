@@ -66,7 +66,7 @@ function MapBoxSelectContainer() {
               key={index}
               className="cdrCenter-info"
               label={cdrCenterCategory[key]}
-              value={cdrCenter.data[key]}
+              value={cdrCenter.data[key] || ""}
               variant="outlined"
               InputLabelProps={{
                 shrink: true,
