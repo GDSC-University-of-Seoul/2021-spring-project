@@ -8,7 +8,6 @@ import os
 import sys
 
 sys.path.insert(0, os.path.dirname(__file__))
-from abc import ABC, abstractmethod
 import platform
 
 import torch
@@ -67,12 +66,7 @@ class YOLODetector(BaseDetector):
         Input: image name(str) or raw image data(ndarray or torch.Tensor,channel GBR)
         Output: pre-processed image data(torch.FloatTensor,(1,3,h,w))
         """
-        if isinstance(img_source, str):
-            img, orig_img, im_dim_list = prep_image(img_source, self.inp_dim)
-        elif isinstance(img_source, torch.Tensor) or isinstance(img_source, np.ndarray):
-            img, orig_img, im_dim_list = prep_frame(img_source, self.inp_dim)
-        else:
-            raise IOError("Unknown image source type: {}".format(type(img_source)))
+        img, _ = prep_frame(img_source, self.inp_dim)
 
         return img
 
@@ -277,7 +271,7 @@ class YOLODetector(BaseDetector):
             self.model = self.model.module
         dets_results = []
         # pre-process(scale, normalize, ...) the image
-        img, orig_img, img_dim_list = prep_image(img_name, self.inp_dim)
+        img, img_dim_list = prep_image(img_name, self.inp_dim)
         with torch.no_grad():
             img_dim_list = torch.FloatTensor([img_dim_list]).repeat(1, 2)
             img = img.to(args.device) if args else img.cuda()

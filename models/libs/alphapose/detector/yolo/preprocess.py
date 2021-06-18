@@ -1,20 +1,10 @@
 from __future__ import division
 
 import torch
-import torch.nn as nn
-import torch.nn.functional as F
-from torch.autograd import Variable
 import numpy as np
 import cv2
-import matplotlib.pyplot as plt
 
-try:
-    from util import count_parameters as count
-    from util import convert2cpu as cpu
-except ImportError:
-    from yolo.util import count_parameters as count
-    from yolo.util import convert2cpu as cpu
-from PIL import Image, ImageDraw
+from PIL import Image
 
 
 def letterbox_image(img, inp_dim):
@@ -48,7 +38,7 @@ def prep_image(img, inp_dim):
     img = letterbox_image(orig_im, (inp_dim, inp_dim))
     img_ = img[:, :, ::-1].transpose((2, 0, 1)).copy()
     img_ = torch.from_numpy(img_).float().div(255.0).unsqueeze(0)
-    return img_, orig_im, dim
+    return img_, dim
 
 
 def prep_frame(img, inp_dim):
@@ -63,19 +53,7 @@ def prep_frame(img, inp_dim):
     img = letterbox_image(orig_im, (inp_dim, inp_dim))
     img_ = img[:, :, ::-1].transpose((2, 0, 1)).copy()
     img_ = torch.from_numpy(img_).float().div(255.0).unsqueeze(0)
-    return img_, orig_im, dim
-
-
-def prep_image_pil(img, network_dim):
-    orig_im = Image.open(img)
-    img = orig_im.convert("RGB")
-    dim = img.size
-    img = img.resize(network_dim)
-    img = torch.ByteTensor(torch.ByteStorage.from_buffer(img.tobytes()))
-    img = img.view(*network_dim, 3).transpose(0, 1).transpose(0, 2).contiguous()
-    img = img.view(1, 3, *network_dim)
-    img = img.float().div(255.0)
-    return (img, orig_im, dim)
+    return img_, dim
 
 
 def inp_to_image(inp):

@@ -548,12 +548,3 @@ class Darknet(nn.Module):
 
                 # Let us save the weights for the Convolutional layers
                 cpu(conv.weight.data).numpy().tofile(fp)
-
-
-#
-# dn = Darknet('cfg/yolov3.cfg')
-# dn.load_weights("yolov3.weights")
-# inp = get_test_input()
-# a, interms = dn(inp)
-# dn.eval()
-# a_i, interms_i = dn(inp)
