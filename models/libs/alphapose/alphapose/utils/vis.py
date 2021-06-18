@@ -67,35 +67,30 @@ def get_color_fast(idx):
     return color
 
 
-def vis_frame_fast(frame, im_res, opt, format="coco"):
+def vis_frame_fast(frame, im_res, opt):
     """
     frame: frame image
     im_res: im_res of predictions
-    format: coco or mpii
 
     return rendered image
     """
-    kp_num = 17
-    if len(im_res["result"]) > 0:
-        kp_num = len(im_res["result"][0]["keypoints"])
 
     l_pair = L_PAIR
     p_color = P_COLOR
     line_color = LINE_COLOR
 
     img = frame.copy()
-    height, width = img.shape[:2]
     for human in im_res["result"]:
         part_line = {}
         kp_preds = human["keypoints"]
         kp_scores = human["kp_score"]
-        if kp_num == 17:
-            kp_preds = torch.cat(
-                (kp_preds, torch.unsqueeze((kp_preds[5, :] + kp_preds[6, :]) / 2, 0))
-            )
-            kp_scores = torch.cat(
-                (kp_scores, torch.unsqueeze((kp_scores[5, :] + kp_scores[6, :]) / 2, 0))
-            )
+
+        kp_preds = torch.cat(
+            (kp_preds, torch.unsqueeze((kp_preds[5, :] + kp_preds[6, :]) / 2, 0))
+        )
+        kp_scores = torch.cat(
+            (kp_scores, torch.unsqueeze((kp_scores[5, :] + kp_scores[6, :]) / 2, 0))
+        )
         color = BLUE
 
         # Draw bboxes
@@ -148,35 +143,30 @@ def vis_frame_fast(frame, im_res, opt, format="coco"):
     return img
 
 
-def vis_frame(frame, im_res, opt, format="coco"):
+def vis_frame(frame, im_res, opt):
     """
     frame: frame image
     im_res: im_res of predictions
-    format: coco or mpii
 
     return rendered image
     """
-    kp_num = 17
-    if len(im_res["result"]) > 0:
-        kp_num = len(im_res["result"][0]["keypoints"])
 
     l_pair = L_PAIR
     p_color = P_COLOR
     line_color = LINE_COLOR
     
     img = frame.copy()
-    height, width = img.shape[:2]
     for human in im_res["result"]:
         part_line = {}
         kp_preds = human["keypoints"]
         kp_scores = human["kp_score"]
-        if kp_num == 17:
-            kp_preds = torch.cat(
-                (kp_preds, torch.unsqueeze((kp_preds[5, :] + kp_preds[6, :]) / 2, 0))
-            )
-            kp_scores = torch.cat(
-                (kp_scores, torch.unsqueeze((kp_scores[5, :] + kp_scores[6, :]) / 2, 0))
-            )
+
+        kp_preds = torch.cat(
+            (kp_preds, torch.unsqueeze((kp_preds[5, :] + kp_preds[6, :]) / 2, 0))
+        )
+        kp_scores = torch.cat(
+            (kp_scores, torch.unsqueeze((kp_scores[5, :] + kp_scores[6, :]) / 2, 0))
+        )
         color = BLUE
 
         # Draw bboxes

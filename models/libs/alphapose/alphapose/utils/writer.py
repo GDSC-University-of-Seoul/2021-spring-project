@@ -1,5 +1,3 @@
-import os
-import time
 from threading import Thread
 from queue import Queue
 
@@ -23,12 +21,9 @@ EVAL_JOINTS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
 
 class DataWriter:
     def __init__(
-        self,
-        cfg,
-        opt,
-        save_video=False,
+        self, cfg, opt, save_video=False,
         video_save_opt=DEFAULT_VIDEO_SAVE_OPT,
-        queueSize=1024,
+        queueSize=1024
     ):
         self.cfg = cfg
         self.opt = opt
@@ -167,9 +162,7 @@ class DataWriter:
 
                 final_result.append(result)
                 if self.opt.vis or self.save_video:
-                    if hm_data.size()[1] == 49:
-                        from alphapose.utils.vis import vis_frame_dense as vis_frame
-                    elif self.opt.vis_fast:
+                    if self.opt.vis_fast:
                         from alphapose.utils.vis import vis_frame_fast as vis_frame
                     else:
                         from alphapose.utils.vis import vis_frame
@@ -181,7 +174,8 @@ class DataWriter:
     def write_image(self, img, im_name, stream=None):
         if self.opt.vis:
             cv2.imshow("AlphaPose Demo", img)
-            cv2.waitKey(10)
+            cv2.waitKey(5)
+
         if self.save_video:
             stream.write(img)
 
@@ -228,12 +222,4 @@ class DataWriter:
         return self.final_result
 
     def recognize_video_ext(self, ext=""):
-        if ext == "mp4":
-            return cv2.VideoWriter_fourcc(*"mp4v"), "." + ext
-        elif ext == "avi":
-            return cv2.VideoWriter_fourcc(*"XVID"), "." + ext
-        elif ext == "mov":
-            return cv2.VideoWriter_fourcc(*"XVID"), "." + ext
-        else:
-            print("Unknow video format {}, will use .mp4 instead of it".format(ext))
-            return cv2.VideoWriter_fourcc(*"mp4v"), ".mp4"
+        return cv2.VideoWriter_fourcc(*"mp4v"), "." + ext
