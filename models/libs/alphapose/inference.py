@@ -2,21 +2,22 @@
 import argparse
 import os
 import platform
-import sys
 import time
 
 import numpy as np
 import torch
 from tqdm import tqdm
-import natsort
 
 from detector.apis import get_detector
 from alphapose.models import builder
 from alphapose.utils.config import update_config
 from alphapose.utils.detector import DetectionLoader
-from alphapose.utils.transforms import flip, flip_heatmap
 from alphapose.utils.vis import getTime
 from alphapose.utils.writer import DataWriter
+
+"""
+python inference.py --cfg data/256x192_res50_lr1e-3_1x.yaml --checkpoint data/fast_res50_256x192.pth --video data/11-2_cam01_assault01_place08_night_spring.mp4 --outdir examples/res --gpus 0 --vis --vis_fast --profile
+"""
 
 """----------------------------- Demo options -----------------------------"""
 parser = argparse.ArgumentParser(description="AlphaPose Demo")
@@ -60,7 +61,7 @@ parser.add_argument(
 parser.add_argument(
     "--posebatch",
     type=int,
-    default=128,
+    default=256,
     help="pose estimation maximum batch size PER GPU",
 )
 parser.add_argument(
@@ -83,9 +84,6 @@ parser.add_argument(
     dest="qsize",
     default=128,
     help="the length of result buffer, where reducing it will lower requirement of cpu memory",
-)
-parser.add_argument(
-    "--flip", default=False, action="store_true", help="enable flip testing"
 )
 parser.add_argument(
     "--debug", default=False, action="store_true", help="print detail information"
@@ -126,43 +124,11 @@ if not args.sp:
 
 def check_input():
     # for video
-    if len(args.video):
-        if os.path.isfile(args.video):
-            videofile = args.video
-            return "video", videofile
-        else:
-            raise IOError("Error: --video must refer to a video file, not directory.")
-
-    # for detection results
-    if len(args.detfile):
-        if os.path.isfile(args.detfile):
-            detfile = args.detfile
-            return "detfile", detfile
-        else:
-            raise IOError(
-                "Error: --detfile must refer to a detection json file, not directory."
-            )
-
-    # for images
-    if len(args.inputpath) or len(args.inputlist) or len(args.inputimg):
-        inputpath = args.inputpath
-        inputlist = args.inputlist
-        inputimg = args.inputimg
-
-        if len(inputlist):
-            im_names = open(inputlist, "r").readlines()
-        elif len(inputpath) and inputpath != "/":
-            for root, dirs, files in os.walk(inputpath):
-                im_names = files
-            im_names = natsort.natsorted(im_names)
-        elif len(inputimg):
-            args.inputpath = os.path.split(inputimg)[0]
-            im_names = [os.path.split(inputimg)[1]]
-
-        return "image", im_names
-
+    if os.path.isfile(args.video):
+        videofile = args.video
+        return videofile
     else:
-        raise NotImplementedError
+        raise IOError("Error: --video must refer to a video file, not directory.")
 
 
 def print_finish_info():
@@ -174,15 +140,8 @@ def print_finish_info():
         )
 
 
-def loop():
-    n = 0
-    while True:
-        yield n
-        n += 1
-
-
 if __name__ == "__main__":
-    mode, input_source = check_input()
+    input_source = check_input()
 
     if not os.path.exists(args.outputpath):
         os.makedirs(args.outputpath)
@@ -194,7 +153,6 @@ if __name__ == "__main__":
         cfg,
         args,
         batchSize=args.detbatch,
-        mode=mode,
         queueSize=args.qsize,
     )
     det_worker = det_loader.start()
@@ -239,8 +197,6 @@ if __name__ == "__main__":
     im_names_desc = tqdm(range(data_len), dynamic_ncols=True)
 
     batchSize = args.posebatch
-    if args.flip:
-        batchSize = int(batchSize / 2)
     try:
         for i in im_names_desc:
             start_time = getTime()
@@ -262,6 +218,7 @@ if __name__ == "__main__":
                 if args.profile:
                     ckpt_time, det_time = getTime(start_time)
                     runtime_profile["dt"].append(det_time)
+
                 # Pose Estimation
                 inps = inps.to(args.device)
                 datalen = inps.size(0)
@@ -269,26 +226,20 @@ if __name__ == "__main__":
                 if (datalen) % batchSize:
                     leftover = 1
                 num_batches = datalen // batchSize + leftover
+
                 hm = []
                 for j in range(num_batches):
                     inps_j = inps[j * batchSize : min((j + 1) * batchSize, datalen)]
-                    if args.flip:
-                        inps_j = torch.cat((inps_j, flip(inps_j)))
                     hm_j = pose_model(inps_j)
-                    if args.flip:
-                        hm_j_flip = flip_heatmap(
-                            hm_j[int(len(hm_j) / 2) :],
-                            pose_dataset.joint_pairs,
-                            shift=True,
-                        )
-                        hm_j = (hm_j[0 : int(len(hm_j) / 2)] + hm_j_flip) / 2
                     hm.append(hm_j)
+
                 hm = torch.cat(hm)
                 if args.profile:
                     ckpt_time, pose_time = getTime(ckpt_time)
                     runtime_profile["pt"].append(pose_time)
                 hm = hm.cpu()
                 writer.save(boxes, scores, ids, hm, cropped_boxes, orig_img, im_name)
+
                 if args.profile:
                     ckpt_time, post_time = getTime(ckpt_time)
                     runtime_profile["pn"].append(post_time)
@@ -303,6 +254,7 @@ if __name__ == "__main__":
                     )
                 )
         print_finish_info()
+
         while writer.running():
             time.sleep(1)
             print(
@@ -331,7 +283,6 @@ if __name__ == "__main__":
             writer.stop()
         else:
             # subprocesses are killed, manually clear queues
-
             det_loader.terminate()
             writer.terminate()
             writer.clear_queues()

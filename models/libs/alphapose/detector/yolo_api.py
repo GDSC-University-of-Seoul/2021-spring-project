@@ -9,22 +9,37 @@ import sys
 
 sys.path.insert(0, os.path.dirname(__file__))
 import platform
+from abc import ABC, abstractmethod
 
 import torch
-import numpy as np
 
 from yolo.preprocess import prep_image, prep_frame
 from yolo.darknet import Darknet
 from yolo.util import unique
 from yolo.bbox import bbox_iou
 
-from detector.apis import BaseDetector
 
 # only windows visual studio 2013 ~2017 support compile c/cuda extensions
 # If you force to compile extension on Windows and ensure appropriate visual studio
 # is intalled, you can try to use these ext_modules.
 if platform.system() != "Windows":
     from detector.nms import nms_wrapper
+
+class BaseDetector(ABC):
+    def __init__(self):
+        pass
+
+    @abstractmethod
+    def image_preprocess(self, img_name):
+        pass
+
+    @abstractmethod
+    def images_detection(self, imgs, orig_dim_list):
+        pass
+
+    @abstractmethod
+    def detect_one_img(self, img_name):
+        pass
 
 
 class YOLODetector(BaseDetector):

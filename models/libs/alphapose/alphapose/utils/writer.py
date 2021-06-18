@@ -8,6 +8,7 @@ import torch.multiprocessing as mp
 
 from alphapose.utils.transforms import get_func_heatmap_to_coord
 from alphapose.utils.pPose_nms import pose_nms, write_json
+from alphapose.utils.vis import vis_frame_fast as vis_frame
 
 DEFAULT_VIDEO_SAVE_OPT = {
     "savepath": "examples/res/1.mp4",
@@ -65,20 +66,6 @@ class DataWriter:
                     for k in ["savepath", "fourcc", "fps", "frameSize"]
                 ]
             )
-            if not stream.isOpened():
-                print("Try to use other video encoders...")
-                ext = self.video_save_opt["savepath"].split(".")[-1]
-                fourcc, _ext = self.recognize_video_ext(ext)
-                self.video_save_opt["fourcc"] = fourcc
-                self.video_save_opt["savepath"] = (
-                    self.video_save_opt["savepath"][:-4] + _ext
-                )
-                stream = cv2.VideoWriter(
-                    *[
-                        self.video_save_opt[k]
-                        for k in ["savepath", "fourcc", "fps", "frameSize"]
-                    ]
-                )
             assert stream.isOpened(), "Cannot open video for writing"
         # keep looping infinitelyd
         while True:
@@ -93,7 +80,8 @@ class DataWriter:
                 im_name,
             ) = self.wait_and_get(self.result_queue)
             if orig_img is None:
-                # if the thread indicator variable is set (img is None), stop the thread
+                # if the thread indicator variable is set (img is None), 
+                # stop the thread
                 if self.save_video:
                     stream.release()
                 write_json(
@@ -104,12 +92,14 @@ class DataWriter:
                 )
                 print("Results have been written to json.")
                 return
+
             # image channel RGB->BGR
             orig_img = np.array(orig_img, dtype=np.uint8)[:, :, ::-1]
+            
             if boxes is None or len(boxes) == 0:
                 if self.opt.vis or self.save_video:
                     self.write_image(
-                        orig_img, im_name, stream=stream if self.save_video else None
+                        orig_img, stream=stream if self.save_video else None
                     )
             else:
                 # location prediction (n, kp, 2) | score prediction (n, kp, 1)
@@ -128,6 +118,7 @@ class DataWriter:
                     )
                     pose_coords.append(torch.from_numpy(pose_coord).unsqueeze(0))
                     pose_scores.append(torch.from_numpy(pose_score).unsqueeze(0))
+                
                 preds_img = torch.cat(pose_coords)
                 preds_scores = torch.cat(pose_scores)
                 boxes, scores, ids, preds_img, preds_scores, pick_ids = pose_nms(
@@ -162,19 +153,19 @@ class DataWriter:
 
                 final_result.append(result)
                 if self.opt.vis or self.save_video:
-                    if self.opt.vis_fast:
-                        from alphapose.utils.vis import vis_frame_fast as vis_frame
-                    else:
-                        from alphapose.utils.vis import vis_frame
+                    # if self.opt.vis_fast:
+                    #     from alphapose.utils.vis import vis_frame_fast as vis_frame
+                    # else:
+                    #     from alphapose.utils.vis import vis_frame
+
                     img = vis_frame(orig_img, result, self.opt)
                     self.write_image(
-                        img, im_name, stream=stream if self.save_video else None
+                        img, stream=stream if self.save_video else None
                     )
 
-    def write_image(self, img, im_name, stream=None):
-        if self.opt.vis:
-            cv2.imshow("AlphaPose Demo", img)
-            cv2.waitKey(5)
+    def write_image(self, img, stream=None):
+        cv2.imshow("AlphaPose Demo", img)
+        cv2.waitKey(5)
 
         if self.save_video:
             stream.write(img)

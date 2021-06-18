@@ -6,4 +6,4 @@ cfg.WEIGHTS = "detector/yolo/data/yolov3-spp.weights"
 cfg.INP_DIM = 608
 cfg.NMS_THRES = 0.5
 cfg.CONFIDENCE = 0.5
-cfg.NUM_CLASSES = 10
+cfg.NUM_CLASSES = 4

@@ -15,37 +15,28 @@ from alphapose.models import builder
 
 class DetectionLoader:
     def __init__(
-        self, input_source, detector, cfg, opt, mode="image", batchSize=1, queueSize=128
+        self, input_source, detector, cfg, opt, batchSize=1, queueSize=128
     ):
         self.cfg = cfg
         self.opt = opt
-        self.mode = mode
         self.device = opt.device
-
-        if mode == "image":
-            self.img_dir = opt.inputpath
-            self.imglist = [
-                os.path.join(self.img_dir, im_name.rstrip("\n").rstrip("\r"))
-                for im_name in input_source
-            ]
-            self.datalen = len(input_source)
-        elif mode == "video":
-            stream = cv2.VideoCapture(input_source)
-            assert stream.isOpened(), "Cannot capture source"
-            self.path = input_source
-            self.datalen = int(stream.get(cv2.CAP_PROP_FRAME_COUNT))
-            self.fourcc = int(stream.get(cv2.CAP_PROP_FOURCC))
-            self.fps = stream.get(cv2.CAP_PROP_FPS)
-            self.frameSize = (
-                int(stream.get(cv2.CAP_PROP_FRAME_WIDTH)),
-                int(stream.get(cv2.CAP_PROP_FRAME_HEIGHT)),
-            )
-            self.videoinfo = {
-                "fourcc": self.fourcc,
-                "fps": self.fps,
-                "frameSize": self.frameSize,
-            }
-            stream.release()
+        
+        stream = cv2.VideoCapture(input_source)
+        assert stream.isOpened(), "Cannot capture source"
+        self.path = input_source
+        self.datalen = int(stream.get(cv2.CAP_PROP_FRAME_COUNT))
+        self.fourcc = int(stream.get(cv2.CAP_PROP_FOURCC))
+        self.fps = stream.get(cv2.CAP_PROP_FPS)
+        self.frameSize = (
+            int(stream.get(cv2.CAP_PROP_FRAME_WIDTH)),
+            int(stream.get(cv2.CAP_PROP_FRAME_HEIGHT)),
+        )
+        self.videoinfo = {
+            "fourcc": self.fourcc,
+            "fps": self.fps,
+            "frameSize": self.frameSize,
+        }
+        stream.release()
 
         self.detector = detector
         self.batchSize = batchSize
@@ -60,18 +51,18 @@ class DetectionLoader:
         self._sigma = cfg.DATA_PRESET.SIGMA
 
         pose_dataset = builder.retrieve_dataset(self.cfg.DATASET.TRAIN)
-        if cfg.DATA_PRESET.TYPE == "simple":
-            self.transformation = SimpleTransform(
-                pose_dataset,
-                scale_factor=0,
-                input_size=self._input_size,
-                output_size=self._output_size,
-                rot=0,
-                sigma=self._sigma,
-                train=False,
-                add_dpg=False,
-                gpu_device=self.device,
-            )
+
+        self.transformation = SimpleTransform(
+            pose_dataset,
+            scale_factor=0,
+            input_size=self._input_size,
+            output_size=self._output_size,
+            rot=0,
+            sigma=self._sigma,
+            train=False,
+            add_dpg=False,
+            gpu_device=self.device,
+        )
 
         # initialize the queue used to store data
         """
@@ -101,10 +92,7 @@ class DetectionLoader:
 
     def start(self):
         # start a thread to pre process images for object detection
-        if self.mode == "image":
-            image_preprocess_worker = self.start_worker(self.image_preprocess)
-        elif self.mode == "video":
-            image_preprocess_worker = self.start_worker(self.frame_preprocess)
+        image_preprocess_worker = self.start_worker(self.frame_preprocess)
         # start a thread to detect human in images
         image_detection_worker = self.start_worker(self.image_detection)
         # start a thread to post process cropped human image for pose estimation
