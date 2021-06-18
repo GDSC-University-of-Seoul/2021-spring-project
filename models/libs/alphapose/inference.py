@@ -16,7 +16,6 @@ from alphapose.utils.config import update_config
 from alphapose.utils.detector import DetectionLoader
 from alphapose.utils.transforms import flip, flip_heatmap
 from alphapose.utils.vis import getTime
-from alphapose.utils.webcam_detector import WebCamDetectionLoader
 from alphapose.utils.writer import DataWriter
 
 """----------------------------- Demo options -----------------------------"""
@@ -34,14 +33,8 @@ parser.add_argument("--detector", dest="detector", help="detector name", default
 parser.add_argument(
     "--detfile", dest="detfile", help="detection result file", default=""
 )
-parser.add_argument("--indir", dest="inputpath", help="image-directory", default="")
-parser.add_argument("--list", dest="inputlist", help="image-list", default="")
-parser.add_argument("--image", dest="inputimg", help="image-name", default="")
 parser.add_argument(
     "--outdir", dest="outputpath", help="output-directory", default="examples/res/"
-)
-parser.add_argument(
-    "--save_img", default=False, action="store_true", help="save result as image"
 )
 parser.add_argument("--vis", default=False, action="store_true", help="visualize image")
 parser.add_argument(
@@ -100,9 +93,6 @@ parser.add_argument(
 """----------------------------- Video options -----------------------------"""
 parser.add_argument("--video", dest="video", help="video-name", default="")
 parser.add_argument(
-    "--webcam", dest="webcam", type=int, help="webcam number", default=-1
-)
-parser.add_argument(
     "--save_video",
     dest="save_video",
     help="whether to save rendered video",
@@ -135,11 +125,6 @@ if not args.sp:
 
 
 def check_input():
-    # for wecam
-    if args.webcam != -1:
-        args.detbatch = 1
-        return "webcam", int(args.webcam)
-
     # for video
     if len(args.video):
         if os.path.isfile(args.video):
@@ -182,7 +167,7 @@ def check_input():
 
 def print_finish_info():
     print("===========================> Finish Model Running.")
-    if (args.save_img or args.save_video) and not args.vis_fast:
+    if args.save_video and not args.vis_fast:
         print("===========================> Rendering remaining images in the queue...")
         print(
             "===========================> If this step takes too long, you can enable the --vis_fast flag to use fast rendering (real-time)."
@@ -203,23 +188,16 @@ if __name__ == "__main__":
         os.makedirs(args.outputpath)
 
     # Load detection loader
-    if mode == "webcam":
-        det_loader = WebCamDetectionLoader(input_source, get_detector(args), cfg, args)
-        det_worker = det_loader.start()
-    elif mode == "detfile":
-        det_loader = FileDetectionLoader(input_source, cfg, args)
-        det_worker = det_loader.start()
-    else:
-        det_loader = DetectionLoader(
-            input_source,
-            get_detector(args),
-            cfg,
-            args,
-            batchSize=args.detbatch,
-            mode=mode,
-            queueSize=args.qsize,
-        )
-        det_worker = det_loader.start()
+    det_loader = DetectionLoader(
+        input_source,
+        get_detector(args),
+        cfg,
+        args,
+        batchSize=args.detbatch,
+        mode=mode,
+        queueSize=args.qsize,
+    )
+    det_worker = det_loader.start()
 
     # Load pose model
     pose_model = builder.build_sppe(cfg.MODEL, preset_cfg=cfg.DATA_PRESET)
@@ -238,18 +216,14 @@ if __name__ == "__main__":
     runtime_profile = {"dt": [], "pt": [], "pn": []}
 
     # Init data writer
-    queueSize = 2 if mode == "webcam" else args.qsize
-    if args.save_video and mode != "image":
+    queueSize = args.qsize
+    if args.save_video:
         from alphapose.utils.writer import DEFAULT_VIDEO_SAVE_OPT as video_save_opt
 
-        if mode == "video":
-            video_save_opt["savepath"] = os.path.join(
-                args.outputpath, "AlphaPose_" + os.path.basename(input_source)
-            )
-        else:
-            video_save_opt["savepath"] = os.path.join(
-                args.outputpath, "AlphaPose_webcam" + str(input_source) + ".mp4"
-            )
+        video_save_opt["savepath"] = os.path.join(
+            args.outputpath, "AlphaPose_" + os.path.basename(input_source)
+        )
+
         video_save_opt.update(det_loader.videoinfo)
         writer = DataWriter(
             cfg,
@@ -261,13 +235,8 @@ if __name__ == "__main__":
     else:
         writer = DataWriter(cfg, args, save_video=False, queueSize=queueSize).start()
 
-    if mode == "webcam":
-        print("Starting webcam demo, press Ctrl + C to terminate...")
-        sys.stdout.flush()
-        im_names_desc = tqdm(loop())
-    else:
-        data_len = det_loader.length
-        im_names_desc = tqdm(range(data_len), dynamic_ncols=True)
+    data_len = det_loader.length
+    im_names_desc = tqdm(range(data_len), dynamic_ncols=True)
 
     batchSize = args.posebatch
     if args.flip:

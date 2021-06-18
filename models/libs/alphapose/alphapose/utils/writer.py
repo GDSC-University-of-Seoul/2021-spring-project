@@ -44,10 +44,6 @@ class DataWriter:
         else:
             self.result_queue = mp.Queue(maxsize=queueSize)
 
-        if opt.save_img:
-            if not os.path.exists(opt.outputpath + "/vis"):
-                os.mkdir(opt.outputpath + "/vis")
-
     def start_worker(self, target):
         if self.opt.sp:
             p = Thread(target=target, args=())
@@ -116,7 +112,7 @@ class DataWriter:
             # image channel RGB->BGR
             orig_img = np.array(orig_img, dtype=np.uint8)[:, :, ::-1]
             if boxes is None or len(boxes) == 0:
-                if self.opt.save_img or self.save_video or self.opt.vis:
+                if self.opt.vis or self.save_video:
                     self.write_image(
                         orig_img, im_name, stream=stream if self.save_video else None
                     )
@@ -125,10 +121,6 @@ class DataWriter:
                 assert hm_data.dim() == 4
                 # pred = hm_data.cpu().data.numpy()
 
-                if hm_data.size()[1] == 136:
-                    self.eval_joints = [*range(0, 136)]
-                elif hm_data.size()[1] == 26:
-                    self.eval_joints = [*range(0, 26)]
                 pose_coords = []
                 pose_scores = []
                 for i in range(hm_data.shape[0]):
@@ -174,7 +166,7 @@ class DataWriter:
                 result = {"imgname": im_name, "result": _result}
 
                 final_result.append(result)
-                if self.opt.save_img or self.save_video or self.opt.vis:
+                if self.opt.vis or self.save_video:
                     if hm_data.size()[1] == 49:
                         from alphapose.utils.vis import vis_frame_dense as vis_frame
                     elif self.opt.vis_fast:
@@ -189,9 +181,7 @@ class DataWriter:
     def write_image(self, img, im_name, stream=None):
         if self.opt.vis:
             cv2.imshow("AlphaPose Demo", img)
-            cv2.waitKey(30)
-        if self.opt.save_img:
-            cv2.imwrite(os.path.join(self.opt.outputpath, "vis", im_name), img)
+            cv2.waitKey(10)
         if self.save_video:
             stream.write(img)
 
