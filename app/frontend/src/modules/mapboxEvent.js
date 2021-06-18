@@ -77,6 +77,7 @@ export const sidoClick =
         type: "FeatureCollection",
         features: [],
       };
+
       // 도, 광역시 코드에 기반해 속해있는 시,군,구 구역 데이터를 Fetch
       const sggsDistrictData = await axios.get(
         `${process.env.REACT_APP_API_SERVER}/api/districts?parent_code=${selectedDistrictInfo.code}`
@@ -99,7 +100,10 @@ export const sidoClick =
 
       // 필터링한 geojson 데이터를 상태에 반영하고 레벨을 시,군,구 기준으로 변경
       geojson.features = sggsFeatures;
-      dispatch({ type: SIDO_CLICK, payload: geojson });
+      dispatch({
+        type: SIDO_CLICK,
+        payload: { geojson, sidoName: selectedDistrictInfo.name },
+      });
     } catch (e) {
       dispatch({ type: ERROR, payload: e });
     }
@@ -118,7 +122,13 @@ export const sggClick = (selectedDistrictInfo) => async (dispatch) => {
     const sggCdrCenterData = await axios.get(
       `${process.env.REACT_APP_API_SERVER}/api/centers?code=${selectedDistrictInfo.code}`
     );
-    dispatch({ type: SGG_CLICK, payload: sggCdrCenterData.data });
+    dispatch({
+      type: SGG_CLICK,
+      payload: {
+        cdrCenters: sggCdrCenterData.data,
+        sggName: selectedDistrictInfo.name,
+      },
+    });
   } catch (e) {
     dispatch({ type: ERROR, payload: e });
   }
@@ -138,6 +148,8 @@ const initialState = {
   data: {
     level: 1,
     hoverInfo: null,
+    sidoName: "",
+    sggName: "",
     geojsonData: null,
     cdrCentersInfo: null,
   },
@@ -178,7 +190,8 @@ export default function mapboxEventReducer(state = initialState, action) {
         data: {
           ...state.data,
           level: 2,
-          geojsonData: action.payload,
+          geojsonData: action.payload.geojson,
+          sidoName: action.payload.sidoName,
         },
         error: null,
       };
@@ -187,7 +200,8 @@ export default function mapboxEventReducer(state = initialState, action) {
       return {
         data: {
           ...state.data,
-          cdrCentersInfo: action.payload,
+          cdrCentersInfo: action.payload.cdrCenters,
+          sggName: action.payload.sggName,
         },
         error: null,
       };
@@ -197,6 +211,8 @@ export default function mapboxEventReducer(state = initialState, action) {
         data: {
           ...state.data,
           level: 1,
+          sidoName: "",
+          sggName: "",
           geojsonData: action.payload,
           cdrCentersInfo: null,
         },

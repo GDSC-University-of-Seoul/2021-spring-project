@@ -29,8 +29,8 @@ const MapboxAccessToken = process.env.REACT_APP_MAPBOX;
  */
 function MapBox({ geojson }) {
   // 지도 초기화 (props 할당, Redux 상태 구독, ViewPort 초기화)
-  const districtArea = geojson;
 
+  const [districtArea] = useState(geojson);
   /*
    * MapBox 컴포넌트에서 사용하는 상태
    * - level : 도, 광역시 / 시,군,구의 기능을 구분
@@ -64,13 +64,14 @@ function MapBox({ geojson }) {
 
   useEffect(() => {
     dispatch(reset(districtArea));
+    if (!geojsonData) dispatch(setGeojsonData(districtArea));
+
     return {
+      districtArea,
       geojson,
       Layer,
     };
-  }, [dispatch, districtArea, geojson]);
-
-  if (!geojsonData) dispatch(setGeojsonData(districtArea));
+  }, [dispatch, districtArea, geojsonData, geojson]);
 
   /*
    * 지도 지역구 hover 이벤트 핸들러

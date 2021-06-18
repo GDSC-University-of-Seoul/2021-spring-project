@@ -11,7 +11,7 @@
   }
 }
 .marker {
-  background: url("/src/assets/image/marker.png") no-repeat center / contain;
+  background: url('/src/assets/image/marker.png') no-repeat center / contain;
   width: 1.5rem;
   height: 2rem;
   border: none;
@@ -23,5 +23,5 @@
   position: absolute;
   top: 205px;
   left: 220px;
-  z-index: 10;
+  z-index: 5;
 }
