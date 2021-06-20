@@ -1,7 +1,7 @@
 import express from "express";
 import { Sequelize, Op } from "sequelize";
-import District from "../database/models/district";
-import ChildCareCenter from "../database/models/child-care-center";
+import District from "../../DB/models/district";
+import ChildCareCenter from "../../DB/models/childCareCenter";
 
 const router = express.Router();
 

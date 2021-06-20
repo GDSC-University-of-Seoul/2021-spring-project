@@ -1,6 +1,6 @@
 import express from "express";
-import FacilityArea from "../database/models/facility-area";
-import ChildCareCenter from "../database/models/child-care-center";
+import FacilityArea from "../../DB/models/facilityArea";
+import ChildCareCenter from "../../DB/models/childCareCenter";
 
 const router = express.Router();
 

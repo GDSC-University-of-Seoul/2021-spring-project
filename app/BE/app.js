@@ -5,11 +5,11 @@ import path from "path";
 import swaggerUi from "swagger-ui-express";
 import yaml from "yamljs";
 
-import { sequelize } from "./database/models";
+import { sequelize } from "../DB/models";
 import indexRouter from "./routes";
 import districtRouter from "./routes/district";
-import centerRouter from "./routes/child-care-center";
-import areaRouter from "./routes/facility-area";
+import centerRouter from "./routes/childCareCenter";
+import areaRouter from "./routes/facilityArea";
 import cctvRouter from "./routes/cctv";
 import videoRouter from "./routes/video";
 import anomalyRouter from "./routes/anomaly";

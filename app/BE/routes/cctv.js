@@ -1,6 +1,6 @@
 import express from "express";
-import Area from "../database/models/facility-area";
-import CCTV from "../database/models/cctv";
+import Area from "../../DB/models/facilityArea";
+import CCTV from "../../DB/models/cctv";
 
 const router = express.Router();
 
