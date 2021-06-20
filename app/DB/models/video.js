@@ -1,72 +1,72 @@
-'use strict';
-/*
-  CCTV 영상 비디오 관련 테이블
+import Sequelize from "sequelize";
 
-  fields                DATA TYPE         INDEX   NULLABLE
-      video_id           : Integer         PK      FALSE
-      record_date        : Date                    FALSE
-      delete_date        : Date                    TRUE
-      delete_issue       : String                  TRUE
-      storage_name       : String                  FALSE
-  relationship          Column
-      cctv               : cctv_id         FK      TRUE
-  backref               Column
-      anomaly            : this.video_id   FK
-      video_management   : this.video_id   FK      
-*/
-const { Model } = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
-  class video extends Model {
-    static associate(models) {
-      video.hasMany(models.video_management, {
-        foreignKey: 'video_id',
-        sourceKey: 'video_id',
-      });
-      video.hasMany(models.anomaly, {
-        foreignKey: 'video_id',
-        sourceKey: 'video_id',
-      });
-      video.belongsTo(models.cctv, {
-        foreignKey: 'cctv_id',
-        targetKey: 'cctv_id',
-      });
-    }
+/**
+ * CCTV 영상 비디오 관련 테이블
+ * <FIELDS>           <DATA TYPE>        <INDEX>   <NULLABLE>
+ * video_id           : Integer          PK        FALSE
+ * record_date        : Date                       FALSE
+ * delete_date        : Date                       TRUE
+ * delete_issue       : String                     TRUE
+ * storage_name       : String                     FALSE
+ *
+ * <RELATIONSHIP>     <COLUMN>
+ * cctv               : cctv_id          FK        TRUE
+ *
+ * <BACKREF>          <COLUMN>
+ * anomaly            : video_id    FK
+ * video_management   : video_id    FK
+ */
+
+module.exports = class Video extends Sequelize.Model {
+  static init(sequelize, DataTypes) {
+    return super.init(
+      {
+        video_id: {
+          type: DataTypes.INTEGER,
+          autoIncrement: true,
+          primaryKey: true,
+        },
+        record_date: {
+          type: DataTypes.DATE,
+          allowNull: false,
+        },
+        delete_date: {
+          type: DataTypes.DATE,
+          allowNull: true,
+        },
+        delete_issue: {
+          type: DataTypes.STRING(20),
+          allowNull: true,
+        },
+        storage_name: {
+          type: DataTypes.STRING(20),
+          allowNull: false,
+        },
+      },
+      {
+        sequelize,
+        timestamps: false,
+        paranoid: false,
+        modelName: "Video",
+        tableName: "video",
+        freezeTableName: false,
+        charset: "utf8",
+        collate: "utf8_general_cli",
+      }
+    );
   }
-  video.init(
-    {
-      video_id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        allowNull: false,
-      },
-      record_date: {
-        type: DataTypes.DATE,
-        allowNull: false,
-      },
-      delete_date: {
-        type: DataTypes.DATE,
-        allowNull: true,
-      },
-      delete_issue: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      storage_name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      cctv_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-    },
-    {
-      sequelize,
-      modelName: 'video',
-      tableName: 'video',
-      freezeTableName: false,
-      timestamps: false,
-    },
-  );
-  return video;
+  static associate(db) {
+    db.Video.belongsTo(db.CCTV, {
+      foreignKey: "cctv_id",
+      targetKey: "cctv_id",
+    });
+    db.Video.hasMany(db.VideoManagement, {
+      foreignKey: "video_id",
+      sourceKey: "video_id",
+    });
+    db.Video.hasMany(db.Anomaly, {
+      foreignKey: "video_id",
+      sourceKey: "video_id",
+    });
+  }
 };

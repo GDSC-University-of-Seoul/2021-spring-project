@@ -1,60 +1,62 @@
-'use strict';
-/*
-  행정구역 관련 테이블
+import Sequelize from "sequelize";
 
-  fields                DATA TYPE         INDEX   NULLABLE
-      code               : String          PK      FALSE
-      name               : String                  FALSE
-  relationship          Column
-      district           : parent_code     FK      TRUE
-  backref               Column
-      cdrcare_center     : this.code       FK
-      district           : this.code       FK      
-*/
-const { Model } = require('sequelize');
+/**
+ * 행정구역 관련 테이블
+ * <FIELDS>           <DATA TYPE>        <INDEX>   <NULLABLE>
+ * district_code      : String           PK        FALSE
+ * district_name      : String                     FALSE
+ *
+ * <RELATIONSHIP>     <COLUMN>
+ * district           : parent_code      FK        TRUE
+ *
+ * <BACKREF>
+ * cdrcare_center     : district_code    FK
+ * district           : district_code    FK
+ */
 
-module.exports = (sequelize, DataTypes) => {
-  class district extends Model {
-    static associate(models) {
-      district.hasMany(models.cdrcare_center, {
-        foreignKey: 'code',
-        sourceKey: 'code',
-      });
-      district.hasMany(models.district, {
-        foreignKey: 'parent_code',
-        sourceKey: 'code',
-      });
-      district.belongsTo(models.district, {
-        foreignKey: 'parent_code',
-        targetKey: 'code',
-      });
-    }
+module.exports = class District extends Sequelize.Model {
+  static init(sequelize, DataTypes) {
+    return super.init(
+      {
+        district_code: {
+          type: DataTypes.STRING(10),
+          primaryKey: true,
+        },
+        district_name: {
+          type: DataTypes.STRING(24),
+          allowNull: false,
+        },
+      },
+      {
+        sequelize,
+        timestamps: false,
+        paranoid: false,
+        modelName: "District",
+        tableName: "district",
+        freezeTableName: false,
+        charset: "utf8",
+        collate: "utf8_general_cli",
+      }
+    );
   }
-  district.init(
-    {
-      code: {
-        type: DataTypes.STRING,
-        primaryKey: true,
-        allowNull: false,
-      },
-      name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      parent_code: {
-        type: DataTypes.STRING,
+  static associate(db) {
+    db.District.hasMany(db.District, {
+      foreignKey: {
+        name: "parent_code",
         allowNull: true,
       },
-    },
-    {
-      sequelize,
-      modelName: 'district',
-      tableName: 'district',
-      freezeTableName: false,
-      timestamps: false,
-    },
-  );
-
-  console.log(district === sequelize.models.district);
-  return district;
+      sourceKey: "district_code",
+    });
+    db.District.belongsTo(db.District, {
+      foreignKey: {
+        name: "parent_code",
+        allowNull: true,
+      },
+      targetKey: "district_code",
+    });
+    db.District.hasMany(db.ChildCareCenter, {
+      foreignKey: "district_code",
+      sourceKey: "district_code",
+    });
+  }
 };
