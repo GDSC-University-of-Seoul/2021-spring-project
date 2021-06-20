@@ -47,7 +47,7 @@ function MapBoxSelectContainer() {
               key={index}
               className="district-info"
               label={districtCategory[key]}
-              value={district.data[key]}
+              value={district.data[key] || ""}
               variant="outlined"
               InputLabelProps={{
                 shrink: true,
