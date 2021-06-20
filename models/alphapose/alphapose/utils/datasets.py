@@ -7,11 +7,30 @@
 import os
 
 import numpy as np
-
+from abc import abstractmethod, abstractproperty
+import torch.utils.data as data
 from alphapose.models.builder import DATASET
 from alphapose.utils.bbox import bbox_clip_xyxy, bbox_xywh_to_xyxy
 
-from .custom import CustomDataset
+
+class CustomDataset(data.Dataset):
+    CLASSES = None
+
+    @abstractmethod
+    def _load_jsons(self):
+        pass
+
+    @abstractproperty
+    def CLASSES(self):
+        return None
+
+    @abstractproperty
+    def num_joints(self):
+        return None
+
+    @abstractproperty
+    def joint_pairs(self):
+        return None
 
 
 @DATASET.register_module
