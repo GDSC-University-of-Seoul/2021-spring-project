@@ -32,6 +32,7 @@ class CustomDataset(data.Dataset):
     def joint_pairs(self):
         return None
 
+
 @DATASET.register_module
 class Mscoco(CustomDataset):
     """COCO Person dataset.
