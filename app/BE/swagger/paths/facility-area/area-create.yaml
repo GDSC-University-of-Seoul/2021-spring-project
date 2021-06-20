@@ -1,0 +1,32 @@
+tags:
+  - facility area
+summary: create facility area
+description:
+requestBody:
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          area_name:
+            type: string
+          area_usage:
+            type: string
+          center_id:
+            type: integer
+responses:
+  201:
+    description: CREATED
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            area_id:
+              type: integer
+            area_name:
+              type: string
+            area_usage:
+              type: string
+            center_id:
+              type: integer

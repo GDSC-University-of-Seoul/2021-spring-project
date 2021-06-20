@@ -1,0 +1,35 @@
+tags:
+  - cctv
+summary: create cctv
+description:
+requestBody:
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          quality:
+            type: string
+          install_date:
+            type: string
+            format: date
+          area_id:
+            type: integer
+responses:
+  201:
+    description: CREATED
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            cctv_id:
+              type: integer
+            quality:
+              type: string
+            install_date:
+              type: string
+              format: date
+            area_id:
+              type: integer
+

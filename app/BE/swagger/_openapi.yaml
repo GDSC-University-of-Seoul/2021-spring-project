@@ -14,7 +14,7 @@ paths:
 tags:
   - name: district
   - name: children care center
-  - name: area
+  - name: facility area
   - name: cctv
   - name: video
   - name: anomaly

@@ -1,10 +1,10 @@
 get:
   tags:
     - district
-  summary: get district by code
+  summary: get district by district code
   description:
   parameters:
-    - name: code
+    - name: district_code
       in: path
       required: true
       description: 행정구역 코드
@@ -16,9 +16,9 @@ get:
           schema:
             type: object
             properties:
-              code:
+              district_code:
                 type: string
-              name:
+              district_name:
                 type: string
               parent_code:
                 type: string

@@ -4,10 +4,14 @@ get:
   summary: get all anomalies
   description:
   parameters:
-    - name: video_id
+    - name: center_id
       in: query
       required: false
-      description: 비디오 id
+      description: 어린이집 id
+    - name: center_name
+      in: query
+      required: false
+      description: 어린이집 이름
   responses:
     200:
       description: OK
@@ -18,12 +22,14 @@ get:
             items:
               type: object
               properties:
-                ano_id:
+                anomaly_id:
                   type: integer
                 start_time:
-                  type: date
+                  type: string
+                  format: date-time
                 end_time:
-                  type: date
+                  type: string
+                  format: date-time
                 follow_up:
                   type: string
                 video_id:

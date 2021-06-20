@@ -4,8 +4,9 @@ module.exports = class Anomaly extends Sequelize.Model {
   static init(sequelize, DataTypes) {
     return super.init(
       {
-        ano_id: {
+        anomaly_id: {
           type: DataTypes.INTEGER,
+          autoIncrement: true,
           primaryKey: true,
         },
         start_time: {

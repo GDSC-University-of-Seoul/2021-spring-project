@@ -1,5 +1,4 @@
 import express from "express";
-import { sequelize, Sequelize } from "../database/models";
 import CCTV from "../database/models/cctv";
 import Video from "../database/models/video";
 

@@ -5,7 +5,6 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     const NUM_VIDEO = 3;
     let videos = [];
-    let videoId = 1;
 
     try {
       await sequelize.sync();
@@ -14,14 +13,12 @@ module.exports = {
       for (let cctv of cctvs) {
         for (let i = 0; i < NUM_VIDEO; i++) {
           videos.push({
-            video_id: videoId,
             record_date: sequelize.literal("CURRENT_TIMESTAMP"),
             delete_date: sequelize.literal("CURRENT_TIMESTAMP"),
             delete_issue: "string",
             storage_name: "string",
             cctv_id: cctv.cctv_id,
           });
-          videoId++;
         }
       }
     } catch (err) {

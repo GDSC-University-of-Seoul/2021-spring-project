@@ -6,13 +6,14 @@ module.exports = class Requester extends Sequelize.Model {
       {
         requester_id: {
           type: DataTypes.INTEGER,
+          autoIncrement: true,
           primaryKey: true,
         },
-        name: {
+        requester_name: {
           type: DataTypes.STRING(10),
           allowNull: false,
         },
-        phone: {
+        requester_phone: {
           type: DataTypes.STRING(14),
           allowNull: false,
         },

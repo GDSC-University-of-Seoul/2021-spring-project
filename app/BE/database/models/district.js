@@ -4,11 +4,11 @@ module.exports = class District extends Sequelize.Model {
   static init(sequelize, DataTypes) {
     return super.init(
       {
-        code: {
+        district_code: {
           type: DataTypes.STRING(10),
           primaryKey: true,
         },
-        name: {
+        district_name: {
           type: DataTypes.STRING(24),
           allowNull: false,
         },
@@ -30,18 +30,18 @@ module.exports = class District extends Sequelize.Model {
         name: "parent_code",
         allowNull: true,
       },
-      sourceKey: "code",
+      sourceKey: "district_code",
     });
     db.District.belongsTo(db.District, {
       foreignKey: {
         name: "parent_code",
         allowNull: true,
       },
-      targetKey: "code",
+      targetKey: "district_code",
     });
-    db.District.hasMany(db.CdrCareCenter, {
-      foreignKey: "code",
-      sourceKey: "code",
+    db.District.hasMany(db.ChildCareCenter, {
+      foreignKey: "district_code",
+      sourceKey: "district_code",
     });
   }
 };

@@ -10,26 +10,27 @@ module.exports = {
       const level = regions.length - 1;
       if (parseInt(key.slice(2, key.length)) === 0) {
         districts.push({
-          code: key,
-          name: value,
+          district_code: key,
+          district_name: value,
           parent_code: null,
         });
       } else if (parseInt(key.slice(4, key.length)) === 0) {
         const upper = districts.filter(
-          (obj) => obj.name === regions[level - 1]
+          (obj) => obj.district_name === regions[level - 1]
         );
 
         let parent_code = null;
         if (upper.length !== 0) {
-          parent_code = upper[0].code;
+          parent_code = upper[0].district_code;
         }
         districts.push({
-          code: key,
-          name: regions[level],
+          district_code: key,
+          district_name: regions[level],
           parent_code: parent_code,
         });
       }
     });
+
     await queryInterface.bulkInsert("district", districts, {});
   },
 

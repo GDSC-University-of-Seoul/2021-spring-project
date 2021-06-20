@@ -5,10 +5,10 @@ info:
   description: Kids Keeper API 문서
   license:
     name: Apache 2.0
-    url: "https://www.apache.org/licenses/LICENSE-2.0.html"
+    url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
 servers:
   - description: dev servers
-    url: "http://localhost:3000/api/"
+    url: 'http://localhost:3000/api/'
 paths:
   /districts:
     get:
@@ -22,7 +22,7 @@ paths:
           required: false
           description: 상위 행정구역 코드
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -31,63 +31,63 @@ paths:
                 items:
                   type: object
                   properties:
-                    code:
+                    district_code:
                       type: string
-                    name:
+                    district_name:
                       type: string
                     parent_code:
                       type: string
                     count:
                       type: string
-  "/districts/{code}":
+  '/districts/{district_code}':
     get:
       tags:
         - district
-      summary: get district by code
+      summary: get district by district code
       description: null
       parameters:
-        - name: code
+        - name: district_code
           in: path
           required: true
           description: 행정구역 코드
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  code:
+                  district_code:
                     type: string
-                  name:
+                  district_name:
                     type: string
                   parent_code:
                     type: string
                   count:
                     type: string
-  "/districts/{name}":
+  '/districts/{district_name}':
     get:
       tags:
         - district
-      summary: get district by name
+      summary: get district by district name
       description: null
       parameters:
-        - name: name
+        - name: district_name
           in: path
           required: true
           description: 행정구역 이름
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  code:
+                  district_code:
                     type: string
-                  name:
+                  district_name:
                     type: string
                   parent_code:
                     type: string
@@ -100,16 +100,16 @@ paths:
       summary: get all centers
       description: null
       parameters:
-        - name: code
+        - name: district_code
           in: query
           required: false
           description: 행정구역 코드
-        - name: name
+        - name: district_name
           in: query
           required: false
           description: 행정구역 이름
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -130,7 +130,7 @@ paths:
                       type: string
                     district_name:
                       type: string
-  "/centers/{center_id}":
+  '/centers/{center_id}':
     get:
       tags:
         - children care center
@@ -142,7 +142,7 @@ paths:
           required: true
           description: 어린이집 ID
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -161,7 +161,7 @@ paths:
                     type: string
                   district_name:
                     type: string
-  "/centers/{center_name}":
+  '/centers/{center_name}':
     get:
       tags:
         - children care center
@@ -173,7 +173,7 @@ paths:
           required: true
           description: 어린이집 이름
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -195,16 +195,20 @@ paths:
   /areas:
     get:
       tags:
-        - area
-      summary: get all areas
+        - facility area
+      summary: get all facility areas
       description: null
       parameters:
         - name: center_id
           in: query
           required: false
           description: 어린이집 id
+        - name: center_name
+          in: query
+          required: false
+          description: 어린이집 이름
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -217,15 +221,48 @@ paths:
                       type: integer
                     area_name:
                       type: string
-                    use_of_area:
+                    area_usage:
                       type: string
                     center_id:
                       type: integer
-  "/areas/{area_id}":
+    post:
+      tags:
+        - facility area
+      summary: create facility area
+      description: null
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                area_name:
+                  type: string
+                area_usage:
+                  type: string
+                center_id:
+                  type: integer
+      responses:
+        '201':
+          description: CREATED
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  area_id:
+                    type: integer
+                  area_name:
+                    type: string
+                  area_usage:
+                    type: string
+                  center_id:
+                    type: integer
+  '/areas/{area_id}':
     get:
       tags:
-        - area
-      summary: get area by area id
+        - facility area
+      summary: get facility area by area id
       description: null
       parameters:
         - name: area_id
@@ -233,7 +270,7 @@ paths:
           required: true
           description: 촬영구역 ID
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -244,7 +281,7 @@ paths:
                     type: integer
                   area_name:
                     type: string
-                  use_of_area:
+                  area_usage:
                     type: string
                   center_id:
                     type: integer
@@ -260,7 +297,7 @@ paths:
           required: false
           description: 촬영구역 id
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -274,12 +311,49 @@ paths:
                     quaity:
                       type: string
                     install_date:
-                      type: date
+                      type: string
+                      format: date
                     uninstall_date:
-                      type: date
+                      type: string
+                      format: date
                     area_id:
                       type: integer
-  "/cctvs/{cctv_id}":
+    post:
+      tags:
+        - cctv
+      summary: create cctv
+      description: null
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quality:
+                  type: string
+                install_date:
+                  type: string
+                  format: date
+                area_id:
+                  type: integer
+      responses:
+        '201':
+          description: CREATED
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  cctv_id:
+                    type: integer
+                  quality:
+                    type: string
+                  install_date:
+                    type: string
+                    format: date
+                  area_id:
+                    type: integer
+  '/cctvs/{cctv_id}':
     get:
       tags:
         - cctv
@@ -291,7 +365,7 @@ paths:
           required: true
           description: CCTV id
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -303,9 +377,11 @@ paths:
                   quaity:
                     type: string
                   install_date:
-                    type: date
+                    type: string
+                    format: date
                   uninstall_date:
-                    type: date
+                    type: string
+                    format: date
                   area_id:
                     type: integer
   /videos:
@@ -320,7 +396,7 @@ paths:
           required: false
           description: CCTV id
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -332,16 +408,18 @@ paths:
                     video_id:
                       type: integer
                     record_date:
-                      type: date
+                      type: string
+                      format: date
                     delete_date:
-                      type: date
+                      type: string
+                      format: date
                     delete_issue:
                       type: string
                     storage_name:
                       type: string
                     cctv_id:
                       type: integer
-  "/videos/{video_id}":
+  '/videos/{video_id}':
     get:
       tags:
         - video
@@ -353,7 +431,7 @@ paths:
           required: true
           description: 비디오 id
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -363,9 +441,11 @@ paths:
                   video_id:
                     type: integer
                   record_date:
-                    type: date
+                    type: string
+                    format: date
                   delete_date:
-                    type: date
+                    type: string
+                    format: date
                   delete_issue:
                     type: string
                   storage_name:
@@ -379,12 +459,16 @@ paths:
       summary: get all anomalies
       description: null
       parameters:
-        - name: video_id
+        - name: center_id
           in: query
           required: false
-          description: 비디오 id
+          description: 어린이집 id
+        - name: center_name
+          in: query
+          required: false
+          description: 어린이집 이름
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -393,17 +477,19 @@ paths:
                 items:
                   type: object
                   properties:
-                    ano_id:
+                    anomaly_id:
                       type: integer
                     start_time:
-                      type: date
+                      type: string
+                      format: date-time
                     end_time:
-                      type: date
+                      type: string
+                      format: date-time
                     follow_up:
                       type: string
                     video_id:
                       type: integer
-  "/anomalies/{anomaly_id}":
+  '/anomalies/{anomaly_id}':
     get:
       tags:
         - anomaly
@@ -415,19 +501,21 @@ paths:
           required: false
           description: 이상행동감지 id
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  ano_id:
+                  anomaly_id:
                     type: integer
                   start_time:
-                    type: date
+                    type: string
+                    format: date-time
                   end_time:
-                    type: date
+                    type: string
+                    format: date-time
                   follow_up:
                     type: string
                   video_id:
@@ -435,7 +523,7 @@ paths:
 tags:
   - name: district
   - name: children care center
-  - name: area
+  - name: facility area
   - name: cctv
   - name: video
   - name: anomaly

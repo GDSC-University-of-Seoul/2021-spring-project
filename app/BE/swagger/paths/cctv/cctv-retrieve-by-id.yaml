@@ -21,8 +21,10 @@ get:
               quaity:
                 type: string
               install_date:
-                type: date
+                type: string
+                format: date
               uninstall_date:
-                type: date
+                type: string
+                format: date
               area_id:
                 type: integer

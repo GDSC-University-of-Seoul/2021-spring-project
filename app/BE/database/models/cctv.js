@@ -6,6 +6,7 @@ module.exports = class CCTV extends Sequelize.Model {
       {
         cctv_id: {
           type: DataTypes.INTEGER,
+          autoIncrement: true,
           primaryKey: true,
         },
         quality: {
@@ -35,7 +36,7 @@ module.exports = class CCTV extends Sequelize.Model {
     );
   }
   static associate(db) {
-    db.CCTV.belongsTo(db.Area, {
+    db.CCTV.belongsTo(db.FacilityArea, {
       foreignKey: "area_id",
       targetKey: "area_id",
     });

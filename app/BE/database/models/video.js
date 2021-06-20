@@ -6,6 +6,7 @@ module.exports = class Video extends Sequelize.Model {
       {
         video_id: {
           type: DataTypes.INTEGER,
+          autoIncrement: true,
           primaryKey: true,
         },
         record_date: {
@@ -18,7 +19,7 @@ module.exports = class Video extends Sequelize.Model {
         },
         delete_issue: {
           type: DataTypes.STRING(20),
-          allowNull: false,
+          allowNull: true,
         },
         storage_name: {
           type: DataTypes.STRING(20),

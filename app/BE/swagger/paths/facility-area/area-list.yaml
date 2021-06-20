@@ -1,12 +1,16 @@
 tags:
-  - cctv
-summary: get all cctvs
+  - facility area
+summary: get all facility areas
 description:
 parameters:
-  - name: area_id
+  - name: center_id
     in: query
     required: false
-    description: 촬영구역 id
+    description: 어린이집 id
+  - name: center_name
+    in: query
+    required: false
+    description: 어린이집 이름
 responses:
   200:
     description: OK
@@ -17,15 +21,11 @@ responses:
           items:
             type: object
             properties:
-              cctv_id:
-                type: integer
-              quaity:
-                type: string
-              install_date:
-                type: string
-                format: date
-              uninstall_date:
-                type: string
-                format: date
               area_id:
+                type: integer
+              area_name:
+                type: string
+              area_usage:
+                type: string
+              center_id:
                 type: integer
