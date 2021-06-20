@@ -43,7 +43,7 @@ parser.add_argument("--min_box_area", type=int, default=0)
 # detection batch size PER GPU
 parser.add_argument("--detbatch", type=int, default=4)
 # pose estimation maximum batch size PER GPU
-parser.add_argument( "--posebatch", type=int, default=16)
+parser.add_argument("--posebatch", type=int, default=16)
 # save the result json as coco format, using image index(int) instead of image name(str)
 parser.add_argument("--eval", dest="eval", default=False, action="store_true")
 # choose which cuda device to use by index and input comma to use multi gpus, e.g. 0,1,2,3. (input -1 for cpu only)
@@ -54,7 +54,9 @@ parser.add_argument("--qsize", type=int, dest="qsize", default=8)
 # video-name
 parser.add_argument("--video", dest="video", default="")
 # whether to save rendered video
-parser.add_argument("--save_video", dest="save_video", default=False, action="store_true")
+parser.add_argument(
+    "--save_video", dest="save_video", default=False, action="store_true"
+)
 
 args = parser.parse_args()
 cfg = update_config(args.cfg)
