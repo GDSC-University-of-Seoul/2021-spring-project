@@ -16,7 +16,7 @@ from alphapose.utils.vis import getTime
 from alphapose.utils.writer import DataWriter
 
 """
-python inference.py --cfg data/256x192_res50_lr1e-3_1x.yaml --checkpoint data/fast_res50_256x192.pth --video data/11-2_cam01_assault01_place08_night_spring.mp4 --outdir examples/res --gpus 0 --vis --profile --save_video
+python inference.py --cfg configs/256x192_res50_lr1e-3_1x.yaml --checkpoint configs/fast_res50_256x192.pth --video ../data/11-2_cam01_assault01_place08_night_spring.mp4 --outdir examples/res --gpus 0 --vis --profile --save_video
 """
 
 """----------------------------- Demo options -----------------------------"""
