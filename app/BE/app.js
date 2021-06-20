@@ -13,6 +13,7 @@ import areaRouter from "./routes/facility-area";
 import cctvRouter from "./routes/cctv";
 import videoRouter from "./routes/video";
 import anomalyRouter from "./routes/anomaly";
+import cors from "cors";
 
 dotenv.config();
 
@@ -30,6 +31,7 @@ sequelize
     console.log(err);
   });
 
+app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
