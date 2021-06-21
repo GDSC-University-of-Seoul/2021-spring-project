@@ -3,10 +3,11 @@ import {
   AiOutlinePlusSquare,
   AiOutlineRetweet,
 } from "react-icons/ai";
+import React, { useState } from "react";
 
 import Button from "@material-ui/core/Button";
+import CctvModal from "../components/CctvModal";
 import CctvTableContainer from "../containers/CctvTableContainer";
-import React from "react";
 
 /**
  * `/cctvs` 페이지 렌더링
@@ -15,36 +16,26 @@ import React from "react";
  */
 
 function Cctvs() {
-  const createHandler = () => {};
-  const updateHandler = () => {};
-  const deleteHandler = () => {};
+  const [isOpen, setIsOpen] = useState(false);
 
-  const menuHandler = (e) => {
-    const select = e.target.dataset.id;
-
-    switch (select) {
-      case "create":
-        createHandler();
-        break;
-      case "update":
-        updateHandler();
-        break;
-      case "delete":
-        deleteHandler();
-        break;
-      default:
-        return;
-    }
+  const createHandler = () => {
+    setIsOpen(true);
   };
+  const updateHandler = () => {
+    setIsOpen(true);
+  };
+  const deleteHandler = () => {};
 
   return (
     <>
+      <CctvModal isOpen={isOpen} setIsOpen={setIsOpen} />
       <section className="section cctvs">
-        <div className="cctvs-menu" onClick={menuHandler}>
+        <div className="cctvs-menu">
           <Button
             data-id="create"
             variant="outlined"
             startIcon={<AiOutlinePlusSquare />}
+            onClick={createHandler}
           >
             추가
           </Button>
@@ -53,6 +44,7 @@ function Cctvs() {
             variant="outlined"
             color="primary"
             startIcon={<AiOutlineRetweet />}
+            onClick={updateHandler}
           >
             변경
           </Button>
