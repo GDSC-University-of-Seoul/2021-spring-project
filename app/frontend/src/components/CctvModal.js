@@ -1,8 +1,13 @@
 import Button from "@material-ui/core/Button";
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
 import React from "react";
+import Select from "@material-ui/core/Select";
 import TextField from "@material-ui/core/TextField";
 
 function CctvModal({ isOpen, setIsOpen }) {
+  const qualityItems = ["SD", "HD", "FHD", "QHD", "UHD"];
   const closeModal = () => {
     setIsOpen(false);
   };
@@ -22,7 +27,7 @@ function CctvModal({ isOpen, setIsOpen }) {
             />
             <TextField
               label="어린이집 주소"
-              data-id="address"
+              data-id="center_address"
               required
               InputLabelProps={{
                 shrink: true,
@@ -44,14 +49,20 @@ function CctvModal({ isOpen, setIsOpen }) {
                 shrink: true,
               }}
             />
-            <TextField
-              label="화질"
-              data-id="quality"
-              required
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
+            <FormControl required>
+              <InputLabel id="cctv_quality-label">화질</InputLabel>
+              <Select
+                labelId="cctv_quality-label"
+                data-id="cctv_quality"
+                defaultValue={"SD"}
+              >
+                {qualityItems.map((item, idx) => (
+                  <MenuItem key={idx} value={item}>
+                    {item}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
             <TextField
               type="date"
               label="설치 일자"
