@@ -6,13 +6,18 @@
   "dependencies": {
     "@babel/node": "^7.14.2",
     "@babel/preset-env": "^7.14.4",
+    "child_process": "^1.0.2",
     "dotenv": "^10.0.0",
+    "fetch": "^1.1.0",
     "path": "^0.12.7",
     "pg": "^8.6.0",
     "pg-hstore": "^2.3.3",
+    "request": "^2.88.2",
     "sequelize": "^6.6.2",
     "sequelize-auto-migrations": "^1.0.3",
-    "sequelize-cli": "^6.2.0"
+    "sequelize-cli": "^6.2.0",
+    "xml-parse-from-string": "^1.0.1",
+    "xml2js": "^0.4.23"
   },
   "devDependencies": {
     "@babel/cli": "^7.14.3",
