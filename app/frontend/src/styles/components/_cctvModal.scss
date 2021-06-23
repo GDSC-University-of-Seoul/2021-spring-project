@@ -1,3 +1,12 @@
+@keyframes modal-sliding {
+  0% {
+    transform: translateY(-200px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
 .cctvModal {
   display: flex;
   width: 100vw;
@@ -15,6 +24,7 @@
     padding: 30px 20px;
     background-color: white;
     position: fixed;
+    animation: modal-sliding 0.4s ease-in-out;
 
     .cctvModal-title {
       font-size: 1.2rem;
@@ -22,7 +32,11 @@
       text-align: center;
       margin-bottom: 15px;
     }
-
+    .cctv_mac-alert {
+      color: red;
+      font-size: 0.75rem;
+      padding: 0 10px;
+    }
     .MuiFormControl-root {
       margin: 10px;
     }
