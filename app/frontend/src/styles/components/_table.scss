@@ -1,0 +1,30 @@
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+
+  thead th {
+    color: #336699;
+    background-color: #f2f6f7;
+    border-bottom: 3px solid #003366;
+    padding: 5px;
+    font-size: 1.2rem;
+    font-weight: 600;
+
+    &:hover:not(#check) {
+      background-color: #dfe0e0;
+      cursor: pointer;
+    }
+    div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+  tbody tr:nth-child(2n) {
+    background-color: #f2f6f7;
+  }
+  tbody td {
+    padding: 5px;
+  }
+}

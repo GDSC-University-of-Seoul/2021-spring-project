@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import ReactMapGL, { Layer, Marker, Popup, Source } from "react-map-gl";
 import {
-  resetClick,
+  reset,
   setGeojsonData,
   sggClick,
   sggHover,
@@ -16,7 +16,6 @@ import {
 } from "../utils/mapbox/mapStyle";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 
-import { BsArrowCounterclockwise } from "react-icons/bs";
 import MapBoxCategory from "./MapBoxCategory";
 import districtViewport from "../utils/mapbox/districtViewport";
 
@@ -47,7 +46,7 @@ function MapBox({ geojson }) {
   const dispatch = useDispatch();
 
   const [viewport, setViewport] = useState({
-    width: 1200,
+    width: "100%",
     height: 800,
     latitude: districtViewport["대한민국"].lat,
     longitude: districtViewport["대한민국"].lng,
@@ -55,11 +54,12 @@ function MapBox({ geojson }) {
   });
 
   useEffect(() => {
+    dispatch(reset(districtArea));
     return {
       geojson,
       Layer,
     };
-  }, [geojson]);
+  }, [dispatch, districtArea, geojson]);
 
   if (!geojsonData) dispatch(setGeojsonData(districtArea));
 
@@ -104,7 +104,7 @@ function MapBox({ geojson }) {
           dispatch(sidoClick(districtArea, selectedDistrictInfo));
 
           setViewport({
-            width: 1200,
+            width: "100%",
             height: 800,
             latitude: districtViewport[selectedDistrictInfo.name].lat,
             longitude: districtViewport[selectedDistrictInfo.name].lng,
@@ -128,13 +128,13 @@ function MapBox({ geojson }) {
    */
   const resetClickHandler = useCallback(() => {
     setViewport({
-      width: 1200,
+      width: "100%",
       height: 800,
       latitude: districtViewport["대한민국"].lat,
       longitude: districtViewport["대한민국"].lng,
       zoom: districtViewport["대한민국"].zoom,
     });
-    dispatch(resetClick(districtArea));
+    dispatch(reset(districtArea));
   }, [dispatch, districtArea]);
 
   if (error) <div>지도 오류 발생</div>;
@@ -179,8 +179,8 @@ function MapBox({ geojson }) {
           cdrCentersInfo.map((cdrCenter, index) => (
             <Marker
               key={index}
-              latitude={Number(cdrCenter.lat)}
-              longitude={Number(cdrCenter.lng)}
+              latitude={Number(cdrCenter.latitude)}
+              longitude={Number(cdrCenter.longitude)}
               className="marker"
             />
           ))}
@@ -189,7 +189,7 @@ function MapBox({ geojson }) {
       {level && <MapBoxCategory level={level} />}
       {/* 도, 광역시 기준으로 초기화하는 버튼 */}
       <button onClick={resetClickHandler} className="reset-button">
-        <BsArrowCounterclockwise />
+        Reset
       </button>
     </>
   );

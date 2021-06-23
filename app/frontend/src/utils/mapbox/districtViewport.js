@@ -17,7 +17,7 @@ const districtViewport = {
   경상남도: { lat: 35.259787, lng: 127.803922, zoom: 8 },
   전라북도: { lat: 35.716705, lng: 127.144185, zoom: 8 },
   전라남도: { lat: 34.8194, lng: 127.003113, zoom: 8 },
-  제주도: { lat: 33.364805, lng: 126.542671, zoom: 8 },
+  제주특별자치도: { lat: 33.364805, lng: 126.542671, zoom: 8 },
 };
 
 export default districtViewport;

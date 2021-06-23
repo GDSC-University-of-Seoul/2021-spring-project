@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^4.11.4",
+    "@nivo/bar": "^0.70.1",
+    "@nivo/core": "^0.70.1",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -45,8 +48,7 @@
   "scripts": {
     "start": "webpack-dev-server --progress --hot --open",
     "build": "webpack",
-    "deploy": "aws s3 sync ./dist s3://kids-keeper --profile=kids-keeper && npm run invalidate",
-    "invalidate": "aws cloudfront create-invalidation --profile=kids-keeper --distribution-id E1FQZD5KLSZ89S --paths / /index.html /error.html /service-worker.js /manifest.json /favicon.ico"
+    "deploy": "npm run build && aws s3 sync ./dist s3://kids-keeper --profile=kids-keeper"
   },
   "eslintConfig": {
     "extends": "react-app"

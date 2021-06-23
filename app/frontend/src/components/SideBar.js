@@ -1,5 +1,7 @@
 import { FiMonitor, FiSettings } from "react-icons/fi";
 
+import { AiOutlineFileText } from "react-icons/ai";
+import { BiCctv } from "react-icons/bi";
 import { FaHome } from "react-icons/fa";
 import React from "react";
 import SideMenu from "./SideMenu";
@@ -12,13 +14,19 @@ import SideMenu from "./SideMenu";
 function SideBar() {
   return (
     <nav className="sidebar">
-      <header>Menu</header>
+      <div className="sidebar-header">Menu</div>
 
       <SideMenu menu="Home" route="/">
         <FaHome className="menu-icon" />
       </SideMenu>
       <SideMenu menu="Monitoring" route="/monitoring">
         <FiMonitor className="menu-icon" />
+      </SideMenu>
+      <SideMenu menu="CCTV" route="/cctvs">
+        <BiCctv className="menu-icon" />
+      </SideMenu>
+      <SideMenu menu="Logs" route="/logs">
+        <AiOutlineFileText className="menu-icon" />
       </SideMenu>
       <SideMenu menu="Settings" route="/settings">
         <FiSettings className="menu-icon" />

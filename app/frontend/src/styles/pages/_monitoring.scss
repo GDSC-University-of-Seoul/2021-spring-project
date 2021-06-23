@@ -1,0 +1,24 @@
+.monitoring {
+  display: grid;
+  grid-template-rows: 830px;
+  grid-template-columns: 800px 1fr;
+  grid-gap: 20px;
+  justify-content: center;
+  align-content: center;
+
+  @media screen and (max-width: 1400px) {
+    grid-template-rows: 830px 1fr;
+    grid-template-columns: 800px;
+  }
+
+  .map-section {
+    position: relative;
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .select-section {
+    padding: 15px;
+  }
+}

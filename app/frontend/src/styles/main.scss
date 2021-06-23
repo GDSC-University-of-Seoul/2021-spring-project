@@ -3,20 +3,28 @@
 
 /* config */
 @import "config/reset.scss";
-@import "config/variable";
 
 /* pages */
 @import "pages/pages";
+@import "pages/home";
+@import "pages/monitoring";
+@import "pages/cctvs";
+@import "pages/logs";
+@import "pages/settings";
 
 /* components */
 @import "components/sideBar";
 @import "components/mapbox";
 @import "components/mapboxCategory";
+@import "components/loading";
+@import "components/header";
+@import "components/table";
 
 * {
   box-sizing: border-box;
 }
 body {
+  min-width: 1000px;
   font-size: 16px;
   font-family: "Nanum Gothic", sans-serif;
 }
