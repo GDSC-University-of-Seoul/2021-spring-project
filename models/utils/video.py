@@ -1,6 +1,6 @@
 import cv2
 from imutils.video import FileVideoStream
-from data.action_enum import ActionEnum
+from model.action_enum import ActionEnum
 from utils.files import check_file, save_pkl_file
 from utils.logger import Logger
 from pathlib import Path
@@ -30,7 +30,7 @@ def get_video_metainfo(config, meta):
     return nframe, size
 
 
-def display_video(config, frame, n, action_frame_list, stop_command="q"):
+def display_frame(config, frame, n, action_frame_list, stop_command="q"):
     """
     Display the video frame
     """
@@ -71,9 +71,6 @@ def extract_video(config, file, meta):
     Extract frame data list from mp4 file
     """
 
-    # Check the video file is actually exist
-    input_video = FileVideoStream(check_file(file))
-
     # filename without only last extension
     basename = Path(file).stem
 
@@ -86,9 +83,16 @@ def extract_video(config, file, meta):
         action_frames = get_object_actions(meta, obj)
         action_frame_list.append(action_frames)
 
+    # Check the video file is actually exist
+    input_video = FileVideoStream(check_file(file))
+
+    fourcc = cv2.VideoWriter_fourcc(*"mp4v")
+    output_video = cv2.VideoWriter("resize2.mp4", fourcc, 30.0, size)
+
+    output_frames = list()
+
     try:
         # Creating a frame data list from video information
-        frames = list()
 
         # Run the video
         video_stream = input_video.start()
@@ -99,11 +103,10 @@ def extract_video(config, file, meta):
                 break
 
             frame = cv2.resize(frame, size)
-            frames.append(frame)
+            output_video.write(frame)
+            output_frames.append(frame)
 
-            display_video(config, frame, len(frames), action_frame_list)
-
-        logger.log(f"Total frame number of [{basename}] is {len(frames)} frames")
+        logger.log(f"Total frame number of [{basename}] is {len(output_frames)} frames")
 
     except PlayVideoException:
         # When video is closed by user, this process will be closed
@@ -112,9 +115,8 @@ def extract_video(config, file, meta):
 
     finally:
         # Safely end video playback
+        output_video.release()
         input_video.stop()
         cv2.destroyAllWindows()
 
-    # FIXME : TEMPORARY CODE
-    if config["write"]:
-        save_pkl_file(save_dir="./data/pkl_dir", filename=basename, data=frames)
+    input("wait")

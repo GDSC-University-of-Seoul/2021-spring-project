@@ -37,7 +37,7 @@ if __name__ == "__main__":
     # Argument options
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--data", type=str, default="data/model.yml", help="model.yml path"
+        "--data", type=str, default="model/model_config.yml", help="model.yml path"
     )
     opt = parser.parse_args()
 
