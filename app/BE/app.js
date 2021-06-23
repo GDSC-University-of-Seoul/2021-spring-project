@@ -5,7 +5,7 @@ import path from "path";
 import swaggerUi from "swagger-ui-express";
 import yaml from "yamljs";
 
-import { sequelize } from "../DB/models";
+import { sequelize } from "../DB/transpile";
 import indexRouter from "./routes";
 import districtRouter from "./routes/district";
 import centerRouter from "./routes/childCareCenter";

@@ -1,10 +1,10 @@
 import express from "express";
 import { Sequelize, Op } from "sequelize";
-import ChildCareCenter from "../../DB/models/childCareCenter";
-import FacilityArea from "../../DB/models/facilityArea";
-import CCTV from "../../DB/models/cctv";
-import Video from "../../DB/models/video";
-import Anomaly from "../../DB/models/anomaly";
+import ChildCareCenter from "../../DB/transpile/childCareCenter";
+import FacilityArea from "../../DB/transpile/facilityArea";
+import CCTV from "../../DB/transpile/cctv";
+import Video from "../../DB/transpile/video";
+import Anomaly from "../../DB/transpile/anomaly";
 
 const router = express.Router();
 

@@ -1,8 +1,8 @@
-import ChildCareCenter from "../../DB/models/child-care-center";
-import FacilityArea from "../../DB/models/facility-area";
-import CCTV from "../../DB/models/cctv";
-import Video from "../../DB/models/video";
-import Anomaly from "../../DB/models/anomaly";
+import ChildCareCenter from "../../DB/transpile/childCareCenter";
+import FacilityArea from "../../DB/transpile/FacilityArea";
+import CCTV from "../../DB/transpile/cctv";
+import Video from "../../DB/transpile/video";
+import Anomaly from "../../DB/transpile/anomaly";
 
 export const districtJoin = {
   model: ChildCareCenter,
