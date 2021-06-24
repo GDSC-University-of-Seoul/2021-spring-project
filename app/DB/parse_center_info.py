@@ -88,4 +88,3 @@ for district_code in sigungu_code:
 # api로 데이터를 받아올 때 제주시, 서귀포시의 데이터 파싱 불가 -> 제주시를 제외한 지역의 정보 json 저장 완료
 with open("child_care_center.json", "w", encoding="UTF-8-sig") as outfile:
     json.dump(target_data, outfile, ensure_ascii=False, indent="\t")
-    
