@@ -85,6 +85,6 @@ for district_code in sigungu_code:
 # print(len(target_data))
 
 # json file로 target_data 저장
-# api로 데이터를 받아올 때 제주시, 서귀포시의 데이터 파싱 불가 -> 제주시를 제외한 지역의 정보 json 저장 완료
+# 현재 데이터가 너무 커서 경상남도 합천군 데이터까지만 저장됨
 with open("child_care_center.json", "w", encoding="UTF-8-sig") as outfile:
     json.dump(target_data, outfile, ensure_ascii=False, indent="\t")
