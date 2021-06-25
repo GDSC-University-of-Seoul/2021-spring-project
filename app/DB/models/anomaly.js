@@ -7,7 +7,7 @@ import Sequelize from "sequelize";
  * start_time         : Date                       FALSE
  * end_time           : Date                       FALSE
  * follow_up          : Enum                       TRUE
- * anomaly_type       : Enum                       FALSE
+ * anomaly_type       : Enum (STRING)              FALSE
  *
  *
  * <RELATIONSHIP>     <COLUMN>
@@ -40,8 +40,12 @@ module.exports = class Anomaly extends Sequelize.Model {
               "영상확인-실신",
             ],
           }),
-          allowNull: false,
+          allowNull: true,
         },
+        anmaly_type: {
+          type: DataTypes.STRING(20),
+          allowNull: false,
+        }
       },
       {
         sequelize,

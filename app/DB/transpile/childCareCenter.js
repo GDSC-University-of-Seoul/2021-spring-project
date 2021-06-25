@@ -128,7 +128,7 @@ module.exports = /*#__PURE__*/function (_Sequelize$Model) {
   }, {
     key: "associate",
     value: function associate(db) {
-      db.ChildCareCenter.hasMany(db.FacilityArea, {
+      db.ChildCareCenter.hasMany(db.CCTV, {
         foreignKey: "center_id",
         sourceKey: "center_id"
       });

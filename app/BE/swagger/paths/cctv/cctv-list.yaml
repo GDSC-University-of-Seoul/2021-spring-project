@@ -3,7 +3,7 @@ tags:
 summary: get all cctvs
 description:
 parameters:
-  - name: area_id
+  - name: center_id
     in: query
     required: false
     description: 촬영구역 id
@@ -27,5 +27,5 @@ responses:
               uninstall_date:
                 type: string
                 format: date
-              area_id:
+              center_id:
                 type: integer

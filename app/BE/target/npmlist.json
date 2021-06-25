@@ -1,0 +1,1 @@
+{"version":"0.0.1","name":"backend","dependencies":{"body-parser":{"version":"1.19.0"},"cors":{"version":"2.8.5"},"dotenv":{"version":"8.2.0"},"express":{"version":"4.17.1"},"morgan":{"version":"1.10.0"},"pg-hstore":{"version":"2.3.3"},"pg":{"version":"8.6.0"},"sequelize-cli":{"version":"6.2.0"},"sequelize":{"version":"6.6.2"}}}

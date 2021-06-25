@@ -11,7 +11,6 @@ import Sequelize from "sequelize";
  *
  * <RELATIONSHIP>     <COLUMN>
  * video              : video_id         FK        FALSE
- * area               : area_id          FK        FALSE
  * requester          : requester_id     FK        FALSE
  */
 

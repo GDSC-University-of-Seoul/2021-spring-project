@@ -26,5 +26,5 @@ get:
               uninstall_date:
                 type: string
                 format: date
-              area_id:
+              center_id:
                 type: integer

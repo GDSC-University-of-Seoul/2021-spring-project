@@ -13,7 +13,7 @@ requestBody:
           install_date:
             type: string
             format: date
-          area_id:
+          center_id:
             type: integer
 responses:
   201:
@@ -30,6 +30,5 @@ responses:
             install_date:
               type: string
               format: date
-            area_id:
+            center_id:
               type: integer
-

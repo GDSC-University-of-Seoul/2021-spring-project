@@ -8,9 +8,10 @@ import Sequelize from "sequelize";
  * quality            : Enum                       FALSE
  * install_date       : Date                       FALSE
  * uninstall_date     : Date                       TRUE
+ * mac_address        : STRING                     FALSE
  *
  * <RELATIONSHIP>     <COLUMN>
- * area               : area_id          FK       FALSE
+ * center             : center_id          FK       FALSE
  *
  * <BACKREF>          <COLUMN>
  * video              : cctv_id          FK
@@ -43,6 +44,10 @@ module.exports = class CCTV extends Sequelize.Model {
           type: DataTypes.DATE,
           allowNull: true,
         },
+        mac_address: {
+          type: DataTypes.STRING(30),
+          allowNull: false,
+        },
       },
       {
         sequelize,
@@ -57,9 +62,9 @@ module.exports = class CCTV extends Sequelize.Model {
     );
   }
   static associate(db) {
-    db.CCTV.belongsTo(db.FacilityArea, {
-      foreignKey: "area_id",
-      targetKey: "area_id",
+    db.CCTV.belongsTo(db.ChildCareCenter, {
+      foreignKey: "center_id",
+      targetKey: "center_id",
     });
     db.CCTV.hasMany(db.Video, {
       foreignKey: "cctv_id",

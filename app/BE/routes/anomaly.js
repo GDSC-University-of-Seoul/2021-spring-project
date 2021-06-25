@@ -1,7 +1,6 @@
 import express from "express";
 import { Sequelize, Op } from "sequelize";
 import ChildCareCenter from "../../DB/transpile/childCareCenter";
-import FacilityArea from "../../DB/transpile/facilityArea";
 import CCTV from "../../DB/transpile/cctv";
 import Video from "../../DB/transpile/video";
 import Anomaly from "../../DB/transpile/anomaly";
@@ -39,13 +38,9 @@ router
             model: CCTV,
             attributes: [],
             include: {
-              model: FacilityArea,
-              attributes: [],
-              include: {
-                model: ChildCareCenter,
-                attributes: ["center_name", "address"],
-                where: centerFilters,
-              },
+              model: ChildCareCenter,
+              attributes: ["center_name", "address"],
+              where: centerFilters,
             },
           },
         },
@@ -54,15 +49,10 @@ router
           "end_time",
           "follow_up",
           [
-            Sequelize.col(
-              "Video.CCTV.FacilityArea.ChildCareCenter.center_name"
-            ),
+            Sequelize.col("Video.CCTV.ChildCareCenter.center_name"),
             "center_name",
           ],
-          [
-            Sequelize.col("Video.CCTV.FacilityArea.ChildCareCenter.address"),
-            "address",
-          ],
+          [Sequelize.col("Video.CCTV.ChildCareCenter.address"), "address"],
         ],
       });
       res.json(anomalies);

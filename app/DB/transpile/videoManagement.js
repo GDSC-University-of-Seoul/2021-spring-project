@@ -41,7 +41,6 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
  *
  * <RELATIONSHIP>     <COLUMN>
  * video              : video_id         FK        FALSE
- * area               : area_id          FK        FALSE
  * requester          : requester_id     FK        FALSE
  */
 module.exports = /*#__PURE__*/function (_Sequelize$Model) {

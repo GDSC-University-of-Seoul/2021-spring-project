@@ -192,99 +192,6 @@ paths:
                     type: string
                   district_name:
                     type: string
-  /areas:
-    get:
-      tags:
-        - facility area
-      summary: get all facility areas
-      description: null
-      parameters:
-        - name: center_id
-          in: query
-          required: false
-          description: 어린이집 id
-        - name: center_name
-          in: query
-          required: false
-          description: 어린이집 이름
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    area_id:
-                      type: integer
-                    area_name:
-                      type: string
-                    area_usage:
-                      type: string
-                    center_id:
-                      type: integer
-    post:
-      tags:
-        - facility area
-      summary: create facility area
-      description: null
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                area_name:
-                  type: string
-                area_usage:
-                  type: string
-                center_id:
-                  type: integer
-      responses:
-        '201':
-          description: CREATED
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  area_id:
-                    type: integer
-                  area_name:
-                    type: string
-                  area_usage:
-                    type: string
-                  center_id:
-                    type: integer
-  '/areas/{area_id}':
-    get:
-      tags:
-        - facility area
-      summary: get facility area by area id
-      description: null
-      parameters:
-        - name: area_id
-          in: path
-          required: true
-          description: 촬영구역 ID
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  area_id:
-                    type: integer
-                  area_name:
-                    type: string
-                  area_usage:
-                    type: string
-                  center_id:
-                    type: integer
   /cctvs:
     get:
       tags:
@@ -292,7 +199,7 @@ paths:
       summary: get all cctvs
       description: null
       parameters:
-        - name: area_id
+        - name: center_id
           in: query
           required: false
           description: 촬영구역 id
@@ -316,7 +223,7 @@ paths:
                     uninstall_date:
                       type: string
                       format: date
-                    area_id:
+                    center_id:
                       type: integer
     post:
       tags:
@@ -334,7 +241,7 @@ paths:
                 install_date:
                   type: string
                   format: date
-                area_id:
+                center_id:
                   type: integer
       responses:
         '201':
@@ -351,7 +258,7 @@ paths:
                   install_date:
                     type: string
                     format: date
-                  area_id:
+                  center_id:
                     type: integer
   '/cctvs/{cctv_id}':
     get:
@@ -382,7 +289,7 @@ paths:
                   uninstall_date:
                     type: string
                     format: date
-                  area_id:
+                  center_id:
                     type: integer
   /videos:
     get:
@@ -523,7 +430,6 @@ paths:
 tags:
   - name: district
   - name: children care center
-  - name: facility area
   - name: cctv
   - name: video
   - name: anomaly

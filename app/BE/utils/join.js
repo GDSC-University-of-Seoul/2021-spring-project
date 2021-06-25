@@ -1,5 +1,4 @@
 import ChildCareCenter from "../../DB/transpile/childCareCenter";
-import FacilityArea from "../../DB/transpile/FacilityArea";
 import CCTV from "../../DB/transpile/cctv";
 import Video from "../../DB/transpile/video";
 import Anomaly from "../../DB/transpile/anomaly";
@@ -8,18 +7,14 @@ export const districtJoin = {
   model: ChildCareCenter,
   attributes: [],
   include: {
-    model: FacilityArea,
+    model: CCTV,
     attributes: [],
     include: {
-      model: CCTV,
+      model: Video,
       attributes: [],
       include: {
-        model: Video,
+        model: Anomaly,
         attributes: [],
-        include: {
-          model: Anomaly,
-          attributes: [],
-        },
       },
     },
   },

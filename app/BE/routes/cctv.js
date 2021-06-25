@@ -1,5 +1,4 @@
 import express from "express";
-import Area from "../../DB/transpile/facilityArea";
 import CCTV from "../../DB/transpile/cctv";
 
 const router = express.Router();
@@ -8,14 +7,14 @@ router
   .route("/")
   .get(async (req, res, next) => {
     try {
-      const { area_id } = req.query;
+      const { center_id } = req.query;
       let filters = {};
-      if (area_id) {
-        filters.area_id = area_id;
+      if (center_id) {
+        filters.center_id = center_id;
       }
       const cctvs = await CCTV.findAll({
         include: {
-          model: Area,
+          model: Center,
           attributes: [],
           where: filters,
         },
@@ -29,7 +28,7 @@ router
   .post(async (req, res, next) => {
     try {
       const cctv = await CCTV.create({
-        area_id: req.body.area_id,
+        center_id: req.body.center_id,
         quality: req.body.quality,
         install_date: req.body.install_date,
       });

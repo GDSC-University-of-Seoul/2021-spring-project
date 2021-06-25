@@ -37,7 +37,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
  * start_time         : Date                       FALSE
  * end_time           : Date                       FALSE
  * follow_up          : Enum                       TRUE
- * anomaly_type       : Enum                       FALSE
+ * anomaly_type       : Enum (STRING)              FALSE
  *
  *
  * <RELATIONSHIP>     <COLUMN>
@@ -75,6 +75,10 @@ module.exports = /*#__PURE__*/function (_Sequelize$Model) {
           type: DataTypes.ENUM({
             values: ["이상행동감지", "영상확인-일상행동", "영상확인-폭력", "영상확인-실신"]
           }),
+          allowNull: true
+        },
+        anmaly_type: {
+          type: DataTypes.STRING(20),
           allowNull: false
         }
       }, {
