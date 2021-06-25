@@ -49,7 +49,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
  * district           : district_code    FK        FALSE
  *
  * <BACKREF>          <COLUMN>
- * area               : center_id        FK
+ * cctv               : center_id        FK
  */
 module.exports = /*#__PURE__*/function (_Sequelize$Model) {
   _inherits(ChildCareCenter, _Sequelize$Model);

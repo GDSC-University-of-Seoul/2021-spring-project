@@ -1,5 +1,5 @@
 import express from "express";
-import CCTV from "../../DB/transpile/cctv";
+import CCTV from "../../DB/models/transform/cctv";
 
 const router = express.Router();
 

@@ -6,7 +6,7 @@ parameters:
   - name: center_id
     in: query
     required: false
-    description: 촬영구역 id
+    description: 어린이집 id
 responses:
   200:
     description: OK

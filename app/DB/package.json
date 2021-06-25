@@ -27,7 +27,7 @@
   "scripts": {
     "start": "npx babel-node app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npx babel models/* -w -d transpile/ --presets=@babel/env"
+    "build": "npx babel models/* -w -d models/transpile/ --presets=@babel/env"
   },
   "author": "",
   "license": "ISC"

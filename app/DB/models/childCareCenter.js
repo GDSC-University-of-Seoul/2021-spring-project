@@ -19,7 +19,7 @@ import Sequelize from "sequelize";
  * district           : district_code    FK        FALSE
  *
  * <BACKREF>          <COLUMN>
- * area               : center_id        FK
+ * cctv               : center_id        FK
  */
 
 module.exports = class ChildCareCenter extends Sequelize.Model {

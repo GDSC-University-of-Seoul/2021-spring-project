@@ -1,7 +1,7 @@
-import ChildCareCenter from "../../DB/transpile/childCareCenter";
-import CCTV from "../../DB/transpile/cctv";
-import Video from "../../DB/transpile/video";
-import Anomaly from "../../DB/transpile/anomaly";
+import ChildCareCenter from "../../DB/models/transform/childCareCenter";
+import CCTV from "../../DB/models/transform/cctv";
+import Video from "../../DB/models/transform/video";
+import Anomaly from "../../DB/models/transform/anomaly";
 
 export const districtJoin = {
   model: ChildCareCenter,
