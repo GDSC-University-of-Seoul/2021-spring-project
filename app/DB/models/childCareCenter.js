@@ -1,5 +1,27 @@
 import Sequelize from "sequelize";
 
+/**
+ * 어린이집 관련 테이블
+ * <FIELDS>           <DATA TYPE>        <INDEX>   <NULLABLE>
+ * center_id          : String           PK        FALSE
+ * center_name        : String                     FALSE
+ * operation_type     : Enum                       FALSE
+ * operation_status   : Enum                       FALSE
+ * zipcode            : String                     FALSE
+ * address            : String                     FALSE
+ * center_phone       : String                     TRUE
+ * fax                : String                     TRUE
+ * web_page           : String                     TRUE
+ * lattitude          : String                     FALSE
+ * longtitude         : String                     FALSE
+ *
+ * <RELATIONSHIP>     <COLUMN>
+ * district           : district_code    FK        FALSE
+ *
+ * <BACKREF>          <COLUMN>
+ * area               : center_id        FK
+ */
+
 module.exports = class ChildCareCenter extends Sequelize.Model {
   static init(sequelize, DataTypes) {
     return super.init(
@@ -67,6 +89,7 @@ module.exports = class ChildCareCenter extends Sequelize.Model {
         paranoid: false,
         modelName: "ChildCareCenter",
         tableName: "child_care_center",
+        freezeTableName: false,
         charset: "utf8",
         collate: "utf8_general_cli",
       }

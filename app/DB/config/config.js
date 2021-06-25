@@ -1,33 +1,35 @@
-'use strict';
+require("dotenv").config();
 
-Object.defineProperty(exports, '__esModule', {
-  value: true,
-});
-exports.production = exports.test = exports.development = void 0;
+const env = process.env;
 
-require('dotenv').config();
+const development = {
+  database: env.DATABASE_NAME_DEV,
+  username: env.DATABASE_USERNAME_DEV,
+  password: env.DATABASE_PASSWORD_DEV,
+  host: env.DATABASE_HOST_DEV,
+  port: env.DATABASE_PORT_DEV,
+  ssl: env.DATABASE_SSL_DEV,
+  dialect: "postgres",
+};
 
-var development = {
-  database: process.env.DATABASE_NAME_DEV,
-  username: process.env.DATABASE_USERNAME_DEV,
-  password: process.env.DATABASE_PASSWORD_DEV,
-  host: process.env.DATABASE_HOST_DEV,
-  dialect: 'postgres',
+const production = {
+  database: env.DATABASE_NAME_PROD,
+  username: env.DATABASE_USERNAME_PROD,
+  password: env.DATABASE_PASSWORD_PROD,
+  host: env.DATABASE_HOST_PROD,
+  port: env.DATABASE_PORT_PROD,
+  ssl: env.DATABASE_SSL_PROD,
+  dialect: "postgres",
 };
-exports.development = development;
-var test = {
-  database: process.env.DATABASE_NAME_TEST,
-  username: process.env.DATABASE_USERNAME_TEST,
-  password: process.env.DATABASE_PASSWORD_TEST,
-  host: process.env.DATABASE_HOST_TEST,
-  dialect: 'postgres',
+
+const test = {
+  database: env.DATABASE_NAME_TEST,
+  username: env.DATABASE_USERNAME_TEST,
+  password: env.DATABASE_PASSWORD_TEST,
+  host: env.DATABASE_HOST_TEST,
+  port: env.DATABASE_PORT_TEST,
+  ssl: env.DATABASE_SSL_TEST,
+  dialect: "postgres",
 };
-exports.test = test;
-var production = {
-  database: process.env.DATABASE_NAME_PROD,
-  username: process.env.DATABASE_USERNAME_PROD,
-  password: process.env.DATABASE_PASSWORD_PROD,
-  host: process.env.DATABASE_HOST_PROD,
-  dialect: 'postgres',
-};
-exports.production = production;
+
+module.exports = { development, production, test };

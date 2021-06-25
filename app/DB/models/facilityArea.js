@@ -1,5 +1,19 @@
 import Sequelize from "sequelize";
 
+/**
+ * 어린이집 내 공간에 대한 테이블
+ * <FIELDS>           <DATA TYPE>        <INDEX>   <NULLABLE>
+ * area_id            : Integer          PK        FALSE
+ * area_name          : String                     FALSE
+ * area_usage         : String                     TRUE
+ *
+ * <RELATIONSHIP>     <COLUMN>
+ * cdrcare_center     : center_id        FK        FALSE
+ *
+ * <BACKREF>          <COLUMN>
+ * cctv               : area_id          FK
+ */
+
 module.exports = class FacilityArea extends Sequelize.Model {
   static init(sequelize, DataTypes) {
     return super.init(
@@ -24,6 +38,7 @@ module.exports = class FacilityArea extends Sequelize.Model {
         paranoids: false,
         modelName: "FacilityArea",
         tableName: "facility_area",
+        freezeTableName: false,
         charset: "utf8",
         collate: "utf8_general_cli",
       }

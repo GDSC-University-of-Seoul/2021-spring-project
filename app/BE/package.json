@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "swagger": "swagger-cli bundle swagger/_openapi.yaml --outfile swagger/build.yaml --type yaml",
-    "start": "nodemon app --exec babel-node"
+    "start": "nodemon app --exec babel-node ../BE/app.js"
   },
   "devDependencies": {
     "@babel/cli": "^7.13.16",
@@ -33,6 +33,7 @@
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "morgan": "^1.10.0",
@@ -50,7 +51,7 @@
       "prettier/prettier": [
         "error",
         {
-            "endOfLine": "auto"
+          "endOfLine": "auto"
         }
       ]
     }

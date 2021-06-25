@@ -5,14 +5,15 @@ import path from "path";
 import swaggerUi from "swagger-ui-express";
 import yaml from "yamljs";
 
-import { sequelize } from "./database/models";
+import { sequelize } from "../DB/transpile";
 import indexRouter from "./routes";
 import districtRouter from "./routes/district";
-import centerRouter from "./routes/child-care-center";
-import areaRouter from "./routes/facility-area";
+import centerRouter from "./routes/childCareCenter";
+import areaRouter from "./routes/facilityArea";
 import cctvRouter from "./routes/cctv";
 import videoRouter from "./routes/video";
 import anomalyRouter from "./routes/anomaly";
+import cors from "cors";
 
 dotenv.config();
 
@@ -30,6 +31,7 @@ sequelize
     console.log(err);
   });
 
+app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

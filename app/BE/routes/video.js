@@ -1,6 +1,6 @@
 import express from "express";
-import CCTV from "../database/models/cctv";
-import Video from "../database/models/video";
+import CCTV from "../../DB/transpile/cctv";
+import Video from "../../DB/transpile/video";
 
 const router = express.Router();
 
