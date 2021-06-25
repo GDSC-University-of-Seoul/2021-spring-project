@@ -35,10 +35,10 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
  * <FIELDS>           <DATA TYPE>        <INDEX>   <NULLABLE>
  * cctv_id            : Integer          PK        FALSE
  * cctv_name          : String                     FALSE
+ * cctv_mac           : STRING                     FALSE
  * quality            : Enum                       FALSE
  * install_date       : Date                       FALSE
  * uninstall_date     : Date                       TRUE
- * mac_address        : STRING                     FALSE
  *
  * <RELATIONSHIP>     <COLUMN>
  * center             : center_id          FK       FALSE
@@ -70,6 +70,10 @@ module.exports = /*#__PURE__*/function (_Sequelize$Model) {
           type: DataTypes.STRING(30),
           allowNull: false
         },
+        cctv_mac: {
+          type: DataTypes.STRING(30),
+          allowNull: false
+        },
         quality: {
           type: DataTypes.ENUM({
             values: ["SD", "HD", "FHD", "QHD", "UHD"]
@@ -83,10 +87,6 @@ module.exports = /*#__PURE__*/function (_Sequelize$Model) {
         uninstall_date: {
           type: DataTypes.DATE,
           allowNull: true
-        },
-        mac_address: {
-          type: DataTypes.STRING(30),
-          allowNull: false
         }
       }, {
         sequelize: sequelize,

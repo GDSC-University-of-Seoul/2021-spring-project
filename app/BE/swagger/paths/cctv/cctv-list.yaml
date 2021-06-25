@@ -19,6 +19,10 @@ responses:
             properties:
               cctv_id:
                 type: integer
+              cctv_name:
+                type: string
+              cctv_mac:
+                type: string
               quaity:
                 type: string
               install_date:
@@ -29,3 +33,7 @@ responses:
                 format: date
               center_id:
                 type: integer
+              center_name:
+                type: string
+              address:
+                type: string

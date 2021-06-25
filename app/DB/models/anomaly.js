@@ -4,10 +4,10 @@ import Sequelize from "sequelize";
  * 이상행동 발생 데이터 관련 테이블
  * <FIELDS>           <DATA TYPE>        <INDEX>   <NULLABLE>
  * anomaly_id         : Integer          PK        FALSE
+ * anomaly_type       : Enum (STRING)              FALSE
  * start_time         : Date                       FALSE
  * end_time           : Date                       FALSE
  * follow_up          : Enum                       TRUE
- * anomaly_type       : Enum (STRING)              FALSE
  *
  *
  * <RELATIONSHIP>     <COLUMN>
@@ -22,6 +22,10 @@ module.exports = class Anomaly extends Sequelize.Model {
           type: DataTypes.INTEGER,
           autoIncrement: true,
           primaryKey: true,
+        },
+        anomaly_type: {
+          type: DataTypes.STRING(20),
+          allowNull: false,
         },
         start_time: {
           type: DataTypes.DATE,
@@ -42,10 +46,6 @@ module.exports = class Anomaly extends Sequelize.Model {
           }),
           allowNull: true,
         },
-        anmaly_type: {
-          type: DataTypes.STRING(20),
-          allowNull: false,
-        }
       },
       {
         sequelize,

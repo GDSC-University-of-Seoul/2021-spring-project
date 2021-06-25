@@ -1,4 +1,5 @@
 import express from "express";
+import { Sequelize } from "sequelize";
 import CCTV from "../../DB/models/transform/cctv";
 
 const router = express.Router();
@@ -15,9 +16,20 @@ router
       const cctvs = await CCTV.findAll({
         include: {
           model: Center,
-          attributes: [],
+          attributes: ["center_id", "center_name", "address"],
           where: filters,
         },
+        attributes: [
+          "cctv_id",
+          "cctv_name",
+          "cctv_mac",
+          "install_date",
+          "uninstall_date",
+          "quality",
+          [Sequelize.col("CCTV.ChildCareCenter.center_id"), "center_id"],
+          [Sequelize.col("CCTV.ChildCareCenter.center_name"), "center_name"],
+          [Sequelize.col("CCTV.ChildCareCenter.address"), "address"],
+        ],
       });
       res.json(cctvs);
     } catch (err) {
@@ -29,8 +41,10 @@ router
     try {
       const cctv = await CCTV.create({
         center_id: req.body.center_id,
-        quality: req.body.quality,
+        cctv_name: req.body.cctv_name,
+        cctv_mac: req.body.cctv_mac,
         install_date: req.body.install_date,
+        quality: req.body.quality,
       });
       res.status(201).json(cctv);
     } catch (err) {
@@ -39,11 +53,21 @@ router
     }
   });
 
-router.get("/:cctv_id", async (req, res, next) => {
+router.put("/:cctv_mac", async (req, res, next) => {
   try {
-    const cctv = await CCTV.findOne({
-      where: { cctv_id: req.params.cctv_id },
-    });
+    const cctv = await CCTV.update(
+      {
+        cctv_name: req.body.cctv_name,
+        install_date: req.body.install_date,
+        uninstall_date: req.body.uninstall_date,
+        quality: req.body.quality,
+      },
+      {
+        where: {
+          cctv_mac: req.params.cctv_mac,
+        },
+      }
+    );
     res.json(cctv);
   } catch (err) {
     console.error(err);

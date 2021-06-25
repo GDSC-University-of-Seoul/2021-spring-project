@@ -1,39 +1,44 @@
 tags:
   - cctv
-summary: create cctv
+summary: update cctv by cctv_mac
 description:
+parameters:
+  - name: cctv_mac
+    in: path
+    required: true
+    description: CCTV MAC 주소
 requestBody:
   content:
     application/json:
       schema:
         type: object
         properties:
-          center_id:
-            type: integer
           cctv_name:
             type: string
-          cctv_mac:
-            type: string
           install_date:
+            type: string
+            format: date
+          uninstall_date:
             type: string
             format: date
           quality:
             type: string
 responses:
-  201:
-    description: CREATED
+  200:
+    description: UPDATED
     content:
       application/json:
         schema:
-          type: object
+          type: objecrt
           properties:
             cctv_id:
               type: integer
             cctv_name:
               type: string
-            cctv_mac:
-              type: string
             install_date:
+              type: string
+              format: date
+            uninstall_date:
               type: string
               format: date
             quality:

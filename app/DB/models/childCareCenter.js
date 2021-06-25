@@ -3,7 +3,7 @@ import Sequelize from "sequelize";
 /**
  * 어린이집 관련 테이블
  * <FIELDS>           <DATA TYPE>        <INDEX>   <NULLABLE>
- * center_id          : String           PK        FALSE
+ * center_id          : Integer          PK        FALSE
  * center_name        : String                     FALSE
  * operation_type     : Enum                       FALSE
  * operation_status   : Enum                       FALSE

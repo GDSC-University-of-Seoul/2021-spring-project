@@ -1,5 +1,5 @@
 import express from "express";
-import { Sequelize, Op } from "sequelize";
+import { Sequelize } from "sequelize";
 import ChildCareCenter from "../../DB/models/transform/childCareCenter";
 import CCTV from "../../DB/models/transform/cctv";
 import Video from "../../DB/models/transform/video";
@@ -25,7 +25,7 @@ router
       startDate.setDate(endDate.getDate() - 60);
       const videoFilters = {
         record_date: {
-          [Op.between]: [startDate, endDate],
+          [Sequelize.Op.between]: [startDate, endDate],
         },
       };
 
@@ -48,6 +48,7 @@ router
           "start_time",
           "end_time",
           "follow_up",
+          "anomaly_type",
           [
             Sequelize.col("Video.CCTV.ChildCareCenter.center_name"),
             "center_name",
@@ -83,17 +84,5 @@ router
       next(err);
     }
   });
-
-router.get("/:anomaly_id", async (req, res, next) => {
-  try {
-    const anomaly = await Anomaly.findOne({
-      where: { anomaly_id: req.params.anomaly_id },
-    });
-    res.json(anomaly);
-  } catch (err) {
-    console.error(err);
-    next(err);
-  }
-});
 
 module.exports = router;

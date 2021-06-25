@@ -1,5 +1,5 @@
 import express from "express";
-import { Sequelize, Op } from "sequelize";
+import { Sequelize } from "sequelize";
 import District from "../../DB/models/transform/district";
 import ChildCareCenter from "../../DB/models/transform/childCareCenter";
 
@@ -11,12 +11,12 @@ router.get("/", async (req, res, next) => {
     const filter = {};
     if (district_code) {
       filter.district_code = {
-        [Op.like]: `%${district_code}%`,
+        [Sequelize.Op.like]: `%${district_code}%`,
       };
     }
     if (district_name) {
       filter.district_name = {
-        [Op.like]: `%${district_name}%`,
+        [Sequelize.Op.like]: `%${district_name}%`,
       };
     }
     const centers = await ChildCareCenter.findAll({
@@ -28,6 +28,13 @@ router.get("/", async (req, res, next) => {
       attributes: [
         "center_id",
         "center_name",
+        "operation_type",
+        "operation_status",
+        "zipcode",
+        "address",
+        "center_phone",
+        "fax",
+        "web_page",
         "latitude",
         "longitude",
         [Sequelize.col("District.district_code"), "district_code"],
@@ -54,6 +61,13 @@ router.get("/:center_id(\\d+)", async (req, res, next) => {
       attributes: [
         "center_id",
         "center_name",
+        "operation_type",
+        "operation_status",
+        "zipcode",
+        "address",
+        "ceneter_phone",
+        "fax",
+        "web_page",
         "latitude",
         "longitude",
         [Sequelize.col("District.district_code"), "district_code"],
@@ -80,6 +94,13 @@ router.get("/:center_name", async (req, res, next) => {
       attributes: [
         "center_id",
         "center_name",
+        "operation_type",
+        "operation_status",
+        "zipcode",
+        "address",
+        "ceneter_phone",
+        "fax",
+        "web_page",
         "latitude",
         "longitude",
         [Sequelize.col("District.district_code"), "district_code"],

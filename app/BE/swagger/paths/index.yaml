@@ -15,13 +15,7 @@
     $ref: "cctv/cctv-list.yaml"
   post:
     $ref: "cctv/cctv-create.yaml"
-/cctvs/{cctv_id}:
-  $ref: "cctv/cctv-retrieve-by-id.yaml"
-/videos:
-  $ref: "video/video-list.yaml"
-/videos/{video_id}:
-  $ref: "video/video-retrieve-by-id.yaml"
+  put:
+    $ref: "cctv/cctv-update.yaml"
 /anomalies:
   $ref: "anomaly/anomaly-list.yaml"
-/anomalies/{anomaly_id}:
-  $ref: "anomaly/anomaly-retrieve-by-id.yaml"
