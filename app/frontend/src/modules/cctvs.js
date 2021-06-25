@@ -25,7 +25,7 @@ export const deleteCctvsData = () => async (dispatch) => {};
 
 const initialState = {
   loading: false,
-  data: null,
+  cctvsData: null,
   error: false,
 };
 

@@ -51,7 +51,7 @@ function CctvModalContainer({ trigger, selectedCctvs, setTrigger }) {
   return (
     <>
       {isOpen &&
-        (selectedCctvs.length === 0 ? (
+        (!createData && selectedCctvs.length === 0 ? (
           <Modal>
             <div className="cctvModal-warning">
               ⚠️ 데이터를 선택해주세요
@@ -66,7 +66,7 @@ function CctvModalContainer({ trigger, selectedCctvs, setTrigger }) {
             </div>
           </Modal>
         ) : !deleteData ? (
-          selectedCctvs.length > 1 ? (
+          updateData && selectedCctvs.length > 1 ? (
             <Modal>
               <div className="cctvModal-warning">
                 ⚠️ 1개의 데이터만 선택해주세요

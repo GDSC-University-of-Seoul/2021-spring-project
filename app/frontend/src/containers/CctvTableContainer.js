@@ -1,4 +1,9 @@
 import React, { useState } from "react";
+import {
+  clickCctvData,
+  selectCctvData,
+  selectOffCctvData,
+} from "../modules/cctvsTableEvent";
 
 import Table from "../components/Table";
 
@@ -17,35 +22,53 @@ function CctvTableContainer() {
    */
   const initialCctvs = [
     {
-      area_id: "11001000000",
-      area_name: "참새반",
-      center_id: "11000000000",
+      center_name: "가나다어린이집",
+      cctv_name: "참새반",
+      address: "서울특별시 동대문구",
+      cctv_mac: "12345678",
       quality: "HD",
       install_date: "2021-06-06",
       uninstall_date: "2021-06-06",
     },
     {
-      area_id: "11002000000",
-      area_name: "까치반",
-      center_id: "11000000000",
+      center_name: "123 어린이집",
+      cctv_name: "까치반",
+      address: "대전광역시 서구",
+      cctv_mac: "abcdef12",
       quality: "HD",
       install_date: "2021-06-06",
       uninstall_date: "2021-06-06",
     },
   ];
+  const [cctvs, setCctvs] = useState(initialCctvs);
 
   // CCTV 데이터 카테고리
   const categories = {
     center_name: "어린이집 명",
-    area_name: "설치 장소",
+    cctv_name: "설치 장소",
     address: "어린이집 주소",
+    cctv_mac: "MAC 주소",
     quality: "화질",
     install_date: "설치 일자",
     uninstall_date: "제거 일자",
   };
 
-  const [cctvs, setCctvs] = useState(initialCctvs);
+  const itemCheckHandler = (e) => {};
+  const itemClickHandler = (e) => {
+    const tr = e.target.closest("tr");
+    if (!tr) return;
 
-  return <Table data={cctvs} categories={categories} setData={setCctvs} />;
+    const cctvId = tr.dataset.id;
+  };
+
+  return (
+    <Table
+      data={cctvs}
+      categories={categories}
+      itemId={"cctv_mac"}
+      itemCheckHandler={itemCheckHandler}
+      itemClickHandler={itemClickHandler}
+    />
+  );
 }
 export default CctvTableContainer;

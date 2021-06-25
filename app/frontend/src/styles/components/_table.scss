@@ -10,6 +10,7 @@
     padding: 5px;
     font-size: 1.2rem;
     font-weight: 600;
+    transition: all 0.3s ease-in-out;
 
     &:hover:not(#check) {
       background-color: #dfe0e0;
@@ -21,10 +22,18 @@
       align-items: center;
     }
   }
-  tbody tr:nth-child(2n) {
-    background-color: #f2f6f7;
-  }
-  tbody td {
-    padding: 5px;
+  tbody {
+    tr {
+      background-color: rgba(128, 128, 128, 0);
+      transition: all 0.3s ease-in-out;
+      cursor: pointer;
+
+      &:hover {
+        background-color: rgba(241, 241, 241, 1);
+      }
+    }
+    td {
+      padding: 5px;
+    }
   }
 }
