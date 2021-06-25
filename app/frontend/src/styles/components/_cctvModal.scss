@@ -1,57 +1,27 @@
-@keyframes modal-sliding {
-  0% {
-    transform: translateY(-200px);
-  }
-  100% {
-    transform: translateY(0);
-  }
-}
-
-.cctvModal {
+.cctvModal-form {
   display: flex;
-  width: 100vw;
-  height: 100vh;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  z-index: 10;
-  background-color: rgba(0, 0, 0, 0.6);
+  width: 400px;
+  flex-direction: column;
 
-  .cctvModal-form {
-    display: flex;
-    width: 400px;
-    flex-direction: column;
-    padding: 30px 20px;
+  .cctv_mac-alert {
+    color: red;
+    font-size: 0.75rem;
+    padding: 0 10px;
+  }
+  .MuiFormControl-root {
+    margin: 10px;
+  }
+  .MuiSelect-select:focus {
     background-color: white;
-    position: fixed;
-    animation: modal-sliding 0.4s ease-in-out;
+  }
 
-    .cctvModal-title {
-      font-size: 1.2rem;
-      font-weight: 600;
-      text-align: center;
-      margin-bottom: 15px;
-    }
-    .cctv_mac-alert {
-      color: red;
-      font-size: 0.75rem;
-      padding: 0 10px;
-    }
-    .MuiFormControl-root {
-      margin: 10px;
-    }
-    .MuiSelect-select:focus {
-      background-color: white;
-    }
+  .cctvModal-button {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
 
-    .cctvModal-button {
-      display: flex;
-      justify-content: center;
-      margin-top: 20px;
-
-      & > button:first-child {
-        margin-right: 30px;
-      }
+    & > button:first-child {
+      margin-right: 30px;
     }
   }
 }

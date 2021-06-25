@@ -4,9 +4,10 @@ import {
   AiOutlineRetweet,
 } from "react-icons/ai";
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import Button from "@material-ui/core/Button";
-import CctvModal from "../components/CctvModal";
+import CctvModalContainer from "../containers/CctvModalContainer";
 import CctvTableContainer from "../containers/CctvTableContainer";
 
 /**
@@ -16,19 +17,29 @@ import CctvTableContainer from "../containers/CctvTableContainer";
  */
 
 function Cctvs() {
-  const [isOpen, setIsOpen] = useState(false);
+  const cctvDataState = {
+    isOpen: false,
+    func: {
+      createData: false,
+      updateData: false,
+      deleteData: false,
+    },
+  };
+  const [trigger, setTrigger] = useState(cctvDataState);
 
   const createHandler = () => {
-    setIsOpen(true);
+    setTrigger({ ...trigger, isOpen: true, func: { createData: true } });
   };
   const updateHandler = () => {
-    setIsOpen(true);
+    setTrigger({ ...trigger, isOpen: true, func: { updateData: true } });
   };
-  const deleteHandler = () => {};
+  const deleteHandler = () => {
+    setTrigger({ ...trigger, isOpen: true, func: { deleteData: true } });
+  };
 
   return (
     <>
-      <CctvModal isOpen={isOpen} setIsOpen={setIsOpen} />
+      <CctvModalContainer trigger={trigger} setTrigger={setTrigger} />
       <section className="section cctvs">
         <div className="cctvs-menu">
           <Button
@@ -53,6 +64,7 @@ function Cctvs() {
             variant="outlined"
             color="secondary"
             startIcon={<AiOutlineMinusSquare />}
+            onClick={deleteHandler}
           >
             삭제
           </Button>

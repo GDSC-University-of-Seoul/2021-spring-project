@@ -19,8 +19,8 @@ export const fetchCctvsData = () => async (dispatch) => {
     dispatch({ type: CCTVS_DATA_ERROR, payload: e });
   }
 };
-export const createCctvsData = () => async (dispatch) => {};
-export const updateCctvsData = () => async (dispatch) => {};
+export const createCctvsData = (cctvData) => async (dispatch) => {};
+export const updateCctvsData = (cctvData) => async (dispatch) => {};
 export const deleteCctvsData = () => async (dispatch) => {};
 
 const initialState = {

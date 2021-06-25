@@ -1,3 +1,4 @@
+import cctvsReducer from "./cctvs";
 import cdrCenterReducer from "./cdrCenter";
 import { combineReducers } from "redux";
 import mapboxCategoryReducer from "./mapboxCategory";
@@ -10,6 +11,7 @@ const rootReducers = combineReducers({
   mapboxEventReducer,
   mapboxCategoryReducer,
   cdrCenterReducer,
+  cctvsReducer,
 });
 
 export default rootReducers;
