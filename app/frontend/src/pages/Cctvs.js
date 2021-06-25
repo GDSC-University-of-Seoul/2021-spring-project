@@ -39,7 +39,11 @@ function Cctvs() {
 
   return (
     <>
-      <CctvModalContainer trigger={trigger} setTrigger={setTrigger} />
+      <CctvModalContainer
+        trigger={trigger}
+        selectedCctvs={[]}
+        setTrigger={setTrigger}
+      />
       <section className="section cctvs">
         <div className="cctvs-menu">
           <Button

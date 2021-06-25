@@ -4,7 +4,7 @@ function Modal({ title, children }) {
   return (
     <div className="modal">
       <div className="modal-section">
-        <div className="modal-title">{title}</div>
+        {title && <div className="modal-title">{title}</div>}
         {children}
       </div>
     </div>

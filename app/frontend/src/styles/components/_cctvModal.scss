@@ -14,14 +14,32 @@
   .MuiSelect-select:focus {
     background-color: white;
   }
+}
+.cctvModal-delete {
+  margin-bottom: 20px;
 
-  .cctvModal-button {
-    display: flex;
-    justify-content: center;
+  span {
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+}
+.cctvModal-button {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+
+  & > button:first-child {
+    margin-right: 30px;
+  }
+}
+.cctvModal-warning {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 600;
+
+  button {
     margin-top: 20px;
-
-    & > button:first-child {
-      margin-right: 30px;
-    }
   }
 }
