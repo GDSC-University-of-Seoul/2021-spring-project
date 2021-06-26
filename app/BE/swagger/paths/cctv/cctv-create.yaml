@@ -17,6 +17,9 @@ requestBody:
           install_date:
             type: string
             format: date
+          uninstall_date:
+            type: string
+            format: date
           quality:
             type: string
 responses:
@@ -34,6 +37,9 @@ responses:
             cctv_mac:
               type: string
             install_date:
+              type: string
+              format: date
+            uninstall_date:
               type: string
               format: date
             quality:
