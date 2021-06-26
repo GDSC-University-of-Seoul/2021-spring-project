@@ -25,9 +25,9 @@ router
           "install_date",
           "uninstall_date",
           "quality",
-          [Sequelize.col("CCTV.ChildCareCenter.center_id"), "center_id"],
-          [Sequelize.col("CCTV.ChildCareCenter.center_name"), "center_name"],
-          [Sequelize.col("CCTV.ChildCareCenter.address"), "address"],
+          [Sequelize.col("ChildCareCenter.center_id"), "center_id"],
+          [Sequelize.col("ChildCareCenter.center_name"), "center_name"],
+          [Sequelize.col("ChildCareCenter.address"), "address"],
         ],
       });
       res.json(cctvs);
