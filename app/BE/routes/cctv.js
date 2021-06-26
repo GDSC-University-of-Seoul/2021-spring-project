@@ -44,6 +44,7 @@ router
         cctv_name: req.body.cctv_name,
         cctv_mac: req.body.cctv_mac,
         install_date: req.body.install_date,
+        uninstall_date: req.body.uninstall_date,
         quality: req.body.quality,
       });
       res.status(201).json(cctv);
