@@ -3,9 +3,7 @@
   "version": "1.0.0",
   "description": "javascript for db",
   "main": "index.js",
-  "dependencies": {
-    "@babel/node": "^7.14.2",
-    "@babel/preset-env": "^7.14.4",
+  "dependencies": {  
     "child_process": "^1.0.2",
     "dotenv": "^10.0.0",
     "fetch": "^1.1.0",
@@ -28,7 +26,9 @@
     "eslint": "^7.27.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",
-    "prettier": "2.3.0"
+    "prettier": "2.3.0",
+    "@babel/preset-env": "^7.14.4",
+    "@babel/node": "^7.14.2"
   },
   "scripts": {
     "start": "npx babel-node app.js",
