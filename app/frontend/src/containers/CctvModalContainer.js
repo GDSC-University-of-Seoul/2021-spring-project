@@ -12,10 +12,11 @@ import CctvInputModal from "../components/CctvInputModal";
 import Modal from "../components/Modal";
 import React from "react";
 
-function CctvModalContainer({ cctvsData }) {
+function CctvModalContainer() {
   const {
     isOpen,
     macValid,
+    inputData,
     func: { createData, updateData, deleteData },
   } = useSelector((state) => state.cctvsModalReducer);
 
@@ -55,7 +56,7 @@ function CctvModalContainer({ cctvsData }) {
   return (
     <>
       {isOpen &&
-        (!createData && cctvsData.length === 0 ? (
+        (!createData && !inputData ? (
           <Modal>
             <div className="cctvModal-warning">
               ⚠️ 데이터를 선택해주세요
@@ -70,7 +71,7 @@ function CctvModalContainer({ cctvsData }) {
             </div>
           </Modal>
         ) : !deleteData ? (
-          updateData && cctvsData.length > 1 ? (
+          updateData && !inputData ? (
             <Modal>
               <div className="cctvModal-warning">
                 ⚠️ 1개의 데이터만 선택해주세요
@@ -87,7 +88,7 @@ function CctvModalContainer({ cctvsData }) {
           ) : (
             <CctvInputModal
               macValid={macValid}
-              cctvsData={cctvsData}
+              inputData={inputData}
               submitCctvForm={submitHandler}
               checkMacInput={checkMacInput}
               closeModal={closeHandler}
@@ -95,7 +96,7 @@ function CctvModalContainer({ cctvsData }) {
           )
         ) : (
           <CctvDeleteModal
-            deleteCnt={cctvsData.length}
+            deleteCnt={1}
             deleteCctvData={deleteCctvData}
             closeModal={closeHandler}
           ></CctvDeleteModal>

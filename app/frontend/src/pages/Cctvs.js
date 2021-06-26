@@ -8,6 +8,7 @@ import Button from "@material-ui/core/Button";
 import CctvModalContainer from "../containers/CctvModalContainer";
 import CctvTableContainer from "../containers/CctvTableContainer";
 import React from "react";
+import { clickCctvData } from "../modules/cctvsTableEvent";
 import { openModal } from "../modules/cctvsModal";
 import { useDispatch } from "react-redux";
 
@@ -21,6 +22,7 @@ function Cctvs() {
   const dispatch = useDispatch();
 
   const createHandler = () => {
+    dispatch(clickCctvData(null));
     dispatch(openModal("createData"));
   };
   const updateHandler = () => {

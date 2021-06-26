@@ -34,7 +34,7 @@ function Table({
           return (
             <tr key={index} data-id={element[itemId]}>
               <td>
-                <input type="checkbox" />
+                <input type="checkbox" onClick={(e) => e.stopPropagation()} />
               </td>
               {Object.keys(element).map((key, index) => (
                 <td key={index}>{element[key]}</td>

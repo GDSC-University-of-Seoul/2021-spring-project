@@ -6,6 +6,7 @@ import {
 } from "../modules/cctvsTableEvent";
 
 import Table from "../components/Table";
+import { openModal } from "../modules/cctvsModal";
 import { useDispatch } from "react-redux";
 
 /**
@@ -64,6 +65,7 @@ function CctvTableContainer() {
     const clickData = cctvs.find((cctv) => cctv.cctv_mac === cctvId);
 
     dispatch(clickCctvData(clickData));
+    dispatch(openModal("updateData", clickData));
   };
 
   return (

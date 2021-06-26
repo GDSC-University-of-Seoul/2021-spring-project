@@ -2,10 +2,11 @@ const CCTVS_MODAL_OPEN = "cctvsModal/CCTVS_MODAL_OPEN";
 const CCTVS_MODAL_CLOSE = "cctvsModal/CCTVS_MODAL_CLOSE";
 const CCTVS_MODAL_MAC_VALID = "cctvsModal/CCTVS_MODAL_MAC_VALID";
 
-export const openModal = (trigger) => {
+export const openModal = (trigger, inputData = null) => {
   const state = {
     isOpen: true,
     macValid: true,
+    inputData,
     func: {
       createData: false,
       updateData: false,
@@ -20,6 +21,7 @@ export const closeModal = () => {
   const state = {
     isOpen: false,
     macValid: true,
+    inputData: null,
     func: {
       createData: false,
       updateData: false,
@@ -36,6 +38,7 @@ export const setMacValid = (valid) => ({
 const initialState = {
   isOpen: false,
   macValid: true,
+  inputData: null,
   func: {
     createData: false,
     updateData: false,
