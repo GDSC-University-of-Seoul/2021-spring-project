@@ -182,7 +182,7 @@ module.exports = /*#__PURE__*/ (function (_Sequelize$Model) {
           this,
           {
             center_id: {
-              type: DataTypes.INTEGER,
+              type: DataTypes.STRING(150),
               primaryKey: true,
             },
             center_name: {
@@ -191,15 +191,15 @@ module.exports = /*#__PURE__*/ (function (_Sequelize$Model) {
             },
             operation_type: {
               type: DataTypes.ENUM({
-                values: ['국공립', '사회복지법인', '법인 및 단체', '민간', '가정', '협동', '직장'],
+                values: ['국공립', '사회복지법인', '법인·단체등', '민간', '가정', '협동', '직장'],
               }),
               allowNull: false,
             },
             operation_status: {
               type: DataTypes.ENUM({
-                values: ['정상', '휴지', '폐지', '재개', '공백'],
+                values: ['정상', '휴지', '폐지', '재개', ''],
               }),
-              allowNull: false,
+              allowNull: true,
             },
             zip_code: {
               type: DataTypes.STRING(6),
