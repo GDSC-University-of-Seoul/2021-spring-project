@@ -1,19 +1,20 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import ReactMapGL, { Layer, Marker, Popup, Source } from "react-map-gl";
+import { fetchCdrCenter, resetCdrCenter } from "../modules/cdrCenter";
 import {
-  reset,
+  getSggHighlightLayer,
+  getSggLayer,
+  getSidoHighlightLayer,
+  getSidoLayer,
+} from "../utils/mapbox/mapStyle";
+import {
+  resetDistrict,
   setGeojsonData,
   sggClick,
   sggHover,
   sidoClick,
   sidoHover,
 } from "../modules/mapboxEvent";
-import {
-  sggHighlightLayer,
-  sggLayer,
-  sidoHighlightLayer,
-  sidoLayer,
-} from "../utils/mapbox/mapStyle";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 
 import MapBoxCategory from "./MapBoxCategory";
@@ -29,8 +30,8 @@ const MapboxAccessToken = process.env.REACT_APP_MAPBOX;
  */
 function MapBox({ geojson }) {
   // 지도 초기화 (props 할당, Redux 상태 구독, ViewPort 초기화)
-  const districtArea = geojson;
 
+  const [districtArea] = useState(geojson);
   /*
    * MapBox 컴포넌트에서 사용하는 상태
    * - level : 도, 광역시 / 시,군,구의 기능을 구분
@@ -45,6 +46,15 @@ function MapBox({ geojson }) {
   } = useSelector((state) => state.mapboxEventReducer, shallowEqual);
   const dispatch = useDispatch();
 
+  /*
+   * 사용자 영역 기준 변경 정보 → 영역 색상 렌더링에 사용
+   * - sidoControl : 도,광역시 영역 기준
+   * - sggControl : 시,군,구 영역 기준
+   */
+  const { sidoControl, sggControl } = useSelector(
+    (state) => state.mapboxCategoryReducer
+  );
+
   const [viewport, setViewport] = useState({
     width: "100%",
     height: 800,
@@ -53,15 +63,16 @@ function MapBox({ geojson }) {
     zoom: districtViewport["대한민국"].zoom,
   });
 
+  // geojsonData 를 dependency 배열에 넣으면 시군구 기능이 정상적으로 동작하지 않음
   useEffect(() => {
-    dispatch(reset(districtArea));
+    dispatch(resetDistrict(districtArea));
+    if (!geojsonData) dispatch(setGeojsonData(districtArea));
+
     return {
       geojson,
       Layer,
     };
   }, [dispatch, districtArea, geojson]);
-
-  if (!geojsonData) dispatch(setGeojsonData(districtArea));
 
   /*
    * 지도 지역구 hover 이벤트 핸들러
@@ -97,7 +108,7 @@ function MapBox({ geojson }) {
    * - level 1 : 도, 광역시 내에 있는 시,군,구만 선택한 후 level 2 로 설정
    * - level 2 : 시,군,구 내에 있는 어린이집 정보 설정
    */
-  const clickHandler = useCallback(() => {
+  const districtClickHandler = useCallback(() => {
     try {
       if (selectedDistrictInfo.name !== "") {
         if (level === 1) {
@@ -122,6 +133,13 @@ function MapBox({ geojson }) {
     }
   }, [selectedDistrictInfo, level, dispatch, districtArea, geojsonData]);
 
+  const markerClickHandler = useCallback(
+    (e) => {
+      const cdrCenterId = e.target.classList[2];
+      dispatch(fetchCdrCenter(cdrCenterId));
+    },
+    [dispatch]
+  );
   /*
    * Reset 버튼 click 이벤트 핸들러
    * - level과 geojson 데이터를 도, 광역시 기준으로 초기화
@@ -134,7 +152,8 @@ function MapBox({ geojson }) {
       longitude: districtViewport["대한민국"].lng,
       zoom: districtViewport["대한민국"].zoom,
     });
-    dispatch(reset(districtArea));
+    dispatch(resetDistrict(districtArea));
+    dispatch(resetCdrCenter());
   }, [dispatch, districtArea]);
 
   if (error) <div>지도 오류 발생</div>;
@@ -147,17 +166,27 @@ function MapBox({ geojson }) {
         mapStyle="mapbox://styles/mapbox/streets-v11"
         onViewportChange={(nextViewport) => setViewport(nextViewport)}
         onHover={hoverHandler}
-        onClick={clickHandler}
+        onClick={districtClickHandler}
         mapboxApiAccessToken={MapboxAccessToken}
       >
         {/* geojson 데이터를 통해 영역 설정 및 스타일 설정 */}
         {geojsonData && level && (
           <Source type="geojson" data={geojsonData}>
-            {level === 1 && <Layer {...sidoLayer} />}
-            {level === 1 && <Layer {...sidoHighlightLayer} filter={filter} />}
+            {level === 1 && <Layer {...getSidoLayer(sidoControl.diff)} />}
+            {level === 1 && (
+              <Layer
+                {...getSidoHighlightLayer(sidoControl.diff)}
+                filter={filter}
+              />
+            )}
 
-            {level === 2 && <Layer {...sggLayer} />}
-            {level === 2 && <Layer {...sggHighlightLayer} filter={filter} />}
+            {level === 2 && <Layer {...getSggLayer(sggControl.diff)} />}
+            {level === 2 && (
+              <Layer
+                {...getSggHighlightLayer(sggControl.diff)}
+                filter={filter}
+              />
+            )}
           </Source>
         )}
         {/* 팝업 메세지로 행정구역의 정보 표시 */}
@@ -175,15 +204,17 @@ function MapBox({ geojson }) {
         )}
         {/* 어린이집 좌표 정보를 통해 마커 표시 */}
         {/* Todo : 사건·사고가 발생한 어린이집의 경우 다른 색상의 마커로 표시 */}
-        {cdrCentersInfo &&
-          cdrCentersInfo.map((cdrCenter, index) => (
-            <Marker
-              key={index}
-              latitude={Number(cdrCenter.latitude)}
-              longitude={Number(cdrCenter.longitude)}
-              className="marker"
-            />
-          ))}
+        <div className="marker-set" onClick={markerClickHandler}>
+          {cdrCentersInfo &&
+            cdrCentersInfo.map((cdrCenterInfo, index) => (
+              <Marker
+                key={index}
+                latitude={Number(cdrCenterInfo.latitude)}
+                longitude={Number(cdrCenterInfo.longitude)}
+                className={`marker ${cdrCenterInfo.center_id}`}
+              />
+            ))}
+        </div>
       </ReactMapGL>
       {/* 어린이집 개수에 기반한 범주 */}
       {level && <MapBoxCategory level={level} />}

@@ -1,4 +1,5 @@
 import MapBoxContainer from "../containers/MapBoxContainer";
+import MapBoxSelectContainer from "../containers/MapBoxSelectContainer";
 import React from "react";
 
 /**
@@ -13,7 +14,9 @@ function Monitoring() {
         <div className="container map-section">
           <MapBoxContainer />
         </div>
-        <div className="container select-section">선택 정보 영역</div>
+        <div className="container select-section">
+          <MapBoxSelectContainer />
+        </div>
       </section>
     </>
   );
