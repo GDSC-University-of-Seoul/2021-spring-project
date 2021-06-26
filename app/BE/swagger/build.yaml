@@ -120,11 +120,25 @@ paths:
                   properties:
                     center_id:
                       type: integer
-                    name:
+                    center_name:
                       type: string
-                    lat:
+                    operation_type:
                       type: string
-                    lng:
+                    operation_status:
+                      type: string
+                    zipcode:
+                      type: string
+                    address:
+                      type: string
+                    center_phone:
+                      type: string
+                    fax:
+                      type: string
+                    web_page:
+                      type: string
+                    latitude:
+                      type: string
+                    longtitude:
                       type: string
                     district_code:
                       type: string
@@ -151,11 +165,25 @@ paths:
                 properties:
                   center_id:
                     type: integer
-                  name:
+                  center_name:
                     type: string
-                  lat:
+                  operation_type:
                     type: string
-                  lng:
+                  operation_status:
+                    type: string
+                  zipcode:
+                    type: string
+                  address:
+                    type: string
+                  center_phone:
+                    type: string
+                  fax:
+                    type: string
+                  web_page:
+                    type: string
+                  latitude:
+                    type: string
+                  longtitude:
                     type: string
                   district_code:
                     type: string
@@ -182,109 +210,30 @@ paths:
                 properties:
                   center_id:
                     type: integer
-                  name:
+                  center_name:
                     type: string
-                  lat:
+                  operation_type:
                     type: string
-                  lng:
+                  operation_status:
+                    type: string
+                  zipcode:
+                    type: string
+                  address:
+                    type: string
+                  center_phone:
+                    type: string
+                  fax:
+                    type: string
+                  web_page:
+                    type: string
+                  latitude:
+                    type: string
+                  longtitude:
                     type: string
                   district_code:
                     type: string
                   district_name:
                     type: string
-  /areas:
-    get:
-      tags:
-        - facility area
-      summary: get all facility areas
-      description: null
-      parameters:
-        - name: center_id
-          in: query
-          required: false
-          description: 어린이집 id
-        - name: center_name
-          in: query
-          required: false
-          description: 어린이집 이름
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    area_id:
-                      type: integer
-                    area_name:
-                      type: string
-                    area_usage:
-                      type: string
-                    center_id:
-                      type: integer
-    post:
-      tags:
-        - facility area
-      summary: create facility area
-      description: null
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                area_name:
-                  type: string
-                area_usage:
-                  type: string
-                center_id:
-                  type: integer
-      responses:
-        '201':
-          description: CREATED
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  area_id:
-                    type: integer
-                  area_name:
-                    type: string
-                  area_usage:
-                    type: string
-                  center_id:
-                    type: integer
-  '/areas/{area_id}':
-    get:
-      tags:
-        - facility area
-      summary: get facility area by area id
-      description: null
-      parameters:
-        - name: area_id
-          in: path
-          required: true
-          description: 촬영구역 ID
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  area_id:
-                    type: integer
-                  area_name:
-                    type: string
-                  area_usage:
-                    type: string
-                  center_id:
-                    type: integer
   /cctvs:
     get:
       tags:
@@ -292,10 +241,10 @@ paths:
       summary: get all cctvs
       description: null
       parameters:
-        - name: area_id
+        - name: center_id
           in: query
           required: false
-          description: 촬영구역 id
+          description: 어린이집 id
       responses:
         '200':
           description: OK
@@ -308,6 +257,10 @@ paths:
                   properties:
                     cctv_id:
                       type: integer
+                    cctv_name:
+                      type: string
+                    cctv_mac:
+                      type: string
                     quaity:
                       type: string
                     install_date:
@@ -316,8 +269,12 @@ paths:
                     uninstall_date:
                       type: string
                       format: date
-                    area_id:
+                    center_id:
                       type: integer
+                    center_name:
+                      type: string
+                    address:
+                      type: string
     post:
       tags:
         - cctv
@@ -329,13 +286,17 @@ paths:
             schema:
               type: object
               properties:
-                quality:
+                center_id:
+                  type: integer
+                cctv_name:
+                  type: string
+                cctv_mac:
                   type: string
                 install_date:
                   type: string
                   format: date
-                area_id:
-                  type: integer
+                quality:
+                  type: string
       responses:
         '201':
           description: CREATED
@@ -346,27 +307,47 @@ paths:
                 properties:
                   cctv_id:
                     type: integer
-                  quality:
+                  cctv_name:
+                    type: string
+                  cctv_mac:
                     type: string
                   install_date:
                     type: string
                     format: date
-                  area_id:
+                  quality:
+                    type: string
+                  center_id:
                     type: integer
-  '/cctvs/{cctv_id}':
-    get:
+  '/cctvs/{cctv_mac}':
+    put:
       tags:
         - cctv
-      summary: get cctv by cctv id
+      summary: update cctv by cctv_mac
       description: null
       parameters:
-        - name: cctv_id
+        - name: cctv_mac
           in: path
           required: true
-          description: CCTV id
+          description: CCTV MAC 주소
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                cctv_name:
+                  type: string
+                install_date:
+                  type: string
+                  format: date
+                uninstall_date:
+                  type: string
+                  format: date
+                quality:
+                  type: string
       responses:
         '200':
-          description: OK
+          description: UPDATED
           content:
             application/json:
               schema:
@@ -374,7 +355,7 @@ paths:
                 properties:
                   cctv_id:
                     type: integer
-                  quaity:
+                  cctv_name:
                     type: string
                   install_date:
                     type: string
@@ -382,76 +363,23 @@ paths:
                   uninstall_date:
                     type: string
                     format: date
-                  area_id:
+                  quality:
+                    type: string
+                  center_id:
                     type: integer
-  /videos:
-    get:
+    delete:
       tags:
-        - video
-      summary: get all videos
+        - cctv
+      summary: delete cctv by cctv_mac
       description: null
       parameters:
-        - name: cctv_id
-          in: query
-          required: false
-          description: CCTV id
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    video_id:
-                      type: integer
-                    record_date:
-                      type: string
-                      format: date
-                    delete_date:
-                      type: string
-                      format: date
-                    delete_issue:
-                      type: string
-                    storage_name:
-                      type: string
-                    cctv_id:
-                      type: integer
-  '/videos/{video_id}':
-    get:
-      tags:
-        - video
-      summary: get video by video id
-      description: null
-      parameters:
-        - name: video_id
+        - name: cctv_mac
           in: path
           required: true
-          description: 비디오 id
+          description: CCTV MAC 주소
       responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  video_id:
-                    type: integer
-                  record_date:
-                    type: string
-                    format: date
-                  delete_date:
-                    type: string
-                    format: date
-                  delete_issue:
-                    type: string
-                  storage_name:
-                    type: string
-                  cctv_id:
-                    type: integer
+        '204':
+          description: DELETE
   /anomalies:
     get:
       tags:
@@ -479,6 +407,8 @@ paths:
                   properties:
                     anomaly_id:
                       type: integer
+                    anomaly_type:
+                      type: string
                     start_time:
                       type: string
                       format: date-time
@@ -489,41 +419,8 @@ paths:
                       type: string
                     video_id:
                       type: integer
-  '/anomalies/{anomaly_id}':
-    get:
-      tags:
-        - anomaly
-      summary: get anomaly by anomaly id
-      description: null
-      parameters:
-        - name: anomaly_id
-          in: path
-          required: false
-          description: 이상행동감지 id
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  anomaly_id:
-                    type: integer
-                  start_time:
-                    type: string
-                    format: date-time
-                  end_time:
-                    type: string
-                    format: date-time
-                  follow_up:
-                    type: string
-                  video_id:
-                    type: integer
 tags:
   - name: district
   - name: children care center
-  - name: facility area
   - name: cctv
-  - name: video
   - name: anomaly

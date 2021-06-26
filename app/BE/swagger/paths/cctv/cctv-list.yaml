@@ -3,10 +3,10 @@ tags:
 summary: get all cctvs
 description:
 parameters:
-  - name: area_id
+  - name: center_id
     in: query
     required: false
-    description: 촬영구역 id
+    description: 어린이집 id
 responses:
   200:
     description: OK
@@ -19,6 +19,10 @@ responses:
             properties:
               cctv_id:
                 type: integer
+              cctv_name:
+                type: string
+              cctv_mac:
+                type: string
               quaity:
                 type: string
               install_date:
@@ -27,5 +31,9 @@ responses:
               uninstall_date:
                 type: string
                 format: date
-              area_id:
+              center_id:
                 type: integer
+              center_name:
+                type: string
+              address:
+                type: string

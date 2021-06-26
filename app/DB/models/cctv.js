@@ -1,63 +1,74 @@
-'use strict';
-/*
-  설치된 cctv에 관한 정보
+import Sequelize from "sequelize";
 
-  fields                DATA TYPE         INDEX   NULLABLE
-      cctv_id            : Integer         PK      FALSE
-      install_date       : Date                    FALSE
-      quality            : Enum                    FALSE
-      uninstall_date     : Date                    TRUE
-  relationship          Column
-      area               : area_id         FK      FALSE
-  backref               Column
-      video              : this.cctv_id    FK
-*/
-const { Model } = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
-  class cctv extends Model {
-    static associate(models) {
-      cctv.belongsTo(models.area, {
-        foreignKey: 'area_id',
-        targetKey: 'area_id',
-      });
-      cctv.hasMany(models.video, {
-        foreignKey: 'cctv_id',
-        sourceKey: 'cctv_id',
-      });
-    }
+/**
+ * 설치된 cctv 관련 테이블
+ * <FIELDS>           <DATA TYPE>        <INDEX>   <NULLABLE>
+ * cctv_id            : Integer          PK        FALSE
+ * cctv_name          : String                     FALSE
+ * cctv_mac           : STRING                     FALSE
+ * quality            : Enum                       FALSE
+ * install_date       : Date                       FALSE
+ * uninstall_date     : Date                       TRUE
+ *
+ * <RELATIONSHIP>     <COLUMN>
+ * center             : center_id          FK       FALSE
+ *
+ * <BACKREF>          <COLUMN>
+ * video              : cctv_id          FK
+ */
+
+module.exports = class CCTV extends Sequelize.Model {
+  static init(sequelize, DataTypes) {
+    return super.init(
+      {
+        cctv_id: {
+          type: DataTypes.INTEGER,
+          autoIncrement: true,
+          primaryKey: true,
+        },
+        cctv_name: {
+          type: DataTypes.STRING(30),
+          allowNull: false,
+        },
+        cctv_mac: {
+          type: DataTypes.STRING(30),
+          allowNull: false,
+        },
+        quality: {
+          type: DataTypes.ENUM({
+            values: ["SD", "HD", "FHD", "QHD", "UHD"],
+          }),
+          allowNull: false,
+        },
+        install_date: {
+          type: DataTypes.DATE,
+          allowNull: false,
+        },
+        uninstall_date: {
+          type: DataTypes.DATE,
+          allowNull: true,
+        },
+      },
+      {
+        sequelize,
+        timestamps: false,
+        paranoid: false,
+        modelName: "CCTV",
+        tableName: "cctv",
+        freezeTableName: false,
+        charset: "utf8",
+        collate: "utf8_general_cli",
+      }
+    );
   }
-
-  cctv.init(
-    {
-      cctv_id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        allowNull: false,
-      },
-      area_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      install_date: {
-        type: DataTypes.DATE,
-        allowNull: false,
-      },
-      quality: {
-        type: DataTypes.ENUM({ values: ['SD', 'HD', 'FHD', 'QHD', 'UHD'] }),
-        allowNull: false,
-      },
-      uninstall_date: {
-        type: DataTypes.DATE,
-        allowNull: true,
-      },
-    },
-    {
-      sequelize,
-      modelName: 'cctv',
-      tableName: 'cctv',
-      freezeTableName: false,
-      timestamps: false,
-    },
-  );
-  return cctv;
+  static associate(db) {
+    db.CCTV.belongsTo(db.ChildCareCenter, {
+      foreignKey: "center_id",
+      targetKey: "center_id",
+    });
+    db.CCTV.hasMany(db.Video, {
+      foreignKey: "cctv_id",
+      sourceKey: "cctv_id",
+    });
+  }
 };

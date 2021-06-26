@@ -1,10 +1,9 @@
 import express from "express";
-import { Sequelize, Op } from "sequelize";
-import ChildCareCenter from "../database/models/child-care-center";
-import FacilityArea from "../database/models/facility-area";
-import CCTV from "../database/models/cctv";
-import Video from "../database/models/video";
-import Anomaly from "../database/models/anomaly";
+import { Sequelize } from "sequelize";
+import ChildCareCenter from "../../DB/models/transform/childCareCenter";
+import CCTV from "../../DB/models/transform/cctv";
+import Video from "../../DB/models/transform/video";
+import Anomaly from "../../DB/models/transform/anomaly";
 
 const router = express.Router();
 
@@ -26,7 +25,7 @@ router
       startDate.setDate(endDate.getDate() - 60);
       const videoFilters = {
         record_date: {
-          [Op.between]: [startDate, endDate],
+          [Sequelize.Op.between]: [startDate, endDate],
         },
       };
 
@@ -39,13 +38,9 @@ router
             model: CCTV,
             attributes: [],
             include: {
-              model: FacilityArea,
-              attributes: [],
-              include: {
-                model: ChildCareCenter,
-                attributes: ["center_name", "address"],
-                where: centerFilters,
-              },
+              model: ChildCareCenter,
+              attributes: ["center_name", "address"],
+              where: centerFilters,
             },
           },
         },
@@ -53,16 +48,12 @@ router
           "start_time",
           "end_time",
           "follow_up",
+          "anomaly_type",
           [
-            Sequelize.col(
-              "Video.CCTV.FacilityArea.ChildCareCenter.center_name"
-            ),
+            Sequelize.col("Video.CCTV.ChildCareCenter.center_name"),
             "center_name",
           ],
-          [
-            Sequelize.col("Video.CCTV.FacilityArea.ChildCareCenter.address"),
-            "address",
-          ],
+          [Sequelize.col("Video.CCTV.ChildCareCenter.address"), "address"],
         ],
       });
       res.json(anomalies);
@@ -93,17 +84,5 @@ router
       next(err);
     }
   });
-
-router.get("/:anomaly_id", async (req, res, next) => {
-  try {
-    const anomaly = await Anomaly.findOne({
-      where: { anomaly_id: req.params.anomaly_id },
-    });
-    res.json(anomaly);
-  } catch (err) {
-    console.error(err);
-    next(err);
-  }
-});
 
 module.exports = router;

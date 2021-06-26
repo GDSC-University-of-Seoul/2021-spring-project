@@ -10,25 +10,15 @@
   $ref: "child-care-center/center-retrieve-by-id.yaml"
 /centers/{center_name}:
   $ref: "child-care-center/center-retrieve-by-name.yaml"
-/areas:
-  get:
-    $ref: "facility-area/area-list.yaml"
-  post:
-    $ref: "facility-area/area-create.yaml"
-/areas/{area_id}:
-  $ref: "facility-area/area-retrieve-by-id.yaml"
 /cctvs:
   get:
     $ref: "cctv/cctv-list.yaml"
   post:
     $ref: "cctv/cctv-create.yaml"
-/cctvs/{cctv_id}:
-  $ref: "cctv/cctv-retrieve-by-id.yaml"
-/videos:
-  $ref: "video/video-list.yaml"
-/videos/{video_id}:
-  $ref: "video/video-retrieve-by-id.yaml"
+/cctvs/{cctv_mac}:
+  put:
+    $ref: "cctv/cctv-update.yaml"
+  delete:
+    $ref: "cctv/cctv-delete.yaml"
 /anomalies:
   $ref: "anomaly/anomaly-list.yaml"
-/anomalies/{anomaly_id}:
-  $ref: "anomaly/anomaly-retrieve-by-id.yaml"
