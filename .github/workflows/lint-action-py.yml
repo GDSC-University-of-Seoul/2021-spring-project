@@ -10,7 +10,7 @@ on:
 
 defaults:
   run:
-    working-directory: center/models/
+    working-directory: hub/models/
 
 jobs:
   run-linters:
