@@ -13,12 +13,14 @@
 @import "pages/settings";
 
 /* components */
+@import "components/header";
 @import "components/sideBar";
 @import "components/mapbox";
 @import "components/mapboxCategory";
 @import "components/loading";
-@import "components/header";
 @import "components/table";
+@import "components/modal";
+@import "components/cctvModal";
 
 * {
   box-sizing: border-box;

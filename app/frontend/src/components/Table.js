@@ -6,7 +6,13 @@ import React from "react";
  * @param {Object} data: 표 데이터, categories: 표 제목, setData: 표 데이터 설정 함수
  * @returns {JSX.Element} 표 컴포넌트
  */
-function Table({ data, categories, setData }) {
+function Table({
+  data,
+  categories,
+  itemId,
+  itemCheckHandler,
+  itemClickHandler,
+}) {
   return (
     <table className="table">
       <thead>
@@ -22,13 +28,13 @@ function Table({ data, categories, setData }) {
           ))}
         </tr>
       </thead>
-      <tbody>
+      <tbody onChange={itemCheckHandler} onClick={itemClickHandler}>
         {/*표 데이터*/}
         {data.map((element, index) => {
           return (
-            <tr key={index}>
+            <tr key={index} data-id={element[itemId]}>
               <td>
-                <input type="checkbox" />
+                <input type="checkbox" onClick={(e) => e.stopPropagation()} />
               </td>
               {Object.keys(element).map((key, index) => (
                 <td key={index}>{element[key]}</td>

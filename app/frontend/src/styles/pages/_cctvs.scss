@@ -6,4 +6,15 @@
     padding: 10px;
     height: 100vh;
   }
+  .cctvs-menu {
+    width: 300px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+
+    button {
+      background-color: white;
+      font-weight: 600;
+    }
+  }
 }

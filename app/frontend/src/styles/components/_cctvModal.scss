@@ -1,0 +1,45 @@
+.cctvModal-form {
+  display: flex;
+  width: 400px;
+  flex-direction: column;
+
+  .cctv_mac-alert {
+    color: red;
+    font-size: 0.75rem;
+    padding: 0 10px;
+  }
+  .MuiFormControl-root {
+    margin: 10px;
+  }
+  .MuiSelect-select:focus {
+    background-color: white;
+  }
+}
+.cctvModal-delete {
+  margin-bottom: 20px;
+
+  span {
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+}
+.cctvModal-button {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+
+  & > button:first-child {
+    margin-right: 30px;
+  }
+}
+.cctvModal-warning {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 600;
+
+  button {
+    margin-top: 20px;
+  }
+}
