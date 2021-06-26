@@ -318,6 +318,7 @@ paths:
                     type: string
                   center_id:
                     type: integer
+  '/cctvs/{cctv_mac}':
     put:
       tags:
         - cctv
@@ -350,7 +351,7 @@ paths:
           content:
             application/json:
               schema:
-                type: objecrt
+                type: object
                 properties:
                   cctv_id:
                     type: integer
@@ -366,6 +367,19 @@ paths:
                     type: string
                   center_id:
                     type: integer
+    delete:
+      tags:
+        - cctv
+      summary: delete cctv by cctv_mac
+      description: null
+      parameters:
+        - name: cctv_mac
+          in: path
+          required: true
+          description: CCTV MAC 주소
+      responses:
+        '204':
+          description: DELETE
   /anomalies:
     get:
       tags:
@@ -409,5 +423,4 @@ tags:
   - name: district
   - name: children care center
   - name: cctv
-  - name: video
   - name: anomaly

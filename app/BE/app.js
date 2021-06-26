@@ -40,7 +40,6 @@ app.use("/api/", indexRouter);
 app.use("/api/districts/", districtRouter);
 app.use("/api/centers/", centerRouter);
 app.use("/api/cctvs/", cctvRouter);
-app.use("/api/videos/", videoRouter);
 app.use("/api/anomalies/", anomalyRouter);
 
 const swaggerSpecs = yaml.load(path.join(__dirname, "/swagger/build.yaml"));

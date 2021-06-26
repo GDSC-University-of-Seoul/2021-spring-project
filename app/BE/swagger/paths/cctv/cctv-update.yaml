@@ -29,7 +29,7 @@ responses:
     content:
       application/json:
         schema:
-          type: objecrt
+          type: object
           properties:
             cctv_id:
               type: integer

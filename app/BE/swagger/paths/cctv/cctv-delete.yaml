@@ -1,0 +1,12 @@
+tags:
+  - cctv
+summary: delete cctv by cctv_mac
+description:
+parameters:
+  - name: cctv_mac
+    in: path
+    required: true
+    description: CCTV MAC 주소
+responses:
+  204:
+    description: DELETE

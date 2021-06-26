@@ -53,26 +53,41 @@ router
     }
   });
 
-router.put("/:cctv_mac", async (req, res, next) => {
-  try {
-    const cctv = await CCTV.update(
-      {
-        cctv_name: req.body.cctv_name,
-        install_date: req.body.install_date,
-        uninstall_date: req.body.uninstall_date,
-        quality: req.body.quality,
-      },
-      {
+router
+  .route("/:cctv_mac")
+  .put(async (req, res, next) => {
+    try {
+      const cctv = await CCTV.update(
+        {
+          cctv_name: req.body.cctv_name,
+          install_date: req.body.install_date,
+          uninstall_date: req.body.uninstall_date,
+          quality: req.body.quality,
+        },
+        {
+          where: {
+            cctv_mac: req.params.cctv_mac,
+          },
+        }
+      );
+      res.json(cctv);
+    } catch (err) {
+      console.error(err);
+      next(err);
+    }
+  })
+  .delete(async (req, res, next) => {
+    try {
+      await CCTV.destroy({
         where: {
           cctv_mac: req.params.cctv_mac,
         },
-      }
-    );
-    res.json(cctv);
-  } catch (err) {
-    console.error(err);
-    next(err);
-  }
-});
+      });
+      res.status(204).send();
+    } catch (err) {
+      console.error(err);
+      next(err);
+    }
+  });
 
 module.exports = router;

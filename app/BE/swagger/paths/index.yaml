@@ -15,7 +15,10 @@
     $ref: "cctv/cctv-list.yaml"
   post:
     $ref: "cctv/cctv-create.yaml"
+/cctvs/{cctv_mac}:
   put:
     $ref: "cctv/cctv-update.yaml"
+  delete:
+    $ref: "cctv/cctv-delete.yaml"
 /anomalies:
   $ref: "anomaly/anomaly-list.yaml"
