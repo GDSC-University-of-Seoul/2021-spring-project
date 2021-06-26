@@ -295,6 +295,9 @@ paths:
                 install_date:
                   type: string
                   format: date
+                uninstall_date:
+                  type: string
+                  format: date
                 quality:
                   type: string
       responses:
@@ -312,6 +315,9 @@ paths:
                   cctv_mac:
                     type: string
                   install_date:
+                    type: string
+                    format: date
+                  uninstall_date:
                     type: string
                     format: date
                   quality:

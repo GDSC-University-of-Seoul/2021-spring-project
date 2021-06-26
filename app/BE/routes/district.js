@@ -1,6 +1,5 @@
 import express from "express";
-import { sequelize, Sequelize } from "../../DB/models/transform";
-import District from "../../DB/models/transform/district";
+import { sequelize, Sequelize, District } from "../../DB/models/transform";
 import { districtJoin } from "../utils/join";
 import upperDistricts from "../utils/upperDistrict";
 
@@ -114,7 +113,7 @@ router.get("/:district_name", async (req, res, next) => {
       res.json(districts);
     } else {
       const districts = await District.findAll({
-        where: { name: req.params.district_name },
+        where: { district_name: req.params.district_name },
         include: districtJoin,
         group: ["District.district_code"],
         attributes: [

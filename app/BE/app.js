@@ -10,7 +10,6 @@ import indexRouter from "./routes";
 import districtRouter from "./routes/district";
 import centerRouter from "./routes/childCareCenter";
 import cctvRouter from "./routes/cctv";
-import videoRouter from "./routes/video";
 import anomalyRouter from "./routes/anomaly";
 import cors from "cors";
 

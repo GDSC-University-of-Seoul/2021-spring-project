@@ -1,9 +1,11 @@
 import express from "express";
-import { Sequelize } from "sequelize";
-import ChildCareCenter from "../../DB/models/transform/childCareCenter";
-import CCTV from "../../DB/models/transform/cctv";
-import Video from "../../DB/models/transform/video";
-import Anomaly from "../../DB/models/transform/anomaly";
+import {
+  Sequelize,
+  ChildCareCenter,
+  CCTV,
+  Video,
+  Anomaly,
+} from "../../DB/models/transform";
 
 const router = express.Router();
 

@@ -1,7 +1,9 @@
 import express from "express";
-import { Sequelize } from "sequelize";
-import District from "../../DB/models/transform/district";
-import ChildCareCenter from "../../DB/models/transform/childCareCenter";
+import {
+  Sequelize,
+  District,
+  ChildCareCenter,
+} from "../../DB/models/transform";
 
 const router = express.Router();
 
@@ -30,7 +32,7 @@ router.get("/", async (req, res, next) => {
         "center_name",
         "operation_type",
         "operation_status",
-        "zipcode",
+        "zip_code",
         "address",
         "center_phone",
         "fax",
@@ -63,9 +65,9 @@ router.get("/:center_id(\\d+)", async (req, res, next) => {
         "center_name",
         "operation_type",
         "operation_status",
-        "zipcode",
+        "zip_code",
         "address",
-        "ceneter_phone",
+        "center_phone",
         "fax",
         "web_page",
         "latitude",
@@ -89,16 +91,16 @@ router.get("/:center_name", async (req, res, next) => {
         attributes: [],
       },
       where: {
-        name: req.params.center_name,
+        center_name: req.params.center_name,
       },
       attributes: [
         "center_id",
         "center_name",
         "operation_type",
         "operation_status",
-        "zipcode",
+        "zip_code",
         "address",
-        "ceneter_phone",
+        "center_phone",
         "fax",
         "web_page",
         "latitude",

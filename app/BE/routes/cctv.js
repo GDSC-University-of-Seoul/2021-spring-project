@@ -1,6 +1,5 @@
 import express from "express";
-import { Sequelize } from "sequelize";
-import CCTV from "../../DB/models/transform/cctv";
+import { Sequelize, ChildCareCenter, CCTV } from "../../DB/models/transform";
 
 const router = express.Router();
 
@@ -15,8 +14,8 @@ router
       }
       const cctvs = await CCTV.findAll({
         include: {
-          model: Center,
-          attributes: ["center_id", "center_name", "address"],
+          model: ChildCareCenter,
+          attributes: [],
           where: filters,
         },
         attributes: [
