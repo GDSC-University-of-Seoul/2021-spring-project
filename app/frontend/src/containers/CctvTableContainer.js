@@ -6,6 +6,7 @@ import {
 } from "../modules/cctvsTableEvent";
 
 import Table from "../components/Table";
+import { useDispatch } from "react-redux";
 
 /**
  * CCTV 데이터에 기반한 표 구성
@@ -41,6 +42,7 @@ function CctvTableContainer() {
     },
   ];
   const [cctvs, setCctvs] = useState(initialCctvs);
+  const dispatch = useDispatch();
 
   // CCTV 데이터 카테고리
   const categories = {
@@ -59,6 +61,9 @@ function CctvTableContainer() {
     if (!tr) return;
 
     const cctvId = tr.dataset.id;
+    const clickData = cctvs.find((cctv) => cctv.cctv_mac === cctvId);
+
+    dispatch(clickCctvData(clickData));
   };
 
   return (

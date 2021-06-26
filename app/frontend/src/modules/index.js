@@ -1,4 +1,6 @@
+import cctvsModalReducer from "./cctvsModal";
 import cctvsReducer from "./cctvs";
+import cctvsTableEventReducer from "./cctvsTableEvent";
 import cdrCenterReducer from "./cdrCenter";
 import { combineReducers } from "redux";
 import mapboxCategoryReducer from "./mapboxCategory";
@@ -12,6 +14,8 @@ const rootReducers = combineReducers({
   mapboxCategoryReducer,
   cdrCenterReducer,
   cctvsReducer,
+  cctvsModalReducer,
+  cctvsTableEventReducer,
 });
 
 export default rootReducers;

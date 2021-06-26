@@ -3,11 +3,13 @@ import {
   AiOutlinePlusSquare,
   AiOutlineRetweet,
 } from "react-icons/ai";
-import React, { useState } from "react";
 
 import Button from "@material-ui/core/Button";
 import CctvModalContainer from "../containers/CctvModalContainer";
 import CctvTableContainer from "../containers/CctvTableContainer";
+import React from "react";
+import { openModal } from "../modules/cctvsModal";
+import { useDispatch } from "react-redux";
 
 /**
  * `/cctvs` 페이지 렌더링
@@ -16,33 +18,21 @@ import CctvTableContainer from "../containers/CctvTableContainer";
  */
 
 function Cctvs() {
-  const cctvDataState = {
-    isOpen: false,
-    func: {
-      createData: false,
-      updateData: false,
-      deleteData: false,
-    },
-  };
-  const [trigger, setTrigger] = useState(cctvDataState);
+  const dispatch = useDispatch();
 
   const createHandler = () => {
-    setTrigger({ ...trigger, isOpen: true, func: { createData: true } });
+    dispatch(openModal("createData"));
   };
   const updateHandler = () => {
-    setTrigger({ ...trigger, isOpen: true, func: { updateData: true } });
+    dispatch(openModal("updateData"));
   };
   const deleteHandler = () => {
-    setTrigger({ ...trigger, isOpen: true, func: { deleteData: true } });
+    dispatch(openModal("deleteData"));
   };
 
   return (
     <>
-      <CctvModalContainer
-        trigger={trigger}
-        selectedCctvs={[]}
-        setTrigger={setTrigger}
-      />
+      <CctvModalContainer cctvsData={[]} />
       <section className="section cctvs">
         <div className="cctvs-menu">
           <Button
