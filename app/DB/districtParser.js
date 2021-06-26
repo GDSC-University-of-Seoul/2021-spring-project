@@ -11,8 +11,8 @@ for (let i = 0; i < len; i++) {
 
   if (addressSplit.length == 1) {
     districts.push({
-      code: keys[i],
-      name: address,
+      district_code: keys[i],
+      district_name: address,
       parent_code: null,
     });
   } else if (addressSplit.length == 2) {
@@ -21,8 +21,8 @@ for (let i = 0; i < len; i++) {
     }
     var parentCode = keys[i].slice(0, 2) + '00000000';
     districts.push({
-      code: keys[i],
-      name: addressSplit[1],
+      district_code: keys[i],
+      district_name: addressSplit[1],
       parent_code: parentCode,
     });
   }
