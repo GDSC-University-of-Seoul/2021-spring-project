@@ -2,9 +2,9 @@ const CCTV_ITEM_SELECTED_ON = "cctvsTableEvent/CCTV_ITEM_SELECTED_ON";
 const CCTV_ITEM_SELECTED_OFF = "cctvsTableEvent/CCTV_ITEM_SELECTED_OFF";
 const CCTV_ITEM_CLICKED = "cctvsTableEvent/CCTV_ITEM_CLICKED";
 
-export const selectCctvData = (data) => ({
+export const selectCctvData = (cctvData) => ({
   type: CCTV_ITEM_SELECTED_ON,
-  payload: data,
+  payload: cctvData,
 });
 export const selectOffCctvData = (cctvId) => ({
   type: CCTV_ITEM_SELECTED_OFF,

@@ -28,7 +28,7 @@ function CctvInputModal({
             InputLabelProps={{
               shrink: true,
             }}
-            value={inputData ? inputData.center_name : ""}
+            defaultValue={inputData ? inputData.center_name : ""}
           />
           <TextField
             label="어린이집 주소"
@@ -37,7 +37,7 @@ function CctvInputModal({
             InputLabelProps={{
               shrink: true,
             }}
-            value={inputData ? inputData.address : ""}
+            defaultValue={inputData ? inputData.address : ""}
           />
           <TextField
             label="설치 장소"
@@ -46,7 +46,7 @@ function CctvInputModal({
             InputLabelProps={{
               shrink: true,
             }}
-            value={inputData ? inputData.cctv_name : ""}
+            defaultValue={inputData ? inputData.cctv_name : ""}
           />
           <TextField
             label="MAC 주소"
@@ -57,7 +57,7 @@ function CctvInputModal({
               shrink: true,
             }}
             onChange={(e) => checkMacInput(e, e.target.value)}
-            value={inputData ? inputData.cctv_mac : ""}
+            defaultValue={inputData ? inputData.cctv_mac : ""}
           />
           {!macValid && (
             <div className="cctv_mac-alert">유효하지 않은 MAC 주소입니다.</div>
@@ -83,7 +83,7 @@ function CctvInputModal({
             InputLabelProps={{
               shrink: true,
             }}
-            value={inputData ? inputData.install_date : ""}
+            defaultValue={inputData ? inputData.install_date : ""}
           />
           <TextField
             type="date"
@@ -92,7 +92,7 @@ function CctvInputModal({
             InputLabelProps={{
               shrink: true,
             }}
-            value={inputData ? inputData.uninstall_date : ""}
+            defaultValue={inputData ? inputData.uninstall_date : ""}
           />
           <div className="cctvModal-button">
             <Button

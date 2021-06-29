@@ -18,9 +18,7 @@ function Table({
       <thead>
         <tr>
           {/*표 제목*/}
-          <th id="check">
-            <input type="checkbox" />
-          </th>
+          <th id="check"></th>
           {Object.keys(categories).map((category, index) => (
             <th key={index} id={category}>
               <div id={category}>{categories[category]}</div>
@@ -33,8 +31,8 @@ function Table({
         {data.map((element, index) => {
           return (
             <tr key={index} data-id={element[itemId]}>
-              <td>
-                <input type="checkbox" onClick={(e) => e.stopPropagation()} />
+              <td onClick={(e) => e.stopPropagation()}>
+                <input type="checkbox" />
               </td>
               {Object.keys(element).map((key, index) => (
                 <td key={index}>{element[key]}</td>

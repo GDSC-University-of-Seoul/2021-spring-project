@@ -56,7 +56,17 @@ function CctvTableContainer() {
     uninstall_date: "제거 일자",
   };
 
-  const itemCheckHandler = (e) => {};
+  const itemCheckHandler = (e) => {
+    const tr = e.target.closest("tr");
+    if (!tr) return;
+
+    const cctvId = tr.dataset.id;
+    const selectedData = cctvs.find((cctv) => cctv.cctv_mac === cctvId);
+
+    e.target.checked
+      ? dispatch(selectCctvData(selectedData))
+      : dispatch(selectOffCctvData(cctvId));
+  };
   const itemClickHandler = (e) => {
     const tr = e.target.closest("tr");
     if (!tr) return;
@@ -65,7 +75,7 @@ function CctvTableContainer() {
     const clickData = cctvs.find((cctv) => cctv.cctv_mac === cctvId);
 
     dispatch(clickCctvData(clickData));
-    dispatch(openModal("updateData", clickData));
+    dispatch(openModal("updateData"));
   };
 
   return (

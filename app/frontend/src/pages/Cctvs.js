@@ -10,7 +10,7 @@ import CctvTableContainer from "../containers/CctvTableContainer";
 import React from "react";
 import { clickCctvData } from "../modules/cctvsTableEvent";
 import { openModal } from "../modules/cctvsModal";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 /**
  * `/cctvs` 페이지 렌더링
@@ -19,6 +19,9 @@ import { useDispatch } from "react-redux";
  */
 
 function Cctvs() {
+  const { selectedData, clickedData } = useSelector(
+    (state) => state.cctvsTableEventReducer
+  );
   const dispatch = useDispatch();
 
   const createHandler = () => {
@@ -34,7 +37,10 @@ function Cctvs() {
 
   return (
     <>
-      <CctvModalContainer cctvsData={[]} />
+      <CctvModalContainer
+        selectedData={selectedData}
+        clickedData={clickedData}
+      />
       <section className="section cctvs">
         <div className="cctvs-menu">
           <Button
