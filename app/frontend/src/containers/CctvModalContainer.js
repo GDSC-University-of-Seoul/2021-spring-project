@@ -13,6 +13,12 @@ import Modal from "../components/Modal";
 import React from "react";
 import { clickCctvData } from "../modules/cctvsTableEvent";
 
+/**
+ * CCTV 모달창 컨테이너 컴포넌트
+ *
+ * @param {Object} selectedData: 체크된 데이터, clickedData: 클릭한 데이터
+ * @returns {JSX.Element} CCTV 모달창 컨테이너
+ */
 function CctvModalContainer({ selectedData, clickedData }) {
   const {
     isOpen,
@@ -22,6 +28,7 @@ function CctvModalContainer({ selectedData, clickedData }) {
 
   const dispatch = useDispatch();
 
+  // CCTV MAC 주소 유효성 검사 함수
   const checkMacInput = (e, macAddress) => {
     const macRegex = new RegExp(`^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$`);
 
@@ -30,11 +37,13 @@ function CctvModalContainer({ selectedData, clickedData }) {
       : dispatch(setMacValid(false));
   };
 
+  // 모달창 닫기 함수
   const closeHandler = () => {
     dispatch(closeModal());
     dispatch(clickCctvData(null));
   };
 
+  // 모달창 폼 제출 이벤트 처리 함수 (생성, 변경)
   const submitHandler = (e) => {
     e.preventDefault();
 
@@ -49,6 +58,8 @@ function CctvModalContainer({ selectedData, clickedData }) {
 
     dispatch(closeModal());
   };
+
+  // CCTV 데이터 제거 (제거)
   const deleteCctvData = () => {
     dispatch(deleteCctvsData());
     dispatch(closeModal());
@@ -59,50 +70,62 @@ function CctvModalContainer({ selectedData, clickedData }) {
       {isOpen &&
       (createData ||
         (updateData && (clickedData || selectedData.length === 1))) ? (
-        <CctvInputModal
-          macValid={macValid}
-          inputData={
-            createData ? null : clickedData ? clickedData : selectedData[0]
-          }
-          submitCctvForm={submitHandler}
-          checkMacInput={checkMacInput}
-          closeModal={closeHandler}
-        />
+        <>
+          {/* CCTV 데이터 입력 모달창 */}
+          <CctvInputModal
+            macValid={macValid}
+            inputData={
+              createData ? null : clickedData ? clickedData : selectedData[0]
+            }
+            submitCctvForm={submitHandler}
+            checkMacInput={checkMacInput}
+            closeModal={closeHandler}
+          />
+        </>
       ) : (updateData || deleteData) && selectedData.length === 0 ? (
-        <Modal>
-          <div className="cctvModal-warning">
-            ⚠️ 데이터를 선택해주세요
-            <Button
-              variant="contained"
-              color="primary"
-              disableElevation
-              onClick={closeHandler}
-            >
-              확인
-            </Button>
-          </div>
-        </Modal>
+        <>
+          {/* 에러 모달창 1 */}
+          <Modal>
+            <div className="cctvModal-warning">
+              ⚠️ 데이터를 선택해주세요
+              <Button
+                variant="contained"
+                color="primary"
+                disableElevation
+                onClick={closeHandler}
+              >
+                확인
+              </Button>
+            </div>
+          </Modal>
+        </>
       ) : updateData && selectedData.length >= 2 ? (
-        <Modal>
-          <div className="cctvModal-warning">
-            ⚠️ 1개의 데이터만 선택해주세요
-            <Button
-              variant="contained"
-              color="primary"
-              disableElevation
-              onClick={closeHandler}
-            >
-              확인
-            </Button>
-          </div>
-        </Modal>
+        <>
+          {/* 에러 모달창 2 */}
+          <Modal>
+            <div className="cctvModal-warning">
+              ⚠️ 1개의 데이터만 선택해주세요
+              <Button
+                variant="contained"
+                color="primary"
+                disableElevation
+                onClick={closeHandler}
+              >
+                확인
+              </Button>
+            </div>
+          </Modal>
+        </>
       ) : (
         deleteData && (
-          <CctvDeleteModal
-            deleteCnt={selectedData.length}
-            deleteCctvData={deleteCctvData}
-            closeModal={closeHandler}
-          ></CctvDeleteModal>
+          <>
+            {/* 삭제 확인창 */}
+            <CctvDeleteModal
+              deleteCnt={selectedData.length}
+              deleteCctvData={deleteCctvData}
+              closeModal={closeHandler}
+            ></CctvDeleteModal>
+          </>
         )
       )}
     </>

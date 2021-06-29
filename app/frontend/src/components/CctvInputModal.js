@@ -7,6 +7,13 @@ import React from "react";
 import Select from "@material-ui/core/Select";
 import TextField from "@material-ui/core/TextField";
 
+/**
+ * CCTV 데이터 입력 모달창
+ *
+ * @param {Object} macValid: CCTV MAC 주소 유효성, inputData: 변경할 CCTV 데이터,
+ *                 submitCctvForm: 모달창 제출 이벤트 처리함수, checkMacInput: CCTV MAC 주소 유효성 검사 함수, closeModal: 모달창 닫기 함수
+ * @returns {JSX.Element} CCTV 데이터 입력 모달창
+ */
 function CctvInputModal({
   macValid,
   inputData,

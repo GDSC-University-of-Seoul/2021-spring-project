@@ -56,6 +56,11 @@ function CctvTableContainer() {
     uninstall_date: "제거 일자",
   };
 
+  /* 
+    표 아이템 체크 이벤트 핸들러
+    1. CCTV MAC 기준으로 clickedData 설정 (신규 생성데이터에 대해 cctv_id를 획득할 수 없으므로)
+    2. selectedCctvData를 Toggle적으로 설정 (push || pop)
+  */
   const itemCheckHandler = (e) => {
     const tr = e.target.closest("tr");
     if (!tr) return;
@@ -67,6 +72,12 @@ function CctvTableContainer() {
       ? dispatch(selectCctvData(selectedData))
       : dispatch(selectOffCctvData(cctvId));
   };
+
+  /* 
+    표 아이템 클릭 이벤트 핸들러
+    1. CCTV MAC 기준으로 clickedData 설정 (신규 생성데이터에 대해 cctv_id를 획득할 수 없으므로)
+    2. 모달창 오픈
+  */
   const itemClickHandler = (e) => {
     const tr = e.target.closest("tr");
     if (!tr) return;
