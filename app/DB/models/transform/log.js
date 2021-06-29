@@ -31,70 +31,55 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 /**
- * 설치된 cctv 관련 테이블
+ * 행정구역 관련 테이블
  * <FIELDS>           <DATA TYPE>        <INDEX>   <NULLABLE>
- * cctv_id            : Integer          PK        FALSE
- * cctv_name          : String                     FALSE
- * cctv_mac           : STRING                     FALSE
- * quality            : Enum                       FALSE
- * install_date       : Date                       FALSE
- * uninstall_date     : Date                       TRUE
- *
- * <RELATIONSHIP>     <COLUMN>
- * center             : center_id          FK       FALSE
- *
- * <BACKREF>          <COLUMN>
- * video              : cctv_id          FK
+ * center_name        : String                     FALSE
+ * address            : String                     FALSE
+ * record_date        : Date                       FALSE
+ * anomaly_type       : String                     FALSE
  */
 module.exports = /*#__PURE__*/function (_Sequelize$Model) {
-  _inherits(CCTV, _Sequelize$Model);
+  _inherits(AnomalyLog, _Sequelize$Model);
 
-  var _super = _createSuper(CCTV);
+  var _super = _createSuper(AnomalyLog);
 
-  function CCTV() {
-    _classCallCheck(this, CCTV);
+  function AnomalyLog() {
+    _classCallCheck(this, AnomalyLog);
 
     return _super.apply(this, arguments);
   }
 
-  _createClass(CCTV, null, [{
+  _createClass(AnomalyLog, null, [{
     key: "init",
     value: function init(sequelize, DataTypes) {
-      return _get(_getPrototypeOf(CCTV), "init", this).call(this, {
-        cctv_id: {
+      return _get(_getPrototypeOf(AnomalyLog), "init", this).call(this, {
+        anomaly_log_id: {
           type: DataTypes.INTEGER,
           autoIncrement: true,
           primaryKey: true
         },
-        cctv_name: {
-          type: DataTypes.STRING(30),
+        center_name: {
+          type: DataTypes.STRING(150),
           allowNull: false
         },
-        cctv_mac: {
-          type: DataTypes.STRING(30),
-          allowNull: false,
-          unique: true
-        },
-        quality: {
-          type: DataTypes.ENUM({
-            values: ["SD", "HD", "FHD", "QHD", "UHD"]
-          }),
+        address: {
+          type: DataTypes.STRING(150),
           allowNull: false
         },
-        install_date: {
+        record_date: {
           type: DataTypes.DATE,
           allowNull: false
         },
-        uninstall_date: {
-          type: DataTypes.DATE,
-          allowNull: true
+        anomaly_type: {
+          type: DataTypes.STRING(20),
+          allowNull: false
         }
       }, {
         sequelize: sequelize,
         timestamps: false,
         paranoid: false,
-        modelName: "CCTV",
-        tableName: "cctv",
+        modelName: "AnomalyLog",
+        tableName: "anomaly_log",
         freezeTableName: false,
         charset: "utf8",
         collate: "utf8_general_cli"
@@ -102,17 +87,8 @@ module.exports = /*#__PURE__*/function (_Sequelize$Model) {
     }
   }, {
     key: "associate",
-    value: function associate(db) {
-      db.CCTV.belongsTo(db.ChildCareCenter, {
-        foreignKey: "center_id",
-        targetKey: "center_id"
-      });
-      db.CCTV.hasMany(db.Video, {
-        foreignKey: "cctv_id",
-        sourceKey: "cctv_id"
-      });
-    }
+    value: function associate(db) {}
   }]);
 
-  return CCTV;
+  return AnomalyLog;
 }(_sequelize["default"].Model);
