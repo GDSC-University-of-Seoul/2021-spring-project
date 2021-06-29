@@ -11,7 +11,7 @@ import CctvDeleteModal from "../components/CctvDeleteModal";
 import CctvInputModal from "../components/CctvInputModal";
 import Modal from "../components/Modal";
 import React from "react";
-import { clickCctvData } from "../modules/cctvsTableEvent";
+import { clickCctvData, initSelectCctvData } from "../modules/cctvsTableEvent";
 
 /**
  * CCTV 모달창 컨테이너 컴포넌트
@@ -61,7 +61,8 @@ function CctvModalContainer({ selectedData, clickedData }) {
 
   // CCTV 데이터 제거 (제거)
   const deleteCctvData = () => {
-    dispatch(deleteCctvsData());
+    dispatch(deleteCctvsData(selectedData));
+    dispatch(initSelectCctvData([]));
     dispatch(closeModal());
   };
 

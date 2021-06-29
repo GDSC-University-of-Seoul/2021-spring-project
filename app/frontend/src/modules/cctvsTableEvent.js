@@ -1,10 +1,10 @@
 /**
  * CCTV 표 이벤트 상태 관리
  */
-
 const CCTV_ITEM_SELECTED_ON = "cctvsTableEvent/CCTV_ITEM_SELECTED_ON";
 const CCTV_ITEM_SELECTED_OFF = "cctvsTableEvent/CCTV_ITEM_SELECTED_OFF";
 const CCTV_ITEM_CLICKED = "cctvsTableEvent/CCTV_ITEM_CLICKED";
+const CCTV_ITEM_INIT_SELECTED = "cctvsTableEvent/CCTV_ITEM_INIT_SELECTED";
 
 // 표 데이터 선택 이벤트 처리
 export const selectCctvData = (cctvData) => ({
@@ -19,9 +19,15 @@ export const selectOffCctvData = (cctvId) => ({
 });
 
 // 표 데이터 클릭 이벤트 처리
-export const clickCctvData = (data) => ({
+export const clickCctvData = (clickedData) => ({
   type: CCTV_ITEM_CLICKED,
-  payload: data,
+  payload: clickedData,
+});
+
+// selectedData 초기화
+export const initSelectCctvData = (selectedData) => ({
+  type: CCTV_ITEM_INIT_SELECTED,
+  payload: selectedData,
 });
 
 /*
@@ -51,6 +57,11 @@ export default function cctvsTableEventReducer(state = initialState, action) {
       return {
         ...state,
         clickedData: action.payload,
+      };
+    case CCTV_ITEM_INIT_SELECTED:
+      return {
+        ...state,
+        selectedData: action.payload,
       };
     default:
       return state;
