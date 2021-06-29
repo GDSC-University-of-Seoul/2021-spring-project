@@ -7,10 +7,11 @@ import {
 import Button from "@material-ui/core/Button";
 import CctvModalContainer from "../containers/CctvModalContainer";
 import CctvTableContainer from "../containers/CctvTableContainer";
-import React from "react";
+import React, { useEffect } from "react";
 import { clickCctvData } from "../modules/cctvsTableEvent";
 import { openModal } from "../modules/cctvsModal";
 import { useDispatch, useSelector } from "react-redux";
+import { fetchCctvsData } from "../modules/cctvs";
 
 /**
  * `/cctvs` 페이지 렌더링
@@ -19,10 +20,15 @@ import { useDispatch, useSelector } from "react-redux";
  */
 
 function Cctvs() {
+  const { cctvsData } = useSelector((state) => state.cctvsReducer);
   const { selectedData, clickedData } = useSelector(
     (state) => state.cctvsTableEventReducer
   );
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchCctvsData());
+  }, [dispatch]);
 
   const createHandler = () => {
     dispatch(clickCctvData(null));
@@ -71,7 +77,7 @@ function Cctvs() {
           </Button>
         </div>
         <div className="container cctvs-section">
-          <CctvTableContainer />
+          {cctvsData && <CctvTableContainer cctvsData={cctvsData} />}
         </div>
       </section>
     </>

@@ -42,7 +42,7 @@ export const setMacValid = (valid) => ({
   payload: valid,
 });
 
-/**
+/*
  * isOpen : 모달창 열기
  * macValid : MAC 주소 유효성
  * func: 기능 선택

@@ -35,8 +35,8 @@ function Table({
               <td onClick={(e) => e.stopPropagation()}>
                 <input type="checkbox" />
               </td>
-              {Object.keys(element).map((key, index) => (
-                <td key={index}>{element[key]}</td>
+              {Object.keys(categories).map((category, index) => (
+                <td key={index}>{element[category]}</td>
               ))}
             </tr>
           );

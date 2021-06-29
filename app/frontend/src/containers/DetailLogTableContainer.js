@@ -18,15 +18,6 @@ function DetailLogTableContainer() {
    */
   const initialDetailLogs = [
     {
-      center_id: "11000000000",
-      area_id: "11001000000",
-      anomaly_type: "안전사고",
-      start_time: "2021-06-06 12:30",
-      sido: "서울특별시",
-      sgg: "은평구",
-      address: "서울특별시 은평구 가나다어린이집",
-    },
-    {
       center_name: "ABC어린이집",
       area_name: "거실",
       anomaly_type: "폭행",
