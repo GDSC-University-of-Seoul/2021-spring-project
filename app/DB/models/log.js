@@ -1,8 +1,9 @@
 import Sequelize from "sequelize";
 
 /**
- * 행정구역 관련 테이블
+ * DB내 데이터 탐색시간 감축용 이상행동 감지내역 테이블 
  * <FIELDS>           <DATA TYPE>        <INDEX>   <NULLABLE>
+ * anomaly_log_id     : Integer           PK       FALSE
  * center_name        : String                     FALSE
  * address            : String                     FALSE
  * record_date        : Date                       FALSE
