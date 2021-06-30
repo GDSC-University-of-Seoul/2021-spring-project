@@ -31,8 +31,9 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 /**
- * 행정구역 관련 테이블
+ * DB내 데이터 탐색시간 감축용 이상행동 감지내역 테이블 
  * <FIELDS>           <DATA TYPE>        <INDEX>   <NULLABLE>
+ * anomaly_log_id     : Integer           PK       FALSE
  * center_name        : String                     FALSE
  * address            : String                     FALSE
  * record_date        : Date                       FALSE
