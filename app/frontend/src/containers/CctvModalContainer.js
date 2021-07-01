@@ -11,7 +11,11 @@ import CctvDeleteModal from "../components/CctvDeleteModal";
 import CctvInputModal from "../components/CctvInputModal";
 import Modal from "../components/Modal";
 import React from "react";
-import { clickCctvData, initSelectCctvData } from "../modules/cctvsTableEvent";
+import {
+  clickCctvData,
+  initSelectCctvData,
+  selectCctvData,
+} from "../modules/cctvsTableEvent";
 
 /**
  * CCTV 모달창 컨테이너 컴포넌트
@@ -47,15 +51,22 @@ function CctvModalContainer({ selectedData, clickedData }) {
   const submitHandler = (e) => {
     e.preventDefault();
 
+    const befInfo = clickedData || selectedData[0];
     const targets = e.target;
-    let formInfo = {};
+    let updateInfo = {};
 
     for (let target of targets) {
-      if (target.name) formInfo[target.name] = target.value;
+      if (target.name) updateInfo[target.name] = target.value;
     }
-    if (createData) dispatch(createCctvsData(formInfo));
-    else if (updateData) dispatch(updateCctvsData(formInfo));
-
+    if (createData) dispatch(createCctvsData(updateInfo));
+    else if (updateData) {
+      if (updateInfo.cctv_mac !== befInfo.cctv_mac) {
+        dispatch(deleteCctvsData(befInfo));
+        dispatch(createCctvsData(updateInfo));
+      } else {
+        dispatch(updateCctvsData(updateInfo));
+      }
+    }
     dispatch(closeModal());
   };
 

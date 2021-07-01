@@ -39,7 +39,7 @@ function CctvInputModal({
           />
           <TextField
             label="어린이집 주소"
-            name="center_address"
+            name="address"
             required
             InputLabelProps={{
               shrink: true,
@@ -73,7 +73,7 @@ function CctvInputModal({
             <InputLabel id="cctv_quality-label">화질</InputLabel>
             <Select
               labelId="cctv_quality-label"
-              name="cctv_quality"
+              name="quality"
               defaultValue={inputData ? inputData.quality : "SD"}
             >
               {qualityItems.map((item, idx) => (

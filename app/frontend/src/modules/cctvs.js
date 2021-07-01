@@ -11,7 +11,7 @@ const CCTVS_DATA_UPDATE = "cctvs/CCTVS_DATA_UPDATE";
 const CCTVS_DATA_DELETE = "cctvs/CCTVS_DATA_DELETE";
 const CCTVS_DATA_ERROR = "cctvs/CCTVS_DATA_ERROR";
 
-// MAC 주소 Formatting
+// MAC 주소 Formatting (ABCD -> AB-CD)
 const macFormat = (macString) => {
   let macAddress = [];
 
@@ -20,6 +20,9 @@ const macFormat = (macString) => {
   }
   return macAddress.join("-");
 };
+// MAC 주소 Formatting (ABCD -> AB-CD)
+const macApiFormat = (macAddress) => macAddress.split("-").join("");
+
 // 날짜 Formatting
 const dateFormat = (date) => {
   const year = date.getFullYear();
@@ -57,7 +60,23 @@ export const fetchCctvsData = () => async (dispatch) => {
   }
 };
 export const createCctvsData = (cctvData) => async (dispatch) => {};
-export const updateCctvsData = (cctvData) => async (dispatch) => {};
+
+// CCTV Data 갱신하기 (UPDATE - center_id, cctv_mac 변경 제외)
+export const updateCctvsData = (updateInfo) => async (dispatch) => {
+  try {
+    dispatch({ type: CCTVS_DATA_LOADING });
+
+    await axios.put(
+      `${process.env.REACT_APP_API_SERVER}/api/cctvs/${macApiFormat(
+        updateInfo.cctv_mac
+      )}`,
+      updateInfo
+    );
+    dispatch({ type: CCTVS_DATA_UPDATE, payload: updateInfo });
+  } catch (e) {
+    dispatch({ type: CCTVS_DATA_ERROR, payload: e });
+  }
+};
 
 // CCTV Data 삭제하기 (DELETE)
 export const deleteCctvsData = (deleteData) => async (dispatch) => {
@@ -66,10 +85,11 @@ export const deleteCctvsData = (deleteData) => async (dispatch) => {
 
     for (const data of deleteData) {
       await axios.delete(
-        `${process.env.REACT_APP_API_SERVER}/api/cctvs/${data.cctv_mac}`
+        `${process.env.REACT_APP_API_SERVER}/api/cctvs/${macApiFormat(
+          data.cctv_mac
+        )}`
       );
     }
-
     dispatch({ type: CCTVS_DATA_DELETE, payload: deleteData });
   } catch (e) {
     dispatch({ type: CCTVS_DATA_ERROR, payload: e });
@@ -100,7 +120,14 @@ export default function cctvsReducer(state = initialState, action) {
     case CCTVS_DATA_CREATE:
       return;
     case CCTVS_DATA_UPDATE:
-      return;
+      return {
+        ...state,
+        loading: false,
+        cctvsData: state.cctvsData.map((data) =>
+          data.cctv_mac === action.payload.cctv_mac ? action.payload : data
+        ),
+        error: null,
+      };
     case CCTVS_DATA_DELETE:
       return {
         ...state,
