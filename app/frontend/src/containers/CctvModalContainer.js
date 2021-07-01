@@ -1,4 +1,10 @@
+import { clickCctvData, initSelectCctvData } from "../modules/cctvsTableEvent";
 import { closeModal, setMacValid } from "../modules/cctvsModal";
+import {
+  closeSearchModal,
+  fetchSido,
+  openSearchModal,
+} from "../modules/searchCenterModal";
 import {
   createCctvsData,
   deleteCctvsData,
@@ -11,11 +17,7 @@ import CctvDeleteModal from "../components/CctvDeleteModal";
 import CctvInputModal from "../components/CctvInputModal";
 import Modal from "../components/Modal";
 import React from "react";
-import {
-  clickCctvData,
-  initSelectCctvData,
-  selectCctvData,
-} from "../modules/cctvsTableEvent";
+import SearchCenterModal from "../components/searchCenterModal";
 
 /**
  * CCTV 모달창 컨테이너 컴포넌트
@@ -30,11 +32,16 @@ function CctvModalContainer({ selectedData, clickedData }) {
     func: { createData, updateData, deleteData },
   } = useSelector((state) => state.cctvsModalReducer);
 
+  const {
+    searchModalOpen,
+    searchData: { sido, sgg, center },
+  } = useSelector((state) => state.searchCenterReducer);
+
   const dispatch = useDispatch();
 
   // CCTV MAC 주소 유효성 검사 함수
   const checkMacInput = (e, macAddress) => {
-    const macRegex = new RegExp(`^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$`);
+    const macRegex = new RegExp(`^([0-9A-F]{2}[-]){5}([0-9A-F]{2})$`);
 
     macRegex.test(macAddress)
       ? dispatch(setMacValid(true))
@@ -58,6 +65,7 @@ function CctvModalContainer({ selectedData, clickedData }) {
     for (let target of targets) {
       if (target.name) updateInfo[target.name] = target.value;
     }
+    // Todo : center_id 변경, cctv_mac 변경에 따른 기능 구분
     if (createData) dispatch(createCctvsData(updateInfo));
     else if (updateData) {
       if (updateInfo.cctv_mac !== befInfo.cctv_mac) {
@@ -67,14 +75,22 @@ function CctvModalContainer({ selectedData, clickedData }) {
         dispatch(updateCctvsData(updateInfo));
       }
     }
-    dispatch(closeModal());
+    closeHandler();
   };
 
   // CCTV 데이터 제거 (제거)
   const deleteCctvData = () => {
     dispatch(deleteCctvsData(selectedData));
     dispatch(initSelectCctvData([]));
-    dispatch(closeModal());
+    closeHandler();
+  };
+
+  const openSearchCenter = () => {
+    dispatch(openSearchModal());
+    dispatch(fetchSido());
+  };
+  const closeSearchCenter = () => {
+    dispatch(closeSearchModal());
   };
 
   return (
@@ -90,8 +106,16 @@ function CctvModalContainer({ selectedData, clickedData }) {
               createData ? null : clickedData ? clickedData : selectedData[0]
             }
             submitCctvForm={submitHandler}
+            openSearchCenter={openSearchCenter}
             checkMacInput={checkMacInput}
             closeModal={closeHandler}
+          />
+          <SearchCenterModal
+            isOpen={searchModalOpen}
+            sido={sido}
+            sgg={sgg}
+            center={center}
+            closeSearchCenter={closeSearchCenter}
           />
         </>
       ) : (updateData || deleteData) && selectedData.length === 0 ? (

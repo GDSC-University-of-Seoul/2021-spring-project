@@ -20,6 +20,7 @@ function CctvInputModal({
   submitCctvForm,
   checkMacInput,
   closeModal,
+  openSearchCenter,
 }) {
   const modalTitle = "어린이집 CCTV 정보 추가/변경";
   const qualityItems = ["SD", "HD", "FHD", "QHD", "UHD"];
@@ -31,23 +32,31 @@ function CctvInputModal({
           <TextField
             label="어린이집 명"
             name="center_name"
-            required
             InputLabelProps={{
               shrink: true,
             }}
+            inputProps={{ readOnly: true }}
             defaultValue={inputData ? inputData.center_name : ""}
           />
           <TextField
             label="어린이집 주소"
             name="address"
-            required
             InputLabelProps={{
               shrink: true,
             }}
+            inputProps={{ readOnly: true }}
             defaultValue={inputData ? inputData.address : ""}
           />
+          <Button
+            variant="contained"
+            color="primary"
+            disableElevation
+            onClick={openSearchCenter}
+          >
+            어린이집 검색
+          </Button>
           <TextField
-            label="설치 장소"
+            label="CCTV 설치 장소"
             name="cctv_name"
             required
             InputLabelProps={{
