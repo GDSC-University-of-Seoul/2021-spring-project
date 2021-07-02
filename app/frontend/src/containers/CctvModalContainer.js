@@ -66,19 +66,22 @@ function CctvModalContainer({ selectedData, clickedData }) {
 
     const befInfo = clickedData || selectedData[0];
     const targets = e.target;
-    let updateInfo = {};
+    let submitInfo = {};
 
     for (let target of targets) {
-      if (target.name) updateInfo[target.name] = target.value;
+      if (target.name) submitInfo[target.name] = target.value;
     }
+    submitInfo.cctv_mac = submitInfo.cctv_mac.split("-").join("");
+    submitInfo["center_id"] = selectedCenter.center_id;
+
     // Todo : center_id 변경, cctv_mac 변경에 따른 기능 구분
-    if (createData) dispatch(createCctvsData(updateInfo));
+    if (createData) dispatch(createCctvsData(submitInfo));
     else if (updateData) {
-      if (updateInfo.cctv_mac !== befInfo.cctv_mac) {
+      if (submitInfo.cctv_mac !== befInfo.cctv_mac) {
         dispatch(deleteCctvsData(befInfo));
-        dispatch(createCctvsData(updateInfo));
+        dispatch(createCctvsData(submitInfo));
       } else {
-        dispatch(updateCctvsData(updateInfo));
+        dispatch(updateCctvsData(submitInfo));
       }
     }
     closeHandler();

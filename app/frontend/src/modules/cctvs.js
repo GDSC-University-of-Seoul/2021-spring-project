@@ -59,7 +59,19 @@ export const fetchCctvsData = () => async (dispatch) => {
     dispatch({ type: CCTVS_DATA_ERROR, payload: e });
   }
 };
-export const createCctvsData = (cctvData) => async (dispatch) => {};
+export const createCctvsData = (createInfo) => async (dispatch) => {
+  try {
+    dispatch({ type: CCTVS_DATA_LOADING });
+    await axios.post(
+      `${process.env.REACT_APP_API_SERVER}/api/cctvs`,
+      createInfo
+    );
+    createInfo.cctv_mac = macFormat(createInfo.cctv_mac);
+    dispatch({ type: CCTVS_DATA_CREATE, payload: createInfo });
+  } catch (e) {
+    dispatch({ type: CCTVS_DATA_ERROR, payload: e });
+  }
+};
 
 // CCTV Data 갱신하기 (UPDATE - center_id, cctv_mac 변경 제외)
 export const updateCctvsData = (updateInfo) => async (dispatch) => {
@@ -118,7 +130,12 @@ export default function cctvsReducer(state = initialState, action) {
         error: null,
       };
     case CCTVS_DATA_CREATE:
-      return;
+      return {
+        ...state,
+        loading: false,
+        cctvsData: state.cctvsData.concat(action.payload),
+        error: null,
+      };
     case CCTVS_DATA_UPDATE:
       return {
         ...state,
