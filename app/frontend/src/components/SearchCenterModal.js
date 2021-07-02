@@ -9,15 +9,32 @@ import {
 import Modal from "./Modal";
 import React from "react";
 
-function SearchCenterModal({ isOpen, sido, sgg, center, closeSearchCenter }) {
+function SearchCenterModal({
+  isOpen,
+  loading,
+  sido,
+  sgg,
+  center,
+  sidoSelect,
+  sggSelect,
+  centerSelect,
+  submitCenter,
+  closeSearchCenter,
+}) {
   return (
     <>
       {isOpen && (
         <Modal title={"어린이집 검색"}>
-          <form className="searchCenter-form">
+          {loading && <div>로딩중...</div>}
+          <form className="searchCenter-form" onSubmit={submitCenter}>
             <FormControl required>
               <InputLabel id="center-sido-label">도·특별시·광역시</InputLabel>
-              <Select labelId="center-sido-label" name="center-sido">
+              <Select
+                labelId="center-sido-label"
+                name="center-sido"
+                defaultValue=""
+                onChange={sidoSelect}
+              >
                 {sido &&
                   sido.map((item, idx) => (
                     <MenuItem key={idx} value={item.district_code}>
@@ -28,7 +45,12 @@ function SearchCenterModal({ isOpen, sido, sgg, center, closeSearchCenter }) {
             </FormControl>
             <FormControl required>
               <InputLabel id="center-sgg-label">시·군·구</InputLabel>
-              <Select labelId="center-sgg-label" name="center-sgg">
+              <Select
+                labelId="center-sgg-label"
+                name="center-sgg"
+                defaultValue=""
+                onChange={sggSelect}
+              >
                 {sgg &&
                   sgg.map((item, idx) => (
                     <MenuItem key={idx} value={item.district_code}>
@@ -39,7 +61,12 @@ function SearchCenterModal({ isOpen, sido, sgg, center, closeSearchCenter }) {
             </FormControl>
             <FormControl required>
               <InputLabel id="center-label">어린이집</InputLabel>
-              <Select labelId="center-label" name="center">
+              <Select
+                labelId="center-label"
+                name="center"
+                defaultValue=""
+                onChange={centerSelect}
+              >
                 {center &&
                   center.map((item, idx) => (
                     <MenuItem key={idx} value={item.center_id}>

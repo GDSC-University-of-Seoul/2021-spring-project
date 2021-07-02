@@ -16,6 +16,7 @@ import TextField from "@material-ui/core/TextField";
  */
 function CctvInputModal({
   macValid,
+  centerInfo,
   inputData,
   submitCctvForm,
   checkMacInput,
@@ -36,7 +37,13 @@ function CctvInputModal({
               shrink: true,
             }}
             inputProps={{ readOnly: true }}
-            defaultValue={inputData ? inputData.center_name : ""}
+            value={
+              centerInfo
+                ? centerInfo.center_name
+                : inputData
+                ? inputData.center_name
+                : ""
+            }
           />
           <TextField
             label="어린이집 주소"
@@ -45,7 +52,13 @@ function CctvInputModal({
               shrink: true,
             }}
             inputProps={{ readOnly: true }}
-            defaultValue={inputData ? inputData.address : ""}
+            value={
+              centerInfo
+                ? centerInfo.address
+                : inputData
+                ? inputData.address
+                : ""
+            }
           />
           <Button
             variant="contained"

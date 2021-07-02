@@ -2,8 +2,12 @@ import { clickCctvData, initSelectCctvData } from "../modules/cctvsTableEvent";
 import { closeModal, setMacValid } from "../modules/cctvsModal";
 import {
   closeSearchModal,
+  fetchCenter,
+  fetchSgg,
   fetchSido,
+  initSearchModal,
   openSearchModal,
+  selectCenter,
 } from "../modules/searchCenterModal";
 import {
   createCctvsData,
@@ -34,7 +38,8 @@ function CctvModalContainer({ selectedData, clickedData }) {
 
   const {
     searchModalOpen,
-    searchData: { sido, sgg, center },
+    loading,
+    searchData: { sido, sgg, center, selectedCenter },
   } = useSelector((state) => state.searchCenterReducer);
 
   const dispatch = useDispatch();
@@ -52,6 +57,7 @@ function CctvModalContainer({ selectedData, clickedData }) {
   const closeHandler = () => {
     dispatch(closeModal());
     dispatch(clickCctvData(null));
+    dispatch(initSearchModal());
   };
 
   // 모달창 폼 제출 이벤트 처리 함수 (생성, 변경)
@@ -92,7 +98,19 @@ function CctvModalContainer({ selectedData, clickedData }) {
   const closeSearchCenter = () => {
     dispatch(closeSearchModal());
   };
-
+  const sidoSelect = (e) => {
+    dispatch(fetchSgg(e.target.value));
+  };
+  const sggSelect = (e) => {
+    dispatch(fetchCenter(e.target.value));
+  };
+  const centerSelect = (e) => {
+    dispatch(selectCenter(e.target.value));
+  };
+  const submitCenter = (e) => {
+    e.preventDefault();
+    closeSearchCenter();
+  };
   return (
     <>
       {isOpen &&
@@ -102,6 +120,7 @@ function CctvModalContainer({ selectedData, clickedData }) {
           {/* CCTV 데이터 입력 모달창 */}
           <CctvInputModal
             macValid={macValid}
+            centerInfo={selectedCenter}
             inputData={
               createData ? null : clickedData ? clickedData : selectedData[0]
             }
@@ -112,9 +131,14 @@ function CctvModalContainer({ selectedData, clickedData }) {
           />
           <SearchCenterModal
             isOpen={searchModalOpen}
+            loading={loading}
             sido={sido}
             sgg={sgg}
             center={center}
+            sidoSelect={sidoSelect}
+            sggSelect={sggSelect}
+            centerSelect={centerSelect}
+            submitCenter={submitCenter}
             closeSearchCenter={closeSearchCenter}
           />
         </>
