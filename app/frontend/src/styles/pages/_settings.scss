@@ -1,0 +1,47 @@
+.settings {
+  .settings-section {
+    padding: 20px;
+  }
+  .settings-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+  .message-control,
+  .alarm-control {
+    margin: 20px;
+
+    .label {
+      display: inline-block;
+      width: 150px;
+    }
+  }
+  .user-section {
+    margin-top: 10px;
+    padding: 20px;
+  }
+  .userInfo li {
+    display: flex;
+    margin: 20px;
+  }
+  .userInfo span {
+    display: block;
+    width: 150px;
+  }
+  .user-control {
+    text-align: center;
+
+    .user-modify,
+    .user-logout {
+      padding: 8px 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: #2980b9;
+      color: white;
+    }
+    .user-logout {
+      margin-left: 10px;
+      background-color: #e74c3c;
+    }
+  }
+}

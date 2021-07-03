@@ -1,0 +1,48 @@
+tags:
+  - cctv
+summary: create cctv
+description:
+requestBody:
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          center_id:
+            type: integer
+          cctv_name:
+            type: string
+          cctv_mac:
+            type: string
+          install_date:
+            type: string
+            format: date
+          uninstall_date:
+            type: string
+            format: date
+          quality:
+            type: string
+responses:
+  201:
+    description: CREATED
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            cctv_id:
+              type: integer
+            cctv_name:
+              type: string
+            cctv_mac:
+              type: string
+            install_date:
+              type: string
+              format: date
+            uninstall_date:
+              type: string
+              format: date
+            quality:
+              type: string
+            center_id:
+              type: integer

@@ -1,0 +1,47 @@
+tags:
+  - cctv
+summary: update cctv by cctv_mac
+description:
+parameters:
+  - name: cctv_mac
+    in: path
+    required: true
+    description: CCTV MAC 주소
+requestBody:
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          cctv_name:
+            type: string
+          install_date:
+            type: string
+            format: date
+          uninstall_date:
+            type: string
+            format: date
+          quality:
+            type: string
+responses:
+  200:
+    description: UPDATED
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            cctv_id:
+              type: integer
+            cctv_name:
+              type: string
+            install_date:
+              type: string
+              format: date
+            uninstall_date:
+              type: string
+              format: date
+            quality:
+              type: string
+            center_id:
+              type: integer

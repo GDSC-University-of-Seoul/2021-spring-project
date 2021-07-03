@@ -1,0 +1,29 @@
+.category {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  background-color: white;
+  width: 16rem;
+  height: 13rem;
+  padding: 15px;
+  z-index: 5;
+
+  .category-title {
+    margin: 0.75rem 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-align: center;
+  }
+
+  .slider-controllers {
+    display: flex;
+    margin-top: 5px;
+
+    .MuiOutlinedInput-input {
+      padding: 14px 10px;
+    }
+    .slider-controller:not(:last-child) {
+      margin-right: 10px;
+    }
+  }
+}

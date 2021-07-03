@@ -1,14 +1,26 @@
 import express from "express";
-import { sequelize } from "./database/models/index";
+import morgan from "morgan";
+import dotenv from "dotenv";
+import path from "path";
+import swaggerUi from "swagger-ui-express";
+import yaml from "yamljs";
 
-require("dotenv").config();
+import { sequelize } from "../DB/models/transform";
+import indexRouter from "./routes";
+import districtRouter from "./routes/district";
+import centerRouter from "./routes/childCareCenter";
+import cctvRouter from "./routes/cctv";
+import anomalyRouter from "./routes/anomaly";
+import cors from "cors";
+
+dotenv.config();
 
 const app = express();
 app.set("port", process.env.PORT || 3000);
 
 // DB 연결
 sequelize
-  .sync()
+  .sync({ force: false, alter: false })
   .then(() => {
     console.log("DB 연결 성공");
   })
@@ -17,10 +29,20 @@ sequelize
     console.log(err);
   });
 
+app.use(cors());
+app.use(morgan("dev"));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
 // localhost:3000/ 연결
-app.get("/", (req, res) => {
-  res.send("Connnected.");
-});
+app.use("/api/", indexRouter);
+app.use("/api/districts/", districtRouter);
+app.use("/api/centers/", centerRouter);
+app.use("/api/cctvs/", cctvRouter);
+app.use("/api/anomalies/", anomalyRouter);
+
+const swaggerSpecs = yaml.load(path.join(__dirname, "/swagger/build.yaml"));
+app.use("/api/docs/", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 
 // 포트 연결
 app.listen(app.get("port"), () => {

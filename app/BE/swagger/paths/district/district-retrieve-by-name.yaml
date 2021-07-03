@@ -1,0 +1,26 @@
+get:
+  tags:
+    - district
+  summary: get district by district name
+  description:
+  parameters:
+    - name: district_name
+      in: path
+      required: true
+      description: 행정구역 이름
+  responses:
+    200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              district_code:
+                type: string
+              district_name:
+                type: string
+              parent_code:
+                type: string
+              count:
+                type: string

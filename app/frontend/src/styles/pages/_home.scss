@@ -1,0 +1,73 @@
+.home {
+  min-height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 120px 1fr 1fr;
+  grid-gap: 20px;
+
+  .header {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    grid-column: 1/3;
+    padding: 20px 20px;
+
+    .header-item {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      div:nth-child(2) {
+        font-size: 2rem;
+        font-weight: 600;
+        margin-top: 20px;
+      }
+    }
+  }
+  .chart-section {
+    position: relative;
+    height: 27.5rem;
+
+    .chart-title {
+      background-color: #f2f6f7;
+      padding: 10px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      text-align: center;
+    }
+    .chart {
+      position: absolute;
+      width: 100%;
+      height: 25rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+  .log-section {
+    grid-column: 1/3;
+    padding: 10px;
+
+    .logTable {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: center;
+
+      thead th {
+        color: #336699;
+        background-color: #f2f6f7;
+        border-bottom: 3px solid #003366;
+        padding: 5px;
+        font-size: 1.2rem;
+        font-weight: 600;
+      }
+      tbody tr:nth-child(2n) {
+        background-color: #f2f6f7;
+      }
+      tbody td {
+        padding: 5px;
+      }
+    }
+  }
+}
