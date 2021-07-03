@@ -64,23 +64,31 @@ function CctvModalContainer({ selectedData, clickedData }) {
   const submitHandler = (e) => {
     e.preventDefault();
 
-    const befInfo = clickedData || selectedData[0];
     const targets = e.target;
+    const befInfo = clickedData || selectedData[0];
     let submitInfo = {};
 
     for (let target of targets) {
       if (target.name) submitInfo[target.name] = target.value;
     }
-    submitInfo.cctv_mac = submitInfo.cctv_mac.split("-").join("");
-    submitInfo["center_id"] = selectedCenter.center_id;
+    submitInfo.center_id = selectedCenter ? selectedCenter.center_id : null;
 
-    // Todo : center_id 변경, cctv_mac 변경에 따른 기능 구분
-    if (createData) dispatch(createCctvsData(submitInfo));
-    else if (updateData) {
-      if (submitInfo.cctv_mac !== befInfo.cctv_mac) {
-        dispatch(deleteCctvsData(befInfo));
+    if (createData) {
+      dispatch(createCctvsData(submitInfo));
+    } else if (updateData) {
+      // center_id 나 cctv_mac 이 변경된 경우 (기존 CCTV 정보 삭제 후 새로 CCTV 정보 등록)
+
+      if (
+        (submitInfo.center_id && submitInfo.center_id !== befInfo.center_id) ||
+        submitInfo.cctv_mac !== befInfo.cctv_mac
+      ) {
+        dispatch(deleteCctvsData([befInfo]));
+        if (!submitInfo.center_id) submitInfo.center_id = befInfo.center_id;
+        debugger;
         dispatch(createCctvsData(submitInfo));
-      } else {
+      }
+      // center_id, cctv_mac 모두 변경되지 않은 경우 (기존 CCTV 정보 변경)
+      else {
         dispatch(updateCctvsData(submitInfo));
       }
     }

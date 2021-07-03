@@ -62,6 +62,7 @@ export const fetchCctvsData = () => async (dispatch) => {
 export const createCctvsData = (createInfo) => async (dispatch) => {
   try {
     dispatch({ type: CCTVS_DATA_LOADING });
+    createInfo.cctv_mac = macApiFormat(createInfo.cctv_mac);
     await axios.post(
       `${process.env.REACT_APP_API_SERVER}/api/cctvs`,
       createInfo
@@ -102,6 +103,7 @@ export const deleteCctvsData = (deleteData) => async (dispatch) => {
         )}`
       );
     }
+
     dispatch({ type: CCTVS_DATA_DELETE, payload: deleteData });
   } catch (e) {
     dispatch({ type: CCTVS_DATA_ERROR, payload: e });

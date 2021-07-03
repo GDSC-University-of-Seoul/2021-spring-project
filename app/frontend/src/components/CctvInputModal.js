@@ -31,7 +31,7 @@ function CctvInputModal({
       <Modal title={modalTitle}>
         <form className="cctvModal-form" onSubmit={submitCctvForm}>
           <TextField
-            label="어린이집 명"
+            label="어린이집 명 *"
             name="center_name"
             InputLabelProps={{
               shrink: true,
@@ -46,7 +46,7 @@ function CctvInputModal({
             }
           />
           <TextField
-            label="어린이집 주소"
+            label="어린이집 주소 *"
             name="address"
             InputLabelProps={{
               shrink: true,
@@ -113,6 +113,7 @@ function CctvInputModal({
               shrink: true,
             }}
             defaultValue={inputData ? inputData.install_date : ""}
+            required
           />
           <TextField
             type="date"
