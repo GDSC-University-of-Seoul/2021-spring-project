@@ -76,6 +76,8 @@ function CctvModalContainer({ selectedData, clickedData }) {
       if (target.name) submitInfo[target.name] = target.value;
     }
     submitInfo.center_id = selectedCenter ? selectedCenter.center_id : null;
+    submitInfo.uninstall_date =
+      submitInfo.uninstall_date !== "" ? submitInfo.uninstall_date : null;
 
     // CCTV 데이터 생성 (Create)
     if (createData) {
