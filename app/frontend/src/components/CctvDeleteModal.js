@@ -3,10 +3,10 @@ import Modal from "./Modal";
 import React from "react";
 
 /**
- * 삭제 확인 모달창
+ * CCTV 데이터 삭제 확인 모달창
  *
  * @param {Object} deleteCnt: 삭제 건수, deleteCctvData: 삭제할 CCTV 데이터, closeModal: 모달창 닫기 함수
- * @returns {JSX.Element} 삭제 확인 모달창
+ * @returns {JSX.Element} CCTV 데이터 삭제 확인 모달창
  */
 function CctvDeleteModal({ deleteCnt, deleteCctvData, closeModal }) {
   return (

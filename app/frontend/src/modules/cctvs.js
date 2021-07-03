@@ -20,10 +20,11 @@ const macFormat = (macString) => {
   }
   return macAddress.join("-");
 };
-// MAC 주소 Formatting (ABCD -> AB-CD)
+
+// MAC 주소 Formatting (AB-CD -> ABCD)
 const macApiFormat = (macAddress) => macAddress.split("-").join("");
 
-// 날짜 Formatting
+// 날짜 Formatting (yyyy-mm-dd)
 const dateFormat = (date) => {
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
@@ -34,7 +35,7 @@ const dateFormat = (date) => {
   }`;
 };
 
-// 모든 CCTV Data 가져오기 (GET)
+// 모든 CCTV Data 가져오기 (READ)
 export const fetchCctvsData = () => async (dispatch) => {
   try {
     dispatch({ type: CCTVS_DATA_LOADING });
@@ -42,6 +43,7 @@ export const fetchCctvsData = () => async (dispatch) => {
     const cctvsData = await axios.get(
       `${process.env.REACT_APP_API_SERVER}/api/cctvs`
     );
+    // 날짜 형식 설정 (install_date, uninstall_date)
     const formatData = cctvsData.data.map((cctvData) => {
       const installDate = new Date(cctvData.install_date);
       const uninstallDate = new Date(cctvData.uninstall_date);
@@ -59,6 +61,13 @@ export const fetchCctvsData = () => async (dispatch) => {
     dispatch({ type: CCTVS_DATA_ERROR, payload: e });
   }
 };
+
+/**
+ * CCTV Data 생성하기 (CREATE - center_id 기준)
+ *
+ * @param {Object} createInfo : 새롭게 생성되는 데이터
+ * - 속성 : { center_id, cctv_name, cctv_mac, quality, install_date, uninstall_date }
+ */
 export const createCctvsData = (createInfo) => async (dispatch) => {
   try {
     dispatch({ type: CCTVS_DATA_LOADING });
@@ -74,7 +83,13 @@ export const createCctvsData = (createInfo) => async (dispatch) => {
   }
 };
 
-// CCTV Data 갱신하기 (UPDATE - center_id, cctv_mac 변경 제외)
+/**
+ * CCTV Data 갱신하기 (UPDATE - cctv_mac 기준)
+ * - center_id, cctv_mac 이외의 속성 변경
+ *
+ * @param {Object} updateInfo : 새롭게 갱신되는 데이터
+ * - 속성 : { cctv_name, cctv_mac, quality, install_date, uninstall_date }
+ */
 export const updateCctvsData = (updateInfo) => async (dispatch) => {
   try {
     dispatch({ type: CCTVS_DATA_LOADING });
@@ -91,7 +106,11 @@ export const updateCctvsData = (updateInfo) => async (dispatch) => {
   }
 };
 
-// CCTV Data 삭제하기 (DELETE)
+/**
+ * CCTV Data 삭제하기 (DELETE - cctv_mac 기준)
+ *
+ * @param {Array} deleteData : 삭제하고자 하는 데이터들
+ */
 export const deleteCctvsData = (deleteData) => async (dispatch) => {
   try {
     dispatch({ type: CCTVS_DATA_LOADING });
@@ -110,6 +129,7 @@ export const deleteCctvsData = (deleteData) => async (dispatch) => {
   }
 };
 
+// cctvsData : CCTV 전체 데이터
 const initialState = {
   loading: false,
   cctvsData: [],

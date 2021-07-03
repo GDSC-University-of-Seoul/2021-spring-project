@@ -36,7 +36,11 @@ export const closeModal = () => {
   return { type: CCTVS_MODAL_CLOSE, payload: state };
 };
 
-// CCTV MAC 주소 유효성
+/**
+ * CCTV MAC 주소 유효성
+ *
+ * @param {boolean} valid: MAC 주소 유효성
+ */
 export const setMacValid = (valid) => ({
   type: CCTVS_MODAL_MAC_VALID,
   payload: valid,

@@ -1,3 +1,7 @@
+/**
+ * 어린이집 검색 모달창 상태 관리
+ */
+
 import axios from "axios";
 
 const OPEN_MODAL = "searchCenterModal/OPEN_MODAL";
@@ -10,9 +14,16 @@ const FETCH_CENTER = "searchCenterModal/FETCH_CENTER";
 const SELECTED_CENTER = "searchCenterModal/SELECTED_CENTER";
 const SEARCH_CENTER_ERROR = "searchCenterModal/SEARCH_CENTER_ERROR";
 
+// 모달창 열기
 export const openSearchModal = () => ({ type: OPEN_MODAL });
+
+// 모달창 닫기
 export const closeSearchModal = () => ({ type: CLOSE_MODAL });
+
+// 어린이집 검색정보 제출 후 기존 정보 초기화
 export const initSearchModal = () => ({ type: INIT_MODAL });
+
+// 도·특별시·광역시 정보 Fetch
 export const fetchSido = () => async (dispatch) => {
   try {
     dispatch({ type: SEARCH_CENTER_LOADING });
@@ -24,6 +35,8 @@ export const fetchSido = () => async (dispatch) => {
     dispatch({ type: SEARCH_CENTER_ERROR, payload: e });
   }
 };
+
+// 선택한 도·특별시·광역시 기준으로 시·군·구 정보 Fetch
 export const fetchSgg = (sidoCode) => async (dispatch) => {
   try {
     dispatch({ type: SEARCH_CENTER_LOADING });
@@ -35,6 +48,8 @@ export const fetchSgg = (sidoCode) => async (dispatch) => {
     dispatch({ type: SEARCH_CENTER_ERROR, payload: e });
   }
 };
+
+// 선택한 시·군·구 기준으로 어린이집 정보 Fetch
 export const fetchCenter = (sggCode) => async (dispatch) => {
   try {
     dispatch({ type: SEARCH_CENTER_LOADING });
@@ -46,6 +61,8 @@ export const fetchCenter = (sggCode) => async (dispatch) => {
     dispatch({ type: SEARCH_CENTER_ERROR, payload: e });
   }
 };
+
+// 선택한 어린이집 정보 Fetch
 export const selectCenter = (centerId) => async (dispatch) => {
   try {
     dispatch({ type: SEARCH_CENTER_LOADING });
@@ -58,6 +75,10 @@ export const selectCenter = (centerId) => async (dispatch) => {
   }
 };
 
+/*
+ * searchModalOpen : 어린이집 검색 모달창 열기/닫기
+ * searchData: 선택된 어린이집 정보
+ */
 const initialState = {
   searchModalOpen: false,
   loading: false,

@@ -9,6 +9,14 @@ import {
 import Modal from "./Modal";
 import React from "react";
 
+/**
+ * 어린이집 검색 모달창
+ *
+ * @param {Object} isOpen: 모달창 열기/닫기, loading: 데이터 로딩 상태, sido: 도·특별시·광역시 정보 sgg: 시·군·구 정보
+ *                 center: 어린이집 정보, sidoSelect ~ : 선택 이벤트
+ * @return {JSX.Element} 어린이집 검색 모달창
+ */
+
 function SearchCenterModal({
   isOpen,
   loading,
