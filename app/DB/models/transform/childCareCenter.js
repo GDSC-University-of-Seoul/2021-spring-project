@@ -1,25 +1,25 @@
-'use strict';
+"use strict";
 
 function _typeof(obj) {
-  '@babel/helpers - typeof';
-  if (typeof Symbol === 'function' && typeof Symbol.iterator === 'symbol') {
+  "@babel/helpers - typeof";
+  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
     _typeof = function _typeof(obj) {
       return typeof obj;
     };
   } else {
     _typeof = function _typeof(obj) {
       return obj &&
-        typeof Symbol === 'function' &&
+        typeof Symbol === "function" &&
         obj.constructor === Symbol &&
         obj !== Symbol.prototype
-        ? 'symbol'
+        ? "symbol"
         : typeof obj;
     };
   }
   return _typeof(obj);
 }
 
-var _sequelize = _interopRequireDefault(require('sequelize'));
+var _sequelize = _interopRequireDefault(require("sequelize"));
 
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : { default: obj };
@@ -27,7 +27,7 @@ function _interopRequireDefault(obj) {
 
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
-    throw new TypeError('Cannot call a class as a function');
+    throw new TypeError("Cannot call a class as a function");
   }
 }
 
@@ -36,7 +36,7 @@ function _defineProperties(target, props) {
     var descriptor = props[i];
     descriptor.enumerable = descriptor.enumerable || false;
     descriptor.configurable = true;
-    if ('value' in descriptor) descriptor.writable = true;
+    if ("value" in descriptor) descriptor.writable = true;
     Object.defineProperty(target, descriptor.key, descriptor);
   }
 }
@@ -48,7 +48,7 @@ function _createClass(Constructor, protoProps, staticProps) {
 }
 
 function _get(target, property, receiver) {
-  if (typeof Reflect !== 'undefined' && Reflect.get) {
+  if (typeof Reflect !== "undefined" && Reflect.get) {
     _get = Reflect.get;
   } else {
     _get = function _get(target, property, receiver) {
@@ -73,8 +73,8 @@ function _superPropBase(object, property) {
 }
 
 function _inherits(subClass, superClass) {
-  if (typeof superClass !== 'function' && superClass !== null) {
-    throw new TypeError('Super expression must either be null or a function');
+  if (typeof superClass !== "function" && superClass !== null) {
+    throw new TypeError("Super expression must either be null or a function");
   }
   subClass.prototype = Object.create(superClass && superClass.prototype, {
     constructor: { value: subClass, writable: true, configurable: true },
@@ -108,7 +108,7 @@ function _createSuper(Derived) {
 }
 
 function _possibleConstructorReturn(self, call) {
-  if (call && (_typeof(call) === 'object' || typeof call === 'function')) {
+  if (call && (_typeof(call) === "object" || typeof call === "function")) {
     return call;
   }
   return _assertThisInitialized(self);
@@ -116,17 +116,21 @@ function _possibleConstructorReturn(self, call) {
 
 function _assertThisInitialized(self) {
   if (self === void 0) {
-    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    throw new ReferenceError(
+      "this hasn't been initialised - super() hasn't been called"
+    );
   }
   return self;
 }
 
 function _isNativeReflectConstruct() {
-  if (typeof Reflect === 'undefined' || !Reflect.construct) return false;
+  if (typeof Reflect === "undefined" || !Reflect.construct) return false;
   if (Reflect.construct.sham) return false;
-  if (typeof Proxy === 'function') return true;
+  if (typeof Proxy === "function") return true;
   try {
-    Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+    Boolean.prototype.valueOf.call(
+      Reflect.construct(Boolean, [], function () {})
+    );
     return true;
   } catch (e) {
     return false;
@@ -176,9 +180,9 @@ module.exports = /*#__PURE__*/ (function (_Sequelize$Model) {
 
   _createClass(ChildCareCenter, null, [
     {
-      key: 'init',
+      key: "init",
       value: function init(sequelize, DataTypes) {
-        return _get(_getPrototypeOf(ChildCareCenter), 'init', this).call(
+        return _get(_getPrototypeOf(ChildCareCenter), "init", this).call(
           this,
           {
             center_id: {
@@ -191,13 +195,21 @@ module.exports = /*#__PURE__*/ (function (_Sequelize$Model) {
             },
             operation_type: {
               type: DataTypes.ENUM({
-                values: ['국공립', '사회복지법인', '법인·단체등', '민간', '가정', '협동', '직장'],
+                values: [
+                  "국공립",
+                  "사회복지법인",
+                  "법인·단체등",
+                  "민간",
+                  "가정",
+                  "협동",
+                  "직장",
+                ],
               }),
               allowNull: false,
             },
             operation_status: {
               type: DataTypes.ENUM({
-                values: ['정상', '휴지', '폐지', '재개', ''],
+                values: ["정상", "휴지", "폐지", "재개", ""],
               }),
               allowNull: true,
             },
@@ -234,29 +246,29 @@ module.exports = /*#__PURE__*/ (function (_Sequelize$Model) {
             sequelize: sequelize,
             timestamps: false,
             paranoid: false,
-            modelName: 'ChildCareCenter',
-            tableName: 'child_care_center',
+            modelName: "ChildCareCenter",
+            tableName: "child_care_center",
             freezeTableName: false,
-            charset: 'utf8',
-            collate: 'utf8_general_cli',
-          },
+            charset: "utf8",
+            collate: "utf8_general_cli",
+          }
         );
       },
     },
     {
-      key: 'associate',
+      key: "associate",
       value: function associate(db) {
         db.ChildCareCenter.hasMany(db.CCTV, {
-          foreignKey: 'center_id',
-          sourceKey: 'center_id',
+          foreignKey: "center_id",
+          sourceKey: "center_id",
         });
         db.ChildCareCenter.belongsTo(db.District, {
-          foreignKey: 'district_code',
-          targetKey: 'district_code',
+          foreignKey: "district_code",
+          targetKey: "district_code",
         });
       },
     },
   ]);
 
   return ChildCareCenter;
-})(_sequelize['default'].Model);
+})(_sequelize["default"].Model);

@@ -147,72 +147,61 @@ function _getPrototypeOf(o) {
 }
 
 /**
- * 이상행동 발생 데이터 관련 테이블
+ * DB내 데이터 탐색시간 감축용 이상행동 감지내역 테이블
  * <FIELDS>           <DATA TYPE>        <INDEX>   <NULLABLE>
- * anomaly_id         : Integer          PK        FALSE
- * anomaly_type       : Enum (STRING)              FALSE
- * start_time         : Date                       FALSE
- * end_time           : Date                       FALSE
- * follow_up          : Enum                       TRUE
- *
- *
- * <RELATIONSHIP>     <COLUMN>
- * video              : video_id         FK        FALSE
+ * anomaly_log_id     : Integer           PK       FALSE
+ * center_name        : String                     FALSE
+ * address            : String                     FALSE
+ * record_date        : Date                       FALSE
+ * anomaly_type       : String                     FALSE
  */
 module.exports = /*#__PURE__*/ (function (_Sequelize$Model) {
-  _inherits(Anomaly, _Sequelize$Model);
+  _inherits(AnomalyLog, _Sequelize$Model);
 
-  var _super = _createSuper(Anomaly);
+  var _super = _createSuper(AnomalyLog);
 
-  function Anomaly() {
-    _classCallCheck(this, Anomaly);
+  function AnomalyLog() {
+    _classCallCheck(this, AnomalyLog);
 
     return _super.apply(this, arguments);
   }
 
-  _createClass(Anomaly, null, [
+  _createClass(AnomalyLog, null, [
     {
       key: "init",
       value: function init(sequelize, DataTypes) {
-        return _get(_getPrototypeOf(Anomaly), "init", this).call(
+        return _get(_getPrototypeOf(AnomalyLog), "init", this).call(
           this,
           {
-            anomaly_id: {
+            anomaly_log_id: {
               type: DataTypes.INTEGER,
               autoIncrement: true,
               primaryKey: true,
             },
+            center_name: {
+              type: DataTypes.STRING(150),
+              allowNull: false,
+            },
+            address: {
+              type: DataTypes.STRING(150),
+              allowNull: false,
+            },
+            record_date: {
+              type: DataTypes.DATE,
+              allowNull: false,
+            },
             anomaly_type: {
               type: DataTypes.STRING(20),
               allowNull: false,
-            },
-            start_time: {
-              type: DataTypes.DATE,
-              allowNull: false,
-            },
-            end_time: {
-              type: DataTypes.DATE,
-              allowNull: false,
-            },
-            follow_up: {
-              type: DataTypes.ENUM({
-                values: [
-                  "이상행동감지",
-                  "영상확인-일상행동",
-                  "영상확인-폭력",
-                  "영상확인-실신",
-                ],
-              }),
-              allowNull: true,
             },
           },
           {
             sequelize: sequelize,
             timestamps: false,
             paranoid: false,
-            modelName: "Anomaly",
-            tableName: "anomaly",
-            freezetableName: false,
+            modelName: "AnomalyLog",
+            tableName: "anomaly_log",
+            freezeTableName: false,
             charset: "utf8",
             collate: "utf8_general_cli",
           }
@@ -221,14 +210,9 @@ module.exports = /*#__PURE__*/ (function (_Sequelize$Model) {
     },
     {
       key: "associate",
-      value: function associate(db) {
-        db.Anomaly.belongsTo(db.Video, {
-          foreignKey: "video_id",
-          targetKey: "video_id",
-        });
-      },
+      value: function associate(db) {},
     },
   ]);
 
-  return Anomaly;
+  return AnomalyLog;
 })(_sequelize["default"].Model);

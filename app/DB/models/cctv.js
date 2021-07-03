@@ -33,6 +33,7 @@ module.exports = class CCTV extends Sequelize.Model {
         cctv_mac: {
           type: DataTypes.STRING(30),
           allowNull: false,
+          unique: true,
         },
         quality: {
           type: DataTypes.ENUM({
