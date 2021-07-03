@@ -6,15 +6,15 @@
    - cctv_mac 컬럼 추가
    - log table 추가
 
-# 변경(예정)사항 (v2.0.5)
+# 변경사항 (v2.0.5)
 1. manage_type, manage_type_detail 임시 Table 삭제
-2. user, requester table 통합
-3. video_management 컬럼 수정 (열람 관리를 초점으로 개편)
-4. 
+2. user, requester table 통합 (본 모니터링 시스템에 대한 로그인 기능 관련)
+3. video_management Table 삭제 (구현 범위 조정에 따른 조정)
+4. video Table의 delete date, delete issue 삭제 (구현 범위 조정에 따른 조정)
 
 # ERD
 
-![ERD(v2.0.4).png](<./ERD(v2.0.4).png>)
+![ERD(v2.0.5).png](<./ERD(v2.0.5).png>)
 
 # DB Schema
 
