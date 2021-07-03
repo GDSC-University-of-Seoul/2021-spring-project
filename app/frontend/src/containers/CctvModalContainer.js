@@ -114,9 +114,9 @@ function CctvModalContainer({ selectedData, clickedData }) {
     dispatch(fetchSido());
   };
 
-  // 어린이집 검색 모달창 닫기
-  const closeSearchCenter = () => {
-    dispatch(closeSearchModal());
+  // 어린이집 검색 모달창 취소 선택
+  const cancelSearchCenter = () => {
+    dispatch(initSearchModal());
   };
 
   // 어린이집 검색 모달창 도·특별시·광역시 선택
@@ -137,7 +137,7 @@ function CctvModalContainer({ selectedData, clickedData }) {
   // 어린이집 검색 모달창 폼 정보 제출
   const submitCenter = (e) => {
     e.preventDefault();
-    closeSearchCenter();
+    dispatch(closeSearchModal());
   };
 
   return (
@@ -169,7 +169,7 @@ function CctvModalContainer({ selectedData, clickedData }) {
             sggSelect={sggSelect}
             centerSelect={centerSelect}
             submitCenter={submitCenter}
-            closeSearchCenter={closeSearchCenter}
+            cancelSearchCenter={cancelSearchCenter}
           />
         </>
       ) : (updateData || deleteData) && selectedData.length === 0 ? (

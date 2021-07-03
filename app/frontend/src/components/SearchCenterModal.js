@@ -27,7 +27,7 @@ function SearchCenterModal({
   sggSelect,
   centerSelect,
   submitCenter,
-  closeSearchCenter,
+  cancelSearchCenter,
 }) {
   return (
     <>
@@ -96,7 +96,7 @@ function SearchCenterModal({
                 variant="contained"
                 color="secondary"
                 disableElevation
-                onClick={closeSearchCenter}
+                onClick={cancelSearchCenter}
               >
                 취소
               </Button>
