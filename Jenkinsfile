@@ -7,7 +7,7 @@ pipeline {
              }
              post {
                  always {
-                     jiraSendBuildInfo site: '2021-spring-dsc-project-team.atlassian.net', branch: '*/master'
+                     jiraSendBuildInfo site: '2021-spring-dsc-project-team.atlassian.net'
                  }
              }
          }
