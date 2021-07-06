@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "javascript for db",
   "main": "index.js",
-  "dependencies": {  
+  "dependencies": {
+    "babel-node": "0.0.1-security",
     "child_process": "^1.0.2",
     "dotenv": "^10.0.0",
     "fetch": "^1.1.0",
