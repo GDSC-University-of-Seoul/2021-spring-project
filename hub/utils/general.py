@@ -19,7 +19,7 @@ def check_git_status():
     print(colorstr("github: "), end="")
     try:
         assert (
-            Path(".git").exists() or Path("../../.git").exists()
+            Path(".git").exists() or Path("../.git").exists()
         ), "skipping check (not a git repository)"
         assert check_online(), "skipping check (offline)"
 
@@ -85,6 +85,8 @@ def check_requirements(requirements="requirements.txt", exclude=()):
             f"{prefix} ⚠️ {colorstr('bold', 'Restart runtime or rerun command for updates to take effect')}\n"
         )
         print(emojis(s))  # emoji-safe
+    else:
+        print(f"{prefix} All requirement already satisfied")
 
 
 if __name__ == "__main__":
