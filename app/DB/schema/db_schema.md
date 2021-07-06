@@ -11,6 +11,9 @@
 2. user, requester table 통합 (본 모니터링 시스템에 대한 로그인 기능 관련)
 3. video_management Table 삭제 (구현 범위 조정에 따른 조정)
 4. video Table의 delete date, delete issue 삭제 (구현 범위 조정에 따른 조정)
+5. anomaly_type 자료형 변경(String->Enum)  
+   - 폭행, 싸움, 실신, 절도, 기물파손, 배회, 침입, 투기, 강도, 추행, 납치, 주취행동
+
 
 # ERD
 
