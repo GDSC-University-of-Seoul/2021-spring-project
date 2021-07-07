@@ -20,5 +20,5 @@
     $ref: "cctv/cctv-update.yaml"
   delete:
     $ref: "cctv/cctv-delete.yaml"
-/anomalies:
-  $ref: "anomaly/anomaly-list.yaml"
+/anomalies/logs:
+  $ref: "log/log-list.yaml"

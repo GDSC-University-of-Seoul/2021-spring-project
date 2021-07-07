@@ -1,13 +1,9 @@
 get:
   tags:
-    - anomaly
-  summary: get all anomalies
+    - anomaly log
+  summary: get all anomaly logs
   description:
   parameters:
-    - name: center_id
-      in: query
-      required: false
-      description: 어린이집 id
     - name: center_name
       in: query
       required: false
@@ -22,17 +18,14 @@ get:
             items:
               type: object
               properties:
-                anomaly_id:
+                anomaly_log_id:
                   type: integer
+                center_name:
+                  type: string
+                address:
+                  type: string
+                record_date:
+                  type: string
+                  format: date
                 anomaly_type:
                   type: string
-                start_time:
-                  type: string
-                  format: date-time
-                end_time:
-                  type: string
-                  format: date-time
-                follow_up:
-                  type: string
-                video_id:
-                  type: integer
