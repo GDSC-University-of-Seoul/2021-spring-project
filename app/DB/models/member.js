@@ -1,21 +1,21 @@
 import Sequelize from "sequelize";
 
-/**
+/*
  * 로그인 관련 테이블
  * <FIELDS>           <DATA TYPE>        <INDEX>   <NULLABLE>
- * user_id            : String(50)          PK        FALSE
+ * member_id          : String(50)          PK        FALSE
  * password           : String(50)                    FALSE
- * user_name          : String(10)                    FALSE
- * user_phone         : String(12)                    FALSE
+ * member_name        : String(10)                    FALSE
+ * member_phone       : String(12)                    FALSE
  * email              : String(50)                    TRUE
  *
  */
 
-module.exports = class User extends Sequelize.Model {
+module.exports = class Member extends Sequelize.Model {
   static init(sequelize, DataTypes) {
     return super.init(
       {
-        user_id: {
+        member_id: {
           type: DataTypes.STRING(50),
           primaryKey: true,
         },
@@ -23,11 +23,11 @@ module.exports = class User extends Sequelize.Model {
           type: DataTypes.STRING(50),
           allowNull: false,
         },
-        user_name: {
+        member_name: {
           type: DataTypes.STRING(10),
           allowNull: false,
         },
-        user_phone: {
+        member_phone: {
           type: DataTypes.STRING(12),
           allowNull: false,
         },
@@ -40,8 +40,8 @@ module.exports = class User extends Sequelize.Model {
         sequelize,
         timestamps: false,
         paranoid: false,
-        modelName: "User",
-        tableName: "user",
+        modelName: "Member",
+        tableName: "member",
         freezetableName: false,
         charset: "utf8",
         collate: "utf8_general_cli",
