@@ -14,9 +14,12 @@
 5. anomaly_type 자료형 변경(String->Enum)  
    - 폭행, 싸움, 실신, 절도, 기물파손, 배회, 침입, 투기, 강도, 추행, 납치, 주취행동
 
+# 변경사항 (v2.0.6)
+1. user Table 이름을 member로 변경
+   - 이에 따라 컬럼명 또한 member_id, member_name 등으로 수정
 
 # ERD
-
+제가 erd 그리는 툴을 다시 설치하고 업데이트하겠습니다!
 ![ERD(v2.0.5).png](<./ERD(v2.0.5).png>)
 
 # DB Schema
