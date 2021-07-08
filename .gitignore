@@ -27,21 +27,12 @@ node_modules/
 .prettierrc
 .eslintrc.json
 
-## Python
-__pycache__/
-
 ## Local development environment
 .venv/
 .vscode/
 .env
 
-## Dummy data
-.dummy/
-
 ## etc
 aws/
 migrations/
 samples/
-
-## ignorefile
-config.yml

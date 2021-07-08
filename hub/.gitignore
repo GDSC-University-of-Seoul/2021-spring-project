@@ -1,0 +1,8 @@
+## Python Cache
+__pycache__/
+
+## Log directory
+logs/
+
+## Logs
+config.yml
