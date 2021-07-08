@@ -1,5 +1,9 @@
 import express from "express";
-import { sequelize, Sequelize, District } from "../../DB/models/transform";
+import {
+  sequelize,
+  Sequelize,
+  District,
+} from "../../database/models/transform";
 import { districtJoin } from "../utils/join";
 import upperDistricts from "../utils/upperDistrict";
 
