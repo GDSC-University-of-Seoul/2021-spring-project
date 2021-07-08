@@ -1,4 +1,4 @@
-name: Lint Action - PY(ML)
+name: Lint Action - PY(hub)
 
 on: 
   push:

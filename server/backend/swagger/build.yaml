@@ -5,10 +5,10 @@ info:
   description: Kids Keeper API 문서
   license:
     name: Apache 2.0
-    url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
+    url: "https://www.apache.org/licenses/LICENSE-2.0.html"
 servers:
   - description: dev servers
-    url: 'http://localhost:3000/api/'
+    url: "http://localhost:3000/api/"
 paths:
   /districts:
     get:
@@ -22,7 +22,7 @@ paths:
           required: false
           description: 상위 행정구역 코드
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -39,7 +39,7 @@ paths:
                       type: string
                     count:
                       type: string
-  '/districts/{district_code}':
+  "/districts/{district_code}":
     get:
       tags:
         - district
@@ -51,7 +51,7 @@ paths:
           required: true
           description: 행정구역 코드
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -66,7 +66,7 @@ paths:
                     type: string
                   count:
                     type: string
-  '/districts/{district_name}':
+  "/districts/{district_name}":
     get:
       tags:
         - district
@@ -78,7 +78,7 @@ paths:
           required: true
           description: 행정구역 이름
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -109,7 +109,7 @@ paths:
           required: false
           description: 행정구역 이름
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -144,7 +144,7 @@ paths:
                       type: string
                     district_name:
                       type: string
-  '/centers/{center_id}':
+  "/centers/{center_id}":
     get:
       tags:
         - children care center
@@ -156,7 +156,7 @@ paths:
           required: true
           description: 어린이집 ID
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -189,7 +189,7 @@ paths:
                     type: string
                   district_name:
                     type: string
-  '/centers/{center_name}':
+  "/centers/{center_name}":
     get:
       tags:
         - children care center
@@ -201,7 +201,7 @@ paths:
           required: true
           description: 어린이집 이름
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -246,7 +246,7 @@ paths:
           required: false
           description: 어린이집 id
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -301,7 +301,7 @@ paths:
                 quality:
                   type: string
       responses:
-        '201':
+        "201":
           description: CREATED
           content:
             application/json:
@@ -324,7 +324,7 @@ paths:
                     type: string
                   center_id:
                     type: integer
-  '/cctvs/{cctv_mac}':
+  "/cctvs/{cctv_mac}":
     put:
       tags:
         - cctv
@@ -352,7 +352,7 @@ paths:
                 quality:
                   type: string
       responses:
-        '200':
+        "200":
           description: UPDATED
           content:
             application/json:
@@ -384,7 +384,7 @@ paths:
           required: true
           description: CCTV MAC 주소
       responses:
-        '204':
+        "204":
           description: DELETE
   /anomalies/logs:
     get:
@@ -398,7 +398,7 @@ paths:
           required: false
           description: 어린이집 이름
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
