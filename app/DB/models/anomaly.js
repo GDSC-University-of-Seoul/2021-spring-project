@@ -24,7 +24,22 @@ module.exports = class Anomaly extends Sequelize.Model {
           primaryKey: true,
         },
         anomaly_type: {
-          type: DataTypes.STRING(20),
+          type: DataTypes.ENUM({
+            values: [
+              "폭행",
+              "싸움",
+              "실신",
+              "절도",
+              "기물파손",
+              "배회",
+              "침입",
+              "투기",
+              "강도",
+              "추행",
+              "납치",
+              "주취행동"
+            ],
+          }),
           allowNull: false,
         },
         start_time: {

@@ -28,11 +28,3 @@
 
 1. 변수명 변경  
    전치사의 사용보다는 복합 명사의 사용이 낫다는 리뷰에 기반해 use_of_area가 area_usage로 변경되었습니다.
-
-# ERD
-
-![ERD(v2.0.3).png](<./ERD(v2.0.3).png>)
-
-# DB Schema
-
-[DB Schema(v2.0.3)](https://2021-spring-dsc-project-team.atlassian.net/wiki/spaces/KDK/pages/6029378/DB+v1.0.0, 'confluence - db schema')에 데이터타입 및 제약조건에 대한 정보가 있습니다.
