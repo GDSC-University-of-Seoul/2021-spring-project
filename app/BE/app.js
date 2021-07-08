@@ -11,6 +11,7 @@ import districtRouter from "./routes/district";
 import centerRouter from "./routes/childCareCenter";
 import cctvRouter from "./routes/cctv";
 import anomalyRouter from "./routes/anomaly";
+import logRouter from "./routes/log";
 import cors from "cors";
 
 dotenv.config();
@@ -40,6 +41,7 @@ app.use("/api/districts/", districtRouter);
 app.use("/api/centers/", centerRouter);
 app.use("/api/cctvs/", cctvRouter);
 app.use("/api/anomalies/", anomalyRouter);
+app.use("/api/anomalies/logs", logRouter);
 
 const swaggerSpecs = yaml.load(path.join(__dirname, "/swagger/build.yaml"));
 app.use("/api/docs/", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));

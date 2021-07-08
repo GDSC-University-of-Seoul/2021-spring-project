@@ -48,6 +48,9 @@ router
       });
       res.status(201).json(cctv);
     } catch (err) {
+      if (err instanceof Sequelize.UniqueConstraintError) {
+        res.status(409).send("Duplicate cctv_mac value.");
+      }
       console.error(err);
       next(err);
     }
@@ -72,6 +75,9 @@ router
       );
       res.json(cctv);
     } catch (err) {
+      if (err instanceof Sequelize.UniqueConstraintError) {
+        res.status(409).send("Duplicate cctv_mac value.");
+      }
       console.error(err);
       next(err);
     }
