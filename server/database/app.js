@@ -1,5 +1,5 @@
 // app.js
-const db = require('./models/transform/index.js');
+const db = require("./models/transform/index.js");
 
 const sequelize = db.sequelize;
 

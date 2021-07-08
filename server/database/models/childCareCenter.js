@@ -1,4 +1,4 @@
-import Sequelize from 'sequelize';
+import Sequelize from "sequelize";
 
 /**
  * 어린이집 관련 테이블
@@ -36,13 +36,21 @@ module.exports = class ChildCareCenter extends Sequelize.Model {
         },
         operation_type: {
           type: DataTypes.ENUM({
-            values: ['국공립', '사회복지법인', '법인·단체등', '민간', '가정', '협동', '직장'],
+            values: [
+              "국공립",
+              "사회복지법인",
+              "법인·단체등",
+              "민간",
+              "가정",
+              "협동",
+              "직장",
+            ],
           }),
           allowNull: false,
         },
         operation_status: {
           type: DataTypes.ENUM({
-            values: ['정상', '휴지', '폐지', '재개', ''],
+            values: ["정상", "휴지", "폐지", "재개", ""],
           }),
           allowNull: true,
         },
@@ -79,22 +87,22 @@ module.exports = class ChildCareCenter extends Sequelize.Model {
         sequelize,
         timestamps: false,
         paranoid: false,
-        modelName: 'ChildCareCenter',
-        tableName: 'child_care_center',
+        modelName: "ChildCareCenter",
+        tableName: "child_care_center",
         freezeTableName: false,
-        charset: 'utf8',
-        collate: 'utf8_general_cli',
-      },
+        charset: "utf8",
+        collate: "utf8_general_cli",
+      }
     );
   }
   static associate(db) {
     db.ChildCareCenter.hasMany(db.CCTV, {
-      foreignKey: 'center_id',
-      sourceKey: 'center_id',
+      foreignKey: "center_id",
+      sourceKey: "center_id",
     });
     db.ChildCareCenter.belongsTo(db.District, {
-      foreignKey: 'district_code',
-      targetKey: 'district_code',
+      foreignKey: "district_code",
+      targetKey: "district_code",
     });
   }
 };

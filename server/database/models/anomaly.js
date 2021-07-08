@@ -37,7 +37,7 @@ module.exports = class Anomaly extends Sequelize.Model {
               "강도",
               "추행",
               "납치",
-              "주취행동"
+              "주취행동",
             ],
           }),
           allowNull: false,
