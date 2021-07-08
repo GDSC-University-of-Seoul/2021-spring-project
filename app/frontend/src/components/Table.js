@@ -3,7 +3,8 @@ import React from "react";
 /**
  * 데이터와 제목(카테고리)에 기반해 표 구성
  *
- * @param {Object} data: 표 데이터, categories: 표 제목, setData: 표 데이터 설정 함수
+ * @param {Object} data: 표 데이터, categories: 표 제목, itemID: 표의 기준 속성
+ *                 itemCheckHandler: 표 데이터 체크 이벤트 함수, itemClickhandler: 표 데이터 클릭 이벤트 함수
  * @returns {JSX.Element} 표 컴포넌트
  */
 function Table({
@@ -18,9 +19,7 @@ function Table({
       <thead>
         <tr>
           {/*표 제목*/}
-          <th id="check">
-            <input type="checkbox" />
-          </th>
+          <th id="check"></th>
           {Object.keys(categories).map((category, index) => (
             <th key={index} id={category}>
               <div id={category}>{categories[category]}</div>
@@ -33,11 +32,11 @@ function Table({
         {data.map((element, index) => {
           return (
             <tr key={index} data-id={element[itemId]}>
-              <td>
-                <input type="checkbox" onClick={(e) => e.stopPropagation()} />
+              <td onClick={(e) => e.stopPropagation()}>
+                <input type="checkbox" />
               </td>
-              {Object.keys(element).map((key, index) => (
-                <td key={index}>{element[key]}</td>
+              {Object.keys(categories).map((category, index) => (
+                <td key={index}>{element[category]}</td>
               ))}
             </tr>
           );

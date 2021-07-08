@@ -1,0 +1,21 @@
+.searchCenter-form {
+  display: flex;
+  width: 400px;
+  flex-direction: column;
+
+  .MuiFormControl-root {
+    margin: 10px;
+  }
+  .MuiSelect-select:focus {
+    background-color: white;
+  }
+}
+.searchCenterModal-button {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+
+  & > button:first-child {
+    margin-right: 30px;
+  }
+}

@@ -7,12 +7,21 @@ import React from "react";
 import Select from "@material-ui/core/Select";
 import TextField from "@material-ui/core/TextField";
 
+/**
+ * CCTV 데이터 입력 모달창
+ *
+ * @param {Object} macValid: CCTV MAC 주소 유효성, inputData: 변경할 CCTV 데이터, submitCctvForm: 모달창 제출 이벤트 처리함수,
+ *                 checkMacInput: CCTV MAC 주소 유효성 검사 함수, closeModal: 모달창 닫기 함수, openSearchCenter: 어린이집 검색창 열기 함수
+ * @returns {JSX.Element} CCTV 데이터 입력 모달창
+ */
 function CctvInputModal({
   macValid,
+  centerInfo,
   inputData,
   submitCctvForm,
   checkMacInput,
   closeModal,
+  openSearchCenter,
 }) {
   const modalTitle = "어린이집 CCTV 정보 추가/변경";
   const qualityItems = ["SD", "HD", "FHD", "QHD", "UHD"];
@@ -22,31 +31,52 @@ function CctvInputModal({
       <Modal title={modalTitle}>
         <form className="cctvModal-form" onSubmit={submitCctvForm}>
           <TextField
-            label="어린이집 명"
+            label="어린이집 명 *"
             name="center_name"
-            required
             InputLabelProps={{
               shrink: true,
             }}
-            value={inputData ? inputData.center_name : ""}
+            inputProps={{ readOnly: true }}
+            value={
+              centerInfo
+                ? centerInfo.center_name
+                : inputData
+                ? inputData.center_name
+                : ""
+            }
           />
           <TextField
-            label="어린이집 주소"
-            name="center_address"
-            required
+            label="어린이집 주소 *"
+            name="address"
             InputLabelProps={{
               shrink: true,
             }}
-            value={inputData ? inputData.address : ""}
+            inputProps={{ readOnly: true }}
+            value={
+              centerInfo
+                ? centerInfo.address
+                : inputData
+                ? inputData.address
+                : ""
+            }
           />
+          <Button
+            variant="contained"
+            color="primary"
+            disableElevation
+            onClick={openSearchCenter}
+            className="search-cdrCenter"
+          >
+            어린이집 검색
+          </Button>
           <TextField
-            label="설치 장소"
+            label="CCTV 설치 장소"
             name="cctv_name"
             required
             InputLabelProps={{
               shrink: true,
             }}
-            value={inputData ? inputData.cctv_name : ""}
+            defaultValue={inputData ? inputData.cctv_name : ""}
           />
           <TextField
             label="MAC 주소"
@@ -57,7 +87,7 @@ function CctvInputModal({
               shrink: true,
             }}
             onChange={(e) => checkMacInput(e, e.target.value)}
-            value={inputData ? inputData.cctv_mac : ""}
+            defaultValue={inputData ? inputData.cctv_mac : ""}
           />
           {!macValid && (
             <div className="cctv_mac-alert">유효하지 않은 MAC 주소입니다.</div>
@@ -66,7 +96,7 @@ function CctvInputModal({
             <InputLabel id="cctv_quality-label">화질</InputLabel>
             <Select
               labelId="cctv_quality-label"
-              name="cctv_quality"
+              name="quality"
               defaultValue={inputData ? inputData.quality : "SD"}
             >
               {qualityItems.map((item, idx) => (
@@ -83,7 +113,8 @@ function CctvInputModal({
             InputLabelProps={{
               shrink: true,
             }}
-            value={inputData ? inputData.install_date : ""}
+            defaultValue={inputData ? inputData.install_date : ""}
+            required
           />
           <TextField
             type="date"
@@ -92,7 +123,7 @@ function CctvInputModal({
             InputLabelProps={{
               shrink: true,
             }}
-            value={inputData ? inputData.uninstall_date : ""}
+            defaultValue={inputData ? inputData.uninstall_date : ""}
           />
           <div className="cctvModal-button">
             <Button

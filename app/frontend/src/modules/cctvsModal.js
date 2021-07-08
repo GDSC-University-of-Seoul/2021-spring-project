@@ -1,12 +1,16 @@
+/**
+ * CCTV 모달창 상태
+ */
+
 const CCTVS_MODAL_OPEN = "cctvsModal/CCTVS_MODAL_OPEN";
 const CCTVS_MODAL_CLOSE = "cctvsModal/CCTVS_MODAL_CLOSE";
 const CCTVS_MODAL_MAC_VALID = "cctvsModal/CCTVS_MODAL_MAC_VALID";
 
-export const openModal = (trigger, inputData = null) => {
+// 모달창 열기
+export const openModal = (trigger) => {
   const state = {
     isOpen: true,
     macValid: true,
-    inputData,
     func: {
       createData: false,
       updateData: false,
@@ -17,11 +21,12 @@ export const openModal = (trigger, inputData = null) => {
 
   return { type: CCTVS_MODAL_OPEN, payload: state };
 };
+
+// 모달창 닫기
 export const closeModal = () => {
   const state = {
     isOpen: false,
     macValid: true,
-    inputData: null,
     func: {
       createData: false,
       updateData: false,
@@ -30,15 +35,25 @@ export const closeModal = () => {
   };
   return { type: CCTVS_MODAL_CLOSE, payload: state };
 };
+
+/**
+ * CCTV MAC 주소 유효성
+ *
+ * @param {boolean} valid: MAC 주소 유효성
+ */
 export const setMacValid = (valid) => ({
   type: CCTVS_MODAL_MAC_VALID,
   payload: valid,
 });
 
+/*
+ * isOpen : 모달창 열기
+ * macValid : MAC 주소 유효성
+ * func: 기능 선택
+ */
 const initialState = {
   isOpen: false,
   macValid: true,
-  inputData: null,
   func: {
     createData: false,
     updateData: false,

@@ -31,7 +31,7 @@ function LogTableContainer() {
     {
       center_name: "123어린이집",
       type: "안전사고",
-      time: "2021-06-12 10:00",
+      start_time: "2021-06-12 10:00",
       address: "대전광역시 서구 ABC어린이집",
     },
   ];
