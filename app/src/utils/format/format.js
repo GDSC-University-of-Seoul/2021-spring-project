@@ -11,13 +11,25 @@ export const macFormat = (macString) => {
 // MAC 주소 Formatting (AB-CD -> ABCD)
 export const macApiFormat = (macAddress) => macAddress.split("-").join("");
 
+const decimalFormat = (time) => {
+  return time < 10 ? "0" + String(time) : time;
+};
+
 // 날짜 Formatting (yyyy-mm-dd)
 export const dateFormat = (date) => {
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
   const day = date.getDate();
 
-  return `${year}-${month < 10 ? "0" + String(month) : month}-${
-    day < 10 ? "0" + String(day) : day
-  }`;
+  return `${year}-${decimalFormat(month)}-${decimalFormat(day)}`;
+};
+
+export const timeFormat = (date) => {
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  const seconds = date.getSeconds();
+
+  return `${decimalFormat(hours)}:${decimalFormat(minutes)}:${decimalFormat(
+    seconds
+  )}`;
 };

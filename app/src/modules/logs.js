@@ -9,7 +9,7 @@ export const fetchLogsData = () => async (dispatch) => {
   try {
     dispatch({ type: LOGS_DATA_LOADING });
     const logsData = await axios.get(
-      `${process.env.REACT_APP_API_SERVER}/anomalies/logs`
+      `${process.env.REACT_APP_API_SERVER}/api/anomalies/logs`
     );
     dispatch({ type: LOGS_DATA_FETCH, payload: logsData.data });
   } catch (e) {

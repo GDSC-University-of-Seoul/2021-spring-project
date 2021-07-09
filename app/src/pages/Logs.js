@@ -1,7 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import { dateFormat, timeFormat } from "../utils/format/format";
 import { useDispatch, useSelector } from "react-redux";
 
+import { BiRefresh } from "react-icons/bi";
+import { Button } from "@material-ui/core";
 import DetailLogTableContainer from "../containers/DetailLogTableContainer";
+import Loading from "../components/Loading";
 import { fetchLogsData } from "../modules/logs";
 
 /**
@@ -11,24 +15,82 @@ import { fetchLogsData } from "../modules/logs";
  */
 function Logs() {
   const {
+    loading,
     data: { newLogsData, recentLogsData },
   } = useSelector((state) => state.logsReducer);
   const dispatch = useDispatch();
 
-  useEffect(() => {
+  const [initial, setInitial] = useState(true);
+  const [refreshTimer, setRefreshTimer] = useState(null);
+
+  // 새로고침한 시간 return
+  const getTimer = useCallback(() => {
+    const getDate = new Date();
+
+    return `${dateFormat(getDate)} ${timeFormat(getDate)}`;
+  }, []);
+
+  // 로그 데이터 새로고침
+  const refreshLogsData = useCallback(() => {
     dispatch(fetchLogsData());
-  }, [dispatch]);
+    setRefreshTimer(getTimer());
+  }, [dispatch, setRefreshTimer, getTimer]);
+
+  useEffect(() => {
+    // 페이지 초기화
+    if (initial) {
+      refreshLogsData();
+      setInitial(false);
+    }
+    // 1시간마다 로그 새로고침
+    const tick = setInterval(() => {
+      refreshLogsData();
+    }, 3600000);
+
+    return () => clearInterval(tick);
+  }, [initial, refreshLogsData]);
 
   return (
     <>
       <section className="section logs">
+        <div className="logs-menu">
+          <Button
+            data-id="create"
+            variant="outlined"
+            color="primary"
+            startIcon={<BiRefresh />}
+            onClick={refreshLogsData}
+          >
+            새로고침
+          </Button>
+        </div>
         <div className="container newLogs-section">
-          <div className="newLogs section-title">신규 사건·사고 발생 로그</div>
-          <DetailLogTableContainer logsData={newLogsData} />
+          <div className="newLogs section-title">
+            신규 사건·사고 발생 로그
+            <span className="timer">{` (로그 기준 시간 : ${
+              refreshTimer || ""
+            })`}</span>
+          </div>
+          <hr />
+          {loading ? (
+            <Loading />
+          ) : (
+            <DetailLogTableContainer logsData={newLogsData} />
+          )}
         </div>
         <div className="container entireLogs-section">
-          <div className="allLogs section-title">전체 사건·사고 발생 로그</div>
-          <DetailLogTableContainer logsData={recentLogsData} />
+          <div className="allLogs section-title">
+            전체 사건·사고 발생 로그
+            <span className="timer">{` (로그 기준 시간 : ${
+              refreshTimer || ""
+            })`}</span>
+          </div>
+          <hr />
+          {loading ? (
+            <Loading />
+          ) : (
+            <DetailLogTableContainer logsData={recentLogsData} />
+          )}
         </div>
       </section>
     </>
