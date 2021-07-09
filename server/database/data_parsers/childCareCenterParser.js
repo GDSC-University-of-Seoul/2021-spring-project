@@ -1,4 +1,4 @@
-let json = require("../../.dummy/child_care_center.json");
+let json = require("../../../.dummy/child_care_center.json");
 
 var len = Object.keys(json).length;
 var keys = Object.keys(json);

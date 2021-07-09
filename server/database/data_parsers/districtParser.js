@@ -1,4 +1,4 @@
-let json = require("./region_code_name.json");
+let json = require("../../../.dummy/region_code_name.json");
 
 var len = Object.keys(json.존재).length;
 var keys = Object.keys(json.존재);
