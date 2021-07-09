@@ -13,6 +13,7 @@ function Table({
   itemId,
   itemCheckHandler,
   itemClickHandler,
+  checkOpt = true,
 }) {
   return (
     <table className="table">
@@ -33,7 +34,7 @@ function Table({
           return (
             <tr key={index} data-id={element[itemId]}>
               <td onClick={(e) => e.stopPropagation()}>
-                <input type="checkbox" />
+                {checkOpt && <input type="checkbox" />}
               </td>
               {Object.keys(categories).map((category, index) => (
                 <td key={index}>{element[category]}</td>

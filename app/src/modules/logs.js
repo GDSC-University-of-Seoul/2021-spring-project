@@ -24,8 +24,8 @@ export const fetchLogsData = () => async (dispatch) => {
 const initialState = {
   loading: false,
   data: {
-    befLogsData: [],
     newLogsData: [],
+    recentLogsData: [],
   },
   error: null,
 };
@@ -42,8 +42,13 @@ export default function logsReducer(state = initialState, action) {
         ...state,
         loading: false,
         data: {
-          befLogsData: state.data.newLogsData,
-          newLogsData: action.payload,
+          newLogsData: action.payload.filter(
+            (data) =>
+              state.data.recentLogsData.find(
+                (fetchData) => fetchData.anomaly_log_id === data.anomaly_log_id
+              ) === -1
+          ),
+          recentLogsData: action.payload,
         },
         error: null,
       };
