@@ -14,6 +14,7 @@ jeju_sigungu_code = ["49110", "49130"]
 # 반복문 돌며 어린이집 정보 딕셔너리 형태로 저장 (키 : 어린이집코드, 값 : 튜플)
 target_data = {}
 
+
 def parse_center_info(district_code):
     base_url = os.getenv("OPERATION_URL")
 
