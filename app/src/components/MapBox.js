@@ -56,7 +56,7 @@ function MapBox({ geojson }) {
   );
 
   const [viewport, setViewport] = useState({
-    width: "100%",
+    width: 770,
     height: 800,
     latitude: districtViewport["대한민국"].lat,
     longitude: districtViewport["대한민국"].lng,
@@ -115,7 +115,7 @@ function MapBox({ geojson }) {
           dispatch(sidoClick(districtArea, selectedDistrictInfo));
 
           setViewport({
-            width: "100%",
+            width: 770,
             height: 800,
             latitude: districtViewport[selectedDistrictInfo.name].lat,
             longitude: districtViewport[selectedDistrictInfo.name].lng,
@@ -146,7 +146,7 @@ function MapBox({ geojson }) {
    */
   const resetClickHandler = useCallback(() => {
     setViewport({
-      width: "100%",
+      width: 770,
       height: 800,
       latitude: districtViewport["대한민국"].lat,
       longitude: districtViewport["대한민국"].lng,
