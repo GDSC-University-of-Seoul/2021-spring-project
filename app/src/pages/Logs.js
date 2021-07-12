@@ -4,8 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { BiRefresh } from "react-icons/bi";
 import { Button } from "@material-ui/core";
-import DetailLogTableContainer from "../containers/DetailLogTableContainer";
-import Loading from "../components/Loading";
+import LogTableContainer from "../containers/LogTableContainer";
 import { fetchLogsData } from "../modules/logs";
 
 /**
@@ -72,11 +71,7 @@ function Logs() {
             })`}</span>
           </div>
           <hr />
-          {loading ? (
-            <Loading />
-          ) : (
-            <DetailLogTableContainer logsData={newLogsData} />
-          )}
+          <LogTableContainer loading={loading} logsData={newLogsData} />
         </div>
         <div className="container entireLogs-section">
           <div className="allLogs section-title">
@@ -86,11 +81,7 @@ function Logs() {
             })`}</span>
           </div>
           <hr />
-          {loading ? (
-            <Loading />
-          ) : (
-            <DetailLogTableContainer logsData={recentLogsData} />
-          )}
+          <LogTableContainer loading={loading} logsData={recentLogsData} />
         </div>
       </section>
     </>
