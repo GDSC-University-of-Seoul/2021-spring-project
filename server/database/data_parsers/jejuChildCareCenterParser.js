@@ -19,8 +19,9 @@ for (let i = 0; i < len; i++) {
     web_page: json[keys[i]][9],
     latitude: json[keys[i]][10],
     longitude: json[keys[i]][11],
-    district_code: json[keys[i]][1] + "00000",
+    district_code: String(Number(json[keys[i]][1] + "00000") + 100000000),
   });
+  console.log(String(Number(json[keys[i]][1] + "00000") + 100000000));
 }
 // console.log(jeju_centers);
 exports.jeju_centers = jeju_centers;
