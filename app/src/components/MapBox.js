@@ -64,6 +64,7 @@ function MapBox({ geojson }) {
   });
 
   // geojsonData 를 dependency 배열에 넣으면 시군구 기능이 정상적으로 동작하지 않음
+  /* eslint-disable */
   useEffect(() => {
     dispatch(resetDistrict(districtArea));
     if (!geojsonData) dispatch(setGeojsonData(districtArea));
