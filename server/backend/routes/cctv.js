@@ -1,5 +1,9 @@
 import express from "express";
-import { Sequelize, ChildCareCenter, CCTV } from "../../DB/models/transform";
+import {
+  Sequelize,
+  ChildCareCenter,
+  CCTV,
+} from "../../database/models/transform";
 
 const router = express.Router();
 
