@@ -1,0 +1,39 @@
+name: Lint Action - JS(app)
+
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - develop
+
+defaults:
+  run:
+    working-directory: app/
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Run NPM Package Install
+        run: yarn install --frozen-lockfile
+
+      - name: Run ESLint
+        run: yarn eslint .
+
+      - name: Run Prettier
+        run: yarn prettier . --write
