@@ -11,10 +11,12 @@ class Logger:
     def logger_setup(self, verbosity, logfile, logger_name, filelog):
         logger = logging.getLogger(logger_name)
         if len(logger.handlers) > 0:
-            return logger 
-        
+            return logger
+
         log_level = (3 - verbosity) * 10
-        format = "[%(levelname)6s] [%(asctime)s] %(module)8s - %(process)5d - %(message)s"
+        format = (
+            "[%(levelname)6s] [%(asctime)s] %(module)8s - %(process)5d - %(message)s"
+        )
         formatter = logging.Formatter(format)
         logger.setLevel(log_level)
         logger.propagate = False

@@ -102,7 +102,7 @@ def extract_video(config, file, meta):
 
             if not video_stream.more():
                 break
-            
+
             frame = cv2.resize(frame, size)
             # display_frame(config, frame, 2, action_frame_list)
 

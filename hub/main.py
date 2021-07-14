@@ -9,6 +9,7 @@ from metadata import load_metadata
 
 logger = Logger().get_logger()
 
+
 def train(opt, config):
     """
     Train the model
@@ -25,7 +26,7 @@ def train(opt, config):
     for metafile in metadata:
         videofile = search_file(config["dataset"]["directory"], metafile.filename)
         extract_video(config["video"], videofile, metafile)
-        
+
 
 def main():
     # Argument options
@@ -48,6 +49,6 @@ def main():
 
 
 if __name__ == "__main__":
-    check_git_status()    # Current Git Error
+    check_git_status()  # Current Git Error
     check_requirements()
     main()
