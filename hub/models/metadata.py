@@ -172,7 +172,7 @@ def load_metadata(config, limit=None, external_log=None):
         metadata.append(MetaData(parse_xml(file)))
 
     if external_log:
-        external_log.log(f"Metadata xml_files is loaded ({len(metadata)} xml files)")
+        external_log.info(f"Metadata xml_files is loaded ({len(metadata)} xml files)")
 
     return metadata
 

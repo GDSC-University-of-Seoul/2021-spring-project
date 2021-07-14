@@ -2,7 +2,7 @@ import enum
 
 
 class AnomalyEnum(enum.Enum):
-    # Main Target
+    # Main Target 3 
     ASSUALT = enum.auto()  # 폭행
     FIGHT = enum.auto()  # 싸움
     SWOON = enum.auto()  # 실신
