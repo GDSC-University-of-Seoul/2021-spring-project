@@ -30,7 +30,9 @@ export const fetchCctvsData = () => async (dispatch) => {
         ...cctvData,
         cctv_mac: macFormat(cctvData.cctv_mac),
         install_date: dateFormat(installDate),
-        uninstall_date: dateFormat(uninstallDate),
+        uninstall_date: cctvData.uninstall_date
+          ? dateFormat(uninstallDate)
+          : "",
       };
     });
 
@@ -161,7 +163,6 @@ export default function cctvsReducer(state = initialState, action) {
       return {
         ...state,
         loading: false,
-        cctvsData: [],
         error: action.payload,
       };
     default:
