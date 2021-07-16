@@ -1,0 +1,49 @@
+.logs {
+  min-width: 1000px;
+
+  .logs-menu {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+
+    button {
+      background-color: white;
+      font-weight: 600;
+    }
+  }
+  .section-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+
+    .timer {
+      font-size: 0.9rem;
+      font-weight: 400;
+      margin-right: 10px;
+    }
+  }
+  .newLogs-section {
+    padding: 20px;
+    height: 380px;
+    overflow: auto;
+    position: relative;
+
+    .loading-container {
+      position: absolute;
+      top: 40%;
+      left: 50%;
+    }
+  }
+  .entireLogs-section {
+    margin-top: 10px;
+    padding: 20px;
+    height: 400px;
+    overflow: auto;
+    position: relative;
+
+    .loading-container {
+      position: absolute;
+      top: 40%;
+      left: 50%;
+    }
+  }
+}

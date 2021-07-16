@@ -1,0 +1,33 @@
+/* font */
+@import url("https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap");
+
+/* config */
+@import "config/reset.scss";
+
+/* pages */
+@import "pages/pages";
+@import "pages/home";
+@import "pages/monitoring";
+@import "pages/cctvs";
+@import "pages/logs";
+@import "pages/settings";
+
+/* components */
+@import "components/header";
+@import "components/sideBar";
+@import "components/mapbox";
+@import "components/mapboxCategory";
+@import "components/loading";
+@import "components/table";
+@import "components/modal";
+@import "components/cctvModal";
+@import "components/searchCenterModal";
+
+* {
+  box-sizing: border-box;
+}
+body {
+  min-width: 1000px;
+  font-size: 16px;
+  font-family: "Nanum Gothic", sans-serif;
+}

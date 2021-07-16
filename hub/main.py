@@ -1,14 +1,13 @@
 import os
 import yaml
 import argparse
-from utils.files import search_file
-from utils.video import extract_video
-from utils.logger import Logger
 from utils.general import check_git_status, check_requirements
+from utils.logger import Logger
+from models.utils.files import search_file
+from models.utils.video import extract_video
 from metadata import load_metadata
 
-
-logger = Logger(logger_name=__name__).logger
+logger = Logger().get_logger()
 
 
 def train(opt, config):
@@ -16,12 +15,12 @@ def train(opt, config):
     Train the model
     """
     # Process id for checking memory
-    logger.log(f"Model Train is start Pid( {os.getpid()} )")
+    logger.info(f"Model Train is start Pid( {os.getpid()} )")
 
     # Load metadata files and convert to data (pkl file)
-    logger.log(f"Load Metadata Files")
+    logger.info(f"Load Metadata Files")
     metadata = load_metadata(config["metadata"], external_log=logger)
-    logger.log(f"All Metadata Files are converted to Data  : {len(metadata)}")
+    logger.info(f"All Metadata Files are converted to Data  : {len(metadata)}")
 
     # Extract data frame list from video data files
     for metafile in metadata:
@@ -29,15 +28,11 @@ def train(opt, config):
         extract_video(config["video"], videofile, metafile)
 
 
-if __name__ == "__main__":
-    # Check status
-    check_git_status()
-    check_requirements()
-
+def main():
     # Argument options
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--data", type=str, default="model/model_config.yml", help="model.yml path"
+        "--data", type=str, default="model_config.yml", help="model.yml path"
     )
     opt = parser.parse_args()
 
@@ -49,3 +44,11 @@ if __name__ == "__main__":
         train(opt, config)
     except KeyboardInterrupt:
         logger.warn(f"Abort! (KeyboardInterrupt)")
+
+    logger.info("Main Process")
+
+
+if __name__ == "__main__":
+    check_git_status()  # Current Git Error
+    check_requirements()
+    main()
