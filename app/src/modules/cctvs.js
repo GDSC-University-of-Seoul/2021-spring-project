@@ -2,6 +2,8 @@
  * 백엔드 API를 통해 CCTV 데이터 관리
  */
 
+import { dateFormat, macApiFormat, macFormat } from "../utils/format/format";
+
 import axios from "axios";
 
 const CCTVS_DATA_LOADING = "cctvs/CCTVS_DATA_LOADING";
@@ -10,30 +12,6 @@ const CCTVS_DATA_CREATE = "cctvs/CCTVS_DATA_CREATE";
 const CCTVS_DATA_UPDATE = "cctvs/CCTVS_DATA_UPDATE";
 const CCTVS_DATA_DELETE = "cctvs/CCTVS_DATA_DELETE";
 const CCTVS_DATA_ERROR = "cctvs/CCTVS_DATA_ERROR";
-
-// MAC 주소 Formatting (ABCD -> AB-CD)
-const macFormat = (macString) => {
-  let macAddress = [];
-
-  for (let i = 0; i < macString.length; i += 2) {
-    macAddress.push(macString.substr(i, 2));
-  }
-  return macAddress.join("-");
-};
-
-// MAC 주소 Formatting (AB-CD -> ABCD)
-const macApiFormat = (macAddress) => macAddress.split("-").join("");
-
-// 날짜 Formatting (yyyy-mm-dd)
-const dateFormat = (date) => {
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
-
-  return `${year}-${month < 10 ? "0" + String(month) : month}-${
-    day < 10 ? "0" + String(day) : day
-  }`;
-};
 
 // 모든 CCTV Data 가져오기 (READ)
 export const fetchCctvsData = () => async (dispatch) => {
