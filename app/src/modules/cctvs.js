@@ -30,7 +30,9 @@ export const fetchCctvsData = () => async (dispatch) => {
         ...cctvData,
         cctv_mac: macFormat(cctvData.cctv_mac),
         install_date: dateFormat(installDate),
-        uninstall_date: dateFormat(uninstallDate),
+        uninstall_date: cctvData.uninstall_date
+          ? dateFormat(uninstallDate)
+          : "",
       };
     });
 

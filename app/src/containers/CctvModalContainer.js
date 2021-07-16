@@ -65,8 +65,6 @@ function CctvModalContainer({ selectedData, clickedData }) {
   // 모달창 폼 제출 이벤트 처리 함수 (생성, 변경)
   const submitHandler = (e) => {
     e.preventDefault();
-    // Todo : 예외 처리
-    // - CCTV MAC 주소 중복 시 에러 메세지 출력 (HTTP 상태 코드 활용)
 
     const targets = e.target;
     const befInfo = clickedData || selectedData[0];
