@@ -35,6 +35,10 @@ module.exports = class AnomalyLog extends Sequelize.Model {
           type: DataTypes.STRING(20),
           allowNull: false,
         },
+        center_id: {
+          type: DataTypes.STRING(150),
+          allowNull: false,
+        }
       },
       {
         sequelize,

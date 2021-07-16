@@ -1,4 +1,4 @@
-let json = require("../../.dummy/child_care_center.json");
+let json = require("../../../.dummy/child_care_center.json");
 
 var len = Object.keys(json).length;
 var keys = Object.keys(json);
@@ -22,5 +22,5 @@ for (let i = 0; i < len; i++) {
     district_code: json[keys[i]][1] + "00000",
   });
 }
-console.log(centers);
+// console.log(centers);
 exports.centers = centers;
