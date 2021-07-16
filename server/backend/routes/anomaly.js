@@ -25,12 +25,13 @@ router.post("/", async (req, res, next) => {
         attributes: [],
         include: {
           model: ChildCareCenter,
-          attributes: ["center_name", "address"],
+          attributes: ["center_id", "center_name", "address"],
         },
       },
       attributes: [
         "video_id",
         "record_date",
+        [Sequelize.col("CCTV.ChildCareCenter.center_id"), "center_id"],
         [Sequelize.col("CCTV.ChildCareCenter.center_name"), "center_name"],
         [Sequelize.col("CCTV.ChildCareCenter.address"), "address"],
       ],
@@ -52,6 +53,7 @@ router.post("/", async (req, res, next) => {
         },
       });
       await AnomalyLog.create({
+        center_id: center_obj.center_id,
         center_name: center_obj.center_name,
         address: center_obj.address,
         record_date: video_obj.record_date,
@@ -59,6 +61,7 @@ router.post("/", async (req, res, next) => {
       });
     } else {
       await AnomalyLog.create({
+        center_id: video_obj.dataValues.center_id,
         center_name: video_obj.dataValues.center_name,
         address: video_obj.dataValues.address,
         record_date: video_obj.record_date,
