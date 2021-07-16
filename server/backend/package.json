@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "swagger": "swagger-cli bundle swagger/_openapi.yaml --outfile swagger/build.yaml --type yaml",
-    "start": "nodemon app --exec babel-node ../BE/app.js"
+    "start": "nodemon app --exec babel-node app.js"
   },
   "devDependencies": {
     "@babel/cli": "^7.13.16",
