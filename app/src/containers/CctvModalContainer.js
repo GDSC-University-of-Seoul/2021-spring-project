@@ -14,7 +14,7 @@ import {
   deleteCctvsData,
   updateCctvsData,
 } from "../modules/cctvs";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector, useStore } from "react-redux";
 
 import { Button } from "@material-ui/core";
 import CctvDeleteModal from "../components/CctvDeleteModal";
@@ -44,6 +44,8 @@ function CctvModalContainer({ selectedData, clickedData }) {
 
   const dispatch = useDispatch();
 
+  const store = useStore();
+
   // CCTV MAC 주소 유효성 검사 함수
   const checkMacInput = (e, macAddress) => {
     const macRegex = new RegExp(`^([0-9A-F]{2}[-]){5}([0-9A-F]{2})$`);
@@ -63,7 +65,6 @@ function CctvModalContainer({ selectedData, clickedData }) {
   // 모달창 폼 제출 이벤트 처리 함수 (생성, 변경)
   const submitHandler = (e) => {
     e.preventDefault();
-
     // Todo : 예외 처리
     // - CCTV MAC 주소 중복 시 에러 메세지 출력 (HTTP 상태 코드 활용)
 
@@ -84,28 +85,45 @@ function CctvModalContainer({ selectedData, clickedData }) {
     submitInfo.uninstall_date =
       submitInfo.uninstall_date !== "" ? submitInfo.uninstall_date : null;
 
-    // CCTV 데이터 생성 (Create)
+    // MAC 주소 중복 체크 이후 CCTV 데이터 생성 (Create)
     if (createData) {
-      dispatch(createCctvsData(submitInfo));
+      dispatch(createCctvsData(submitInfo)).then(() => {
+        if (!checkDuplicatedMac()) closeHandler();
+      });
     }
     // CCTV 데이터 변경 (Update)
     else if (updateData) {
-      // 1. center_id 나 cctv_mac 이 변경된 경우 (기존 CCTV 정보 삭제 후 새로 CCTV 정보 등록)
+      // 1. center_id 나 cctv_mac 이 변경된 경우 (MAC 주소 중복 체크 이후 새로 CCTV 정보 등록, 기존 CCTV 정보 삭제)
       if (
         (submitInfo.center_id && submitInfo.center_id !== befInfo.center_id) ||
         submitInfo.cctv_mac !== befInfo.cctv_mac
       ) {
-        dispatch(deleteCctvsData([befInfo]));
         if (!submitInfo.center_id) submitInfo.center_id = befInfo.center_id;
-        dispatch(createCctvsData(submitInfo));
+
+        dispatch(createCctvsData(submitInfo)).then(() => {
+          if (!checkDuplicatedMac()) {
+            dispatch(deleteCctvsData([befInfo]));
+            closeHandler();
+          }
+        });
       }
       // 2. center_id, cctv_mac 모두 변경되지 않은 경우 (기존 CCTV 정보 변경)
       else {
-        dispatch(updateCctvsData(submitInfo));
+        dispatch(updateCctvsData(submitInfo)).then(() => closeHandler());
       }
     }
-    closeHandler();
   };
+
+  // 중복 MAC 주소 체크 (중복 MAC 주소 등록 시 409 상태코드 반환)
+  const checkDuplicatedMac = () => {
+    const { error } = store.getState().cctvsReducer;
+    if (error && error.response.status === 409) {
+      alert("중복된 MAC 주소입니다.");
+      return true;
+    }
+    return false;
+  };
+
   // CCTV 데이터 제거 (Delete)
   const deleteCctvData = () => {
     dispatch(deleteCctvsData(selectedData));

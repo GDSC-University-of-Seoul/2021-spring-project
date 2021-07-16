@@ -161,7 +161,6 @@ export default function cctvsReducer(state = initialState, action) {
       return {
         ...state,
         loading: false,
-        cctvsData: [],
         error: action.payload,
       };
     default:
