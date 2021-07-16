@@ -2,7 +2,7 @@ import enum
 
 
 class ActionEnum(enum.Enum):
-    # Maing Target
+    # Maing Target 10
     NONE = enum.auto()  # 행위 감지 없음
     PUNCHING = enum.auto()  # 휘두르기
     KICKING = enum.auto()  # 차기
