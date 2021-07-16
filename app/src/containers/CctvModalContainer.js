@@ -65,12 +65,17 @@ function CctvModalContainer({ selectedData, clickedData }) {
     e.preventDefault();
 
     // Todo : 예외 처리
-    // - 어린이집명, 주소가 없는 경우 에러 메세지 출력, 제출 실패
     // - CCTV MAC 주소 중복 시 에러 메세지 출력 (HTTP 상태 코드 활용)
 
     const targets = e.target;
     const befInfo = clickedData || selectedData[0];
     let submitInfo = {};
+
+    // 어린이집명, 주소가 없는 경우 에러 메세지 출력, 제출 실패
+    if (targets[0].value === "" || targets[1].value === "") {
+      alert("어린이집 정보를 입력하세요!");
+      return;
+    }
 
     for (let target of targets) {
       if (target.name) submitInfo[target.name] = target.value;
