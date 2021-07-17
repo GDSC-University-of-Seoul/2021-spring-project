@@ -15,7 +15,7 @@ router.post("/", async (req, res, next) => {
     const [video_obj, created] = await Video.findOrCreate({
       where: {
         record_date: video.record_date,
-        cctv_id: video.cctv_id,
+        cctv_mac: video.cctv_mac,
       },
       defaults: {
         storage_name: video.storage_name,
