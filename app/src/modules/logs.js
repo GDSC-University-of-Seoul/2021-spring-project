@@ -1,9 +1,12 @@
+import { dateFormat, timeFormat } from "../utils/format/format";
+
 import axios from "axios";
-import { dateFormat } from "../utils/format/format";
 
 const LOGS_DATA_LOADING = "logs/LOGS_DATA_LOADING";
 const LOGS_DATA_FETCH = "logs/LOGS_DATA_FETCH";
 const LOGS_DATA_ERROR = "logs/LOGS_DATA_ERROR";
+
+const ONE_HOUR = 3600000;
 
 // 백엔드 API 를 통해 anomaly log 데이터 Fetch
 export const fetchLogsData = () => async (dispatch) => {
@@ -20,7 +23,7 @@ export const fetchLogsData = () => async (dispatch) => {
 
       return {
         ...logData,
-        record_date: dateFormat(recordDate),
+        record_date: `${dateFormat(recordDate)} ${timeFormat(recordDate)}`,
       };
     });
 
@@ -49,6 +52,7 @@ export default function logsReducer(state = initialState, action) {
       return {
         ...state,
         loading: true,
+        error: null,
       };
     case LOGS_DATA_FETCH:
       return {
@@ -57,9 +61,8 @@ export default function logsReducer(state = initialState, action) {
         data: {
           newLogsData: action.payload.filter(
             (data) =>
-              state.data.recentLogsData.find(
-                (fetchData) => fetchData.anomaly_log_id === data.anomaly_log_id
-              ) === -1
+              new Date().getTime() - new Date(data.record_date).getTime() <=
+              ONE_HOUR
           ),
           recentLogsData: action.payload,
         },
@@ -68,6 +71,7 @@ export default function logsReducer(state = initialState, action) {
     case LOGS_DATA_ERROR:
       return {
         ...initialState,
+        loading: false,
         error: action.payload,
       };
     default:

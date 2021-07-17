@@ -20,7 +20,7 @@ function Logs() {
   const dispatch = useDispatch();
 
   const [initial, setInitial] = useState(true);
-  const [refreshTimer, setRefreshTimer] = useState(null);
+  const [refreshTimer, setRefreshTimer] = useState("");
 
   // 새로고침한 시간 return
   const getTimer = useCallback(() => {
@@ -65,10 +65,8 @@ function Logs() {
         </div>
         <div className="container newLogs-section">
           <div className="newLogs section-title">
-            신규 사건·사고 발생 로그
-            <span className="timer">{` (로그 기준 시간 : ${
-              refreshTimer || ""
-            })`}</span>
+            최근 사건·사고 발생 로그
+            <span className="timer">{` (로그 기준 시간 : ${refreshTimer})`}</span>
           </div>
           <hr />
           <LogTableContainer loading={loading} logsData={newLogsData} />
