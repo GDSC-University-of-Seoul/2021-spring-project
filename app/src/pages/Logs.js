@@ -20,20 +20,30 @@ function Logs() {
   const dispatch = useDispatch();
 
   const [initial, setInitial] = useState(true);
-  const [refreshTimer, setRefreshTimer] = useState(null);
+  const [refreshTimer, setRefreshTimer] = useState({
+    standardTime: "",
+    untilTime: "",
+  });
+
+  const ONE_HOUR = 3600000;
 
   // 새로고침한 시간 return
   const getTimer = useCallback(() => {
     const getDate = new Date();
+    const standardDate = new Date(getDate - ONE_HOUR);
 
-    return `${dateFormat(getDate)} ${timeFormat(getDate)}`;
+    setRefreshTimer({
+      standardTime: `${dateFormat(standardDate)} ${timeFormat(standardDate)}`,
+      untilTime: `${dateFormat(getDate)} ${timeFormat(getDate)}`,
+    });
+    return;
   }, []);
 
   // 로그 데이터 새로고침
   const refreshLogsData = useCallback(() => {
     dispatch(fetchLogsData());
-    setRefreshTimer(getTimer());
-  }, [dispatch, setRefreshTimer, getTimer]);
+    getTimer();
+  }, [dispatch, getTimer]);
 
   useEffect(() => {
     // 페이지 초기화
@@ -44,7 +54,7 @@ function Logs() {
     // 1시간마다 로그 새로고침
     const tick = setInterval(() => {
       refreshLogsData();
-    }, 3600000);
+    }, ONE_HOUR);
 
     return () => clearInterval(tick);
   }, [initial, refreshLogsData]);
@@ -65,10 +75,8 @@ function Logs() {
         </div>
         <div className="container newLogs-section">
           <div className="newLogs section-title">
-            신규 사건·사고 발생 로그
-            <span className="timer">{` (로그 기준 시간 : ${
-              refreshTimer || ""
-            })`}</span>
+            최근 사건·사고 발생 로그
+            <span className="timer">{` (로그 기준 시간 : ${refreshTimer.standardTime} ~ ${refreshTimer.untilTime})`}</span>
           </div>
           <hr />
           <LogTableContainer loading={loading} logsData={newLogsData} />
@@ -76,9 +84,7 @@ function Logs() {
         <div className="container entireLogs-section">
           <div className="allLogs section-title">
             전체 사건·사고 발생 로그
-            <span className="timer">{` (로그 기준 시간 : ${
-              refreshTimer || ""
-            })`}</span>
+            <span className="timer">{` (로그 기준 시간 : ${refreshTimer.untilTime})`}</span>
           </div>
           <hr />
           <LogTableContainer loading={loading} logsData={recentLogsData} />

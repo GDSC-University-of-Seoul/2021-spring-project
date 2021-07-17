@@ -24,6 +24,7 @@ export const dateFormat = (date) => {
   return `${year}-${decimalFormat(month)}-${decimalFormat(day)}`;
 };
 
+// 시간 Formatting (hh:mm:ss)
 export const timeFormat = (date) => {
   const hours = date.getHours();
   const minutes = date.getMinutes();
@@ -32,4 +33,24 @@ export const timeFormat = (date) => {
   return `${decimalFormat(hours)}:${decimalFormat(minutes)}:${decimalFormat(
     seconds
   )}`;
+};
+
+// UTC 날짜 Formatting (yyyy-mm-dd)
+export const dateUTCFormat = (date) => {
+  const utcYear = date.getUTCFullYear();
+  const utcMonth = date.getUTCMonth() + 1;
+  const utcDay = date.getUTCDate();
+
+  return `${utcYear}-${decimalFormat(utcMonth)}-${decimalFormat(utcDay)}`;
+};
+
+// UTC 시간 Formatting (hh:mm:ss)
+export const timeUTCFormat = (date) => {
+  const utcHours = date.getUTCHours();
+  const utcMinutes = date.getUTCMinutes();
+  const utcSeconds = date.getUTCSeconds();
+
+  return `${decimalFormat(utcHours)}:${decimalFormat(
+    utcMinutes
+  )}:${decimalFormat(utcSeconds)}`;
 };
