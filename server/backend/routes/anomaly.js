@@ -13,10 +13,17 @@ const router = express.Router();
 router.post("/", async (req, res, next) => {
   try {
     const { video, ...anomaly } = req.body;
+    const cctv_obj = await CCTV.findOne({
+      where: {
+        cctv_mac: video.cctv_mac,
+      },
+    });
     const [video_obj, created] = await Video.findOrCreate({
-      where: [{ record_date: video.record_date }],
-      defaults: {
+      where: {
         record_date: video.record_date,
+        cctv_id: cctv_obj.dataValues.cctv_id,
+      },
+      defaults: {
         storage_name: video.storage_name,
       },
       include: {
@@ -26,7 +33,6 @@ router.post("/", async (req, res, next) => {
           model: ChildCareCenter,
           attributes: ["center_id", "center_name", "address"],
         },
-        where: { cctv_mac: video.cctv_mac },
       },
       attributes: [
         "video_id",

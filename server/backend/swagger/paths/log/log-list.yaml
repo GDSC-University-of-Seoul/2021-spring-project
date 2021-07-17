@@ -1,31 +1,30 @@
-get:
-  tags:
-    - anomaly log
-  summary: get all anomaly logs
-  description:
-  parameters:
-    - name: center_name
-      in: query
-      required: false
-      description: 어린이집 이름
-  responses:
-    200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            type: array
-            items:
-              type: object
-              properties:
-                anomaly_log_id:
-                  type: integer
-                center_name:
-                  type: string
-                address:
-                  type: string
-                record_date:
-                  type: string
-                  format: date
-                anomaly_type:
-                  type: string
+tags:
+  - anomaly log
+summary: get all anomaly logs
+description:
+parameters:
+  - name: center_name
+    in: query
+    required: false
+    description: 어린이집 이름
+responses:
+  200:
+    description: OK
+    content:
+      application/json:
+        schema:
+          type: array
+          items:
+            type: object
+            properties:
+              anomaly_log_id:
+                type: integer
+              center_name:
+                type: string
+              address:
+                type: string
+              record_date:
+                type: string
+                format: date
+              anomaly_type:
+                type: string

@@ -422,6 +422,57 @@ paths:
                       format: date
                     anomaly_type:
                       type: string
+    post:
+      tags:
+        - anomaly log
+      summary: create anomaly log
+      description: null
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                video:
+                  type: object
+                  properties:
+                    record_date:
+                      type: string
+                      format: date
+                    cctv_mac:
+                      type: string
+                    storage_name:
+                      type: string
+                anomaly_type:
+                  type: string
+                start_time:
+                  type: string
+                  format: date
+                end_time:
+                  type: string
+                  format: date
+      responses:
+        '201':
+          description: CREATED
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  anomaly_id:
+                    type: integer
+                  video_id:
+                    type: integer
+                  anomaly_type:
+                    type: string
+                  start_time:
+                    type: string
+                    format: date
+                  end_time:
+                    type: string
+                    format: date
+                  follow_up:
+                    type: string
 tags:
   - name: district
   - name: children care center
