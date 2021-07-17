@@ -1,4 +1,5 @@
 import axios from "axios";
+import { dateFormat } from "../utils/format/format";
 
 const LOGS_DATA_LOADING = "logs/LOGS_DATA_LOADING";
 const LOGS_DATA_FETCH = "logs/LOGS_DATA_FETCH";
@@ -8,10 +9,22 @@ const LOGS_DATA_ERROR = "logs/LOGS_DATA_ERROR";
 export const fetchLogsData = () => async (dispatch) => {
   try {
     dispatch({ type: LOGS_DATA_LOADING });
+
     const logsData = await axios.get(
       `${process.env.REACT_APP_API_SERVER}/api/anomalies/logs`
     );
-    dispatch({ type: LOGS_DATA_FETCH, payload: logsData.data });
+
+    // 날짜 형식 변경
+    const formatLogsData = logsData.data.map((logData) => {
+      const recordDate = new Date(logData.record_date);
+
+      return {
+        ...logData,
+        record_date: dateFormat(recordDate),
+      };
+    });
+
+    dispatch({ type: LOGS_DATA_FETCH, payload: formatLogsData });
   } catch (e) {
     dispatch({ type: LOGS_DATA_ERROR, payload: e });
   }
