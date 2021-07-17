@@ -15,7 +15,6 @@ router.post("/", async (req, res, next) => {
     const [video_obj, created] = await Video.findOrCreate({
       where: {
         record_date: video.record_date,
-        cctv_mac: video.cctv_mac,
       },
       defaults: {
         storage_name: video.storage_name,
@@ -27,6 +26,7 @@ router.post("/", async (req, res, next) => {
           model: ChildCareCenter,
           attributes: ["center_id", "center_name", "address"],
         },
+        where: { cctv_mac: video.cctv_mac },
       },
       attributes: [
         "video_id",
