@@ -58,6 +58,8 @@ router.post("/", async (req, res, next) => {
         address: center_obj.address,
         record_date: video_obj.record_date,
         anomaly_type: anomaly_obj.anomaly_type,
+        start_time: anomaly_obj.start_time,
+        end_time: anomaly_obj.start_time,
       });
     } else {
       await AnomalyLog.create({
@@ -66,6 +68,8 @@ router.post("/", async (req, res, next) => {
         address: video_obj.dataValues.address,
         record_date: video_obj.record_date,
         anomaly_type: anomaly_obj.anomaly_type,
+        start_time: anomaly_obj.start_time,
+        end_time: anomaly_obj.start_time,
       });
     }
     res.status(201).json(anomaly_obj);
