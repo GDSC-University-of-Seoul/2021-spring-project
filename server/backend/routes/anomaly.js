@@ -14,15 +14,14 @@ router.post("/", async (req, res, next) => {
   try {
     const { video, ...anomaly } = req.body;
     const [video_obj, created] = await Video.findOrCreate({
-      where: {
-        record_date: video.record_date,
-      },
+      where: [{ record_date: video.record_date }],
       defaults: {
+        record_date: video.record_date,
         storage_name: video.storage_name,
       },
       include: {
         model: CCTV,
-        attributes: [],
+        attributes: ["cctv_mac"],
         include: {
           model: ChildCareCenter,
           attributes: ["center_id", "center_name", "address"],
@@ -45,12 +44,8 @@ router.post("/", async (req, res, next) => {
       const center_obj = await ChildCareCenter.findOne({
         include: {
           model: CCTV,
-          attributes: [],
-          include: {
-            model: Video,
-            attributes: [],
-            where: { video_id: video_obj.video_id },
-          },
+          attributes: ["cctv_mac"],
+          where: { cctv_mac: video.cctv_mac },
         },
       });
       await AnomalyLog.create({
@@ -59,18 +54,18 @@ router.post("/", async (req, res, next) => {
         address: center_obj.address,
         record_date: video_obj.record_date,
         anomaly_type: anomaly_obj.anomaly_type,
-        start_time: anomaly_obj.start_time,
-        end_time: anomaly_obj.start_time,
+        start_time: anomaly.start_time,
+        end_time: anomaly.end_time,
       });
     } else {
       await AnomalyLog.create({
         center_id: video_obj.dataValues.center_id,
         center_name: video_obj.dataValues.center_name,
         address: video_obj.dataValues.address,
-        record_date: video_obj.record_date,
+        record_date: video.record_date,
         anomaly_type: anomaly_obj.anomaly_type,
-        start_time: anomaly_obj.start_time,
-        end_time: anomaly_obj.start_time,
+        start_time: anomaly.start_time,
+        end_time: anomaly.end_time,
       });
     }
     res.status(201).json(anomaly_obj);
