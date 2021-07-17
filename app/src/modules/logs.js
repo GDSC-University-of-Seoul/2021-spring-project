@@ -1,4 +1,9 @@
-import { dateFormat, timeFormat } from "../utils/format/format";
+import {
+  dateFormat,
+  dateUTCFormat,
+  timeFormat,
+  timeUTCFormat,
+} from "../utils/format/format";
 
 import axios from "axios";
 
@@ -23,7 +28,9 @@ export const fetchLogsData = () => async (dispatch) => {
 
       return {
         ...logData,
-        record_date: `${dateFormat(recordDate)} ${timeFormat(recordDate)}`,
+        record_date: `${dateUTCFormat(recordDate)} ${timeUTCFormat(
+          recordDate
+        )}`,
       };
     });
 
