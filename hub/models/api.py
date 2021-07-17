@@ -43,7 +43,7 @@ async def run_model(dirpath, filepath):
         "start_time": "2021-07-15-12:07:00" if anomal else None,
         "end_time": "2021-07-15-12:07:30" if anomal else None,
         "anomaly_type": "ASSERT" if anomal else None,
-        "follow_up": None
+        "follow_up": None,
     }
     ## Done MODEL
     print(f"            {filepath} anomaly score is : {score * 100:.2f} %")
