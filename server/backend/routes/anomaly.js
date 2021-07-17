@@ -5,6 +5,7 @@ import {
   CCTV,
   Video,
   Anomaly,
+  AnomalyLog,
 } from "../../database/models/transform";
 
 const router = express.Router();
