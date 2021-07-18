@@ -26,7 +26,7 @@ async def check_directory(n):
     files = os.listdir(dirpath)
     (flag, data) = await run_model(dirpath, files[-1])
 
-    if flag is True:
+    if flag is True:  # BE 전송 코드 추가
         print(f"SEND DATA TO BACKEND {data}")
 
     return data

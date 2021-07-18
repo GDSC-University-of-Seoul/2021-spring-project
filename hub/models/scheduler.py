@@ -40,7 +40,7 @@ def dump_anomaly_data(filename, start_time, end_time, follow_up):
 
     data = json.dumps(
         {
-            "video": {  # video_id?
+            "video": {
                 "record_date": record_date.strftime("%Y-%m-%d %H:%M:%S"),
                 "storage_name": storage_name,
                 "cctv_id": cctv_id,
@@ -57,7 +57,7 @@ def dump_anomaly_data(filename, start_time, end_time, follow_up):
 def dump_cctv_data(area_id, install_date, quality):
     data = json.dumps(
         {
-            "cctv": {  # cctv_id?
+            "cctv": {
                 "area_id": area_id,
                 "install_date": install_date,
                 "quality": quality,
@@ -74,7 +74,6 @@ class Scheduler:
             {"apscheduler.job_defaults.max_instances": self.max_instance}
         )
         self.directory = "data/"
-        self.cur_data = len(self.directory)
 
     def __del__(self):
         self.sched.shutdown()
@@ -122,7 +121,6 @@ async def main_async():
         await asyncio.wait(30)
 
 
-# 실행시켰을 때
 if __name__ == "__main__":
     asyncio.run(main_async())
 
@@ -136,24 +134,4 @@ if __name__ == "__main__":
 #     }
 #     anomaly_data = dump_anomaly_data(sample_filename, **sample_data)
 #     '''
-#     #DVR에서 데이터 받아오기
-#     # ()
 
-#     #dummy data와 같은 형식으로 데이터 정리
-#     # ()
-
-#     #anomaly_data 저장
-#     anomaly_data=dump_anomaly_data(filename, **time_data)
-
-#     #anomaly_data ML에 전송 후 anomaly_type 받아오기
-#     anomaly_type=call_ML_model(anomaly_data)
-
-#     #anomaly_type에 따라서 BE에 알림->anomaly_type과 anomaly_data 전송
-#     if anomaly_type == (){
-#       ()
-#     }
-
-# 무한반복.....?
-
-
-# video_id / cctv_id생성하는 법?
