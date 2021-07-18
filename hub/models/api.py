@@ -44,7 +44,7 @@ async def run_model(dirpath, filepath):
         "video": {
             "record_date": "2021-07-17 21:00:00",
             "cctv_mac": "125454545460",
-            "storage_name": "data/cctv1/"
+            "storage_name": "data/cctv1/",
         },
         "anomaly_type": "폭행" if anomal else None,
         "start_time": "2021-07-17 00:00:00" if anomal else None,
@@ -57,11 +57,10 @@ async def run_model(dirpath, filepath):
     return (anomal, output)
 
 
-
-'''
+"""
 "video_id": f"{dirpath}_{filepath}",
         "start_time": "2021-07-15-12:07:00" if anomal else None,
         "end_time": "2021-07-15-12:07:30" if anomal else None,
         "anomaly_type": "ASSERT" if anomal else None,
         "follow_up": None,
-'''
+"""
