@@ -29,7 +29,10 @@ async def check_directory(n):
 
     if flag is True:
         print(f"SEND DATA TO BACKEND {data}")
-        res=requests.post('http://ec2-13-124-81-25.ap-northeast-2.compute.amazonaws.com:3000/api/anomalies', data)
+        res = requests.post(
+            "http://ec2-13-124-81-25.ap-northeast-2.compute.amazonaws.com:3000/api/anomalies",
+            data,
+        )
         print(res)
     return data
 
