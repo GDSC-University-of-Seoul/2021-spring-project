@@ -2,6 +2,7 @@ import React, { useEffect, useMemo } from "react";
 
 import { FiExternalLink } from "react-icons/fi";
 import TextField from "@material-ui/core/TextField";
+import { urlFormat } from "../utils/format/format";
 import { useSelector } from "react-redux";
 
 function MapBoxSelectContainer() {
@@ -19,7 +20,7 @@ function MapBoxSelectContainer() {
   const cdrCenterCategory = useMemo(
     () => ({
       center_name: "어린이집 명",
-      zipcode: "우편주소",
+      zip_code: "우편번호",
       address: "상세주소",
       center_phone: "전화번호",
       fax: "팩스번호",
@@ -77,7 +78,11 @@ function MapBoxSelectContainer() {
         })}
         <a
           className="cdrcenter-link"
-          href={cdrCenter.data.web_page ? cdrCenter.data.web_page : null}
+          href={
+            cdrCenter.data.web_page ? urlFormat(cdrCenter.data.web_page) : null
+          }
+          target="_blank"
+          rel="noreferrer"
         >
           어린이집 홈페이지 바로가기 <FiExternalLink />
         </a>

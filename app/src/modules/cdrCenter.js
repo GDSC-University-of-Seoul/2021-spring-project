@@ -29,7 +29,7 @@ const initialState = {
     operation_type: "",
     operation_status: "",
     address: "",
-    zipcode: "",
+    zip_code: "",
     center_phone: "",
     fax: "",
     web_page: "",
