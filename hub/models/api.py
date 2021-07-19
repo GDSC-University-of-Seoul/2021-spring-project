@@ -21,7 +21,7 @@ async def run_process():
     end = time.time()
 
     print(f">>> Process time : {end - start:2.3f}s")
-    
+
 
 async def check_directory(n):
     dirpath = f"data/cctv{n}"
