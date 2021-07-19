@@ -21,7 +21,7 @@ async def run_process():
     end = time.time()
 
     print(f">>> Process time : {end - start:2.3f}s")
-
+    
 
 async def check_directory(n):
     dirpath = f"data/cctv{n}"
@@ -60,12 +60,3 @@ async def run_model(dirpath, filepath):
 
     await asyncio.sleep(2)
     return (anomal, output)
-
-
-"""
-"video_id": f"{dirpath}_{filepath}",
-        "start_time": "2021-07-15-12:07:00" if anomal else None,
-        "end_time": "2021-07-15-12:07:30" if anomal else None,
-        "anomaly_type": "ASSERT" if anomal else None,
-        "follow_up": None,
-"""
