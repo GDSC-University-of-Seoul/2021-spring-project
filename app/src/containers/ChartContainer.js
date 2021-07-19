@@ -39,9 +39,9 @@ function ChartContainer({ sido }) {
   filterData.forEach((district) => {
     chartData.push({
       시·도: axisName[district.district_name],
-      폭행: parseInt(district.count, 10),
-      싸움: parseInt(district.count, 10),
-      실신: parseInt(district.count, 10),
+      폭행: parseInt(district.assualt_count, 10),
+      싸움: parseInt(district.fight_count, 10),
+      실신: parseInt(district.swoon_count, 10),
     });
   });
 

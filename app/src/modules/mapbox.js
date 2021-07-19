@@ -17,19 +17,44 @@ export const fetchData = () => async (dispatch) => {
     );
     districtsGeojson = districtsGeojson.data;
 
-    // Todo : 어린이집 사건·사고 데이터 전체를 Fetch 할 예정 (지도 색상 레이블)
-
+    /*
     let districts = await axios.get(
       `${process.env.REACT_APP_API_SERVER}/api/districts`
     );
     districts = districts.data;
+    */
+
+    // 임시 테스트 데이터
+    let districts = [
+      {
+        district_code: 1100000000,
+        district_name: "서울특별시",
+        parent_code: null,
+        assualt_count: 10, // 구역 폭행 건수 (추가)
+        fight_count: 10, // 구역 싸움 건수 (추가)
+        swoon_count: 10, // 구역 실신 건수 (추가)
+        anomaly_count: 30,
+      },
+      {
+        district_code: 4100000000,
+        district_name: "경기도",
+        parent_code: null,
+        assualt_count: 20, // 구역 폭행 건수 (추가)
+        fight_count: 20, // 구역 싸움 건수 (추가)
+        swoon_count: 20, // 구역 실신 건수 (추가)
+        anomaly_count: 60,
+      },
+    ];
 
     // geojson 데이터에 어린이집 개수 property 추가
     // Todo : geojson 데이터에 어린이집 사건·사고 property 추가
     districtsGeojson.features.forEach((districtGeojson) => {
       districts.forEach((district) => {
         if (districtGeojson.properties.sidonm === district.district_name)
-          districtGeojson.properties.sido_cnt = parseInt(district.count, 10);
+          districtGeojson.properties.sido_cnt = parseInt(
+            district.anomaly_count,
+            10
+          );
       });
     });
 
