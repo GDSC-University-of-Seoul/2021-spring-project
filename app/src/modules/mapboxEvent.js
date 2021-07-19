@@ -120,7 +120,7 @@ export const sggClick = (selectedDistrictInfo) => async (dispatch) => {
   try {
     // 시,군,구 코드에 기반해 어린이집 데이터를 Fetch
     const sggCdrCenterData = await axios.get(
-      `${process.env.REACT_APP_API_SERVER}/api/centers?code=${selectedDistrictInfo.code}`
+      `${process.env.REACT_APP_API_SERVER}/api/centers?district_code=${selectedDistrictInfo.code}`
     );
     dispatch({
       type: SGG_CLICK,

@@ -39,12 +39,19 @@ function ChartContainer({ sido }) {
   filterData.forEach((district) => {
     chartData.push({
       시·도: axisName[district.district_name],
-      사건: parseInt(district.count, 10) % 100,
-      사고: parseInt(district.count, 10) % 10,
+      폭행: parseInt(district.count, 10),
+      싸움: parseInt(district.count, 10),
+      실신: parseInt(district.count, 10),
     });
   });
 
-  return <BarChart data={chartData} keys={["사건", "사고"]} indexBy="시·도" />;
+  return (
+    <BarChart
+      data={chartData}
+      keys={["폭행", "싸움", "실신"]}
+      indexBy="시·도"
+    />
+  );
 }
 
 export default ChartContainer;

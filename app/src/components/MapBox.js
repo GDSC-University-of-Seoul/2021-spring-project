@@ -200,7 +200,7 @@ function MapBox({ geojson }) {
             className="popup"
           >
             <h1>{selectedDistrictInfo.name}</h1>
-            <div>어린이집 개수 : {hoverInfo.districtCount}</div>
+            <div>사건·사고 건수 : {hoverInfo.districtCount}</div>
           </Popup>
         )}
         {/* 어린이집 좌표 정보를 통해 마커 표시 */}
