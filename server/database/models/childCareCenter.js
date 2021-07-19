@@ -20,6 +20,7 @@ import Sequelize from "sequelize";
  *
  * <BACKREF>          <COLUMN>
  * cctv               : center_id        FK
+ * anomaly_log        : center_id        FK
  */
 
 module.exports = class ChildCareCenter extends Sequelize.Model {
@@ -97,6 +98,10 @@ module.exports = class ChildCareCenter extends Sequelize.Model {
   }
   static associate(db) {
     db.ChildCareCenter.hasMany(db.CCTV, {
+      foreignKey: "center_id",
+      sourceKey: "center_id",
+    });
+    db.ChildCareCenter.hasMany(db.AnomalyLog, {
       foreignKey: "center_id",
       sourceKey: "center_id",
     });

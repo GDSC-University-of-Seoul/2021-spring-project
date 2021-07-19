@@ -8,6 +8,9 @@ import Sequelize from "sequelize";
  * address            : String                     FALSE
  * record_date        : Date                       FALSE
  * anomaly_type       : String                     FALSE
+ *
+ * <RELATIONSHIP>     <COLUMN>
+ * center             : center_id        FK
  */
 
 module.exports = class AnomalyLog extends Sequelize.Model {
@@ -48,5 +51,10 @@ module.exports = class AnomalyLog extends Sequelize.Model {
       }
     );
   }
-  static associate(db) {}
+  static associate(db) {
+    db.AnomalyLog.belongsTo(db.ChildCareCenter, {
+      foreignKey: "center_id",
+      targetKey: "center_id",
+    });
+  }
 };

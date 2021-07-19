@@ -1,5 +1,5 @@
 import express from "express";
-import { Sequelize, AnomalyLog } from "../../DB/models/transform";
+import { Sequelize, AnomalyLog } from "../../database/models/transform";
 
 const router = express.Router();
 
@@ -13,6 +13,7 @@ router.get("/", async (req, res, next) => {
 
     let startDate = new Date();
     const endDate = new Date();
+    endDate.setHours(endDate.getHours() + 9);
     startDate.setDate(endDate.getDate() - 60);
     logFilters.record_date = {
       [Sequelize.Op.between]: [startDate, endDate],

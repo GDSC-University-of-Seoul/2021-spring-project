@@ -30,79 +30,63 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-/**
- * 영상 관리대장(열람, 파기, 이용) 관련 테이블
+/*
+ * 로그인 관련 테이블
  * <FIELDS>           <DATA TYPE>        <INDEX>   <NULLABLE>
- * manage_id          : Integer          PK        FALSE
- * manage_type        : Enum                       FALSE
- * manage_date        : Date                       FALSE
- * purpose            : Enum                       FALSE
- * monitor_time       : Time                       FALSE
+ * member_id          : String(50)          PK        FALSE
+ * password           : String(50)                    FALSE
+ * member_name        : String(10)                    FALSE
+ * member_phone       : String(12)                    FALSE
+ * email              : String(50)                    TRUE
  *
- * <RELATIONSHIP>     <COLUMN>
- * video              : video_id         FK        FALSE
- * requester          : requester_id     FK        FALSE
  */
 module.exports = /*#__PURE__*/function (_Sequelize$Model) {
-  _inherits(VideoManagement, _Sequelize$Model);
+  _inherits(Member, _Sequelize$Model);
 
-  var _super = _createSuper(VideoManagement);
+  var _super = _createSuper(Member);
 
-  function VideoManagement() {
-    _classCallCheck(this, VideoManagement);
+  function Member() {
+    _classCallCheck(this, Member);
 
     return _super.apply(this, arguments);
   }
 
-  _createClass(VideoManagement, null, [{
+  _createClass(Member, null, [{
     key: "init",
     value: function init(sequelize, DataTypes) {
-      return _get(_getPrototypeOf(VideoManagement), "init", this).call(this, {
-        manage_id: {
-          type: DataTypes.INTEGER,
-          autoIncrement: true,
+      return _get(_getPrototypeOf(Member), "init", this).call(this, {
+        member_id: {
+          type: DataTypes.STRING(50),
           primaryKey: true
         },
-        manage_type: {
+        password: {
+          type: DataTypes.STRING(50),
+          allowNull: false
+        },
+        member_name: {
           type: DataTypes.STRING(10),
           allowNull: false
         },
-        manage_date: {
-          type: DataTypes.DATE,
+        member_phone: {
+          type: DataTypes.STRING(12),
           allowNull: false
         },
-        purpose: {
-          type: DataTypes.STRING(20),
-          allowNull: false
-        },
-        monitor_time: {
-          type: DataTypes.DATE,
-          allowNull: false
+        email: {
+          type: DataTypes.STRING(50),
+          allowNull: true
         }
       }, {
         sequelize: sequelize,
         timestamps: false,
         paranoid: false,
-        modelName: "VideoManagement",
-        tableName: "video_management",
-        freezeTableName: false,
+        modelName: "Member",
+        tableName: "member",
+        freezetableName: false,
         charset: "utf8",
         collate: "utf8_general_cli"
       });
     }
-  }, {
-    key: "associate",
-    value: function associate(db) {
-      db.VideoManagement.belongsTo(db.Video, {
-        foreignKey: "video_id",
-        targetKey: "video_id"
-      });
-      db.VideoManagement.belongsTo(db.Requester, {
-        foreignKey: "requester_id",
-        targetKey: "requester_id"
-      });
-    }
   }]);
 
-  return VideoManagement;
+  return Member;
 }(_sequelize["default"].Model);
