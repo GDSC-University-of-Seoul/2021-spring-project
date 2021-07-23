@@ -1,13 +1,13 @@
-let json = require("../../../.dummy/child_care_center.json");
+let json = require("../../../.dummy/sejong_child_care_center.json");
 
 var len = Object.keys(json).length;
 var keys = Object.keys(json);
 
 // console.log(json['11110000112'][0]); // 11110000112
-var centers = [];
+var sejong_centers = [];
 
 for (let i = 0; i < len; i++) {
-  centers.push({
+  sejong_centers.push({
     center_id: json[keys[i]][0],
     center_name: json[keys[i]][2],
     operation_type: json[keys[i]][3],
@@ -21,6 +21,7 @@ for (let i = 0; i < len; i++) {
     longitude: json[keys[i]][11],
     district_code: json[keys[i]][1] + "00000",
   });
+  // console.log(String(Number(json[keys[i]][1] + "00000") + 100000000));
 }
-// console.log(centers);
-exports.centers = centers;
+// console.log(sejong_centers);
+exports.sejong_centers = sejong_centers;
