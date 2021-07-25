@@ -54,5 +54,11 @@
         margin-left: 5px;
       }
     }
+    #select-anomaly {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-gap: 30px 40px;
+      margin: 30px 0;
+    }
   }
 }

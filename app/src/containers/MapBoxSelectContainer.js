@@ -46,7 +46,6 @@ function MapBoxSelectContainer() {
     };
   }, [district, cdrCenter]);
 
-  // Todo : 리팩토링
   return (
     <>
       <h1>지역 정보</h1>
@@ -82,6 +81,7 @@ function MapBoxSelectContainer() {
       <div id="select-anomaly">
         <CategoryTextField
           category={anomalyCategory}
+          data={cdrCenter.data}
           className="anomaly-info"
         />
       </div>
