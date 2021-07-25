@@ -5,6 +5,7 @@ const SET_HOVER_INFO = "mapboxEvent/SET_HOVER_INFO";
 const SIDO_CLICK = "mapboxEvent/SIDO_CLICK";
 const SGG_CLICK = "mapboxEvent/SGG_CLICK";
 const RESET_DISTRICT = "mapboxEvent/RESET";
+const MARKER_Click = "mapboxEvent/MARKER_Click";
 const ERROR = "mapboxEvent/ERROR";
 
 /**
@@ -18,14 +19,14 @@ export const setGeojsonData = (geojsonData) => (dispatch) => {
 
 /**
  * 도, 광역시 hover 이벤트를 처리하는 액션함수
- * - 도, 광역시 관련 hoverInfo를 생성하여 상태에 반영
+ * - 도, 광역시 관련 popupInfo를 생성하여 상태에 반영
  *
  * @param {Object} e hover 이벤트 객체
  */
 export const sidoHover = (e) => (dispatch) => {
   const hoverArea = e.features[0];
   /*
-   * hoverInfo : hover 이벤트를 통한 정보
+   * popupInfo : hover 이벤트를 통한 팝업 정보
    *
    * - longitude : hover 중인 위도
    * - latitude : hover 중인 경도
@@ -33,7 +34,7 @@ export const sidoHover = (e) => (dispatch) => {
    * - districtCode : hover 중인 지역구 코드
    * - districtCount : hover 중인 지역구 어린이집 개수
    */
-  const hoverInfo = {
+  const popupInfo = {
     longitude: e.lngLat[0],
     latitude: e.lngLat[1],
     districtName: hoverArea.properties.sidonm,
@@ -41,17 +42,17 @@ export const sidoHover = (e) => (dispatch) => {
       hoverArea.properties.sido && hoverArea.properties.sido + "00000000",
     districtCount: hoverArea.properties.sido_cnt,
   };
-  dispatch({ type: SET_HOVER_INFO, payload: hoverInfo });
+  dispatch({ type: SET_HOVER_INFO, payload: popupInfo });
 };
 /**
  * 시,군,구 hover 이벤트를 처리하는 액션함수
- * - 시,군,구 관련 hoverInfo를 생성하여 상태에 반영
+ * - 시,군,구 관련 popupInfo를 생성하여 상태에 반영
  *
  * @param {Object} e hover 이벤트 객체
  */
 export const sggHover = (e) => (dispatch) => {
   const hoverArea = e.features[0];
-  const hoverInfo = {
+  const popupInfo = {
     longitude: e.lngLat[0],
     latitude: e.lngLat[1],
     districtName: hoverArea.properties.sggnm,
@@ -59,7 +60,7 @@ export const sggHover = (e) => (dispatch) => {
       hoverArea.properties.sgg && hoverArea.properties.sgg + "00000",
     districtCount: hoverArea.properties.sgg_cnt,
   };
-  dispatch({ type: SET_HOVER_INFO, payload: hoverInfo });
+  dispatch({ type: SET_HOVER_INFO, payload: popupInfo });
 };
 /**
  * 도, 광역시 클릭 이벤트를 처리하는 액션함수
@@ -119,13 +120,14 @@ export const sidoClick =
 export const sggClick = (selectedDistrictInfo) => async (dispatch) => {
   try {
     // 시,군,구 코드에 기반해 어린이집 데이터를 Fetch
-    const sggCdrCenterData = await axios.get(
+    const fetchCdrCenter = await axios.get(
       `${process.env.REACT_APP_API_SERVER}/api/centers?district_code=${selectedDistrictInfo.code}`
     );
+
     dispatch({
       type: SGG_CLICK,
       payload: {
-        cdrCenters: sggCdrCenterData.data,
+        cdrCenters: fetchCdrCenter.data,
         sggName: selectedDistrictInfo.name,
       },
     });
@@ -144,10 +146,28 @@ export const sggClick = (selectedDistrictInfo) => async (dispatch) => {
 export const resetDistrict = (geojsonData) => async (dispatch) => {
   dispatch({ type: RESET_DISTRICT, payload: geojsonData });
 };
+
+/**
+ * 마커 클릭 이벤트를 처리하는 액션함수
+ * - 어린이집 정보를 팝업 정보 저장
+ *
+ * @param {Object} markerInfo 선택한 어린이집의 정보
+ */
+export const markerClick = (markerInfo) => async (dispatch) => {
+  const popupInfo = {
+    longitude: markerInfo.longitude,
+    latitude: markerInfo.latitude,
+    districtName: markerInfo.center_name,
+    districtCode: markerInfo.district_code,
+    districtCount: markerInfo.district_count,
+  };
+  dispatch({ type: MARKER_Click, payload: popupInfo });
+};
+
 const initialState = {
   data: {
     level: 1,
-    hoverInfo: null,
+    popupInfo: null,
     sidoName: "",
     sggName: "",
     geojsonData: null,
@@ -180,7 +200,7 @@ export default function mapboxEventReducer(state = initialState, action) {
       return {
         data: {
           ...state.data,
-          hoverInfo: action.payload,
+          popupInfo: action.payload,
         },
         error: null,
       };
@@ -200,6 +220,7 @@ export default function mapboxEventReducer(state = initialState, action) {
       return {
         data: {
           ...state.data,
+          level: 3,
           cdrCentersInfo: action.payload.cdrCenters,
           sggName: action.payload.sggName,
         },
@@ -215,6 +236,14 @@ export default function mapboxEventReducer(state = initialState, action) {
           sggName: "",
           geojsonData: action.payload,
           cdrCentersInfo: null,
+        },
+      };
+    // 마커 클릭 이벤트
+    case MARKER_Click:
+      return {
+        data: {
+          ...state.data,
+          popupInfo: action.payload,
         },
       };
     // 에러 발생
