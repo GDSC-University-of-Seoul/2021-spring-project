@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from "react";
 
+import CategoryTextField from "../components/CategoryTextField";
 import { FiExternalLink } from "react-icons/fi";
-import TextField from "@material-ui/core/TextField";
 import { urlFormat } from "../utils/format/format";
 import { useSelector } from "react-redux";
 
@@ -30,6 +30,15 @@ function MapBoxSelectContainer() {
     []
   );
 
+  const anomalyCategory = useMemo(
+    () => ({
+      assault_count: "폭행 건수",
+      fight_count: "싸움 건수",
+      swoon_count: "실신 건수",
+    }),
+    []
+  );
+
   useEffect(() => {
     return {
       district,
@@ -37,45 +46,26 @@ function MapBoxSelectContainer() {
     };
   }, [district, cdrCenter]);
 
+  // Todo : 리팩토링
   return (
     <>
       <h1>지역 정보</h1>
       <hr />
       <div id="select-district">
-        {Object.keys(districtCategory).map((key, index) => {
-          return (
-            <TextField
-              key={index}
-              className="district-info"
-              label={districtCategory[key]}
-              value={district.data[key] || ""}
-              variant="outlined"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              disabled
-            />
-          );
-        })}
+        <CategoryTextField
+          category={districtCategory}
+          data={district.data}
+          className="district-info"
+        />
       </div>
       <h1>어린이집 정보</h1>
       <hr />
       <div id="select-cdrCenter">
-        {Object.keys(cdrCenterCategory).map((key, index) => {
-          return (
-            <TextField
-              key={index}
-              className="cdrCenter-info"
-              label={cdrCenterCategory[key]}
-              value={cdrCenter.data[key] || ""}
-              variant="outlined"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              disabled
-            />
-          );
-        })}
+        <CategoryTextField
+          category={cdrCenterCategory}
+          data={cdrCenter.data}
+          className="cdrCenter-info"
+        />
         <a
           className="cdrcenter-link"
           href={
@@ -86,6 +76,14 @@ function MapBoxSelectContainer() {
         >
           어린이집 홈페이지 바로가기 <FiExternalLink />
         </a>
+      </div>
+      <h1>이상행동 정보</h1>
+      <hr />
+      <div id="select-anomaly">
+        <CategoryTextField
+          category={anomalyCategory}
+          className="anomaly-info"
+        />
       </div>
     </>
   );

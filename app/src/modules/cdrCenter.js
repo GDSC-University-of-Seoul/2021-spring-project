@@ -12,7 +12,13 @@ export const fetchCdrCenter = (cdrCenterId) => async (dispatch) => {
     const cdrCenterInfo = await axios.get(
       `${process.env.REACT_APP_API_SERVER}/api/centers/${cdrCenterId}`
     );
-    dispatch({ type: FETCH_CDRCENTER_DATA, payload: cdrCenterInfo.data });
+
+    //어린이집 데이터 필터링 (이상행동 유무)
+    const cdrCenterData = cdrCenterInfo.data.filter(
+      (data) => data.anomaly_count > 0
+    );
+
+    dispatch({ type: FETCH_CDRCENTER_DATA, payload: cdrCenterData });
   } catch (e) {
     dispatch({ type: FETCH_CDRCENTER_ERROR, payload: e });
   }
