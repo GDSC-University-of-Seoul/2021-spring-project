@@ -25,6 +25,7 @@ export const setGeojsonData = (geojsonData) => (dispatch) => {
  */
 export const sidoHover = (e) => (dispatch) => {
   const hoverArea = e.features[0];
+  const sidoCount = hoverArea.properties.sido_cnt;
   /*
    * popupInfo : hover 이벤트를 통한 팝업 정보
    *
@@ -40,7 +41,7 @@ export const sidoHover = (e) => (dispatch) => {
     districtName: hoverArea.properties.sidonm,
     districtCode:
       hoverArea.properties.sido && hoverArea.properties.sido + "00000000",
-    districtCount: hoverArea.properties.sido_cnt,
+    districtCount: sidoCount !== "null" ? sidoCount : 0,
   };
   dispatch({ type: SET_HOVER_INFO, payload: popupInfo });
 };
@@ -52,13 +53,15 @@ export const sidoHover = (e) => (dispatch) => {
  */
 export const sggHover = (e) => (dispatch) => {
   const hoverArea = e.features[0];
+  const sggCount = hoverArea.properties.sgg_cnt;
+
   const popupInfo = {
     longitude: e.lngLat[0],
     latitude: e.lngLat[1],
     districtName: hoverArea.properties.sggnm,
     districtCode:
       hoverArea.properties.sgg && hoverArea.properties.sgg + "00000",
-    districtCount: hoverArea.properties.sgg_cnt,
+    districtCount: sggCount !== "null" ? sggCount : 0,
   };
   dispatch({ type: SET_HOVER_INFO, payload: popupInfo });
 };
