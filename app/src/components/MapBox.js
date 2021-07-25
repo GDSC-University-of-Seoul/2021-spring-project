@@ -82,8 +82,6 @@ function MapBox({ geojson }) {
    * - level 2 : 시,군,구 정보 표시
    * - 이벤트 처리 후 popupInfo와 level을 기반으로 선택중인 지역구에 대한 정보(selectedDistrictInfo)와 필터링할 내용(filter) 업데이트
    */
-
-  // Todo : 지역구 어린이집 사건·사고에 대한 레이블 정보 추가
   const hoverHandler = useCallback(
     (e) => {
       if (e.features.length !== 0) {
@@ -200,7 +198,6 @@ function MapBox({ geojson }) {
           </Source>
         )}
         {/* 팝업 메세지로 행정구역의 정보 표시 */}
-        {/* Todo : 툴팁 메세지 정보 - 지역구, 사건·사고 유형, 발생건수 추가 */}
         {selectedDistrictInfo.name !== "" && popupInfo && (
           <Popup
             longitude={Number(popupInfo.longitude)}
@@ -208,12 +205,22 @@ function MapBox({ geojson }) {
             closeButton={false}
             className="popup"
           >
-            <h1>{popupInfo.districtName}</h1>
-            <div>사건·사고 건수 : {popupInfo.districtCount}</div>
+            <h2>{popupInfo.districtName}</h2>
+            {level == 3 ? (
+              <ul className="popup-content">
+                <li>사건·사고 건수 : {popupInfo.anomalyCount}건</li>
+                <li>폭행 건수 : {popupInfo.assualtCount}건</li>
+                <li>싸움 건수 : {popupInfo.fightCount}건</li>
+                <li>실신 건수 : {popupInfo.swoonCount}건</li>
+              </ul>
+            ) : (
+              <ul className="popup-content">
+                <li>사건·사고 건수 : {popupInfo.districtCount}건</li>
+              </ul>
+            )}
           </Popup>
         )}
         {/* 어린이집 좌표 정보를 통해 마커 표시 */}
-        {/* Todo : 사건·사고가 발생한 어린이집의 경우 다른 색상의 마커로 표시 */}
         <div className="marker-set" onClick={markerClickHandler}>
           {cdrCentersInfo &&
             cdrCentersInfo.map((cdrCenterInfo, index) => (

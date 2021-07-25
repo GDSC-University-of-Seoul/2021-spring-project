@@ -21,6 +21,10 @@ const initialState = {
     web_page: "",
     latitude: "",
     longtitude: "",
+    assualt_count: 0,
+    fight_count: 0,
+    swoon_count: 0,
+    anomaly_count: 0,
   },
 };
 

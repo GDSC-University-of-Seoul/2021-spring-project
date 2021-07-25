@@ -124,10 +124,15 @@ export const sggClick = (selectedDistrictInfo) => async (dispatch) => {
       `${process.env.REACT_APP_API_SERVER}/api/centers?district_code=${selectedDistrictInfo.code}`
     );
 
+    // 이상행동 건수가 있는 어린이집만 체크
+    const anomalyCdrCenter = fetchCdrCenter.data.filter(
+      (data) => data.anomaly_count > 0
+    );
+
     dispatch({
       type: SGG_CLICK,
       payload: {
-        cdrCenters: fetchCdrCenter.data,
+        cdrCenters: anomalyCdrCenter,
         sggName: selectedDistrictInfo.name,
       },
     });
@@ -159,7 +164,10 @@ export const markerClick = (markerInfo) => async (dispatch) => {
     latitude: markerInfo.latitude,
     districtName: markerInfo.center_name,
     districtCode: markerInfo.district_code,
-    districtCount: markerInfo.district_count,
+    assualtCount: markerInfo.assualt_count,
+    fightCount: markerInfo.fight_count,
+    swoonCount: markerInfo.swoon_count,
+    anomalyCount: markerInfo.anomaly_count,
   };
   dispatch({ type: MARKER_Click, payload: popupInfo });
 };
@@ -221,6 +229,7 @@ export default function mapboxEventReducer(state = initialState, action) {
         data: {
           ...state.data,
           level: 3,
+          popupInfo: null,
           cdrCentersInfo: action.payload.cdrCenters,
           sggName: action.payload.sggName,
         },

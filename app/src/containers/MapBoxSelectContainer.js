@@ -32,7 +32,7 @@ function MapBoxSelectContainer() {
 
   const anomalyCategory = useMemo(
     () => ({
-      assault_count: "폭행 건수",
+      assualt_count: "폭행 건수",
       fight_count: "싸움 건수",
       swoon_count: "실신 건수",
     }),
