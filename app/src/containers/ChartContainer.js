@@ -19,12 +19,6 @@ function ChartContainer({ sido }) {
     error,
   } = useSelector((state) => state.mapboxReducer);
 
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (districts.length === 0) dispatch(fetchData());
-  }, [districts, dispatch]);
-
   if (loading) return <Loading />;
   if (error) return <div>에러발생!</div>;
 
@@ -36,12 +30,22 @@ function ChartContainer({ sido }) {
 
   // 차트 데이터 구성
   const chartData = [];
+  let maxAnomalyCnt = 0;
   filterData.forEach((district) => {
+    const {
+      district_name,
+      anomaly_count,
+      assualt_count,
+      fight_count,
+      swoon_count,
+    } = district;
+
+    maxAnomalyCnt = Math.max(maxAnomalyCnt, anomaly_count ? anomaly_count : 0);
     chartData.push({
-      시·도: axisName[district.district_name],
-      폭행: parseInt(district.assualt_count, 10),
-      싸움: parseInt(district.fight_count, 10),
-      실신: parseInt(district.swoon_count, 10),
+      시·도: axisName[district_name],
+      폭행: assualt_count ? parseInt(assualt_count, 10) : 0,
+      싸움: fight_count ? parseInt(fight_count, 10) : 0,
+      실신: swoon_count ? parseInt(swoon_count, 10) : 0,
     });
   });
 
@@ -50,6 +54,7 @@ function ChartContainer({ sido }) {
       data={chartData}
       keys={["폭행", "싸움", "실신"]}
       indexBy="시·도"
+      maxVal={maxAnomalyCnt}
     />
   );
 }
