@@ -1,10 +1,8 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-
 import BarChart from "../components/BarChart";
 import Loading from "../components/Loading";
+import React from "react";
 import axisName from "../utils/chart/axisName";
-import { fetchData } from "../modules/mapbox";
+import { useSelector } from "react-redux";
 
 /**
  * 구성할 차트에 맞게 시·도 데이터 가공 및 차트 컴포넌트 구성
