@@ -1,10 +1,12 @@
 import { Button, TextField } from "@material-ui/core";
 import React, { useCallback } from "react";
+import { initError, loginSubmit } from "../modules/login";
+import { useDispatch, useSelector } from "react-redux";
 
-import { loginSubmit } from "../modules/login";
-import { useDispatch } from "react-redux";
+import Modal from "../components/Modal";
 
 function Login() {
+  const { error } = useSelector((state) => state.loginReducer);
   const dispatch = useDispatch();
 
   // 로그인
@@ -18,6 +20,11 @@ function Login() {
     },
     [dispatch]
   );
+
+  // 모달창 닫기
+  const closeHandler = () => {
+    dispatch(initError());
+  };
 
   return (
     <section className="login">
@@ -42,6 +49,22 @@ function Login() {
             로그인
           </Button>
         </form>
+        {/* 로그인 실패 */}
+        {error && (
+          <Modal>
+            <div className="loginFail-modal">
+              ⚠️ 로그인에 실패하였습니다.
+              <Button
+                variant="contained"
+                color="primary"
+                disableElevation
+                onClick={closeHandler}
+              >
+                확인
+              </Button>
+            </div>
+          </Modal>
+        )}
       </div>
     </section>
   );

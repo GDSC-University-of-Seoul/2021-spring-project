@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { Redirect, Route } from "react-router-dom";
 
 import Cctvs from "./pages/Cctvs";
 import Header from "./components/Header";
@@ -6,7 +6,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Logs from "./pages/Logs";
 import Monitoring from "./pages/Monitoring";
-import { Route } from "react-router-dom";
+import React from "react";
 import Settings from "./pages/Settings";
 import SideBar from "./components/SideBar";
 import { useSelector } from "react-redux";
@@ -19,6 +19,8 @@ import { useSelector } from "react-redux";
 function App() {
   const { loginSuccess } = useSelector((state) => state.loginReducer);
 
+  // Todo : 쿠키를 통해 기존 로그인 정보 저장 => 재접속 시에도 정보 유지
+
   return (
     <>
       <Route path="/" component={Login} exact />
@@ -26,6 +28,7 @@ function App() {
         <>
           <Header />
           <SideBar />
+          <Redirect exact from="/" to="/home" />
           <Route path="/home" component={Home} />
           <Route path="/monitoring" component={Monitoring} />
           <Route path="/cctvs" component={Cctvs} />
