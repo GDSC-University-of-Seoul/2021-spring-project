@@ -9,6 +9,7 @@ import Monitoring from "./pages/Monitoring";
 import { Route } from "react-router-dom";
 import Settings from "./pages/Settings";
 import SideBar from "./components/SideBar";
+import { useSelector } from "react-redux";
 
 /**
  * URL에 따라 렌더링할 컴포넌트 결정
@@ -16,12 +17,12 @@ import SideBar from "./components/SideBar";
  * @return {JSX.Element} 라우팅 컴포넌트
  */
 function App() {
-  const [login] = useState(false);
+  const { loginSuccess } = useSelector((state) => state.loginReducer);
 
   return (
     <>
       <Route path="/" component={Login} exact />
-      {login && (
+      {loginSuccess && (
         <>
           <Header />
           <SideBar />

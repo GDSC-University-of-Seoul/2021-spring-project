@@ -1,21 +1,32 @@
 import { Button, TextField } from "@material-ui/core";
+import React, { useCallback } from "react";
 
-import React from "react";
+import { loginSubmit } from "../modules/login";
+import { useDispatch } from "react-redux";
 
 function Login() {
+  const dispatch = useDispatch();
+
+  // 로그인
+  const loginHandler = useCallback(
+    (e) => {
+      e.preventDefault();
+      const userId = e.target.userId.value;
+      const userPw = e.target.userPw.value;
+
+      dispatch(loginSubmit(userId, userPw));
+    },
+    [dispatch]
+  );
+
   return (
     <section className="login">
       <div className="login-container">
         <div className="logo"></div>
-        <form className="login-form">
+        <form className="login-form" onSubmit={loginHandler}>
+          <TextField id="userId" label="ID" variant="outlined" required />
           <TextField
-            id="outlined-helperText"
-            label="ID"
-            variant="outlined"
-            required
-          />
-          <TextField
-            id="outlined-password-input"
+            id="userPw"
             label="Password"
             type="password"
             autoComplete="current-password"
