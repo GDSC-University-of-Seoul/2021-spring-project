@@ -62,8 +62,8 @@ module.exports = /*#__PURE__*/function (_Sequelize$Model) {
     value: function init(sequelize, DataTypes) {
       return _get(_getPrototypeOf(Video), "init", this).call(this, {
         video_id: {
-          type: DataTypes.INTEGER,
-          autoIncrement: true,
+          type: DataTypes.UUID,
+          defaultValue: DataTypes.UUIDV4,
           primaryKey: true
         },
         record_date: {
@@ -99,10 +99,6 @@ module.exports = /*#__PURE__*/function (_Sequelize$Model) {
       db.Video.belongsTo(db.CCTV, {
         foreignKey: "cctv_id",
         targetKey: "cctv_id"
-      });
-      db.Video.hasMany(db.VideoManagement, {
-        foreignKey: "video_id",
-        sourceKey: "video_id"
       });
       db.Video.hasMany(db.Anomaly, {
         foreignKey: "video_id",

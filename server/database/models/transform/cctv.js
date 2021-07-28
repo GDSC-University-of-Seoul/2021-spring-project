@@ -62,8 +62,8 @@ module.exports = /*#__PURE__*/function (_Sequelize$Model) {
     value: function init(sequelize, DataTypes) {
       return _get(_getPrototypeOf(CCTV), "init", this).call(this, {
         cctv_id: {
-          type: DataTypes.INTEGER,
-          autoIncrement: true,
+          type: DataTypes.UUID,
+          defaultValue: DataTypes.UUIDV4,
           primaryKey: true
         },
         cctv_name: {

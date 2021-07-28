@@ -22,8 +22,8 @@ module.exports = class CCTV extends Sequelize.Model {
     return super.init(
       {
         cctv_id: {
-          type: DataTypes.INTEGER,
-          autoIncrement: true,
+          type: DataTypes.UUID,
+          defaultValue: DataTypes.UUIDV4,
           primaryKey: true,
         },
         cctv_name: {
