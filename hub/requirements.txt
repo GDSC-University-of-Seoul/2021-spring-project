@@ -85,7 +85,7 @@ torchvision==0.9.1
 tqdm==4.60.0
 typing-extensions==3.7.4.3
 tzlocal==2.1
-urllib3==1.26.4
+urllib3==1.26.5
 visdom==0.1.8.9
 wandb==0.10.27
 Werkzeug==1.0.1
