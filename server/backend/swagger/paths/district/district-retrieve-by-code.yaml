@@ -14,13 +14,15 @@ get:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              district_code:
-                type: string
-              district_name:
-                type: string
-              parent_code:
-                type: string
-              count:
-                type: string
+            type: array
+            items:
+              type: object
+              properties:
+                district_code:
+                  type: string
+                district_name:
+                  type: string
+                parent_code:
+                  type: string
+                count:
+                  type: string

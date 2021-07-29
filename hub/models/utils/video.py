@@ -1,7 +1,7 @@
 import cv2
 from imutils.video import FileVideoStream
-from model.action_enum import ActionEnum
-from utils.files import check_file, save_pkl_file
+from kidskeeper.action_enum import ActionEnum
+from utils.files import check_file
 from utils.logger import Logger
 from pathlib import Path
 
@@ -44,7 +44,7 @@ def display_frame(config, frame, n, action_frame_list, stop_command="q"):
     color = (0, 0, 0)
     for i, person in enumerate(action_frame_list):
         text = f"Person {i} : {ActionEnum(person[n]).name}"
-        cv2.putText(frame, text, (10, 20 + 20 * i), font_face, scale, color, 1)
+        cv2.putText(frame, text, (10, 20 + 20 * i), font_face, scale, color, 2)
 
     cv2.imshow("Frame", frame)
     if cv2.waitKey(1) & 0xFF == ord(stop_command):
@@ -82,12 +82,13 @@ def extract_video(config, file, meta):
     for obj in meta.objects:
         action_frames = get_object_actions(meta, obj)
         action_frame_list.append(action_frames)
+        print(len(action_frame_list))
 
     # Check the video file is actually exist
     input_video = FileVideoStream(check_file(file))
 
     fourcc = cv2.VideoWriter_fourcc(*"mp4v")
-    output_video = cv2.VideoWriter("resize2.mp4", fourcc, 30.0, size)
+    output_video = cv2.VideoWriter(f"{basename}.mp4", fourcc, 30.0, size)
 
     output_frames = list()
 
@@ -103,6 +104,8 @@ def extract_video(config, file, meta):
                 break
 
             frame = cv2.resize(frame, size)
+            # display_frame(config, frame, 2, action_frame_list)
+
             output_video.write(frame)
             output_frames.append(frame)
 

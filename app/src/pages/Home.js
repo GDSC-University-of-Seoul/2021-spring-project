@@ -1,6 +1,9 @@
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
 import ChartContainer from "../containers/ChartContainer";
 import LogTableContainer from "../containers/LogTableContainer";
-import React from "react";
+import { fetchLogsData } from "../modules/logs";
 
 /**
  * `/` 페이지 렌더링
@@ -8,6 +11,16 @@ import React from "react";
  * @return {JSX.Element} `/` 페이지를 구성하는 컴포넌트
  */
 function Home() {
+  const {
+    loading,
+    data: { newLogsData },
+  } = useSelector((state) => state.logsReducer);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchLogsData());
+  }, [dispatch]);
+
   return (
     <>
       <section className="section home">
@@ -44,7 +57,7 @@ function Home() {
           </div>
         </div>
         <div className="container log-section">
-          <LogTableContainer />
+          <LogTableContainer loading={loading} logsData={newLogsData} />
         </div>
       </section>
     </>

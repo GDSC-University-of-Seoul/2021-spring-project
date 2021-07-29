@@ -30,89 +30,63 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-/**
- * 설치된 cctv 관련 테이블
+/*
+ * 로그인 관련 테이블
  * <FIELDS>           <DATA TYPE>        <INDEX>   <NULLABLE>
- * cctv_id            : Integer          PK        FALSE
- * cctv_name          : String                     FALSE
- * cctv_mac           : STRING                     FALSE
- * quality            : Enum                       FALSE
- * install_date       : Date                       FALSE
- * uninstall_date     : Date                       TRUE
+ * member_id          : String(50)          PK        FALSE
+ * password           : String(50)                    FALSE
+ * member_name        : String(10)                    FALSE
+ * member_phone       : String(12)                    FALSE
+ * email              : String(50)                    TRUE
  *
- * <RELATIONSHIP>     <COLUMN>
- * center             : center_id          FK       FALSE
- *
- * <BACKREF>          <COLUMN>
- * video              : cctv_id          FK
  */
 module.exports = /*#__PURE__*/function (_Sequelize$Model) {
-  _inherits(CCTV, _Sequelize$Model);
+  _inherits(Member, _Sequelize$Model);
 
-  var _super = _createSuper(CCTV);
+  var _super = _createSuper(Member);
 
-  function CCTV() {
-    _classCallCheck(this, CCTV);
+  function Member() {
+    _classCallCheck(this, Member);
 
     return _super.apply(this, arguments);
   }
 
-  _createClass(CCTV, null, [{
+  _createClass(Member, null, [{
     key: "init",
     value: function init(sequelize, DataTypes) {
-      return _get(_getPrototypeOf(CCTV), "init", this).call(this, {
-        cctv_id: {
-          type: DataTypes.INTEGER,
-          autoIncrement: true,
+      return _get(_getPrototypeOf(Member), "init", this).call(this, {
+        member_id: {
+          type: DataTypes.STRING(50),
           primaryKey: true
         },
-        cctv_name: {
-          type: DataTypes.STRING(30),
+        password: {
+          type: DataTypes.STRING(50),
           allowNull: false
         },
-        cctv_mac: {
-          type: DataTypes.STRING(30),
-          allowNull: false,
-          unique: true
-        },
-        quality: {
-          type: DataTypes.ENUM({
-            values: ["SD", "HD", "FHD", "QHD", "UHD"]
-          }),
+        member_name: {
+          type: DataTypes.STRING(10),
           allowNull: false
         },
-        install_date: {
-          type: DataTypes.DATE,
+        member_phone: {
+          type: DataTypes.STRING(12),
           allowNull: false
         },
-        uninstall_date: {
-          type: DataTypes.DATE,
+        email: {
+          type: DataTypes.STRING(50),
           allowNull: true
         }
       }, {
         sequelize: sequelize,
         timestamps: false,
         paranoid: false,
-        modelName: "CCTV",
-        tableName: "cctv",
-        freezeTableName: false,
+        modelName: "Member",
+        tableName: "member",
+        freezetableName: false,
         charset: "utf8",
         collate: "utf8_general_cli"
       });
     }
-  }, {
-    key: "associate",
-    value: function associate(db) {
-      db.CCTV.belongsTo(db.ChildCareCenter, {
-        foreignKey: "center_id",
-        targetKey: "center_id"
-      });
-      db.CCTV.hasMany(db.Video, {
-        foreignKey: "cctv_id",
-        sourceKey: "cctv_id"
-      });
-    }
   }]);
 
-  return CCTV;
+  return Member;
 }(_sequelize["default"].Model);

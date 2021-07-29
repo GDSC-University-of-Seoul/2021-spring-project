@@ -8,7 +8,7 @@ from utils.general import check_git_status, check_requirements
 from metadata import load_metadata
 
 
-logger = Logger()
+logger = Logger(logger_name=__name__).logger
 
 
 def train(opt, config):
