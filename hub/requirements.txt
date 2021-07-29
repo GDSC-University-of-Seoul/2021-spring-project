@@ -75,7 +75,7 @@ subprocess32==3.5.4
 tensorboard==2.5.0
 tensorboard-data-server==0.6.0
 tensorboard-plugin-wit==1.8.0
-tensorboardx==2.2
+tensorboardX==2.2
 thop==0.0.31.post2005241907
 tifffile==2021.4.8
 timm==0.1.20
