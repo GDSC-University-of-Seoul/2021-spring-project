@@ -1,4 +1,4 @@
-import Sequelize from "sequelize";
+import Sequelize from 'sequelize';
 
 /**
  * 행정구역 관련 테이블
@@ -31,32 +31,32 @@ module.exports = class District extends Sequelize.Model {
         sequelize,
         timestamps: false,
         paranoid: false,
-        modelName: "District",
-        tableName: "district",
+        modelName: 'District',
+        tableName: 'district',
         freezeTableName: false,
-        charset: "utf8",
-        collate: "utf8_general_cli",
-      }
+        charset: 'utf8',
+        collate: 'utf8_general_cli',
+      },
     );
   }
   static associate(db) {
     db.District.hasMany(db.District, {
       foreignKey: {
-        name: "parent_code",
+        name: 'parent_code',
         allowNull: true,
       },
-      sourceKey: "district_code",
+      sourceKey: 'district_code',
     });
     db.District.belongsTo(db.District, {
       foreignKey: {
-        name: "parent_code",
+        name: 'parent_code',
         allowNull: true,
       },
-      targetKey: "district_code",
+      targetKey: 'district_code',
     });
     db.District.hasMany(db.ChildCareCenter, {
-      foreignKey: "district_code",
-      sourceKey: "district_code",
+      foreignKey: 'district_code',
+      sourceKey: 'district_code',
     });
   }
 };

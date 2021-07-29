@@ -1,4 +1,4 @@
-import Sequelize from "sequelize";
+import Sequelize from 'sequelize';
 
 /**
  * CCTV 영상 비디오 관련 테이블
@@ -47,22 +47,22 @@ module.exports = class Video extends Sequelize.Model {
         sequelize,
         timestamps: false,
         paranoid: false,
-        modelName: "Video",
-        tableName: "video",
+        modelName: 'Video',
+        tableName: 'video',
         freezeTableName: false,
-        charset: "utf8",
-        collate: "utf8_general_cli",
-      }
+        charset: 'utf8',
+        collate: 'utf8_general_cli',
+      },
     );
   }
   static associate(db) {
     db.Video.belongsTo(db.CCTV, {
-      foreignKey: "cctv_id",
-      targetKey: "cctv_id",
+      foreignKey: 'cctv_id',
+      targetKey: 'cctv_id',
     });
     db.Video.hasMany(db.Anomaly, {
-      foreignKey: "video_id",
-      sourceKey: "video_id",
+      foreignKey: 'video_id',
+      sourceKey: 'video_id',
     });
   }
 };
