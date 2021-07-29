@@ -8,7 +8,7 @@ import { ResponsiveBar } from "@nivo/bar";
  * @return {JSX.Element} 차트 컴포넌트
  */
 
-function BarGraph({ data, keys, indexBy }) {
+function BarGraph({ data, keys, indexBy, maxVal }) {
   // 차트 내 스타일 설정
   const theme = {
     fontSize: 14,
@@ -21,6 +21,7 @@ function BarGraph({ data, keys, indexBy }) {
       theme={theme}
       margin={{ top: 20, right: 75, bottom: 40, left: 40 }}
       padding={0.3}
+      maxValue={maxVal === 0 ? 10 : "auto"}
       valueScale={{ type: "linear" }}
       colors={{ scheme: "nivo" }}
       borderColor={{ from: "color", modifiers: [["darker", 1.6]] }}

@@ -3,15 +3,20 @@
   font-size: 0.9rem;
   padding: 0;
 
-  h1 {
+  h2 {
     margin-bottom: 0.5rem;
     font-size: 1rem;
     text-align: center;
     font-weight: 600;
   }
+  .popup-content {
+    & li {
+      margin: 5px 0;
+    }
+  }
 }
 .marker {
-  background: url('/src/assets/image/marker.png') no-repeat center / contain;
+  background: url("/src/assets/image/marker.png") no-repeat center / contain;
   width: 1.5rem;
   height: 2rem;
   border: none;
