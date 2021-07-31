@@ -8,6 +8,7 @@ from utils.logger import Logger
 
 logger = Logger().get_logger()
 
+
 class Scheduler:
     def __init__(self, config):
         self.directory = config["data"]["path"]

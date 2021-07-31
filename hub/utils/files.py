@@ -5,7 +5,7 @@ from pathlib import Path
 
 def dirlist(path: Path):
     assert os.path.isdir(path)
-    
+
     files = os.listdir(path)
 
     dirlist = list()
@@ -14,10 +14,10 @@ def dirlist(path: Path):
         if os.path.isdir(filepath):
             dirlist.append(filepath)
             print(filepath)
-            
+
     return dirlist
 
-    
+
 def check_dir(path: Path, force=True):
     """
     Check for directory
@@ -27,9 +27,10 @@ def check_dir(path: Path, force=True):
             return False
         else:
             os.makedirs(path)
-    
+
     return True
-        
+
+
 def check_file(file: Path):
     """
     Search for file if not found
