@@ -1,7 +1,9 @@
 import asyncio
 from utils.scheduler import Scheduler
 from utils.config import get_configs
+from utils.logger import Logger
 
+logger = Logger().get_logger()
 
 async def main():
     cfg = get_configs()
@@ -12,8 +14,8 @@ async def main():
         sched.add_scheduler("interval")
         sched.start_scheduler()
     except:
-        print("Abort")
-        await asyncio.wait(30)        
+        logger.warn("Abort")
+        await asyncio.wait(10)
 
         
 if __name__ == "__main__":

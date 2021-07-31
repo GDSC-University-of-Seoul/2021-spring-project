@@ -7,9 +7,8 @@ def dirlist(path: Path):
     assert os.path.isdir(path)
     
     files = os.listdir(path)
-    print(files)
-    dirlist = list()
 
+    dirlist = list()
     for file in files:
         filepath = os.path.join(path, file)
         if os.path.isdir(filepath):
