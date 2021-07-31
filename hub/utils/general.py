@@ -73,9 +73,6 @@ def check_requirements(requirements="requirements.txt", exclude=()):
             pkg.require(r)
         except Exception as e:  # DistributionNotFound or VersionConflict if requirements not met
             n += 1
-            print(
-                f"{prefix} {e.req} not found and is required by YOLOv5, attempting auto-update..."
-            )
             print(subprocess.check_output(f"pip install {e.req}", shell=True).decode())
 
     if n:  # if packages updated
