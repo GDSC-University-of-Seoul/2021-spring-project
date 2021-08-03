@@ -10,3 +10,8 @@ export const getCookie = (name) => {
 
   return value ? value[2] : null;
 };
+
+export const deleteCookie = (name) => {
+  let date = new Date();
+  document.cookie = name + "=;expires=" + date.toUTCString();
+};
