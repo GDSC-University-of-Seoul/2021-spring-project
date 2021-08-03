@@ -10,7 +10,7 @@ import { logOut } from "../modules/login";
  *
  * @return {JSX.Element} `/settings` 페이지를 구성하는 컴포넌트
  */
-function Settings() {
+function Settings({ history }) {
   const {
     loginInfo: { userId, userName, email },
   } = useSelector((state) => state.loginReducer);
@@ -19,8 +19,8 @@ function Settings() {
   const [isLogOut, setIsLogOut] = useState(false);
 
   const logOutHandler = useCallback(() => {
-    dispatch(logOut());
-  }, [dispatch]);
+    dispatch(logOut(history));
+  }, [dispatch, history]);
 
   return (
     <>

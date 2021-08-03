@@ -38,9 +38,10 @@ export const getLoginCookie = () => {
   return { type: LOGIN_ERROR, payload: null };
 };
 
-export const logOut = () => {
-  deleteCookie();
-  return { type: LOGOUT };
+export const logOut = (history) => (dispatch) => {
+  deleteCookie("loginInfo");
+  dispatch({ type: LOGOUT });
+  history.push("/");
 };
 
 export const initLogin = () => {

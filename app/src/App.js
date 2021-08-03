@@ -29,12 +29,13 @@ function App() {
 
   return (
     <>
-      <Route path="/" component={Login} exact />
+      <Route path="/" component={Login} exact>
+        {loginSuccess && <Redirect to="/home" />}
+      </Route>
       {loginSuccess ? (
         <>
           <Header />
           <SideBar />
-          <Redirect exact from="/" to="/home" />
           <Route path="/home" component={Home} />
           <Route path="/monitoring" component={Monitoring} />
           <Route path="/cctvs" component={Cctvs} />
@@ -42,10 +43,7 @@ function App() {
           <Route path="/settings" component={Settings} />
         </>
       ) : (
-        <>
-          <Redirect exact from="/*" to="/" />
-          <Route path="/" component={Login} exact />
-        </>
+        <Redirect to="/" />
       )}
     </>
   );
