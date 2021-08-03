@@ -1,6 +1,6 @@
 import { Button, TextField } from "@material-ui/core";
 import React, { useCallback } from "react";
-import { initError, loginSubmit } from "../modules/login";
+import { initLogin, loginSubmit } from "../modules/login";
 import { useDispatch, useSelector } from "react-redux";
 
 import Modal from "../components/Modal";
@@ -23,7 +23,7 @@ function Login() {
 
   // 모달창 닫기
   const closeHandler = () => {
-    dispatch(initError());
+    dispatch(initLogin());
   };
 
   return (

@@ -20,8 +20,6 @@ import { getLoginCookie } from "./modules/login";
 function App() {
   const { loginSuccess } = useSelector((state) => state.loginReducer);
 
-  // Todo : 쿠키를 통해 기존 로그인 정보 저장 => 재접속 시에도 정보 유지
-
   const dispatch = useDispatch();
 
   // 쿠키 여부 확인
@@ -32,7 +30,7 @@ function App() {
   return (
     <>
       <Route path="/" component={Login} exact />
-      {loginSuccess && (
+      {loginSuccess ? (
         <>
           <Header />
           <SideBar />
@@ -42,6 +40,11 @@ function App() {
           <Route path="/cctvs" component={Cctvs} />
           <Route path="/logs" component={Logs} />
           <Route path="/settings" component={Settings} />
+        </>
+      ) : (
+        <>
+          <Redirect exact from="/*" to="/" />
+          <Route path="/" component={Login} exact />
         </>
       )}
     </>
