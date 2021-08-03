@@ -1,4 +1,5 @@
 import axios from "axios";
+import { setCookie } from "../utils/cookie/cookie";
 
 const LOGIN_SUCCESS = "login/LOGIN_SUCCESS";
 const LOGIN_ERROR = "login/LOGIN_ERROR";
@@ -7,13 +8,16 @@ const LOGIN_ERROR_INIT = "login/LOGIN_ERROR_INIT";
 export const loginSubmit = (userId, userPw) => async (dispatch) => {
   try {
     // Todo : 로그인 서버 주소 지정
-
-    await axios.post(`${process.env.REACT_APP_API_SERVER}/`, {
+    const loginInfo = await axios.post(`${process.env.REACT_APP_API_SERVER}/`, {
       userId,
       userPw,
     });
 
-    dispatch({ type: LOGIN_SUCCESS });
+    setCookie("loginInfo", loginInfo, 1);
+    dispatch({
+      type: LOGIN_SUCCESS,
+      payload: { loginInfo },
+    });
   } catch (e) {
     dispatch({ type: LOGIN_ERROR, payload: e });
   }
@@ -25,6 +29,11 @@ export const initError = () => {
 
 const initialState = {
   loginSuccess: false,
+  loginInfo: {
+    userId: null,
+    userName: null,
+    email: null,
+  },
   error: null,
 };
 
@@ -33,15 +42,18 @@ export default function loginReducer(state = initialState, action) {
     case LOGIN_SUCCESS:
       return {
         loginSuccess: true,
+        loginInfo: action.payload.loginInfo,
         error: null,
       };
     case LOGIN_ERROR:
       return {
+        ...state,
         loginSuccess: false,
         error: action.payload,
       };
     case LOGIN_ERROR_INIT:
       return {
+        ...state,
         loginSuccess: false,
         error: null,
       };
