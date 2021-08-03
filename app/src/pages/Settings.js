@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import ToggleBtn from "../components/ToggleBtn";
+import { useSelector } from "react-redux";
 
 /**
  * `/settings` 페이지 렌더링
@@ -12,12 +13,9 @@ function Settings() {
     Todo : - DB에서 사용자 정보 Fetch
            - Redux에서 관리
   */
-  const fetchUser = {
-    admin: "이태희",
-    userId: "leetaehee0205",
-    permission: "시·군·구",
-  };
-  const [userInfo] = useState(fetchUser);
+  const {
+    loginInfo: { userId, userName, email },
+  } = useSelector((state) => state.loginReducer);
 
   return (
     <>
@@ -40,15 +38,14 @@ function Settings() {
           <ul className="userInfo">
             <li>
               <span>관리자</span>
-              <input type="text" value={userInfo.admin} disabled />
+              <input type="text" value={userName} disabled />
             </li>
             <li>
-              <span>계정명</span>{" "}
-              <input type="text" value={userInfo.userId} disabled />
+              <span>계정 ID</span> <input type="text" value={userId} disabled />
             </li>
             <li>
-              <span>사용자 권한</span>
-              <input type="text" value={userInfo.permission} disabled />
+              <span>관리자 이메일</span>
+              <input type="text" value={email} disabled />
             </li>
           </ul>
           <div className="user-control">

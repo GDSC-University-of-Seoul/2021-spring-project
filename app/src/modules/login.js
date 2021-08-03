@@ -14,7 +14,7 @@ export const loginSubmit = (userId, userPw) => async (dispatch) => {
       userPw,
     });
 
-    setCookie("loginInfo", loginInfo, 1);
+    setCookie("loginInfo", JSON.stringify(loginInfo), 1);
     dispatch({
       type: LOGIN_SUCCESS,
       payload: loginInfo,
@@ -25,9 +25,10 @@ export const loginSubmit = (userId, userPw) => async (dispatch) => {
 };
 
 export const getLoginCookie = () => {
-  const loginInfo = getCookie("loginInfo");
+  const loginInfo = JSON.parse(getCookie("loginInfo"));
+  if (loginInfo) return { type: LOGIN_SUCCESS, payload: loginInfo };
 
-  if (loginInfo !== null) return { type: LOGIN_SUCCESS, payload: loginInfo };
+  return { type: LOGIN_ERROR, payload: null };
 };
 
 export const initError = () => {

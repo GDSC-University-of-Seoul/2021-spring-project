@@ -1,6 +1,6 @@
 import { Button, TextField } from "@material-ui/core";
-import React, { useCallback, useEffect } from "react";
-import { getLoginCookie, initError, loginSubmit } from "../modules/login";
+import React, { useCallback } from "react";
+import { initError, loginSubmit } from "../modules/login";
 import { useDispatch, useSelector } from "react-redux";
 
 import Modal from "../components/Modal";
@@ -8,11 +8,6 @@ import Modal from "../components/Modal";
 function Login() {
   const { error } = useSelector((state) => state.loginReducer);
   const dispatch = useDispatch();
-
-  // 쿠키 여부 확인
-  useEffect(() => {
-    dispatch(getLoginCookie());
-  });
 
   // 로그인
   const loginHandler = useCallback(
