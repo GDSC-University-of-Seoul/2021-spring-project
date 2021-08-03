@@ -1,5 +1,6 @@
+import { getCookie, setCookie } from "../utils/cookie/cookie";
+
 import axios from "axios";
-import { setCookie } from "../utils/cookie/cookie";
 
 const LOGIN_SUCCESS = "login/LOGIN_SUCCESS";
 const LOGIN_ERROR = "login/LOGIN_ERROR";
@@ -16,11 +17,17 @@ export const loginSubmit = (userId, userPw) => async (dispatch) => {
     setCookie("loginInfo", loginInfo, 1);
     dispatch({
       type: LOGIN_SUCCESS,
-      payload: { loginInfo },
+      payload: loginInfo,
     });
   } catch (e) {
     dispatch({ type: LOGIN_ERROR, payload: e });
   }
+};
+
+export const getLoginCookie = () => {
+  const loginInfo = getCookie("loginInfo");
+
+  if (loginInfo !== null) return { type: LOGIN_SUCCESS, payload: loginInfo };
 };
 
 export const initError = () => {
@@ -42,7 +49,7 @@ export default function loginReducer(state = initialState, action) {
     case LOGIN_SUCCESS:
       return {
         loginSuccess: true,
-        loginInfo: action.payload.loginInfo,
+        loginInfo: action.payload,
         error: null,
       };
     case LOGIN_ERROR:
