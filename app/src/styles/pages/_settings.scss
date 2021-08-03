@@ -44,4 +44,27 @@
       background-color: #e74c3c;
     }
   }
+  .logout-checkModal {
+    font-size: 1.05rem;
+    div {
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-around;
+      color: white;
+
+      button {
+        padding: 6px 14px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        color: white;
+      }
+      .confirm-btn {
+        background-color: #2980b9;
+      }
+      .cancel-btn {
+        background-color: #e74c3c;
+      }
+    }
+  }
 }
