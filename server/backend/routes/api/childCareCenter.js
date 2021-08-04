@@ -3,7 +3,7 @@ import {
   Sequelize,
   District,
   ChildCareCenter,
-} from "../../database/models/transform";
+} from "../../../database/models/transform";
 
 const router = express.Router();
 

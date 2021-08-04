@@ -1,14 +1,8 @@
 import express from "express";
+import apiRouter from "./api";
 
 const router = express.Router();
 
-router.get("/", async (req, res, next) => {
-  try {
-    res.send("Connected");
-  } catch (err) {
-    console.error(err);
-    next(err);
-  }
-});
+router.use("/api", apiRouter);
 
 module.exports = router;

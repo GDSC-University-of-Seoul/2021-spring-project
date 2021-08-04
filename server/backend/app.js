@@ -7,11 +7,6 @@ import yaml from "yamljs";
 
 import { sequelize } from "../database/models/transform";
 import indexRouter from "./routes";
-import districtRouter from "./routes/district";
-import centerRouter from "./routes/childCareCenter";
-import cctvRouter from "./routes/cctv";
-import anomalyRouter from "./routes/anomaly";
-import logRouter from "./routes/log";
 import cors from "cors";
 
 dotenv.config();
@@ -35,13 +30,7 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// localhost:3000/ 연결
-app.use("/api/", indexRouter);
-app.use("/api/districts/", districtRouter);
-app.use("/api/centers/", centerRouter);
-app.use("/api/cctvs/", cctvRouter);
-app.use("/api/anomalies/", anomalyRouter);
-app.use("/api/anomalies/logs", logRouter);
+app.use("/", indexRouter);
 
 const swaggerSpecs = yaml.load(path.join(__dirname, "/swagger/build.yaml"));
 app.use("/api/docs/", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));

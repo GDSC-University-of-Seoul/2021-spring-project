@@ -6,7 +6,7 @@ import {
   Video,
   Anomaly,
   AnomalyLog,
-} from "../../database/models/transform";
+} from "../../../database/models/transform";
 
 const router = express.Router();
 
