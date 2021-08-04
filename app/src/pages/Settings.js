@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import Modal from "../components/Modal";
 import ToggleBtn from "../components/ToggleBtn";
+import UpdateUserForm from "../components/UpdateLoginForm";
 import { logOut } from "../modules/login";
 
 /**
@@ -11,11 +12,11 @@ import { logOut } from "../modules/login";
  * @return {JSX.Element} `/settings` 페이지를 구성하는 컴포넌트
  */
 function Settings({ history }) {
-  const {
-    loginInfo: { userId, userName, email },
-  } = useSelector((state) => state.loginReducer);
+  const { loginInfo } = useSelector((state) => state.loginReducer);
+  const { userId, userName, email } = loginInfo;
   const dispatch = useDispatch();
 
+  const [isChanged, setIsChanged] = useState(false);
   const [isLogOut, setIsLogOut] = useState(false);
 
   const logOutHandler = useCallback(() => {
@@ -54,12 +55,21 @@ function Settings({ history }) {
             </li>
           </ul>
           <div className="user-control">
-            <button className="user-modify">사용자 정보 수정</button>
+            <button className="user-modify" onClick={() => setIsChanged(true)}>
+              사용자 정보 변경
+            </button>
             <button className="user-logout" onClick={() => setIsLogOut(true)}>
               로그아웃
             </button>
           </div>
         </div>
+        {isChanged && (
+          <UpdateUserForm
+            loginInfo={loginInfo}
+            history={history}
+            setIsChanged={setIsChanged}
+          />
+        )}
         {isLogOut && (
           <Modal>
             <div className="logout-checkModal">
