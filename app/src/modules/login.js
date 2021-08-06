@@ -6,6 +6,12 @@ const LOGIN_SUCCESS = "login/LOGIN_SUCCESS";
 const LOGOUT = "login/LOGOUT";
 const LOGIN_ERROR = "login/LOGIN_ERROR";
 
+/**
+ * 로그인 시도
+ *
+ * @param {String} userId : 입력한 ID
+ * @param {String} userPw : 입력한 PW
+ */
 export const loginSubmit = (userId, userPw) => async (dispatch) => {
   try {
     // Todo : 로그인 서버 주소 지정
@@ -31,6 +37,9 @@ export const loginSubmit = (userId, userPw) => async (dispatch) => {
   }
 };
 
+/**
+ * 기존에 저장된 로그인 쿠키 정보 Fetch
+ */
 export const getLoginCookie = () => {
   const loginInfo = JSON.parse(getCookie("loginInfo"));
   if (loginInfo) return { type: LOGIN_SUCCESS, payload: loginInfo };
@@ -38,20 +47,35 @@ export const getLoginCookie = () => {
   return { type: LOGIN_ERROR, payload: null };
 };
 
+/**
+ * 사용자 로그아웃
+ *
+ * @param {Object} history 리다이렉션을 위한 history 객체
+ */
 export const logOut = (history) => (dispatch) => {
   deleteCookie("loginInfo");
   dispatch({ type: LOGOUT });
   history.push("/");
 };
 
+/**
+ * 사용자 정보 변경
+ *
+ * @param {Object} userInfo 변경할 사용자 정보 {userId, userName, password, email}
+ * @returns
+ */
 export const loginInfoUpdate = (userInfo) => async (dispatch) => {
   try {
+    // Todo : 로그인 서버 주소 지정
     //await axios.put(`${process.env.REACT_APP_API_SERVER}/`, userInfo);
   } catch (e) {
     dispatch({ type: LOGIN_ERROR, payload: e });
   }
 };
 
+/**
+ * 로그인 정보 초기화
+ */
 export const initLogin = () => {
   return { type: LOGOUT };
 };

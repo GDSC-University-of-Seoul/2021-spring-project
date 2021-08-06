@@ -14,8 +14,8 @@ function Settings({ history }) {
   const { loginInfo } = useSelector((state) => state.loginReducer);
   const { userId, userName, email } = loginInfo;
 
-  const [isChanged, setIsChanged] = useState(false);
-  const [isLogOut, setIsLogOut] = useState(false);
+  const [isChanged, setIsChanged] = useState(false); // 사용자 정보 변경창 열기
+  const [isLogOut, setIsLogOut] = useState(false); // 로그아웃 창 열기
 
   return (
     <>
@@ -57,6 +57,7 @@ function Settings({ history }) {
             </button>
           </div>
         </div>
+        {/* 사용자 정보 변경 */}
         {isChanged && (
           <UpdateLoginForm
             loginInfo={loginInfo}
@@ -64,6 +65,7 @@ function Settings({ history }) {
             setIsChanged={setIsChanged}
           />
         )}
+        {/* 로그아웃 */}
         {isLogOut && (
           <LogoutModal history={history} setIsLogOut={setIsLogOut} />
         )}

@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 /**
  * 홈페이지 헤더부 구성
  *
+ * @param {Object} props history: 리다이렉션을 위한 history 객체
  * @returns {JSX.Element} 홈페이지 헤더부 컴포넌트
  */
 
@@ -17,9 +18,9 @@ function Header({ history }) {
   const { loginInfo } = useSelector((state) => state.loginReducer);
 
   const [date, setDate] = useState(null);
-  const [userHover, setUserHover] = useState(false);
-  const [isChanged, setIsChanged] = useState(false);
-  const [isLogOut, setIsLogOut] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false); // 사용자 헤더 메뉴 열기
+  const [isChanged, setIsChanged] = useState(false); // 사용자 정보 변경
+  const [isLogOut, setIsLogOut] = useState(false); // 사용자 로그아웃
 
   // 날짜·시간 포맷팅 (yyyy-mm-dd hh:mm:ss)
   const format = useCallback((timeInfo) => {
@@ -50,8 +51,9 @@ function Header({ history }) {
     return () => clearInterval(getTime);
   });
 
+  // 헤더 메뉴 닫기
   useEffect(() => {
-    window.addEventListener("click", () => setUserHover(false));
+    window.addEventListener("click", () => setUserMenuOpen(false));
   }, []);
 
   return (
@@ -65,10 +67,10 @@ function Header({ history }) {
           <div className="user-info" onClick={(e) => e.stopPropagation()}>
             <FaUser
               className="header-icon"
-              onClick={() => setUserHover(!userHover)}
+              onClick={() => setUserMenuOpen(!userMenuOpen)}
             />
             {/* 사용자 헤더 메뉴 */}
-            {userHover && (
+            {userMenuOpen && (
               <ul className="arrowbox-menu">
                 <li>
                   <Link to="/settings">
@@ -86,6 +88,7 @@ function Header({ history }) {
           </div>
         </div>
       </header>
+      {/* 사용자 정보 변경 */}
       {isChanged && (
         <UpdateLoginForm
           loginInfo={loginInfo}
@@ -93,6 +96,7 @@ function Header({ history }) {
           setIsChanged={setIsChanged}
         />
       )}
+      {/* 로그아웃 창 */}
       {isLogOut && <LogoutModal history={history} setIsLogOut={setIsLogOut} />}
     </>
   );

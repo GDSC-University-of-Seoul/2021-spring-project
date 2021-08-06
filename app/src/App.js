@@ -19,19 +19,20 @@ import { getLoginCookie } from "./modules/login";
  */
 function App() {
   const { loginSuccess } = useSelector((state) => state.loginReducer);
-
   const dispatch = useDispatch();
 
-  // 쿠키 여부 확인
+  // 로그인 쿠키 여부 확인
   useEffect(() => {
     dispatch(getLoginCookie());
   }, [dispatch]);
 
   return (
     <>
+      {/* 비로그인 라우팅 */}
       <Route path="/" component={Login} exact>
         {loginSuccess && <Redirect to="/home" />}
       </Route>
+      {/* 로그인 이후 라우팅 */}
       {loginSuccess ? (
         <>
           <Route component={Header} />

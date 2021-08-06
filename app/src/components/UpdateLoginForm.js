@@ -5,16 +5,23 @@ import { logOut, loginInfoUpdate } from "../modules/login";
 import Modal from "./Modal";
 import { useDispatch } from "react-redux";
 
+/**
+ * 사용자 변경 입력 폼을 담은 모달창
+ *
+ * @param {Object} props loginInfo: 사용자 정보, history: History 객체, setIsChanged: 사용자 변경창을 닫기 위한 useState의 상태변경 Callback
+ * @returns {HTMLElement} 사용자 변경 입력 폼을 담은 모달창
+ */
 function UpdateLoginForm({ loginInfo, history, setIsChanged }) {
   const dispatch = useDispatch();
 
-  const [confirmUpdate, setConfirmUpdate] = useState(false);
-  const [pwMatch, setPwMatch] = useState(true);
+  const [confirmUpdate, setConfirmUpdate] = useState(false); // 변경 완료 창 열기
+  const [pwMatch, setPwMatch] = useState(true); // 비밀번호 일치여부
   const [pwConfirm, setpwConfirm] = useState({
     userPw: "",
     userPw2: "",
-  });
+  }); // 변경할 비밀번호
 
+  // 비밀번호 입력값 저장
   const changePassword = useCallback(
     (e) => {
       setPwMatch(true);
@@ -28,15 +35,18 @@ function UpdateLoginForm({ loginInfo, history, setIsChanged }) {
     [pwConfirm]
   );
 
+  // 사용자 정보 변경
   const updateLogin = useCallback(
     (e) => {
       e.preventDefault();
 
+      // 변경할 비밀번호 일치 여부 검사
       if (pwConfirm.userPw !== pwConfirm.userPw2) {
         setPwMatch(false);
         return;
       }
 
+      // 사용자 정보 변경
       setPwMatch(true);
       const { userId, userName, password, email } = e.target;
       const updateInfo = {
@@ -53,21 +63,25 @@ function UpdateLoginForm({ loginInfo, history, setIsChanged }) {
   return (
     <>
       {confirmUpdate ? (
-        <Modal>
-          <div className="updateUserInfo-confirm">
-            ✅ 사용자 정보가 변경되었습니다
-            <Button
-              variant="contained"
-              color="primary"
-              disableElevation
-              onClick={() => dispatch(logOut(history))}
-            >
-              확인
-            </Button>
-          </div>
-        </Modal>
+        <>
+          {/* 사용자 정보 변경 완료 확인창 */}
+          <Modal>
+            <div className="updateUserInfo-confirm">
+              ✅ 사용자 정보가 변경되었습니다
+              <Button
+                variant="contained"
+                color="primary"
+                disableElevation
+                onClick={() => dispatch(logOut(history))}
+              >
+                확인
+              </Button>
+            </div>
+          </Modal>
+        </>
       ) : (
         <Modal title="사용자 정보 변경">
+          {/* 사용자 변경 입력 폼 */}
           <form className="updateLogin-form" onSubmit={updateLogin}>
             <TextField
               label="계정 ID"
