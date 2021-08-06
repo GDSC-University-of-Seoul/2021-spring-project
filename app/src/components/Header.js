@@ -50,18 +50,26 @@ function Header({ history }) {
     return () => clearInterval(getTime);
   });
 
+  useEffect(() => {
+    window.addEventListener("click", () => setUserHover(false));
+  }, []);
+
   return (
     <>
       <header>
         <div className="logo" />
         <div className="info">
           <div className="center-info">
-            <FaBell />
+            <FaBell className="header-icon" />
           </div>
-          <div className="user-info">
-            <FaUser onClick={() => setUserHover(!userHover)} />
+          <div className="user-info" onClick={(e) => e.stopPropagation()}>
+            <FaUser
+              className="header-icon"
+              onClick={() => setUserHover(!userHover)}
+            />
+            {/* 사용자 헤더 메뉴 */}
             {userHover && (
-              <ul onClick={() => setUserHover(false)}>
+              <ul className="arrowbox-menu">
                 <li>
                   <Link to="/settings">
                     <span>{loginInfo.userName}</span> 님
