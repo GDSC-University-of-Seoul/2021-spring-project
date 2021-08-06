@@ -34,7 +34,7 @@ function App() {
       </Route>
       {loginSuccess ? (
         <>
-          <Header />
+          <Route component={Header} />
           <SideBar />
           <Route path="/home" component={Home} />
           <Route path="/monitoring" component={Monitoring} />

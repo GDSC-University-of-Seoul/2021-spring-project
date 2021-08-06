@@ -1,15 +1,25 @@
 import { FaBell, FaUser } from "react-icons/fa";
 import React, { useCallback, useEffect, useState } from "react";
 
+import { Link } from "react-router-dom";
+import LogoutModal from "./LogoutModal";
+import UpdateLoginForm from "./UpdateLoginForm";
+import { useSelector } from "react-redux";
+
 /**
  * 홈페이지 헤더부 구성
  *
  * @returns {JSX.Element} 홈페이지 헤더부 컴포넌트
  */
 
-function Header() {
+function Header({ history }) {
   // 날짜·시간 정보 저장
+  const { loginInfo } = useSelector((state) => state.loginReducer);
+
   const [date, setDate] = useState(null);
+  const [userHover, setUserHover] = useState(false);
+  const [isChanged, setIsChanged] = useState(false);
+  const [isLogOut, setIsLogOut] = useState(false);
 
   // 날짜·시간 포맷팅 (yyyy-mm-dd hh:mm:ss)
   const format = useCallback((timeInfo) => {
@@ -41,21 +51,42 @@ function Header() {
   });
 
   return (
-    <header>
-      <div className="logo" />
-      <div className="info">
-        <div className="center-info">
-          <FaBell />
+    <>
+      <header>
+        <div className="logo" />
+        <div className="info">
+          <div className="center-info">
+            <FaBell />
+          </div>
+          <div className="user-info">
+            <FaUser onClick={() => setUserHover(!userHover)} />
+            {userHover && (
+              <ul onClick={() => setUserHover(false)}>
+                <li>
+                  <Link to="/settings">
+                    <span>{loginInfo.userName}</span> 님
+                  </Link>
+                </li>
+                <li onClick={() => setIsChanged(true)}>사용자 정보 변경</li>
+                <li onClick={() => setIsLogOut(true)}>로그아웃</li>
+              </ul>
+            )}
+          </div>
+          <div className="time-info">
+            <div>{date && `${date.year}-${date.month}-${date.day}`}</div>
+            <div>{date && `${date.hours}:${date.minutes}:${date.seconds}`}</div>
+          </div>
         </div>
-        <div className="user-info">
-          <FaUser />
-        </div>
-        <div className="time-info">
-          <div>{date && `${date.year}-${date.month}-${date.day}`}</div>
-          <div>{date && `${date.hours}:${date.minutes}:${date.seconds}`}</div>
-        </div>
-      </div>
-    </header>
+      </header>
+      {isChanged && (
+        <UpdateLoginForm
+          loginInfo={loginInfo}
+          history={history}
+          setIsChanged={setIsChanged}
+        />
+      )}
+      {isLogOut && <LogoutModal history={history} setIsLogOut={setIsLogOut} />}
+    </>
   );
 }
 export default Header;
