@@ -10,8 +10,36 @@ function UpdateLoginForm({ loginInfo, history, setIsChanged }) {
 
   const [confirmUpdate, setConfirmUpdate] = useState(false);
 
+  const [pwMatch, setPwMatch] = useState(true);
+
+  const [pwConfirm, setpwConfirm] = useState({
+    userPw: "",
+    userPw2: "",
+  });
+
+  const changePassword = useCallback(
+    (e) => {
+      setPwMatch(true);
+
+      const { id, value } = e.target;
+      const pwInput = { ...pwConfirm };
+      pwInput[id] = value;
+
+      setpwConfirm(pwInput);
+    },
+    [pwConfirm]
+  );
+
   const updateLogin = useCallback(
     (e) => {
+      e.preventDefault();
+
+      if (pwConfirm.userPw !== pwConfirm.userPw2) {
+        setPwMatch(false);
+        return;
+      }
+
+      setPwMatch(true);
       const { userId, userName, password, email } = e.target;
       const updateInfo = {
         userId,
@@ -21,7 +49,7 @@ function UpdateLoginForm({ loginInfo, history, setIsChanged }) {
       };
       dispatch(loginInfoUpdate(updateInfo)).then(() => setConfirmUpdate(true));
     },
-    [dispatch]
+    [pwConfirm, dispatch]
   );
 
   return (
@@ -64,6 +92,7 @@ function UpdateLoginForm({ loginInfo, history, setIsChanged }) {
               label="변경할 비밀번호"
               id="userPw"
               type="password"
+              onChange={changePassword}
               InputLabelProps={{
                 shrink: true,
               }}
@@ -72,10 +101,14 @@ function UpdateLoginForm({ loginInfo, history, setIsChanged }) {
               label="비밀번호 확인"
               id="userPw2"
               type="password"
+              onChange={changePassword}
               InputLabelProps={{
                 shrink: true,
               }}
             />
+            {!pwMatch && (
+              <div className="pw-notMatch">비밀번호가 일치하지 않습니다.</div>
+            )}
             <TextField
               label="관리자 이메일"
               id="userEmail"
