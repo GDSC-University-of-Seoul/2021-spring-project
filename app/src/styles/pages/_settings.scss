@@ -45,7 +45,9 @@
     }
   }
   .logout-checkModal {
-    font-size: 1.05rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+
     div {
       margin-top: 10px;
       display: flex;
@@ -53,7 +55,7 @@
       color: white;
 
       button {
-        padding: 6px 14px;
+        padding: 8px 16px;
         border: none;
         border-radius: 5px;
         cursor: pointer;

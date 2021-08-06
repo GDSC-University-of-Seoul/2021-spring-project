@@ -46,9 +46,7 @@ export const logOut = (history) => (dispatch) => {
 
 export const loginInfoUpdate = (userInfo) => async (dispatch) => {
   try {
-    await axios.put(`${process.env.REACT_APP_API_SERVER}/`, userInfo);
-    deleteCookie("loginInfo");
-    dispatch({ type: LOGOUT });
+    //await axios.put(`${process.env.REACT_APP_API_SERVER}/`, userInfo);
   } catch (e) {
     dispatch({ type: LOGIN_ERROR, payload: e });
   }

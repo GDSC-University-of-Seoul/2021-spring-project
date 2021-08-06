@@ -21,3 +21,13 @@
     }
   }
 }
+.updateUserInfo-confirm {
+  display: flex;
+  flex-direction: column;
+  font-size: 1.25rem;
+  font-weight: 600;
+
+  button {
+    margin-top: 20px;
+  }
+}
