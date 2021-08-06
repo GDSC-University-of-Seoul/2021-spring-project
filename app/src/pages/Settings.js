@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import LogoutModal from "../components/LogoutModal";
 import ToggleBtn from "../components/ToggleBtn";
-import UpdateUserForm from "../components/UpdateLoginForm";
+import UpdateLoginForm from "../components/UpdateLoginForm";
 import { useSelector } from "react-redux";
 
 /**
@@ -58,13 +58,15 @@ function Settings({ history }) {
           </div>
         </div>
         {isChanged && (
-          <UpdateUserForm
+          <UpdateLoginForm
             loginInfo={loginInfo}
             history={history}
             setIsChanged={setIsChanged}
           />
         )}
-        {isLogOut && <LogoutModal setIsLogOut={setIsLogOut} />}
+        {isLogOut && (
+          <LogoutModal history={history} setIsLogOut={setIsLogOut} />
+        )}
       </section>
     </>
   );

@@ -9,9 +9,7 @@ function UpdateLoginForm({ loginInfo, history, setIsChanged }) {
   const dispatch = useDispatch();
 
   const [confirmUpdate, setConfirmUpdate] = useState(false);
-
   const [pwMatch, setPwMatch] = useState(true);
-
   const [pwConfirm, setpwConfirm] = useState({
     userPw: "",
     userPw2: "",
