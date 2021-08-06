@@ -53,8 +53,16 @@ function Header({ history }) {
 
   // 헤더 메뉴 닫기
   useEffect(() => {
-    window.addEventListener("click", () => setUserMenuOpen(false));
+    const userMenuClick = () => setUserMenuOpen(false);
+    window.addEventListener("click", userMenuClick);
+
+    return () => window.removeEventListener("click", userMenuClick);
   }, []);
+
+  // 언마운트 시 history 객체 반환
+  useEffect(() => {
+    return history;
+  }, [history]);
 
   return (
     <>
