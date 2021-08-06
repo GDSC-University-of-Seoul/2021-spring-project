@@ -1,11 +1,9 @@
-import React, { useCallback, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
 
 import LogoutModal from "../components/LogoutModal";
-import Modal from "../components/Modal";
 import ToggleBtn from "../components/ToggleBtn";
 import UpdateUserForm from "../components/UpdateLoginForm";
-import { logOut } from "../modules/login";
+import { useSelector } from "react-redux";
 
 /**
  * `/settings` 페이지 렌더링
@@ -15,7 +13,6 @@ import { logOut } from "../modules/login";
 function Settings({ history }) {
   const { loginInfo } = useSelector((state) => state.loginReducer);
   const { userId, userName, email } = loginInfo;
-  const dispatch = useDispatch();
 
   const [isChanged, setIsChanged] = useState(false);
   const [isLogOut, setIsLogOut] = useState(false);
