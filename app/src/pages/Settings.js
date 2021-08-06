@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
+import LogoutModal from "../components/LogoutModal";
 import Modal from "../components/Modal";
 import ToggleBtn from "../components/ToggleBtn";
 import UpdateUserForm from "../components/UpdateLoginForm";
@@ -18,10 +19,6 @@ function Settings({ history }) {
 
   const [isChanged, setIsChanged] = useState(false);
   const [isLogOut, setIsLogOut] = useState(false);
-
-  const logOutHandler = useCallback(() => {
-    dispatch(logOut(history));
-  }, [dispatch, history]);
 
   return (
     <>
@@ -70,24 +67,7 @@ function Settings({ history }) {
             setIsChanged={setIsChanged}
           />
         )}
-        {isLogOut && (
-          <Modal>
-            <div className="logout-checkModal">
-              ⚠️ 로그아웃 하시겠습니까?
-              <div>
-                <button onClick={logOutHandler} className="confirm-btn">
-                  확인
-                </button>
-                <button
-                  onClick={() => setIsLogOut(false)}
-                  className="cancel-btn"
-                >
-                  취소
-                </button>
-              </div>
-            </div>
-          </Modal>
-        )}
+        {isLogOut && <LogoutModal setIsLogOut={setIsLogOut} />}
       </section>
     </>
   );
