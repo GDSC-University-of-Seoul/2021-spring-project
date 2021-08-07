@@ -6,6 +6,7 @@
 
 /* pages */
 @import "pages/pages";
+@import "pages/login";
 @import "pages/home";
 @import "pages/monitoring";
 @import "pages/cctvs";
@@ -22,6 +23,8 @@
 @import "components/modal";
 @import "components/cctvModal";
 @import "components/searchCenterModal";
+@import "components/updateLoginForm";
+@import "components/LogoutModal";
 
 * {
   box-sizing: border-box;
