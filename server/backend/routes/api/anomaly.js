@@ -1,12 +1,11 @@
-import express from "express";
 import {
-  Sequelize,
-  ChildCareCenter,
-  CCTV,
-  Video,
   Anomaly,
   AnomalyLog,
+  CCTV,
+  ChildCareCenter,
 } from "../../../database/models/transform";
+
+import express from "express";
 
 const router = express.Router();
 

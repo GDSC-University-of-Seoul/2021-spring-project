@@ -1,21 +1,8 @@
-import axios from "axios";
-
-const FETCH_CDRENTER_LOADING = "cdrCenter/FETCH_CDRENTER_LOADING";
 const FETCH_CDRCENTER_DATA = "cdrCenter/FETCH_CDRCENTER_DATA";
-const FETCH_CDRCENTER_ERROR = "cdrCenter/FETCH_CDRCENTER_ERROR";
 const RESET_CDRCENTER = "cdrCenter/RESET_CDRCENTER";
 
-export const fetchCdrCenter = (cdrCenterId) => async (dispatch) => {
-  try {
-    dispatch({ type: FETCH_CDRENTER_LOADING });
-
-    const cdrCenterInfo = await axios.get(
-      `${process.env.REACT_APP_API_SERVER}/api/centers/${cdrCenterId}`
-    );
-    dispatch({ type: FETCH_CDRCENTER_DATA, payload: cdrCenterInfo.data });
-  } catch (e) {
-    dispatch({ type: FETCH_CDRCENTER_ERROR, payload: e });
-  }
+export const setCdrCenter = (cdrCenterInfo) => async (dispatch) => {
+  dispatch({ type: FETCH_CDRCENTER_DATA, payload: cdrCenterInfo });
 };
 
 export const resetCdrCenter = () => (dispatch) => {
@@ -23,41 +10,32 @@ export const resetCdrCenter = () => (dispatch) => {
 };
 
 const initialState = {
-  loading: false,
   data: {
     center_name: "",
     operation_type: "",
     operation_status: "",
     address: "",
-    zipcode: "",
+    zip_code: "",
     center_phone: "",
     fax: "",
     web_page: "",
+    latitude: "",
+    longtitude: "",
+    assualt_count: 0,
+    fight_count: 0,
+    swoon_count: 0,
+    anomaly_count: 0,
   },
-  error: null,
 };
 
 export default function cdrCenterReducer(state = initialState, action) {
   switch (action.type) {
-    case FETCH_CDRENTER_LOADING:
-      return {
-        ...state,
-        loading: true,
-        error: null,
-      };
     case FETCH_CDRCENTER_DATA:
       return {
         ...state,
         loading: false,
         data: action.payload,
         error: null,
-      };
-    case FETCH_CDRCENTER_ERROR:
-      return {
-        ...state,
-        loading: false,
-        data: null,
-        error: action.payload,
       };
     case RESET_CDRCENTER:
       return initialState;

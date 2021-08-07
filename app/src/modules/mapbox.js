@@ -17,8 +17,6 @@ export const fetchData = () => async (dispatch) => {
     );
     districtsGeojson = districtsGeojson.data;
 
-    // Todo : 어린이집 사건·사고 데이터 전체를 Fetch 할 예정 (지도 색상 레이블)
-
     let districts = await axios.get(
       `${process.env.REACT_APP_API_SERVER}/api/districts`
     );
@@ -29,7 +27,10 @@ export const fetchData = () => async (dispatch) => {
     districtsGeojson.features.forEach((districtGeojson) => {
       districts.forEach((district) => {
         if (districtGeojson.properties.sidonm === district.district_name)
-          districtGeojson.properties.sido_cnt = parseInt(district.count, 10);
+          districtGeojson.properties.sido_cnt = parseInt(
+            district.anomaly_count,
+            10
+          );
       });
     });
 

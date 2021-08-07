@@ -88,8 +88,7 @@ function MapBoxCategory({ level }) {
 
   return (
     <div className="category">
-      {/* Todo : 어린이집 개수가 아닌 사건, 사고에 기반하여 범주 작성 */}
-      <h1 className="category-title">{categoryTitle} 어린이집 개수</h1>
+      <h1 className="category-title">{categoryTitle} 사건·사고 개수</h1>
       {/* 영역 색상 변경 슬라이더 */}
       <Slider
         value={level === 1 ? sidoControl.diff : sggControl.diff}
