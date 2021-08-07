@@ -1,4 +1,4 @@
-require("dotenv").config();
+require('dotenv').config();
 
 const env = process.env;
 
@@ -9,7 +9,7 @@ const development = {
   host: env.DATABASE_HOST_DEV,
   port: env.DATABASE_PORT_DEV,
   ssl: env.DATABASE_SSL_DEV,
-  dialect: "postgres",
+  dialect: 'postgres',
 };
 
 const production = {
@@ -19,7 +19,7 @@ const production = {
   host: env.DATABASE_HOST_PROD,
   port: env.DATABASE_PORT_PROD,
   ssl: env.DATABASE_SSL_PROD,
-  dialect: "postgres",
+  dialect: 'postgres',
 };
 
 const test = {
@@ -29,7 +29,7 @@ const test = {
   host: env.DATABASE_HOST_TEST,
   port: env.DATABASE_PORT_TEST,
   ssl: env.DATABASE_SSL_TEST,
-  dialect: "postgres",
+  dialect: 'postgres',
 };
 
 module.exports = { development, production, test };
