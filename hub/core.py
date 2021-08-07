@@ -1,15 +1,31 @@
+"""
+core.py
+
+"""
+
 import asyncio
-from utils.scheduler import Scheduler
-from utils.config import get_configs
 from utils.logger import Logger
+from utils.config import get_configs
+from utils.scheduler import Scheduler
 
 logger = Logger().get_logger()
 
+"""
+Run python core.py [--data {config yaml file path}] 
+
+"""
+
 
 async def main():
-    cfg = get_configs()
+    """
+    Main Process for run kids keepr scheduler
 
-    sched = Scheduler(cfg)
+    """
+
+    logger.info("<< Run Kids Keeper Process >>")
+
+    cfg = get_configs()
+    sched = Scheduler(cfg["scheduler"])
 
     try:
         sched.add_scheduler("interval")

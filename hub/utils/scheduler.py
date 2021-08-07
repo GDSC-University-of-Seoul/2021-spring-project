@@ -10,14 +10,19 @@ logger = Logger().get_logger()
 
 
 class Scheduler:
+    """
+    Sceduler
+    """
+
     def __init__(self, config):
-        self.directory = config["data"]["path"]
+        self.directory = config["path"]
         self.subdirs = dirlist(self.directory)
 
         self.max_instance = str(len(self.subdirs) * 2)
         self.sched = BlockingScheduler(
             {"apscheduler.job_defaults.max_instances": self.max_instance}
         )
+        self.interval = config["interval"]
 
     def __del__(self):
         self.sched.shutdown()
@@ -35,7 +40,9 @@ class Scheduler:
     def add_scheduler(self, type):
         logger.info(f"{type} Scheduler Start")
         if type == "interval":
-            self.sched.add_job(self._request_job, type, seconds=10, id="hub_interval")
+            self.sched.add_job(
+                self._request_job, type, seconds=self.interval, id="hub_interval"
+            )
 
         if type == "cron":
             self.sched.add_job(self._request_job, type, hour="0", id="hub-cron")
