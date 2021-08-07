@@ -54,3 +54,11 @@ export const timeUTCFormat = (date) => {
     utcMinutes
   )}:${decimalFormat(utcSeconds)}`;
 };
+
+// URL Formatting (http:// ~ )
+export const urlFormat = (url) => {
+  const urlRegex =
+    /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-/]))?/g;
+
+  return urlRegex.test(url) ? url : `http://${url}`;
+};
