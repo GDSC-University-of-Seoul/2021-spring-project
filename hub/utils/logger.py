@@ -1,6 +1,11 @@
+"""
+logger.py
+
+"""
+
+
 import os
 import logging
-from utils.files import check_file
 
 
 class Logger:
