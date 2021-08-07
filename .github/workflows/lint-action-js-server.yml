@@ -10,7 +10,7 @@ on:
 
 defaults:
   run:
-    working-directory: server/backend/
+    working-directory: server/
 
 jobs:
   build:
