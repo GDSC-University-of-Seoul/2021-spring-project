@@ -16,6 +16,10 @@
     "prettier": "^2.3.2"
   },
   "eslintConfig": {
+    "extends": [
+      "plugin:prettier/recommended"
+    ],
+    "parser": "babel-eslint",
     "rules": {
       "prettier/prettier": [
         "error",
