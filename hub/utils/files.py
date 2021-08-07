@@ -3,6 +3,34 @@ import glob
 from pathlib import Path
 
 
+def dirlist(path: Path):
+    assert os.path.isdir(path)
+
+    files = os.listdir(path)
+
+    dirlist = list()
+    for file in files:
+        filepath = os.path.join(path, file)
+        if os.path.isdir(filepath):
+            dirlist.append(filepath)
+            print(filepath)
+
+    return dirlist
+
+
+def check_dir(path: Path, force=True):
+    """
+    Check for directory
+    """
+    if not os.path.isdir(path):
+        if not force:
+            return False
+        else:
+            os.makedirs(path)
+
+    return True
+
+
 def check_file(file: Path):
     """
     Search for file if not found
