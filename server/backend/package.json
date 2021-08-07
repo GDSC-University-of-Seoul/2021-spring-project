@@ -41,19 +41,5 @@
     "pg-hstore": "^2.3.3",
     "sequelize": "^6.6.2",
     "sequelize-cli": "^6.2.0"
-  },
-  "eslintConfig": {
-    "extends": [
-      "plugin:prettier/recommended"
-    ],
-    "parser": "babel-eslint",
-    "rules": {
-      "prettier/prettier": [
-        "error",
-        {
-          "endOfLine": "auto"
-        }
-      ]
-    }
   }
 }
