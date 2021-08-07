@@ -1,4 +1,4 @@
-name: Lint Action - JS(server)
+name: Lint Action - JS(BE)
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
 
 defaults:
   run:
-    working-directory: server/
+    working-directory: server/backend
 
 jobs:
   build:

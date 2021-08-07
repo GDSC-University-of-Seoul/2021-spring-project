@@ -1,4 +1,4 @@
-name: Lint Action - JS(server)
+name: Lint Action - JS(DB)
 
 on:
   push:
