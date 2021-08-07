@@ -11,10 +11,10 @@ def check_update():
     """
     Compare it to the latest work to see if there are any changes
     """
-    
+
     # Check any changes by comparing from remote github repository
     check_git_status()
-    
+
 
 def check_online():
     # Check internet connectivity
@@ -38,7 +38,10 @@ def check_git_status():
 
         cmd = "git fetch && git config --get remote.origin.url"
         url = (
-            subprocess.check_output(cmd, shell=True).decode().strip().replace(".git", "")
+            subprocess.check_output(cmd, shell=True)
+            .decode()
+            .strip()
+            .replace(".git", "")
         )  # github repo url
         branch = (
             subprocess.check_output("git rev-parse --abbrev-ref HEAD", shell=True)

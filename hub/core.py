@@ -25,14 +25,15 @@ async def main():
 
     logger.info("<< Run Kids Keeper Process >>")
 
-    cfg = get_configs()
-    sched = Scheduler(cfg["scheduler"])
+    config = get_configs()
+    sched = Scheduler(config["scheduler"])
 
     try:
-        sched.add_scheduler("interval")
-        sched.start_scheduler()
+        sched.add_job("interval")
+        sched.start()
     except:
         logger.warn("Abort")
+        sched.kill()
         await asyncio.wait(10)
 
 
