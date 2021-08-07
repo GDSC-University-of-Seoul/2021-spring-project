@@ -7,6 +7,7 @@ import asyncio
 from utils.logger import Logger
 from utils.config import get_configs
 from utils.scheduler import Scheduler
+from utils.updater import check_update
 
 logger = Logger().get_logger()
 
@@ -36,4 +37,5 @@ async def main():
 
 
 if __name__ == "__main__":
+    check_update()
     asyncio.run(main())
