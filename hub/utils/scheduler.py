@@ -25,7 +25,7 @@ class Scheduler:
         self.intervals = config["interval"]
 
         self.scheduler = self.init_scheduler()
-        
+
     def init_scheduler(self):
         """
         Initiate the scheduler by checking target directories and assign instances

@@ -10,16 +10,17 @@ class Config:
     """
     Configuration setting
     """
+
     def __init__(self):
         # Configuration setting
         args = self.parse_arguments()
         configs = self.load_config(args.config)
 
-        # Parameter        
+        # Parameter
         self.data = configs["data"]
         self.client = configs["client"]
         self.scheduler = configs["scheduler"]
-        
+
     def parse_arguments(self):
         """
         Get configuration environment for program
@@ -50,4 +51,3 @@ class Config:
             config = yaml.safe_load(f)
 
         return config
-
