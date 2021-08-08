@@ -1,6 +1,10 @@
+"""
+Scheduler.py
+
+"""
+
+import time
 import asyncio
-import requests
-from process import run_process
 from apscheduler.jobstores.base import JobLookupError
 from apscheduler.schedulers.background import BlockingScheduler
 from utils.files import dirlist
@@ -11,11 +15,12 @@ logger = Logger().get_logger()
 
 class Scheduler:
     """
-    Sceduler
+    Scheduler
     """
 
     def __init__(self, config):
-        self.directory = config["path"]
+        directory = config["path"]
+        self.subdirs = dirlist(directory)
         self.intervals = config["interval"]
 
         self.scheduler = self.init_scheduler()
@@ -24,8 +29,7 @@ class Scheduler:
         """
         Initiate the scheduler by checking target directories and assign instances
         """
-        subdirs = dirlist(self.directory)
-        max_instance = str(len(subdirs) * 2)
+        max_instance = str(len(self.subdirs) * 2)
 
         scheduler = BlockingScheduler(
             {"apscheduler.job_defaults.max_instances": max_instance}
@@ -64,15 +68,27 @@ class Scheduler:
             self.scheduler.add_job(self._request_job, type, hour="0", id="hub-cron")
 
     def _request_job(self):
-        asyncio.run(run_process(self.subdirs))
+        asyncio.run(self.process(self.subdirs))
+
+    async def process(self, target):
+        """
+        Run to process 
+        """
+        start = time.time()
+        logger.info("Process Run")
+
+        coroutines = [self.analize(path) for path in target]
+
+        await asyncio.wait(coroutines)
+        end = time.time()
+
+        logger.info(f">>> Process time : {end - start:2.3f}s")
+        
+    async def analize(self, path):
+        """
+        TODO: Connect Model Analize process
+        """
+        logger.info(f"Path ({path})")
 
     def __del__(self):
         self.scheduler.shutdown()
-
-    # def request_job(self):
-    #     self.url = "http://localhost:3000/api/anomalies/"
-    #     res = requests.post(
-    #         self.url,
-    #         headers={"Content-Type": "application/json; charset=utf-8"},
-    #         data=self.data,
-    #     )
