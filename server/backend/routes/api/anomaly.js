@@ -2,6 +2,7 @@ import {
   Anomaly,
   AnomalyLog,
   CCTV,
+  Video,
   ChildCareCenter,
 } from "../../../database/models/transform";
 

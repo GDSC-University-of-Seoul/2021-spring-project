@@ -4,13 +4,16 @@ import dotenv from "dotenv";
 import path from "path";
 import swaggerUi from "swagger-ui-express";
 import yaml from "yamljs";
+import cors from "cors";
+import session from "express-session";
+import passport from "passport";
 
 import { sequelize } from "../database/models/transform";
 import indexRouter from "./routes";
-import cors from "cors";
-import passport from "passport";
+import passportConfig from "./passports";
 
 dotenv.config();
+passportConfig();
 
 const app = express();
 app.set("port", process.env.PORT || 3000);
@@ -30,6 +33,20 @@ app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+app.use(
+  session({
+    resave: false,
+    saveUninitialized: false,
+    secret: process.env.COOKIE_SECRET,
+    cookie: {
+      httpOnly: true,
+      secure: false,
+    },
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use("/", indexRouter);
 
