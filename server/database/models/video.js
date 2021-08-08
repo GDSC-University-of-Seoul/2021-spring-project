@@ -60,10 +60,6 @@ module.exports = class Video extends Sequelize.Model {
       foreignKey: "cctv_id",
       targetKey: "cctv_id",
     });
-    db.Video.hasMany(db.VideoManagement, {
-      foreignKey: "video_id",
-      sourceKey: "video_id",
-    });
     db.Video.hasMany(db.Anomaly, {
       foreignKey: "video_id",
       sourceKey: "video_id",

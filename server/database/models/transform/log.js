@@ -77,6 +77,10 @@ module.exports = /*#__PURE__*/function (_Sequelize$Model) {
         anomaly_type: {
           type: DataTypes.STRING(20),
           allowNull: false
+        },
+        center_id: {
+          type: DataTypes.STRING(150),
+          allowNull: false
         }
       }, {
         sequelize: sequelize,
