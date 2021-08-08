@@ -23,7 +23,7 @@ module.exports = {
       {
         cctv_id: uuidv4(),
         cctv_name: '토끼반_1',
-        cctv_mac: '6A5S4D3F2G1H',
+        cctv_mac: '6A564D3F2916',
         quality: 'HD',
         install_date: '2015-09-01',
         center_id: '11110000143',
@@ -31,7 +31,7 @@ module.exports = {
       {
         cctv_id: uuidv4(),
         cctv_name: '거북이반_1',
-        cctv_mac: '2Q4W6E8R1T3Y',
+        cctv_mac: '254D6E881337',
         quality: 'HD',
         install_date: '2015-09-01',
         center_id: '11110000143',
@@ -39,7 +39,7 @@ module.exports = {
       {
         cctv_id: uuidv4(),
         cctv_name: '영아1반_1',
-        cctv_mac: '9H5S1I0G0B9E',
+        cctv_mac: '9A5C1D0F0B9E',
         quality: 'HD',
         install_date: '2015-07-15',
         center_id: '11110000019',
@@ -47,12 +47,13 @@ module.exports = {
       {
         cctv_id: uuidv4(),
         cctv_name: '영아2반_1',
-        cctv_mac: '9S8Y0B9B1A0R',
+        cctv_mac: '94850B9B1A07',
         quality: 'HD',
         install_date: '2015-07-15',
         center_id: '11110000019',
       },
       {
+        cctv_id: uuidv4(),
         cctv_name: '유아1반_1',
         cctv_mac: '0A182D3D4D5B',
         quality: 'HD',
@@ -68,6 +69,7 @@ module.exports = {
         center_id: '11110000019',
       },
       {
+        cctv_id: uuidv4(),
         cctv_name: '개나리반_1',
         cctv_mac: '12C4B6987654',
         quality: 'HD',
@@ -77,7 +79,7 @@ module.exports = {
       {
         cctv_id: uuidv4(),
         cctv_name: '장미반_1',
-        cctv_mac: '6B5W4C3Y2Q1J',
+        cctv_mac: '6B5B4C332217',
         quality: 'HD',
         install_date: '2020-02-20',
         center_id: '11110000174',
@@ -85,7 +87,7 @@ module.exports = {
       {
         cctv_id: uuidv4(),
         cctv_name: '보리수반_1',
-        cctv_mac: '3Q5E8G0V2J7W',
+        cctv_mac: '3C5F8E0A2B7C',
         quality: 'HD',
         install_date: '2020-02-20',
         center_id: '11110000174',
@@ -93,7 +95,7 @@ module.exports = {
       {
         cctv_id: uuidv4(),
         cctv_name: '목화반_1',
-        cctv_mac: '6M8C5D0W3C7D',
+        cctv_mac: '6C8C5D063C7D',
         quality: 'HD',
         install_date: '2020-02-20',
         center_id: '11110000174',
