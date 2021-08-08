@@ -1,4 +1,4 @@
-let json = require("../../../.dummy/child_care_center.json");
+let json = require('../../../.dummy/child_care_center.json');
 
 var len = Object.keys(json).length;
 var keys = Object.keys(json);
@@ -19,7 +19,7 @@ for (let i = 0; i < len; i++) {
     web_page: json[keys[i]][9],
     latitude: json[keys[i]][10],
     longitude: json[keys[i]][11],
-    district_code: json[keys[i]][1] + "00000",
+    district_code: json[keys[i]][1] + '00000',
   });
 }
 // console.log(centers);
