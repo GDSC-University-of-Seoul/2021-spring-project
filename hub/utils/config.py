@@ -17,8 +17,8 @@ class Config:
 
         # Parameter        
         self.data = configs["data"]
+        self.client = configs["client"]
         self.scheduler = configs["scheduler"]
-        self.server = configs["server"]
         
     def parse_arguments(self):
         """
