@@ -13,7 +13,6 @@ def dirlist(path: Path):
         filepath = os.path.join(path, file)
         if os.path.isdir(filepath):
             dirlist.append(filepath)
-            print(filepath)
 
     return dirlist
 

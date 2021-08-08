@@ -1,6 +1,11 @@
+"""
+logger.py
+
+"""
+
+
 import os
 import logging
-from utils.files import check_file
 
 
 class Logger:
@@ -14,10 +19,8 @@ class Logger:
             return logger
 
         log_level = (3 - verbosity) * 10
-        format = (
-            "[%(levelname)6s] [%(asctime)s] %(module)8s - %(process)5d - %(message)s"
-        )
-        formatter = logging.Formatter(format)
+        format = "| %(asctime)s | %(levelname)7s | %(module)10s | %(message)s"
+        formatter = logging.Formatter(format, "%Y-%m-%d %H:%M:%S")
         logger.setLevel(log_level)
         logger.propagate = False
 
