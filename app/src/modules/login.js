@@ -15,17 +15,11 @@ const LOGIN_ERROR = "login/LOGIN_ERROR";
 export const loginSubmit = (userId, userPw) => async (dispatch) => {
   try {
     // Todo : 로그인 서버 주소 지정
-    /*
+
     const loginInfo = await axios.post(`${process.env.REACT_APP_API_SERVER}/`, {
       userId,
       userPw,
     });
-    */
-    const loginInfo = {
-      user_id: "123",
-      user_name: "홍길동",
-      email: "hongildong@gmail.com",
-    };
 
     setCookie("loginInfo", JSON.stringify(loginInfo), 1);
     dispatch({
@@ -67,7 +61,7 @@ export const logOut = (history) => (dispatch) => {
 export const loginInfoUpdate = (userInfo) => async (dispatch) => {
   try {
     // Todo : 로그인 서버 주소 지정
-    //await axios.put(`${process.env.REACT_APP_API_SERVER}/`, userInfo);
+    await axios.put(`${process.env.REACT_APP_API_SERVER}/`, userInfo);
   } catch (e) {
     dispatch({ type: LOGIN_ERROR, payload: e });
   }
