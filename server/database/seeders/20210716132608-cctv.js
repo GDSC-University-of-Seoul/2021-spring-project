@@ -53,9 +53,8 @@ module.exports = {
         center_id: '11110000019',
       },
       {
-        cctv_id: uuidv4(),
         cctv_name: '유아1반_1',
-        cctv_mac: '0A1H2D3D4D5B',
+        cctv_mac: '0A182D3D4D5B',
         quality: 'HD',
         install_date: '2015-04-30',
         center_id: '11110000019',
@@ -69,9 +68,8 @@ module.exports = {
         center_id: '11110000019',
       },
       {
-        cctv_id: uuidv4(),
         cctv_name: '개나리반_1',
-        cctv_mac: 'ZXCVBN987654',
+        cctv_mac: '12C4B6987654',
         quality: 'HD',
         install_date: '2020-02-20',
         center_id: '11110000174',
