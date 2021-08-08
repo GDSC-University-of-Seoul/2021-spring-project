@@ -53,6 +53,7 @@ module.exports = {
       filename: "main.css",
     }),
     new HtmlWebpackPlugin({
+      favicon: "./public/favicon.ico",
       template: "./public/index.html",
     }),
     new webpack.DefinePlugin({
