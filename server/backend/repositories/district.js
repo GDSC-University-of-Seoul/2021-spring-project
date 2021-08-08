@@ -6,8 +6,8 @@ export const findLowerDistrictsByParentCode = async (parent_code) => {
     district_name,
     COALESCE(swoon_count, 0) as swoon_count,
     COALESCE(fight_count, 0) as fight_count,
-    COALESCE(total_count, 0) as total_count,
-    COALESCE(assault_count, 0) as assault_count
+    COALESCE(anomaly_count, 0) as anomaly_count,
+    COALESCE(assualt_count, 0) as assualt_count
     FROM CROSSTAB (
     'SELECT d.district_code,
       d.district_name,
@@ -36,8 +36,8 @@ export const findLowerDistrictsByParentCode = async (parent_code) => {
       district_name text,
       swoon_count integer,
       fight_count integer,
-      total_count integer,
-      assault_count integer);`,
+      anomaly_count integer,
+      assualt_count integer);`,
     { type: sequelize.QueryTypes.SELECT }
   );
   return districts;
@@ -49,8 +49,8 @@ export const findUpperDistrictsByNullParentCode = async () => {
     district_name,
     COALESCE(swoon_count, 0) as swoon_count,
     COALESCE(fight_count, 0) as fight_count,
-    COALESCE(total_count, 0) as total_count,
-    COALESCE(assault_count, 0) as assault_count
+    COALESCE(anomaly_count, 0) as anomaly_count,
+    COALESCE(assualt_count, 0) as assualt_count
     FROM CROSSTAB (
     'SELECT upper_d.district_code,
       upper_d.district_name,
@@ -82,8 +82,8 @@ export const findUpperDistrictsByNullParentCode = async () => {
       district_name text,
       swoon_count integer,
       fight_count integer,
-      total_count integer,
-      assault_count integer);`,
+      anomaly_count integer,
+      assualt_count integer);`,
     { type: sequelize.QueryTypes.SELECT }
   );
   return districts;
@@ -95,8 +95,8 @@ export const findLowerDistrictByDistrictCode = async (district_code) => {
     district_name,
     COALESCE(swoon_count, 0) as swoon_count,
     COALESCE(fight_count, 0) as fight_count,
-    COALESCE(total_count, 0) as total_count,
-    COALESCE(assault_count, 0) as assault_count
+    COALESCE(anomaly_count, 0) as anomaly_count,
+    COALESCE(assualt_count, 0) as assualt_count
     FROM CROSSTAB (
     'SELECT d.district_code, 
       d.district_name, 
@@ -126,8 +126,8 @@ export const findLowerDistrictByDistrictCode = async (district_code) => {
       district_name text,
       swoon_count integer,
       fight_count integer,
-      total_count integer,
-      assault_count integer);`,
+      anomaly_count integer,
+      assualt_count integer);`,
     { type: sequelize.QueryTypes.SELECT }
   );
   return districts;
@@ -139,8 +139,8 @@ export const findUpperDistrictByDistrictCode = async (district_code) => {
     district_name,
     COALESCE(swoon_count, 0) as swoon_count,
     COALESCE(fight_count, 0) as fight_count,
-    COALESCE(total_count, 0) as total_count,
-    COALESCE(assault_count, 0) as assault_count
+    COALESCE(anomaly_count, 0) as anomaly_count,
+    COALESCE(assualt_count, 0) as assualt_count
     FROM CROSSTAB (
     'SELECT upper_d.district_code, 
       upper_d.district_name, 
@@ -172,8 +172,8 @@ export const findUpperDistrictByDistrictCode = async (district_code) => {
       district_name text,
       swoon_count integer,
       fight_count integer,
-      total_count integer,
-      assault_count integer);`,
+      anomaly_count integer,
+      assualt_count integer);`,
     { type: sequelize.QueryTypes.SELECT }
   );
   return districts;
@@ -185,8 +185,8 @@ export const findLowerDistrictByDistrictName = async (district_name) => {
     district_name,
     COALESCE(swoon_count, 0) as swoon_count,
     COALESCE(fight_count, 0) as fight_count,
-    COALESCE(total_count, 0) as total_count,
-    COALESCE(assault_count, 0) as assault_count
+    COALESCE(anomaly_count, 0) as anomaly_count,
+    COALESCE(assualt_count, 0) as assualt_count
     FROM CROSSTAB (
     'SELECT d.district_code, 
       d.district_name, 
@@ -216,8 +216,8 @@ export const findLowerDistrictByDistrictName = async (district_name) => {
       district_name text,
       swoon_count integer,
       fight_count integer,
-      total_count integer,
-      assault_count integer);`,
+      anomaly_count integer,
+      assualt_count integer);`,
     { type: sequelize.QueryTypes.SELECT }
   );
   return districts;
@@ -229,8 +229,8 @@ export const findUpperDistrictByDistrictName = async (district_name) => {
     district_name,
     COALESCE(swoon_count, 0) as swoon_count,
     COALESCE(fight_count, 0) as fight_count,
-    COALESCE(total_count, 0) as total_count,
-    COALESCE(assault_count, 0) as assault_count
+    COALESCE(anomaly_count, 0) as anomaly_count,
+    COALESCE(assualt_count, 0) as assualt_count
     FROM CROSSTAB (
     'SELECT upper_d.district_code, 
       upper_d.district_name, 
@@ -262,8 +262,8 @@ export const findUpperDistrictByDistrictName = async (district_name) => {
       district_name text,
       swoon_count integer,
       fight_count integer,
-      total_count integer,
-      assault_count integer);`,
+      anomaly_count integer,
+      assualt_count integer);`,
     { type: sequelize.QueryTypes.SELECT }
   );
   return district;
