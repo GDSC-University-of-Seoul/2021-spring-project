@@ -5,7 +5,7 @@ import {
   getSggLayer,
   getSidoHighlightLayer,
   getSidoLayer,
-} from "../utils/mapbox/mapStyle";
+} from "../utils/mapStyle";
 import {
   markerClick,
   resetDistrict,
@@ -19,7 +19,7 @@ import { resetCdrCenter, setCdrCenter } from "../modules/cdrCenter";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 
 import MapBoxCategory from "./MapBoxCategory";
-import districtViewport from "../utils/mapbox/districtViewport";
+import districtViewport from "../utils/districtViewport";
 
 const MapboxAccessToken = process.env.REACT_APP_MAPBOX;
 
