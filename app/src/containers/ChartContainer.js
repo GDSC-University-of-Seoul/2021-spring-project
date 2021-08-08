@@ -1,7 +1,7 @@
 import BarChart from "../components/BarChart";
 import Loading from "../components/Loading";
 import React from "react";
-import axisName from "../utils/chart/axisName";
+import axisName from "../utils/axisName";
 import { useSelector } from "react-redux";
 
 /**
