@@ -5,7 +5,7 @@ core.py
 
 import asyncio
 from utils.logger import Logger
-from utils.config import get_configs
+from utils.config import Config
 from utils.scheduler import Scheduler
 from utils.updater import check_update
 
@@ -25,8 +25,8 @@ async def main():
 
     logger.info("<< Run Kids Keeper Process >>")
 
-    config = get_configs()
-    sched = Scheduler(config["scheduler"])
+    config = Config()
+    sched = Scheduler(config.scheduler)
 
     try:
         sched.add_job("interval")

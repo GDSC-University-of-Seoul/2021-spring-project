@@ -6,41 +6,48 @@ import yaml
 import argparse
 
 
-def get_configs(opt=None):
+class Config:
     """
-    Load yaml file settings
-
-    params:
-        opt    console/default using config option
-
-    return:
-        config configuration json dict
+    Configuration setting
     """
+    def __init__(self):
+        # Configuration setting
+        args = self.parse_arguments()
+        configs = self.load_config(args.config)
 
-    # Get arguments (console or default)
-    opt = opt if opt else get_args()
+        # Parameter        
+        self.data = configs["data"]
+        self.scheduler = configs["scheduler"]
+        self.server = configs["server"]
+        
+    def parse_arguments(self):
+        """
+        Get configuration environment for program
 
-    # Open and Load configuration file
-    with open(opt.data) as f:
-        config = yaml.safe_load(f)
+        params:
+            --config : config.yaml path option
+        """
+        parser = argparse.ArgumentParser()
+        parser.add_argument(
+            "--config",
+            type=str,
+            default="config.yml",
+            help="please input the config yaml path",
+        )
 
-    return config
+        return parser.parse_args()
 
+    def load_config(self, config_path):
+        """
+        Load yaml file settings
 
-def get_args():
-    """
-    Get configuration environment for program
+        params:
+            opt    console/default using config option
 
-    params:
-        --data : config.yaml path option
-    """
+        """
 
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--data",
-        type=str,
-        default="config.yml",
-        help="please input the config yaml path",
-    )
+        with open(config_path) as f:
+            config = yaml.safe_load(f)
 
-    return parser.parse_args()
+        return config
+
