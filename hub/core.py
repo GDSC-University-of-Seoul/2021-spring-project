@@ -4,6 +4,7 @@ core.py
 """
 
 import asyncio
+from clients.client import AWSClient
 from utils.logger import Logger
 from utils.config import Config
 from utils.scheduler import Scheduler
@@ -12,31 +13,44 @@ from utils.updater import check_update
 logger = Logger().get_logger()
 
 """
-Run python core.py [--data {config yaml file path}] 
+Run python core.py [--config {config yaml file path}] 
 
 """
 
-
-async def main():
+class KidsKeeper:
     """
-    Main Process for run kids keepr scheduler
-
+    Kids Keeper
+    
     """
+    def __init__(self):
+        # Updater
+        self.synchronize()
+        
+        # Setting configuration
+        config = Config()
 
-    logger.info("<< Run Kids Keeper Process >>")
+        # AWS backend api client        
+        self.awsclient = AWSClient(config.client)
 
-    config = Config()
-    sched = Scheduler(config.scheduler)
+        # Process Scheduler
+        self.scheduler = Scheduler(config.scheduler)
+        
+    def synchronize(self):
+        # Check Update Things Github Repository
+        check_update()
 
-    try:
-        sched.add_job("interval")
-        sched.start()
-    except:
-        logger.warn("Abort")
-        sched.kill()
-        await asyncio.wait(10)
-
+    def run(self):
+        # Run process
+        asyncio.run(self._run())
+        
+    async def _run(self):
+        try:
+            self.scheduler.add_job("interval")
+            self.scheduler.start()
+        except:
+            logger.warn("Abort")
+            self.scheduler.kill()
 
 if __name__ == "__main__":
-    check_update()
-    asyncio.run(main())
+    kk = KidsKeeper()
+    kk.run()

@@ -9,6 +9,7 @@ from apscheduler.jobstores.base import JobLookupError
 from apscheduler.schedulers.background import BlockingScheduler
 from utils.files import dirlist
 from utils.logger import Logger
+from utils.api import server_api
 
 logger = Logger().get_logger()
 
@@ -24,7 +25,7 @@ class Scheduler:
         self.intervals = config["interval"]
 
         self.scheduler = self.init_scheduler()
-
+        
     def init_scheduler(self):
         """
         Initiate the scheduler by checking target directories and assign instances
@@ -72,7 +73,7 @@ class Scheduler:
 
     async def process(self, target):
         """
-        Run to process 
+        Run to process
         """
         start = time.time()
         logger.info("Process Run")
@@ -83,12 +84,15 @@ class Scheduler:
         end = time.time()
 
         logger.info(f">>> Process time : {end - start:2.3f}s")
-        
+
     async def analize(self, path):
         """
         TODO: Connect Model Analize process
         """
         logger.info(f"Path ({path})")
+
+        res = await server_api(path)
+        print("server api", res)
 
     def __del__(self):
         self.scheduler.shutdown()
