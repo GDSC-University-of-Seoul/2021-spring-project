@@ -11,7 +11,6 @@ import cors from "cors";
 import passport from "passport";
 
 dotenv.config();
-passportConfig();
 
 const app = express();
 app.set("port", process.env.PORT || 3000);
@@ -31,8 +30,6 @@ app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(passort.intialize());
-app.use(passport.session());
 app.use(
   session({
     resave: false,
@@ -46,7 +43,7 @@ app.use(
 );
 
 app.use(passport.intialize());
-app.use(passort.session());
+app.use(passport.session());
 
 app.use("/", indexRouter);
 
