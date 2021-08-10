@@ -1,6 +1,6 @@
 import passport from "passport";
-import { Strategy as LocalStrategy } from "passport-local";
 import bcrypt from "bcrypt";
+import { Strategy as LocalStrategy } from "passport-local";
 import { Member } from "../../database/models/transform";
 
 export default () => {
@@ -8,11 +8,11 @@ export default () => {
     new LocalStrategy(
       {
         usernameField: "id",
-        paasswordField: "password",
+        passwordField: "password",
       },
       async (id, password, done) => {
         try {
-          const member = Member.findOne({ where: { id: id } });
+          const member = await Member.findOne({ where: { member_id: id } });
           if (member) {
             const result = await bcrypt.compare(password, member.password);
             if (result) {
