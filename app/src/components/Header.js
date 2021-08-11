@@ -1,5 +1,5 @@
 import { FaBell, FaUser } from "react-icons/fa";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 import { Link } from "react-router-dom";
 import LogoutModal from "./LogoutModal";
@@ -14,11 +14,18 @@ import { useSelector } from "react-redux";
  */
 
 function Header({ history }) {
-  // 날짜·시간 정보 저장
   const { loginInfo } = useSelector((state) => state.loginReducer);
 
-  const [date, setDate] = useState(null);
-  const [userMenuOpen, setUserMenuOpen] = useState(false); // 사용자 헤더 메뉴 열기
+  const [date, setDate] = useState(null); // 날짜·시간 정보 저장
+
+  const initMenuOpen = useMemo(
+    () => ({
+      alarm: false,
+      user: false,
+    }),
+    []
+  );
+  const [menuOpen, setMenuOpen] = useState(initMenuOpen); // 헤더 메뉴 열기
   const [isChanged, setIsChanged] = useState(false); // 사용자 정보 변경
   const [isLogOut, setIsLogOut] = useState(false); // 사용자 로그아웃
 
@@ -53,11 +60,11 @@ function Header({ history }) {
 
   // 헤더 메뉴 닫기
   useEffect(() => {
-    const userMenuClick = () => setUserMenuOpen(false);
-    window.addEventListener("click", userMenuClick);
+    const menuClick = () => setMenuOpen(initMenuOpen);
+    window.addEventListener("click", menuClick);
 
-    return () => window.removeEventListener("click", userMenuClick);
-  }, []);
+    return () => window.removeEventListener("click", menuClick);
+  }, [initMenuOpen]);
 
   // 언마운트 시 history 객체 반환
   useEffect(() => {
@@ -69,16 +76,24 @@ function Header({ history }) {
       <header>
         <div className="logo" />
         <div className="info">
-          <div className="center-info">
-            <FaBell className="header-icon" />
+          <div className="center-info" onClick={(e) => e.stopPropagation()}>
+            <FaBell
+              className="header-icon"
+              onClick={() =>
+                setMenuOpen({ ...initMenuOpen, alarm: !menuOpen.alarm })
+              }
+            />
+            {menuOpen.alarm && <ul className="arrowbox-menu"></ul>}
           </div>
           <div className="user-info" onClick={(e) => e.stopPropagation()}>
             <FaUser
               className="header-icon"
-              onClick={() => setUserMenuOpen(!userMenuOpen)}
+              onClick={() =>
+                setMenuOpen({ ...initMenuOpen, user: !menuOpen.user })
+              }
             />
             {/* 사용자 헤더 메뉴 */}
-            {userMenuOpen && (
+            {menuOpen.user && (
               <ul className="arrowbox-menu">
                 <li>
                   <Link to="/settings">

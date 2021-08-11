@@ -22,11 +22,7 @@ header {
     font-size: 1.5rem;
     text-align: center;
 
-    .center-info {
-      padding: 0 25px;
-      cursor: pointer;
-      position: relative;
-    }
+    .center-info,
     .user-info {
       padding: 0 25px;
       cursor: pointer;
@@ -48,7 +44,6 @@ header {
   font-size: 1rem;
   position: absolute;
   top: 40px;
-  left: -33px;
   background-color: white;
   box-shadow: 0 0 15px 3px rgba(0, 0, 0, 0.3);
   z-index: 10;
@@ -87,4 +82,12 @@ header {
     border-bottom-color: white;
     border-width: 10px;
   }
+}
+
+.center-info .arrowbox-menu {
+  left: 50%;
+}
+
+.user-info .arrowbox-menu {
+  left: -33px;
 }
