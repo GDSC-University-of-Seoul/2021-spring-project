@@ -7,12 +7,14 @@ export default () => {
   passport.use(
     new LocalStrategy(
       {
-        usernameField: "id",
+        usernameField: "member_id",
         passwordField: "password",
       },
-      async (id, password, done) => {
+      async (member_id, password, done) => {
         try {
-          const member = await Member.findOne({ where: { member_id: id } });
+          const member = await Member.findOne({
+            where: { member_id: member_id },
+          });
           if (member) {
             const result = await bcrypt.compare(password, member.password);
             if (result) {

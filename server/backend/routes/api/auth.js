@@ -5,46 +5,29 @@ import { Member } from "../../../database/models/transform";
 import { isLoggedIn, isNotLoggedIn } from "../../middlewares/login";
 
 const router = express.Router();
-
-router.get("/register", (req, res, next) => {
-  res.send(
-    '<h1>Register Page</h1><form method="post" action="/api/auth/register">' +
-      'Enter Username:<br><input type="text" name="id">' +
-      '<br>Enter Password:<br><input type="password" name="password">' +
-      '<br><br><input type="submit" value="Submit"></form>'
-  );
-});
+const SALT_ROUND = 12;
 
 router.post("/register", isNotLoggedIn, async (req, res, next) => {
-  const { id, password } = req.body;
+  const { member_id, password, member_name, member_phone, email } = req.body;
   try {
-    const member = await Member.findOne({ where: { member_id: id } });
+    const member = await Member.findOne({ where: { member_id: member_id } });
     if (member) {
       res.status(401).json({ message: "member already exists." });
     } else {
-      const hash = await bcrypt.hash(password, 12);
-      const member = Member.create({
-        member_id: id,
+      const hash = await bcrypt.hash(password, SALT_ROUND);
+      const member = await Member.create({
+        member_id: member_id,
         password: hash,
-        member_name: "member",
-        member_phone: "01000000000",
-        email: "user@example.com",
+        member_name: member_name,
+        member_phone: member_phone,
+        email: email,
       });
-      res.status(201).json(member);
+      res.status(201).json({ message: "register completed." });
     }
   } catch (err) {
     console.error(err);
     return next(err);
   }
-});
-
-router.get("/login", (req, res, next) => {
-  res.send(
-    '<h1>로그인 페이지</h1><form method="POST" action="/api/auth/login">' +
-      'Enter Username:<br><input type="text" name="id">' +
-      '<br>Enter Password:<br><input type="password" name="password">' +
-      '<br><br><input type="submit" value="Submit"></form>'
-  );
 });
 
 router.post("/login", isNotLoggedIn, (req, res, next) => {
@@ -62,9 +45,27 @@ router.post("/login", isNotLoggedIn, (req, res, next) => {
         console.error(loginError);
         return next(loginError);
       }
-      return res.status(200).json(user);
+      return res.status(200).json({ message: "login completed." });
     });
   })(req, res, next);
+});
+
+router.put("/member", isLoggedIn, (req, res) => {
+  const { member_name, member_phone, email } = req.body;
+  try {
+    const member = Member.update(
+      {
+        member_name: member_name,
+        member_phone: member_phone,
+        email: email,
+      },
+      { where: { member_id: req.user.member_id } }
+    );
+    res.status(200).json({ message: "member updated." });
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
 });
 
 router.get("/logout", isLoggedIn, (req, res) => {

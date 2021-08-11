@@ -1,0 +1,25 @@
+post:
+  tags:
+    - auth
+  summary: login
+  description:
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            member_id:
+              type: string
+            password:
+              type: string
+  responses:
+    200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string

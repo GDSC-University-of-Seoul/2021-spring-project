@@ -1,0 +1,15 @@
+get:
+  tags:
+    - auth
+  summary: logout
+  description:
+  responses:
+    200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string

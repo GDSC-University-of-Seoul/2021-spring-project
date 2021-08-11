@@ -1,0 +1,27 @@
+put:
+  tags:
+    - auth
+  summary: update member
+  description:
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            member_name:
+              type: string
+            member_phone:
+              type: string
+            email:
+              type: string
+  responses:
+    200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string

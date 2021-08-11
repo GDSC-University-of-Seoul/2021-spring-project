@@ -25,3 +25,11 @@
     $ref: "log/log-list.yaml"
   post:
     $ref: "log/log-create.yaml"
+/auth/register:
+  $ref: "auth/register.yaml"
+/auth/login:
+  $ref: "auth/login.yaml"
+/auth/member:
+  $ref: "auth/member-update.yaml"
+/auth/logout:
+  $ref: "auth/logout.yaml"
