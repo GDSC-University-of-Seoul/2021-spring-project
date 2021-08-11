@@ -79,7 +79,12 @@ function Header({ history }) {
       <header>
         <div className="logo" />
         <div className="info">
-          <div className="center-info" onClick={(e) => e.stopPropagation()}>
+          <div
+            className={`newLogs-info${
+              newLogsData.length !== 0 ? " logs-unread" : ""
+            }`}
+            onClick={(e) => e.stopPropagation()}
+          >
             <FaBell
               className="header-icon"
               onClick={() =>

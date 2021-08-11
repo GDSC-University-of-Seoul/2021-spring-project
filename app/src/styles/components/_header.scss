@@ -22,7 +22,7 @@ header {
     font-size: 1.5rem;
     text-align: center;
 
-    .center-info,
+    .newLogs-info,
     .user-info {
       padding: 0 25px;
       cursor: pointer;
@@ -116,4 +116,12 @@ header {
       font-weight: 600;
     }
   }
+}
+.logs-unread::after {
+  content: " ";
+  width: 7px;
+  height: 7px;
+  position: absolute;
+  border-radius: 50%;
+  background-color: #e74c3c;
 }
