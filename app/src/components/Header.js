@@ -14,8 +14,6 @@ import { useSelector } from "react-redux";
  */
 
 function Header({ history }) {
-  const { loginInfo } = useSelector((state) => state.loginReducer);
-
   const [date, setDate] = useState(null); // 날짜·시간 정보 저장
 
   const initMenuOpen = useMemo(
@@ -28,6 +26,11 @@ function Header({ history }) {
   const [menuOpen, setMenuOpen] = useState(initMenuOpen); // 헤더 메뉴 열기
   const [isChanged, setIsChanged] = useState(false); // 사용자 정보 변경
   const [isLogOut, setIsLogOut] = useState(false); // 사용자 로그아웃
+
+  const { loginInfo } = useSelector((state) => state.loginReducer);
+  const {
+    data: { newLogsData },
+  } = useSelector((state) => state.logsReducer);
 
   // 날짜·시간 포맷팅 (yyyy-mm-dd hh:mm:ss)
   const format = useCallback((timeInfo) => {
@@ -83,7 +86,25 @@ function Header({ history }) {
                 setMenuOpen({ ...initMenuOpen, alarm: !menuOpen.alarm })
               }
             />
-            {menuOpen.alarm && <ul className="arrowbox-menu"></ul>}
+            {/* 신규 로그 발생 확인 메뉴 */}
+            {menuOpen.alarm && (
+              <>
+                <div className="arrow-up" />
+                <ul className="arrowbox-menu alarm-menu">
+                  {newLogsData.length === 0 ? (
+                    <li>새로운 로그 정보가 없습니다.</li>
+                  ) : (
+                    newLogsData.map((data) => (
+                      <li>
+                        <span>{newLogsData.center_name}</span>에서
+                        <br /> <span>{newLogsData.anomaly_type}</span>이
+                        발생했습니다.
+                      </li>
+                    ))
+                  )}
+                </ul>
+              </>
+            )}
           </div>
           <div className="user-info" onClick={(e) => e.stopPropagation()}>
             <FaUser

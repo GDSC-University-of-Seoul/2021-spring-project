@@ -44,8 +44,9 @@ header {
   font-size: 1rem;
   position: absolute;
   top: 40px;
+  left: -33px;
   background-color: white;
-  box-shadow: 0 0 15px 3px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 15px 20px 1px rgba(0, 0, 0, 0.3);
   z-index: 10;
   border-radius: 5px;
 
@@ -54,6 +55,9 @@ header {
     color: black;
     padding: 10px;
     text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 
     a {
       color: inherit;
@@ -72,7 +76,6 @@ header {
       border: none;
     }
   }
-
   &:after {
     content: " ";
     position: absolute;
@@ -84,10 +87,33 @@ header {
   }
 }
 
-.center-info .arrowbox-menu {
-  left: 50%;
+/* 메뉴의 화살표 - overflow: auto일 때 사용 */
+.arrow-up {
+  width: 0;
+  height: 0;
+  position: absolute;
+  top: 20px;
+  left: 27px;
+  border: 10px solid transparent;
+  border-bottom: 10px solid white;
 }
+.alarm-menu {
+  width: 250px;
+  max-height: 180px;
+  left: -88px;
+  overflow: auto;
 
-.user-info .arrowbox-menu {
-  left: -33px;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  li {
+    width: 250px;
+    max-height: 60px;
+    line-height: 120%;
+
+    span {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+  }
 }
