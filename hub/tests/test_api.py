@@ -32,10 +32,11 @@ def test_dummy_respone():
     (anomal, output) = run_model(dirpath, file)
 
     # 결과 비교(anomal, output 따로)
-    assert anomal == __anomal , "None anomal event return"
-    assert output == __output , "output return error"
+    assert anomal == __anomal, "None anomal event return"
+    assert output == __output, "output return error"
 
-'''
+
+"""
 # anomal에 따라 output의 anomaly_type이 정상적으로 바뀌어 나오는지 확인(차후 수정)
 def test_anomaly_type(dirpath, filepath):
     (flag, data) = run_model(dirpath, filepath)
@@ -43,4 +44,4 @@ def test_anomaly_type(dirpath, filepath):
         assert (
             data["anomaly_type"] == "폭행"
         ), "Wrong anomaly type return"  # anomaly_type이 "폭행"으로 나와야 함
-'''
+"""
