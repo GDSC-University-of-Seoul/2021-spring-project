@@ -32,8 +32,8 @@ def test_dummy_respone():
     (anomal, output) = run_model(dirpath, file)
 
     # 결과 비교(anomal, output 따로)
-    assert anomal == __anomal , "None anomal event return"
-    assert output == __output , "None cctv output return"
+    assert anomal == __anomal, "None anomal event return"
+    assert output == __output, "None cctv output return"
 
 
 """
