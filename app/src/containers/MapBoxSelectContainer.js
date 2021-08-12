@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo } from "react";
 
+import CategoryTextField from "../components/CategoryTextField";
 import { FiExternalLink } from "react-icons/fi";
-import TextField from "@material-ui/core/TextField";
+import { urlFormat } from "../utils/format";
 import { useSelector } from "react-redux";
 
 function MapBoxSelectContainer() {
@@ -19,12 +20,21 @@ function MapBoxSelectContainer() {
   const cdrCenterCategory = useMemo(
     () => ({
       center_name: "어린이집 명",
-      zipcode: "우편주소",
+      zip_code: "우편번호",
       address: "상세주소",
       center_phone: "전화번호",
       fax: "팩스번호",
       operation_type: "어린이집 유형",
       operation_status: "운영 현황",
+    }),
+    []
+  );
+
+  const anomalyCategory = useMemo(
+    () => ({
+      assualt_count: "폭행 건수",
+      fight_count: "싸움 건수",
+      swoon_count: "실신 건수",
     }),
     []
   );
@@ -41,46 +51,39 @@ function MapBoxSelectContainer() {
       <h1>지역 정보</h1>
       <hr />
       <div id="select-district">
-        {Object.keys(districtCategory).map((key, index) => {
-          return (
-            <TextField
-              key={index}
-              className="district-info"
-              label={districtCategory[key]}
-              value={district.data[key] || ""}
-              variant="outlined"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              disabled
-            />
-          );
-        })}
+        <CategoryTextField
+          category={districtCategory}
+          data={district.data}
+          className="district-info"
+        />
       </div>
       <h1>어린이집 정보</h1>
       <hr />
       <div id="select-cdrCenter">
-        {Object.keys(cdrCenterCategory).map((key, index) => {
-          return (
-            <TextField
-              key={index}
-              className="cdrCenter-info"
-              label={cdrCenterCategory[key]}
-              value={cdrCenter.data[key] || ""}
-              variant="outlined"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              disabled
-            />
-          );
-        })}
+        <CategoryTextField
+          category={cdrCenterCategory}
+          data={cdrCenter.data}
+          className="cdrCenter-info"
+        />
         <a
           className="cdrcenter-link"
-          href={cdrCenter.data.web_page ? cdrCenter.data.web_page : null}
+          href={
+            cdrCenter.data.web_page ? urlFormat(cdrCenter.data.web_page) : null
+          }
+          target="_blank"
+          rel="noreferrer"
         >
           어린이집 홈페이지 바로가기 <FiExternalLink />
         </a>
+      </div>
+      <h1>이상행동 정보</h1>
+      <hr />
+      <div id="select-anomaly">
+        <CategoryTextField
+          category={anomalyCategory}
+          data={cdrCenter.data}
+          className="anomaly-info"
+        />
       </div>
     </>
   );

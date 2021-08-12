@@ -1,0 +1,38 @@
+.updateLogin-form {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+
+  .MuiFormControl-root {
+    margin: 10px;
+  }
+
+  .MuiInput-underline.Mui-disabled:before {
+    border-bottom-style: solid !important;
+  }
+  .pw-notMatch {
+    color: red;
+    margin: 0 10px;
+    font-size: 0.8rem;
+  }
+  .updateUserForm-button {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+
+    button:first-child {
+      margin-right: 30px;
+    }
+  }
+}
+
+.updateUserInfo-confirm {
+  display: flex;
+  flex-direction: column;
+  font-size: 1.25rem;
+  font-weight: 600;
+
+  button {
+    margin-top: 20px;
+  }
+}

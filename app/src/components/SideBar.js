@@ -16,7 +16,7 @@ function SideBar() {
     <nav className="sidebar">
       <div className="sidebar-header">Menu</div>
 
-      <SideMenu menu="Home" route="/">
+      <SideMenu menu="Home" route="/home">
         <FaHome className="menu-icon" />
       </SideMenu>
       <SideMenu menu="Monitoring" route="/monitoring">

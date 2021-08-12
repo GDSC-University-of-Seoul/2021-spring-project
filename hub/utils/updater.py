@@ -1,6 +1,19 @@
+"""
+updater.py
+
+"""
 import subprocess
 from pathlib import Path
 from utils.strings import colorstr, emojis
+
+
+def check_update():
+    """
+    Compare it to the latest work to see if there are any changes
+    """
+
+    # Check any changes by comparing from remote github repository
+    check_git_status()
 
 
 def check_online():
@@ -25,7 +38,10 @@ def check_git_status():
 
         cmd = "git fetch && git config --get remote.origin.url"
         url = (
-            subprocess.check_output(cmd, shell=True).decode().strip().rstrip(".git")
+            subprocess.check_output(cmd, shell=True)
+            .decode()
+            .strip()
+            .replace(".git", "")
         )  # github repo url
         branch = (
             subprocess.check_output("git rev-parse --abbrev-ref HEAD", shell=True)
@@ -73,9 +89,6 @@ def check_requirements(requirements="requirements.txt", exclude=()):
             pkg.require(r)
         except Exception as e:  # DistributionNotFound or VersionConflict if requirements not met
             n += 1
-            print(
-                f"{prefix} {e.req} not found and is required by YOLOv5, attempting auto-update..."
-            )
             print(subprocess.check_output(f"pip install {e.req}", shell=True).decode())
 
     if n:  # if packages updated

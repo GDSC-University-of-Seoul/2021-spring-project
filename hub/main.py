@@ -49,6 +49,6 @@ def main():
 
 
 if __name__ == "__main__":
-    check_git_status()  # Current Git Error
-    check_requirements()
+    check_git_status()
+    # check_requirements()
     main()

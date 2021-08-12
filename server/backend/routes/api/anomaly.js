@@ -3,9 +3,7 @@ import {
   AnomalyLog,
   CCTV,
   ChildCareCenter,
-  Sequelize,
-  Video,
-} from "../../database/models/transform";
+} from "../../../database/models/transform";
 
 import express from "express";
 

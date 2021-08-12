@@ -1,0 +1,25 @@
+.logout-checkModal {
+  font-size: 1.25rem;
+  font-weight: 600;
+
+  div {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-around;
+    color: white;
+
+    button {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      color: white;
+    }
+    .confirm-btn {
+      background-color: #2980b9;
+    }
+    .cancel-btn {
+      background-color: #e74c3c;
+    }
+  }
+}

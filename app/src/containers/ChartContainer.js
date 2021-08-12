@@ -1,10 +1,8 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-
 import BarChart from "../components/BarChart";
 import Loading from "../components/Loading";
-import axisName from "../utils/chart/axisName";
-import { fetchData } from "../modules/mapbox";
+import React from "react";
+import axisName from "../utils/axisName";
+import { useSelector } from "react-redux";
 
 /**
  * 구성할 차트에 맞게 시·도 데이터 가공 및 차트 컴포넌트 구성
@@ -19,12 +17,6 @@ function ChartContainer({ sido }) {
     error,
   } = useSelector((state) => state.mapboxReducer);
 
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (districts.length === 0) dispatch(fetchData());
-  }, [districts, dispatch]);
-
   if (loading) return <Loading />;
   if (error) return <div>에러발생!</div>;
 
@@ -36,15 +28,33 @@ function ChartContainer({ sido }) {
 
   // 차트 데이터 구성
   const chartData = [];
+  let maxAnomalyCnt = 0;
   filterData.forEach((district) => {
+    const {
+      district_name,
+      anomaly_count,
+      assualt_count,
+      fight_count,
+      swoon_count,
+    } = district;
+
+    maxAnomalyCnt = Math.max(maxAnomalyCnt, anomaly_count ? anomaly_count : 0);
     chartData.push({
-      시·도: axisName[district.district_name],
-      사건: parseInt(district.count, 10) % 100,
-      사고: parseInt(district.count, 10) % 10,
+      시·도: axisName[district_name],
+      폭행: assualt_count ? parseInt(assualt_count, 10) : 0,
+      싸움: fight_count ? parseInt(fight_count, 10) : 0,
+      실신: swoon_count ? parseInt(swoon_count, 10) : 0,
     });
   });
 
-  return <BarChart data={chartData} keys={["사건", "사고"]} indexBy="시·도" />;
+  return (
+    <BarChart
+      data={chartData}
+      keys={["폭행", "싸움", "실신"]}
+      indexBy="시·도"
+      maxVal={maxAnomalyCnt}
+    />
+  );
 }
 
 export default ChartContainer;

@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import ReactMapGL, { Layer, Marker, Popup, Source } from "react-map-gl";
-import { fetchCdrCenter, resetCdrCenter } from "../modules/cdrCenter";
 import {
   getSggHighlightLayer,
   getSggLayer,
   getSidoHighlightLayer,
   getSidoLayer,
-} from "../utils/mapbox/mapStyle";
+} from "../utils/mapStyle";
 import {
+  markerClick,
   resetDistrict,
   setGeojsonData,
   sggClick,
@@ -15,10 +15,11 @@ import {
   sidoClick,
   sidoHover,
 } from "../modules/mapboxEvent";
+import { resetCdrCenter, setCdrCenter } from "../modules/cdrCenter";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 
 import MapBoxCategory from "./MapBoxCategory";
-import districtViewport from "../utils/mapbox/districtViewport";
+import districtViewport from "../utils/districtViewport";
 
 const MapboxAccessToken = process.env.REACT_APP_MAPBOX;
 
@@ -35,13 +36,13 @@ function MapBox({ geojson }) {
   /*
    * MapBox 컴포넌트에서 사용하는 상태
    * - level : 도, 광역시 / 시,군,구의 기능을 구분
-   * - hoverInfo : hover 이벤트 간 발생하는 정보
+   * - popupInfo : hover 이벤트 간 발생하는 정보
    * - geojsonData : 행정구역을 렌더링하기 위핸 geojson 데이터
    * - cdrCentersInfo : 시,군,구 내에 있는 어린이집 정보
    * - error : 발생한 에러
    */
   const {
-    data: { level, hoverInfo, geojsonData, cdrCentersInfo },
+    data: { level, popupInfo, geojsonData, cdrCentersInfo },
     error,
   } = useSelector((state) => state.mapboxEventReducer, shallowEqual);
   const dispatch = useDispatch();
@@ -79,10 +80,8 @@ function MapBox({ geojson }) {
    * 지도 지역구 hover 이벤트 핸들러
    * - level 1 : 도, 광역시 지역구 정보 표시
    * - level 2 : 시,군,구 정보 표시
-   * - 이벤트 처리 후 hoverInfo와 level을 기반으로 선택중인 지역구에 대한 정보(selectedDistrictInfo)와 필터링할 내용(filter) 업데이트
+   * - 이벤트 처리 후 popupInfo와 level을 기반으로 선택중인 지역구에 대한 정보(selectedDistrictInfo)와 필터링할 내용(filter) 업데이트
    */
-
-  // Todo : 지역구 어린이집 사건·사고에 대한 레이블 정보 추가
   const hoverHandler = useCallback(
     (e) => {
       if (e.features.length !== 0) {
@@ -94,10 +93,10 @@ function MapBox({ geojson }) {
   );
   const selectedDistrictInfo = useMemo(() => {
     return {
-      name: (hoverInfo && hoverInfo.districtName) || "",
-      code: (hoverInfo && hoverInfo.districtCode) || "",
+      name: (popupInfo && popupInfo.districtName) || "",
+      code: (popupInfo && popupInfo.districtCode) || "",
     };
-  }, [hoverInfo]);
+  }, [popupInfo]);
 
   const filter = useMemo(
     () => ["in", level === 1 ? "sidonm" : "sggnm", selectedDistrictInfo.name],
@@ -136,10 +135,16 @@ function MapBox({ geojson }) {
 
   const markerClickHandler = useCallback(
     (e) => {
-      const cdrCenterId = e.target.classList[2];
-      dispatch(fetchCdrCenter(cdrCenterId));
+      if (e.target) {
+        const cdrCenterId = e.target.classList[2];
+        const markerInfo = cdrCentersInfo.filter(
+          (data) => data.center_id === cdrCenterId
+        );
+        dispatch(markerClick(markerInfo[0]));
+        dispatch(setCdrCenter(markerInfo[0]));
+      }
     },
-    [dispatch]
+    [dispatch, cdrCentersInfo]
   );
   /*
    * Reset 버튼 click 이벤트 핸들러
@@ -181,8 +186,10 @@ function MapBox({ geojson }) {
               />
             )}
 
-            {level === 2 && <Layer {...getSggLayer(sggControl.diff)} />}
-            {level === 2 && (
+            {(level === 2 || level == 3) && (
+              <Layer {...getSggLayer(sggControl.diff)} />
+            )}
+            {(level === 2 || level == 3) && (
               <Layer
                 {...getSggHighlightLayer(sggControl.diff)}
                 filter={filter}
@@ -191,20 +198,29 @@ function MapBox({ geojson }) {
           </Source>
         )}
         {/* 팝업 메세지로 행정구역의 정보 표시 */}
-        {/* Todo : 툴팁 메세지 정보 - 지역구, 사건·사고 유형, 발생건수 추가 */}
-        {selectedDistrictInfo.name !== "" && hoverInfo && (
+        {selectedDistrictInfo.name !== "" && popupInfo && (
           <Popup
-            longitude={hoverInfo.longitude}
-            latitude={hoverInfo.latitude}
+            longitude={Number(popupInfo.longitude)}
+            latitude={Number(popupInfo.latitude)}
             closeButton={false}
             className="popup"
           >
-            <h1>{selectedDistrictInfo.name}</h1>
-            <div>어린이집 개수 : {hoverInfo.districtCount}</div>
+            <h2>{popupInfo.districtName}</h2>
+            {level == 3 ? (
+              <ul className="popup-content">
+                <li>사건·사고 건수 : {popupInfo.anomalyCount}건</li>
+                <li>폭행 건수 : {popupInfo.assualtCount}건</li>
+                <li>싸움 건수 : {popupInfo.fightCount}건</li>
+                <li>실신 건수 : {popupInfo.swoonCount}건</li>
+              </ul>
+            ) : (
+              <ul className="popup-content">
+                <li>사건·사고 건수 : {popupInfo.districtCount}건</li>
+              </ul>
+            )}
           </Popup>
         )}
         {/* 어린이집 좌표 정보를 통해 마커 표시 */}
-        {/* Todo : 사건·사고가 발생한 어린이집의 경우 다른 색상의 마커로 표시 */}
         <div className="marker-set" onClick={markerClickHandler}>
           {cdrCentersInfo &&
             cdrCentersInfo.map((cdrCenterInfo, index) => (

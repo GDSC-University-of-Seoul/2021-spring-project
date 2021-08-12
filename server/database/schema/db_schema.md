@@ -24,8 +24,8 @@
 # ERD
 
 제가 erd 그리는 툴을 다시 설치하고 업데이트하겠습니다!
-![ERD(v2.0.5).png](<./ERD(v2.0.5).png>)
+![ERD(v2.0.6).png](<./ERD(v2.0.6).png>)
 
 # DB Schema
 
-[DB Schema(v2.0.3)](https://2021-spring-dsc-project-team.atlassian.net/wiki/spaces/KDK/pages/6029378/DB+v1.0.0, "confluence - db schema")에 데이터타입 및 제약조건에 대한 정보가 있습니다.
+[DB Schema(v2.0.6)](https://2021-spring-dsc-project-team.atlassian.net/wiki/spaces/KDK/pages/130154497/DB+v2.0.6, 'confluence - db schema')에 데이터타입 및 제약조건에 대한 정보가 있습니다.

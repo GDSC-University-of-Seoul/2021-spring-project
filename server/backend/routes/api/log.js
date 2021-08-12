@@ -1,5 +1,5 @@
 import express from "express";
-import { Sequelize, AnomalyLog } from "../../database/models/transform";
+import { Sequelize, AnomalyLog } from "../../../database/models/transform";
 
 const router = express.Router();
 

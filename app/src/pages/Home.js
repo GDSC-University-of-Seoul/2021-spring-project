@@ -1,8 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import ChartContainer from "../containers/ChartContainer";
+import Loading from "../components/Loading";
 import LogTableContainer from "../containers/LogTableContainer";
+import { fetchData } from "../modules/mapbox";
 import { fetchLogsData } from "../modules/logs";
 
 /**
@@ -13,34 +15,77 @@ import { fetchLogsData } from "../modules/logs";
 function Home() {
   const {
     loading,
-    data: { newLogsData },
+    data: { newLogsData, recentLogsData },
   } = useSelector((state) => state.logsReducer);
+
+  const {
+    loading: mapLoading,
+    data: { districts },
+  } = useSelector((state) => state.mapboxReducer);
+
   const dispatch = useDispatch();
 
+  const initialState = useMemo(
+    () => ({
+      assualt: 0,
+      fight: 0,
+      swoon: 0,
+      anomaly: 0,
+    }),
+    []
+  );
+  const [anomalyCnt, setAnomalyCnt] = useState(initialState);
+
   useEffect(() => {
-    dispatch(fetchLogsData());
-  }, [dispatch]);
+    // 헤더부 - 어린이집 이상행동 정보 설정
+    if (districts.length === 0) {
+      dispatch(fetchData()).then(() => {
+        const total = initialState;
+
+        for (let district in districts) {
+          total.assualt += district.assualt_cnt;
+          total.fight += district.fight_cnt;
+          total.swoon += district.swoon_cnt;
+          total.anomaly += district.anomaly_cnt;
+        }
+        setAnomalyCnt(total);
+      });
+    }
+    // 로그 데이터 설정
+    if (recentLogsData.length === 0) dispatch(fetchLogsData());
+  }, [dispatch, districts, initialState, recentLogsData]);
+
+  const HeaderItem = ({ title, children }) => {
+    return (
+      <div className="header-item">
+        <div>{title}</div>
+        <div>{children}</div>
+      </div>
+    );
+  };
 
   return (
     <>
       <section className="section home">
         <div className="container header">
-          <div className="header-item">
-            <div>어린이집 사건</div>
-            <div>0 건</div>
-          </div>
-          <div className="header-item">
-            <div>어린이집 안전사고</div>
-            <div>0 건</div>
-          </div>
-          <div className="header-item">
-            <div>신규 어린이집 수</div>
-            <div>0 개</div>
-          </div>
-          <div className="header-item">
-            <div>총 어린이집 수</div>
-            <div>0 개</div>
-          </div>
+          {mapLoading ? (
+            <Loading />
+          ) : (
+            <>
+              <HeaderItem title="총 이상행동 건수">
+                {anomalyCnt.anomaly} 건
+              </HeaderItem>
+              <HeaderItem title="어린이집 폭행건수">
+                {anomalyCnt.assualt} 건
+              </HeaderItem>
+              <HeaderItem title="어린이집 싸움건수">
+                {anomalyCnt.fight} 건
+              </HeaderItem>
+              <HeaderItem title="어린이집 실신건수">
+                {anomalyCnt.swoon} 건
+              </HeaderItem>
+            </>
+          )}
         </div>
         <div className="container chart-section">
           <div className="chart-title">

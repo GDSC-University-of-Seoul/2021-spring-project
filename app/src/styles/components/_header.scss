@@ -17,19 +17,23 @@ header {
   .info {
     color: white;
     display: flex;
+    justify-content: center;
     align-items: center;
     font-size: 1.5rem;
+    text-align: center;
 
     .center-info {
-      margin-right: 50px;
+      padding: 0 25px;
       cursor: pointer;
+      position: relative;
     }
     .user-info {
-      margin-right: 50px;
+      padding: 0 25px;
       cursor: pointer;
+      position: relative;
     }
     .time-info {
-      margin-right: 10px;
+      padding: 0 5px;
       font-size: 1.2rem;
       font-weight: 600;
 
@@ -37,5 +41,50 @@ header {
         margin-top: 4px;
       }
     }
+  }
+}
+
+.arrowbox-menu {
+  font-size: 1rem;
+  position: absolute;
+  top: 40px;
+  left: -33px;
+  background-color: white;
+  box-shadow: 0 0 15px 3px rgba(0, 0, 0, 0.3);
+  z-index: 10;
+  border-radius: 5px;
+
+  li {
+    width: 140px;
+    color: black;
+    padding: 10px;
+    text-align: center;
+
+    a {
+      color: inherit;
+    }
+    span {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    &:not(:last-child) {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+    }
+    &:hover {
+      background-color: #2980b9;
+      color: white;
+      border: none;
+    }
+  }
+
+  &:after {
+    content: " ";
+    position: absolute;
+    bottom: 100%;
+    margin-left: -10px;
+    border: solid transparent;
+    border-bottom-color: white;
+    border-width: 10px;
   }
 }

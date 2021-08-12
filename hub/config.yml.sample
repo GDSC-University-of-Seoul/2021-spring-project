@@ -1,0 +1,12 @@
+data:
+  path: DATA_DIRECTORY
+
+client:
+  protocol: PROTOCOL
+  host: AWS_HOST_NAME
+  region: AWS_REGION_NAME
+  port: AWS_PORT_NUM
+  path: PATH
+  
+scheduler:
+  path: DATA_DIRECTORY
