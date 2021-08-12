@@ -23,7 +23,6 @@ def test_dummy_respone():
         "anomaly_type": None,
         "start_time": None,
         "end_time": None,
-        
     }
 
     # 실행시켰을 때 결과
