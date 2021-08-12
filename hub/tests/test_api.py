@@ -3,8 +3,9 @@
 # anomal의 종류에 따라서 원하는 output이 나오는지(anomaly_type, start_time, end_time 변화) --> test_anomaly_type
 
 import pytest
-from api import run_model
 import json
+import os
+from utils.api import run_model
 
 dirpath = f"data/cctv{n}"
 files = os.listdir(dirpath)
