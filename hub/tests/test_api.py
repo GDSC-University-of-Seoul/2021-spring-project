@@ -26,14 +26,14 @@ def test_dummy_respone():
     }
 
     # 실행시켰을 때 결과
-    dirpath = "data/cctv1"
+    dirpath = "models/data/cctv1"
     file = "cctv1-2021-07-17.mp4"
 
     (anomal, output) = run_model(dirpath, file)
 
     # 결과 비교(anomal, output 따로)
-    assert anomal == __anomal, "None anomal event return"
-    assert output == __output, "output return error"
+    assert anomal == __anomal , "None anomal event return"
+    assert output == __output , "None cctv output return"
 
 
 """
