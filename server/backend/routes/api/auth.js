@@ -45,22 +45,32 @@ router.post("/login", isNotLoggedIn, (req, res, next) => {
         console.error(loginError);
         return next(loginError);
       }
-      return res.status(200).json({ message: "login completed." });
+      return res.status(200).json({
+        memeber_id: user.member_id,
+        member_name: user.member_name,
+        member_phone: user.member_phone,
+        email: user.email,
+      });
     });
   })(req, res, next);
 });
 
-router.put("/member", isLoggedIn, (req, res) => {
-  const { member_name, member_phone, email } = req.body;
+router.put("/member", isLoggedIn, async (req, res) => {
+  const { member_name, member_phone, password, email } = req.body;
+
+  let fields = {
+    member_name: member_name,
+    member_phone: member_phone,
+    email: email,
+  };
+  if (password) {
+    const hash = await bcrypt.hash(password, SALT_ROUND);
+    fields.password = hash;
+  }
   try {
-    const member = Member.update(
-      {
-        member_name: member_name,
-        member_phone: member_phone,
-        email: email,
-      },
-      { where: { member_id: req.user.member_id } }
-    );
+    const member = await Member.update(fields, {
+      where: { member_id: req.user.member_id },
+    });
     res.status(200).json({ message: "member updated." });
   } catch (err) {
     console.error(err);

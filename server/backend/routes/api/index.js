@@ -9,6 +9,7 @@ import { isLoggedIn } from "../../middlewares/login";
 
 const router = new express.Router();
 
+// TODO: add isLoggedIn middleware in all APIs
 router.use("/districts", districtRouter);
 router.use("/centers", centerRouter);
 router.use("/cctvs", cctvRouter);

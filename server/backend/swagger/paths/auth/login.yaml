@@ -21,5 +21,11 @@ post:
           schema:
             type: object
             properties:
-              message:
+              member_id:
+                type: string
+              member_name:
+                type: string
+              member_phone:
+                type: string
+              email:
                 type: string
