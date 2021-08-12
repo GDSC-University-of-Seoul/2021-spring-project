@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import LogoutModal from "./LogoutModal";
 import UpdateLoginForm from "./UpdateLoginForm";
+import useLocalStorage from "../hooks/useLocalStorage";
 import { useSelector } from "react-redux";
 
 /**
@@ -14,6 +15,7 @@ import { useSelector } from "react-redux";
  */
 
 function Header({ history }) {
+  const ONE_HOUR = 3600000;
   const [date, setDate] = useState(null); // 날짜·시간 정보 저장
 
   const initMenuOpen = useMemo(
@@ -31,6 +33,32 @@ function Header({ history }) {
   const {
     data: { newLogsData },
   } = useSelector((state) => state.logsReducer);
+
+  // 이미 읽은 신규 알림 로그 ID
+  const [readAlarmsId, setReadAlarmsId] = useLocalStorage("readAlarms", []);
+
+  // 읽지 않은 알림 로그
+  const [unreadLogs, setunreadLogs] = useState([]);
+
+  useEffect(() => {
+    // 읽지 않은 알림 로그 필터링
+    setunreadLogs(
+      newLogsData.filter(
+        (data) =>
+          !readAlarmsId.find(
+            (element) => String(element) === String(data.anomaly_log_id)
+          )
+      )
+    );
+
+    // 신규 로그가 생성되는 한 시간마다 초기화 (선택 시 시간 연장됨)
+    const readLogsIdClear = setTimeout(() => {
+      setReadAlarmsId([]);
+    }, ONE_HOUR);
+
+    return () => clearInterval(readLogsIdClear);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [newLogsData, readAlarmsId]);
 
   // 날짜·시간 포맷팅 (yyyy-mm-dd hh:mm:ss)
   const format = useCallback((timeInfo) => {
@@ -74,6 +102,22 @@ function Header({ history }) {
     return history;
   }, [history]);
 
+  // 알람 로그 클릭 이벤트 (읽음 처리)
+  const clickNewLogAlarm = useCallback(
+    (e) => {
+      let target = e.target.closest("li");
+
+      if (!target.dataset.id) return;
+
+      const readId = target.dataset.id;
+
+      // 이미 존재하는 경우 무시 => 다중 입력 방지
+      if (readAlarmsId.find((data) => data === readId)) return;
+      setReadAlarmsId([...readAlarmsId, readId]);
+    },
+    [readAlarmsId, setReadAlarmsId]
+  );
+
   return (
     <>
       <header>
@@ -81,7 +125,7 @@ function Header({ history }) {
         <div className="info">
           <div
             className={`newLogs-info${
-              newLogsData.length !== 0 ? " logs-unread" : ""
+              unreadLogs.length !== 0 ? " logs-unread" : ""
             }`}
             onClick={(e) => e.stopPropagation()}
           >
@@ -95,15 +139,20 @@ function Header({ history }) {
             {menuOpen.alarm && (
               <>
                 <div className="arrow-up" />
-                <ul className="arrowbox-menu alarm-menu">
-                  {newLogsData.length === 0 ? (
+                <ul
+                  className="arrowbox-menu alarm-menu"
+                  onClick={clickNewLogAlarm}
+                >
+                  {unreadLogs.length === 0 ? (
                     <li>새로운 로그 정보가 없습니다.</li>
                   ) : (
-                    newLogsData.map((data) => (
-                      <li>
-                        <span>{newLogsData.center_name}</span>에서
-                        <br /> <span>{newLogsData.anomaly_type}</span>이
-                        발생했습니다.
+                    unreadLogs.map((data) => (
+                      <li
+                        data-id={data.anomaly_log_id}
+                        key={data.anomaly_log_id}
+                      >
+                        <span>{data.center_name}</span>에서
+                        <br /> <span>{data.anomaly_type}</span>이 발생했습니다.
                       </li>
                     ))
                   )}
