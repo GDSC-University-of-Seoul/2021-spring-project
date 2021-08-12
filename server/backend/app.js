@@ -31,7 +31,7 @@ sequelize
 
 app.use(
   cors({
-    origin: "http://kids-keeper.s3-website.ap-northeast-2.amazonaws.com/",
+    origin: true,
     credentials: true,
   })
 );
