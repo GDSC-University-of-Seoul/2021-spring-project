@@ -66,8 +66,8 @@ app.listen(8081, () => {
 });
 
 // https
-const key = fs.readFileSync("./certs/private.pem");
-const cert = fs.readFileSync("./certs/public.pem");
+const key = fs.readFileSync("./certs/selfsigned.key");
+const cert = fs.readFileSync("./certs/selfsigned.crt");
 const options = {
   key: key,
   cert: cert,
