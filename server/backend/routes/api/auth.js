@@ -46,7 +46,7 @@ router.post("/login", isNotLoggedIn, (req, res, next) => {
         return next(loginError);
       }
       return res.status(200).json({
-        memeber_id: user.member_id,
+        member_id: user.member_id,
         member_name: user.member_name,
         member_phone: user.member_phone,
         email: user.email,
