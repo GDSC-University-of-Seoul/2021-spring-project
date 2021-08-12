@@ -7,6 +7,8 @@ import yaml from "yamljs";
 import cors from "cors";
 import session from "express-session";
 import passport from "passport";
+import fs from "fs";
+import https from "https";
 
 import { sequelize } from "../database/models/transform";
 import indexRouter from "./routes";
@@ -39,6 +41,13 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+const key = fs.readFileSync("./certs/selfsigned.key");
+const cert = fs.readFileSync("./certs/selfsigned.crt");
+const options = {
+  key: key,
+  cert: cert,
+};
+
 app.use(
   session({
     resave: false,
@@ -60,6 +69,8 @@ const swaggerSpecs = yaml.load(path.join(__dirname, "/swagger/build.yaml"));
 app.use("/api/docs/", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 
 // 포트 연결
-app.listen(app.get("port"), () => {
+const server = https.createServer(options, app);
+
+server.listen(app.get("port"), () => {
   console.log(app.get("port"), "빈 포트에서 대기중.");
 });

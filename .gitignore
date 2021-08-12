@@ -36,3 +36,4 @@ aws/
 migrations/
 samples/
 .dummy/
+certs/
