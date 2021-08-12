@@ -61,19 +61,15 @@ app.use("/", indexRouter);
 const swaggerSpecs = yaml.load(path.join(__dirname, "/swagger/build.yaml"));
 app.use("/api/docs/", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 
-app.listen(8081, () => {
-  console.log(8081, "빈 포트에서 대기중.");
-});
-
 // https
-const key = fs.readFileSync("./certs/selfsigned.key");
-const cert = fs.readFileSync("./certs/selfsigned.crt");
+const key = fs.readFileSync("./certs/private.pem");
+const cert = fs.readFileSync("./certs/public.pem");
 const options = {
   key: key,
   cert: cert,
 };
 const server = https.createServer(options, app);
 
-server.listen(app.get("port"), () => {
-  console.log(app.get("port"), "빈 포트에서 대기중.");
+server.listen(443, () => {
+  console.log(parseInt(443), "HTTPS server listening on port.");
 });
