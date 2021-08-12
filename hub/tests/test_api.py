@@ -5,7 +5,7 @@
 import sys
 import os
 
-sys.path.append(os.path.abspath(os.path.dirname(__file__)))
+sys.path.append("C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\")
 from utils.api import run_model  # **
 
 
@@ -13,16 +13,17 @@ from utils.api import run_model  # **
 def test_dummy_respone():
 
     # 정상적으로 작동해야 하는 결과
-    __anomal = True
-    __output = {
+    __anomal: bool = False
+    __output: dict = {
         "video": {
             "record_date": "2021-07-17 21:00:00",
             "cctv_mac": "125454545460",
-            "storage_name": "data/cctv1/",
+            "storage_name": "models/data/cctv1",
         },
-        "anomaly_type": "폭행",
-        "start_time": "2021-07-17 00:00:00",
-        "end_time": "2021-07-17 01:00:00",
+        "anomaly_type": None,
+        "start_time": None,
+        "end_time": None,
+        
     }
 
     # 실행시켰을 때 결과
@@ -32,8 +33,8 @@ def test_dummy_respone():
     (anomal, output) = run_model(dirpath, file)
 
     # 결과 비교(anomal, output 따로)
-    assert anomal == __anomal, "None anomal event return"
-    assert output == __output, "None cctv output return"
+    assert anomal == __anomal, f"anomal event return {anomal} ({__anomal})"
+    assert output == __output, f"cctv output return {output} ({__output})"
 
 
 """
