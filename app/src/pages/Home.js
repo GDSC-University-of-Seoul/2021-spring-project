@@ -10,7 +10,7 @@ import { fetchLogsData } from "../modules/logs";
 /**
  * `/` 페이지 렌더링
  *
- * @return {JSX.Element} `/` 페이지를 구성하는 컴포넌트
+ * @return {JSX.Element} `/home` 페이지를 구성하는 컴포넌트
  */
 function Home() {
   const {
@@ -25,7 +25,7 @@ function Home() {
 
   const dispatch = useDispatch();
 
-  const initialState = useMemo(
+  const initialAnomalyCnt = useMemo(
     () => ({
       assualt: 0,
       fight: 0,
@@ -34,26 +34,34 @@ function Home() {
     }),
     []
   );
-  const [anomalyCnt, setAnomalyCnt] = useState(initialState);
+
+  const [anomalyCnt, setAnomalyCnt] = useState(initialAnomalyCnt); // 이상행동 건수
 
   useEffect(() => {
-    // 헤더부 - 어린이집 이상행동 정보 설정
-    if (districts.length === 0) {
-      dispatch(fetchData()).then(() => {
-        const total = initialState;
+    // 구역 정보 Fetch - 어린이집 이상행동 건수 추출용
+    if (districts.length === 0) dispatch(fetchData());
 
-        for (let district in districts) {
-          total.assualt += district.assualt_cnt;
-          total.fight += district.fight_cnt;
-          total.swoon += district.swoon_cnt;
-          total.anomaly += district.anomaly_cnt;
-        }
-        setAnomalyCnt(total);
-      });
-    }
-    // 로그 데이터 설정
+    // 로그 정보 Fetch
     if (recentLogsData.length === 0) dispatch(fetchLogsData());
-  }, [dispatch, districts, initialState, recentLogsData]);
+  }, [dispatch, districts, initialAnomalyCnt, recentLogsData]);
+
+  // 이상행동 건수 집계
+  useEffect(() => {
+    let total = initialAnomalyCnt;
+
+    districts.forEach((district) => {
+      let { assualt, fight, swoon, anomaly } = total;
+      let { assualt_count, fight_count, swoon_count, anomaly_count } = district;
+
+      total = {
+        assualt: assualt + assualt_count,
+        fight: fight + fight_count,
+        swoon: swoon + swoon_count,
+        anomaly: anomaly + anomaly_count,
+      };
+    });
+    setAnomalyCnt(total);
+  }, [districts, initialAnomalyCnt]);
 
   const HeaderItem = ({ title, children }) => {
     return (
