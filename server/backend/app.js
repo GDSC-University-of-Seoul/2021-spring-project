@@ -47,9 +47,8 @@ app.use(
     saveUninitialized: false,
     secret: process.env.COOKIE_SECRET,
     cookie: {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
+      httpOnly: false,
+      secure: false,
     },
   })
 );
@@ -61,15 +60,19 @@ app.use("/", indexRouter);
 const swaggerSpecs = yaml.load(path.join(__dirname, "/swagger/build.yaml"));
 app.use("/api/docs/", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 
-// https
-const key = fs.readFileSync("./certs/private.pem");
-const cert = fs.readFileSync("./certs/public.pem");
-const options = {
-  key: key,
-  cert: cert,
-};
-const server = https.createServer(options, app);
-
-server.listen(443, () => {
-  console.log(parseInt(443), "HTTPS server listening on port.");
+app.listen(app.get("port"), () => {
+  console.log(app.get("port"), "HTTP server listening on port.");
 });
+
+// https
+// const key = fs.readFileSync("./certs/private.pem");
+// const cert = fs.readFileSync("./certs/public.pem");
+// const options = {
+//   key: key,
+//   cert: cert,
+// };
+// const server = https.createServer(options, app);
+
+// server.listen(app.get("port"), () => {
+//   console.log(app.get("port"), "HTTPS server listening on port.");
+// });
