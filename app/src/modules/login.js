@@ -14,12 +14,20 @@ const LOGIN_ERROR = "login/LOGIN_ERROR";
  */
 export const loginSubmit = (userId, userPw) => async (dispatch) => {
   try {
-    // Todo : 로그인 서버 주소 지정
+    const loginResponse = await axios.post(
+      `${process.env.REACT_APP_API_SERVER}/api/auth/login`,
+      {
+        member_id: userId,
+        password: userPw,
+      },
+      { withCredentials: true }
+    );
 
-    const loginInfo = await axios.post(`${process.env.REACT_APP_API_SERVER}/`, {
-      userId,
-      userPw,
-    });
+    const loginInfo = {
+      userId: loginResponse.data.member_id,
+      userName: loginResponse.data.member_name,
+      email: loginResponse.data.email,
+    };
 
     setCookie("loginInfo", JSON.stringify(loginInfo), 1);
     dispatch({
@@ -46,10 +54,15 @@ export const getLoginCookie = () => {
  *
  * @param {Object} history 리다이렉션을 위한 history 객체
  */
-export const logOut = (history) => (dispatch) => {
-  deleteCookie("loginInfo");
-  dispatch({ type: LOGOUT });
-  history.push("/");
+export const logOut = (history) => async (dispatch) => {
+  try {
+    await axios.get(`${process.env.REACT_APP_API_SERVER}/api/auth/logout`);
+    deleteCookie("loginInfo");
+    dispatch({ type: LOGOUT });
+    history.push("/");
+  } catch (error) {
+    dispatch({ type: LOGIN_ERROR, payload: error });
+  }
 };
 
 /**
@@ -60,8 +73,12 @@ export const logOut = (history) => (dispatch) => {
  */
 export const loginInfoUpdate = (userInfo) => async (dispatch) => {
   try {
-    // Todo : 로그인 서버 주소 지정
-    await axios.put(`${process.env.REACT_APP_API_SERVER}/`, userInfo);
+    await axios.put(`${process.env.REACT_APP_API_SERVER}/api/auth/member`, {
+      member_id: userInfo.userId,
+      member_name: userInfo.userName,
+      password: userInfo.password,
+      email: userInfo.email,
+    });
   } catch (e) {
     dispatch({ type: LOGIN_ERROR, payload: e });
   }
