@@ -35,7 +35,6 @@ app.use(
   cors({
     origin: true,
     credentials: true,
-    exposedHeaders: ["set-cookie"],
   })
 );
 app.use(morgan("dev"));
@@ -50,7 +49,6 @@ app.use(
     cookie: {
       httpOnly: false,
       secure: false,
-      sameSite: "lax",
     },
   })
 );
