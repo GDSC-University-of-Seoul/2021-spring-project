@@ -4,6 +4,9 @@ import os
 sys.path.append("C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\")
 from utils.files import *
 
+###
+# test dirlist
+###
 def test_return_dirlist():  #폴더 목록이 맞는지 확인
     # 정상적으로 작동해야 하는 결과
     __list=['C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\models\\data\\cctv1', 'C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\models\\data\\cctv2', 'C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\models\\data\\cctv3', 'C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\models\\data\\cctv4']
@@ -14,12 +17,23 @@ def test_return_dirlist():  #폴더 목록이 맞는지 확인
 
     # 결과 비교
     assert __list == list , f"Wrong list of folder in {path}"
-'''
-def test_return_checkdir1():
-  asasfsdaasdfsd
-  # 있는 파일 true
 
-def test_return_checkdir2():
-  asasfsdaasdfsd
-  # 없는 파일 false
-'''
+
+###
+# test check_dir
+###
+def test_return_checkdir_true():  # 폴더 존재시 True 반환 확인
+    # 정상적으로 작동해야 하는 결과
+    __check = True  # 폴더가 존재
+
+    # 실행시켰을 때 결과
+    path="C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\models\\data"
+    check = check_dir(path, True)
+
+    # 결과 비교
+    assert __check == check, f"Couldn't recognize folder on {path}"
+
+
+def test_return_checkdir_false():
+
+    # 없는 파일 false
