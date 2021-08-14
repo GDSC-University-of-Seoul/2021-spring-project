@@ -5,10 +5,7 @@ import path from "path";
 import swaggerUi from "swagger-ui-express";
 import yaml from "yamljs";
 import cors from "cors";
-import session from "express-session";
 import passport from "passport";
-import fs from "fs";
-import https from "https";
 
 import { sequelize } from "../database/models/transform";
 import indexRouter from "./routes";
@@ -35,36 +32,14 @@ app.use(
   cors({
     origin: true,
     credentials: true,
-    exposedHeaders: ["Set-Cookie"],
   })
 );
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use(
-  session({
-    resave: false,
-    saveUninitialized: false,
-    secret: process.env.COOKIE_SECRET,
-    cookie: {
-      httpOnly: false,
-      secure: false,
-    },
-  })
-);
 app.use(passport.initialize());
 app.use(passport.session());
-
-app.use(function (req, res, next) {
-  res.header("Content-Type", "application/json;charset=UTF-8");
-  res.header("Access-Control-Allow-Credentials", true);
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  next();
-});
 
 app.use("/", indexRouter);
 
@@ -74,16 +49,3 @@ app.use("/api/docs/", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 app.listen(app.get("port"), () => {
   console.log(app.get("port"), "HTTP server listening on port.");
 });
-
-// https
-// const key = fs.readFileSync("./certs/private.pem");
-// const cert = fs.readFileSync("./certs/public.pem");
-// const options = {
-//   key: key,
-//   cert: cert,
-// };
-// const server = https.createServer(options, app);
-
-// server.listen(app.get("port"), () => {
-//   console.log(app.get("port"), "HTTPS server listening on port.");
-// });

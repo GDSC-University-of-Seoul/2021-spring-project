@@ -5,11 +5,10 @@ import cctvRouter from "./cctv";
 import anomalyRouter from "./anomaly";
 import logRouter from "./log";
 import authRouter from "./auth";
-import { isLoggedIn } from "../../middlewares/login";
 
 const router = new express.Router();
 
-// TODO: add isLoggedIn middleware in all APIs
+// TODO: add passport.authenticate("jwt") middleware in all APIs
 router.use("/districts", districtRouter);
 router.use("/centers", centerRouter);
 router.use("/cctvs", cctvRouter);

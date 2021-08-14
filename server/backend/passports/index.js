@@ -1,5 +1,6 @@
 import passport from "passport";
-import local from "./localStrategy";
+import localStrategy from "./localStrategy";
+import jwtStrategy from "./jwtStrategy";
 import { Member } from "../../database/models/transform";
 
 export default () => {
@@ -13,5 +14,6 @@ export default () => {
       .catch((err) => done(err));
   });
 
-  local();
+  localStrategy();
+  jwtStrategy();
 };

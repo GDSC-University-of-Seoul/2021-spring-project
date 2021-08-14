@@ -543,6 +543,8 @@ paths:
         - auth
       summary: update member
       description: null
+      security:
+        - bearerAuth: []
       requestBody:
         content:
           application/json:
@@ -567,25 +569,17 @@ paths:
                 properties:
                   message:
                     type: string
-  /auth/logout:
-    get:
-      tags:
-        - auth
-      summary: logout
-      description: null
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
 tags:
   - name: district
   - name: children care center
   - name: cctv
   - name: anomaly log
   - name: auth
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - bearerAuth: []

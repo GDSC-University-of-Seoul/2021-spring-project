@@ -31,5 +31,3 @@
   $ref: "auth/login.yaml"
 /auth/member:
   $ref: "auth/member-update.yaml"
-/auth/logout:
-  $ref: "auth/logout.yaml"

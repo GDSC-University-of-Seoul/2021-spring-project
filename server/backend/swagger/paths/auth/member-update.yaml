@@ -3,6 +3,8 @@ put:
     - auth
   summary: update member
   description:
+  security:
+    - bearerAuth: []
   requestBody:
     content:
       application/json:
