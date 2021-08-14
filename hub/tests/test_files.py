@@ -38,10 +38,17 @@ def test_return_checkdir_true():  # 폴더 존재시 True 반환 확인
     # 결과 비교
     assert __check == check, f"Couldn't recognize folder on {path}"
 
-
-"""
 def test_return_checkdir_false():  # 폴더 부재시 false or 경로 생성
     # 정상적으로 작동해야 하는 결과
+    __making = True
+    __none_making = False
+
     # 실행시켰을 때 결과
+    path = "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\data"
+    check = check_dir(path, False)
+    check_dir(path, True)
+
     # 결과 비교
-"""
+    assert check == __none_making, f"wrong recognize folder on {path}"  # 파일이 없다는 걸 인지했는지 확인
+    assert __making == os.path.isdir(path), ""  # 폴더를 제대로 생성했는지 확인
+
