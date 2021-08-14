@@ -7,8 +7,10 @@ info:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
 servers:
-  - description: dev servers
+  - description: localhost
     url: http://localhost:3000/api/
+  - description: EC2 server
+    url: http://ec2-13-125-91-203.ap-northeast-2.compute.amazonaws.com:3000/api/
 paths:
   $ref: "./paths/index.yaml"
 tags:
