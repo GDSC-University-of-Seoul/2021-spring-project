@@ -36,12 +36,21 @@ def test_dummy_respone():
     assert output == __output, f"cctv output return {output} ({__output})"
 
 
-"""
 # anomal에 따라 output의 anomaly_type이 정상적으로 바뀌어 나오는지 확인(차후 수정)
-def test_anomaly_type(dirpath, filepath):
-    (flag, data) = run_model(dirpath, filepath)
-    if flag == True:  # anomal이 폭행을 가리킬 때
-        assert (
-            data["anomaly_type"] == "폭행"
-        ), "Wrong anomaly type return"  # anomaly_type이 "폭행"으로 나와야 함
-"""
+def test_anomaly_type():
+    # 정상적으로 작동해야 하는 결과
+    _anomal_assault = True
+    _type_assault = "폭행"
+
+    # 실행시켰을 때 결과
+    dirpath = "models/data/cctv1"
+    file = "cctv1-2021-07-17.mp4"
+
+    (anomal, output) = run_model(dirpath, file)
+
+    # 결과 비교
+    if anomal == _anomal_assault:  # anomal이 폭행을 가리킬 때
+        anomaly_type = output["anomaly_type"]
+        assert (  # anomaly_type이 "폭행"이 아니면 에러메세지 출력
+            anomaly_type == _type_assault
+        ), f"Wrong anomaly type {anomaly_type} return ({_type_assault})"
