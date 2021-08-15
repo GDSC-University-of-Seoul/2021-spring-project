@@ -38,9 +38,9 @@ const createAnomalyLog = async (
     // create anomaly log
     const anomalyLog = await AnomalyLog.create({
       center_id: video.center_id,
-      center_name: video.centerName,
+      center_name: video.center_name,
       address: video.address,
-      record_date: video.recordDate,
+      record_date: video.record_date,
       anomaly_type: anomalyType,
       start_time: startTime,
       end_time: endTime,
