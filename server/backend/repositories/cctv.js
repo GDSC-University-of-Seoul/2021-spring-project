@@ -19,11 +19,11 @@ const create = async (centerId, cctvName, cctvMac, installDate, quality) => {
   }
 };
 
-const findOneByMacAddress = async (mac_address) => {
+const findOneByMacAddress = async (cctvMac) => {
   try {
     const cctv = await CCTV.findOne({
       where: {
-        cctv_mac: mac_address,
+        cctv_mac: cctvMac,
       },
     });
     return cctv;
