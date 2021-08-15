@@ -15,7 +15,7 @@ router.post("/register", async (req, res, next) => {
       // 입력한 member ID 가 이미 존재하는 경우
       res.status(401).json({ message: "member already exists." });
     } else {
-      // 입력한 member ID 가 이미 존재하는 경우 (= 회원가입이 가능한 경우)
+      // 입력한 member ID 가 존재하지 않는 경우 (= 회원가입이 가능한 경우)
       const hash = await bcrypt.hash(password, SALT_ROUND);
       const member = await Member.create({
         member_id: member_id,
