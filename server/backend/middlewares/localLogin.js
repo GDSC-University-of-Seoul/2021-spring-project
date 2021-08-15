@@ -1,4 +1,4 @@
-export const isLoggedIn = (req, res, next) => {
+export const checkLoggedIn = (req, res, next) => {
   if (req.isAuthenticated()) {
     next();
   } else {
@@ -6,7 +6,7 @@ export const isLoggedIn = (req, res, next) => {
   }
 };
 
-export const isNotLoggedIn = (req, res, next) => {
+export const checkNotLoggedIn = (req, res, next) => {
   if (!req.isAuthenticated()) {
     next();
   } else {
