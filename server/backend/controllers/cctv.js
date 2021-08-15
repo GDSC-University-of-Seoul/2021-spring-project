@@ -32,7 +32,7 @@ const findByCenterId = async (req, res, next) => {
   }
 };
 
-const update = async (req, res, next) => {
+const updateByCctvMac = async (req, res, next) => {
   try {
     const cctv = await CCTV.update(
       {
@@ -49,12 +49,23 @@ const update = async (req, res, next) => {
     );
     res.json(cctv);
   } catch (err) {
-    if (err instanceof Sequelize.UniqueConstraintError) {
-      res.status(409).send("Duplicate cctv_mac value.");
-    }
     console.error(err);
     next(err);
   }
 };
 
-export default { create, findByCenterId, update };
+const deleteByCctvMac = async (req, res, next) => {
+  try {
+    await CCTV.destroy({
+      where: {
+        cctv_mac: req.params.cctv_mac,
+      },
+    });
+    res.status(204).send();
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+};
+
+export default { create, findByCenterId, updateByCctvMac, deleteByCctvMac };
