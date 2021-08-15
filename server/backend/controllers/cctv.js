@@ -34,18 +34,13 @@ const findByCenterId = async (req, res, next) => {
 
 const updateByCctvMac = async (req, res, next) => {
   try {
-    const cctv = await CCTV.update(
-      {
-        cctv_name: req.body.cctv_name,
-        install_date: req.body.install_date,
-        uninstall_date: req.body.uninstall_date,
-        quality: req.body.quality,
-      },
-      {
-        where: {
-          cctv_mac: req.params.cctv_mac,
-        },
-      }
+    const { cctv_name, install_date, uninstall_date, quality } = req.body;
+    const cctv = CCTVService.updateByCctvMac(
+      req.params.cctv_mac,
+      cctv_name,
+      install_date,
+      uninstall_date,
+      quality
     );
     res.json(cctv);
   } catch (err) {
@@ -56,11 +51,7 @@ const updateByCctvMac = async (req, res, next) => {
 
 const deleteByCctvMac = async (req, res, next) => {
   try {
-    await CCTV.destroy({
-      where: {
-        cctv_mac: req.params.cctv_mac,
-      },
-    });
+    CCTVService.deleteByCctvMac(req.params.cctv_mac);
     res.status(204).send();
   } catch (err) {
     console.error(err);

@@ -56,8 +56,45 @@ const findByCenterId = async (centerId) => {
   return cctv;
 };
 
+const updateByCctvMac = async (
+  cctvMac,
+  cctvName,
+  installDate,
+  uninstallDate,
+  quality
+) => {
+  const cctv = await CCTV.update(
+    {
+      cctv_name: cctvName,
+      install_date: installDate,
+      uninstall_date: uninstallDate,
+      quality: quality,
+    },
+    {
+      where: {
+        cctv_mac: cctvMac,
+      },
+    }
+  );
+};
+
+const deleteByCctvMac = async (cctvMac) => {
+  try {
+    await CCTV.destroy({
+      where: {
+        cctv_mac: cctvMac,
+      },
+    });
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+};
+
 export default {
   create,
   findOneByMacAddress,
   findByCenterId,
+  updateByCctvMac,
+  deleteByCctvMac,
 };
