@@ -18,11 +18,14 @@ export default () => {
           if (member) {
             const result = await bcrypt.compare(password, member.password);
             if (result) {
+              // 입력한 member ID 의 password 와 입력한 비밀번호가 일치하는 경우
               done(null, member);
             } else {
+              // 입력한 member ID 의 password 와 입력한 비밀번호가 일치하지 않는 경우
               done(null, false, { message: "incorrect password." });
             }
           } else {
+            // 입력한 member ID 가 없는 경우
             done(null, false, { message: "unregisted member." });
           }
         } catch (err) {

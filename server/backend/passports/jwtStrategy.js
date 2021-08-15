@@ -15,9 +15,11 @@ export default () => {
             where: { member_id: jwtPayLoad.member_id },
           });
           if (member) {
+            // jwt payload 의 멤버 ID 가 DB 내에 존재하는 경우
             done(null, member);
           } else {
-            ddone(null, false, { message: "incorrect password." });
+            // jwt payload 의 멤버 ID 가 DB 내에 존재하지 않는 경우
+            done(null, false, { message: "unregisted member." });
           }
         } catch (err) {
           console.error(err);

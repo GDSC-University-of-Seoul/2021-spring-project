@@ -12,8 +12,10 @@ router.post("/register", async (req, res, next) => {
   try {
     const member = await Member.findOne({ where: { member_id: member_id } });
     if (member) {
+      // 입력한 member ID 가 이미 존재하는 경우
       res.status(401).json({ message: "member already exists." });
     } else {
+      // 입력한 member ID 가 이미 존재하는 경우 (= 회원가입이 가능한 경우)
       const hash = await bcrypt.hash(password, SALT_ROUND);
       const member = await Member.create({
         member_id: member_id,
@@ -30,7 +32,7 @@ router.post("/register", async (req, res, next) => {
   }
 });
 
-// use local authentication when login (without token)
+// 최초 로그인 시 local Strategy 사용 (로그인 이후 jwt strategy 사용)
 router.post("/login", (req, res, next) => {
   passport.authenticate(
     "local",
@@ -38,14 +40,18 @@ router.post("/login", (req, res, next) => {
     (authError, user, info) => {
       // http://www.passportjs.org/docs/authenticate/
       if (authError) {
+        // 인증 과정에서 오류가 난 경우
         console.error(authError);
         return next(err);
       }
       if (!user) {
+        // 입력한 member ID 가 없거나 비밀번호가 일치하지 않는 경우
         return res.status(401).json({ message: info.message });
       }
+      // 인증에 성공한 경우
       return req.login(user, { session: false }, (loginError) => {
         if (loginError) {
+          // login 함수 실행 시 오류가 발생한 경우
           console.error(loginError);
           return next(loginError);
         }
