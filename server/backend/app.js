@@ -22,7 +22,7 @@ sequelize
   })
   .catch((err) => {
     console.log("DB 연결 실패");
-    console.log(err);
+    console.error(err);
   });
 
 app.use(cors());

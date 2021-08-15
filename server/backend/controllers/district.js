@@ -8,10 +8,10 @@ export const findByParentCode = async (req, res, next) => {
       const districts = await districtService.findLowerDistrictsByParentCode(
         parent_code
       );
-      return res.json(districts);
+      res.json(districts);
     } else {
       const districts = await districtService.findUpperDistrictsByNullParentCode();
-      return res.json(districts);
+      res.json(districts);
     }
   } catch (err) {
     console.error(err);
@@ -25,12 +25,12 @@ export const findByDistrictCode = async (req, res, next) => {
       const district = await districtService.findUpperDistrictByDistrictCode(
         req.params.district_code
       );
-      return res.json(district);
+      res.json(district);
     } else {
       const district = await districtService.findLowerDistrictByDistrictCode(
         req.params.district_code
       );
-      return res.json(district);
+      res.json(district);
     }
   } catch (err) {
     console.error(err);
@@ -44,7 +44,7 @@ export const findByDistrictName = async (req, res, next) => {
       const district = await districtService.findUpperDistrictByDistrictName(
         req.params.district_name
       );
-      return res.json(district);
+      res.json(district);
     } else {
       const district = await districtService.findLowerDistrictByDistrictName(
         req.params.district_name

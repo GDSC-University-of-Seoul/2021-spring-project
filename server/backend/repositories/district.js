@@ -1,6 +1,6 @@
 import { sequelize } from "../../database/models/transform";
 
-export const findLowerDistrictsByParentCode = async (parent_code) => {
+const findLowerDistrictsByParentCode = async (parent_code) => {
   const districts = await sequelize.query(
     `SELECT district_code,
     district_name,
@@ -43,7 +43,7 @@ export const findLowerDistrictsByParentCode = async (parent_code) => {
   return districts;
 };
 
-export const findUpperDistrictsByNullParentCode = async () => {
+const findUpperDistrictsByNullParentCode = async () => {
   const districts = await sequelize.query(
     `SELECT district_code,
     district_name,
@@ -89,7 +89,7 @@ export const findUpperDistrictsByNullParentCode = async () => {
   return districts;
 };
 
-export const findLowerDistrictByDistrictCode = async (district_code) => {
+const findLowerDistrictByDistrictCode = async (district_code) => {
   const districts = await sequelize.query(
     `SELECT district_code, 
     district_name,
@@ -133,7 +133,7 @@ export const findLowerDistrictByDistrictCode = async (district_code) => {
   return districts;
 };
 
-export const findUpperDistrictByDistrictCode = async (district_code) => {
+const findUpperDistrictByDistrictCode = async (district_code) => {
   const districts = await sequelize.query(
     `SELECT district_code, 
     district_name,
@@ -179,7 +179,7 @@ export const findUpperDistrictByDistrictCode = async (district_code) => {
   return districts;
 };
 
-export const findLowerDistrictByDistrictName = async (district_name) => {
+const findLowerDistrictByDistrictName = async (district_name) => {
   const districts = await sequelize.query(
     `SELECT district_code, 
     district_name,
@@ -223,7 +223,7 @@ export const findLowerDistrictByDistrictName = async (district_name) => {
   return districts;
 };
 
-export const findUpperDistrictByDistrictName = async (district_name) => {
+const findUpperDistrictByDistrictName = async (district_name) => {
   const district = await sequelize.query(
     `SELECT district_code, 
     district_name,
