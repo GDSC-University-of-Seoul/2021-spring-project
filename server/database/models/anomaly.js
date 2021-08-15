@@ -1,4 +1,4 @@
-import Sequelize from "sequelize";
+import Sequelize from 'sequelize';
 
 /**
  * 이상행동 발생 데이터 관련 테이블
@@ -26,18 +26,18 @@ module.exports = class Anomaly extends Sequelize.Model {
         anomaly_type: {
           type: DataTypes.ENUM({
             values: [
-              "폭행",
-              "싸움",
-              "실신",
-              "절도",
-              "기물파손",
-              "배회",
-              "침입",
-              "투기",
-              "강도",
-              "추행",
-              "납치",
-              "주취행동",
+              '폭행',
+              '싸움',
+              '실신',
+              '절도',
+              '기물파손',
+              '배회',
+              '침입',
+              '투기',
+              '강도',
+              '추행',
+              '납치',
+              '주취행동',
             ],
           }),
           allowNull: false,
@@ -52,12 +52,7 @@ module.exports = class Anomaly extends Sequelize.Model {
         },
         follow_up: {
           type: DataTypes.ENUM({
-            values: [
-              "이상행동감지",
-              "영상확인-일상행동",
-              "영상확인-폭력",
-              "영상확인-실신",
-            ],
+            values: ['이상행동감지', '영상확인-일상행동', '영상확인-폭력', '영상확인-실신'],
           }),
           allowNull: true,
         },
@@ -66,18 +61,18 @@ module.exports = class Anomaly extends Sequelize.Model {
         sequelize,
         timestamps: false,
         paranoid: false,
-        modelName: "Anomaly",
-        tableName: "anomaly",
+        modelName: 'Anomaly',
+        tableName: 'anomaly',
         freezetableName: false,
-        charset: "utf8",
-        collate: "utf8_general_cli",
-      }
+        charset: 'utf8',
+        collate: 'utf8_general_cli',
+      },
     );
   }
   static associate(db) {
     db.Anomaly.belongsTo(db.Video, {
-      foreignKey: "video_id",
-      targetKey: "video_id",
+      foreignKey: 'video_id',
+      targetKey: 'video_id',
     });
   }
 };
