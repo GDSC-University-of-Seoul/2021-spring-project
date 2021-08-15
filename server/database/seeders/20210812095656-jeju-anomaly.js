@@ -49,6 +49,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkDelete('anomaly', null);
+    await queryInterface.bulkDelete('anomaly', { start_time: ['2021-08-12 12:00:00'] });
   },
 };

@@ -56,6 +56,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkDelete('anomaly_log', null);
+    await queryInterface.bulkDelete('anomaly_log', { center_id: ['11110000019', '11110000143'] });
   },
 };

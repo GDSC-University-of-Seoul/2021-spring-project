@@ -38,6 +38,8 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkDelete('video', null);
+    await queryInterface.bulkDelete('video', {
+      record_date: ['2020-04-05', '2019-12-21', '2019-12-20', '2020-09-11', '2021-07-07'],
+    });
   },
 };

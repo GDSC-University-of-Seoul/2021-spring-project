@@ -56,6 +56,9 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkDelete('cctv', null);
+    const op = Sequelize.Op;
+    await queryInterface.bulkDelete('cctv', {
+      cctv_name: { [op.or]: { [op.substring]: '제주', [op.startsWith]: '서귀포' } },
+    });
   },
 };

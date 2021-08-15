@@ -104,6 +104,8 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkDelete('cctv', null);
+    await queryInterface.bulkDelete('cctv', {
+      center_id: ['11110000174', '11110000019', '11110000143'],
+    });
   },
 };
