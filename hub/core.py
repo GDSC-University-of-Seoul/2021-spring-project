@@ -19,8 +19,10 @@ Run python core.py [--config {config yaml file path}]
 
 """
 
+
 class KidsKeeperException(Exception):
     pass
+
 
 class KidsKeeper(object):
     """
@@ -75,7 +77,7 @@ class KidsKeeper(object):
         }
         ## Done MODEL
         print(f"    {path} anomaly score is : {score * 100:.2f} %")
-        
+
         if anomal is True:
             print(f" {path} is anomaly!!!")
             self.aws_client.send_anomaly(data=output)
@@ -86,20 +88,20 @@ class KidsKeeper(object):
         # TEMP CODE
         # Randomize option
         return abs(random.normalvariate(mu=0, sigma=1))
-        
-    
+
     def detect_anomaly(self, score, threshold=0.7):
         if score >= threshold:
             return True
-        return False    
+        return False
 
 
 def init_runner():
     def runner():
         kidskeeper = KidsKeeper()
         kidskeeper.start()
-        
+
     return runner
+
 
 if __name__ == "__main__":
     runner = init_runner()

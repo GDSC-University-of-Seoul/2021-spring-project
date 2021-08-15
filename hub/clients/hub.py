@@ -9,6 +9,7 @@ from utils.files import dirlist
 
 logger = Logger().get_logger()
 
+
 class HubClient:
     """
     Client for Hub
@@ -19,11 +20,11 @@ class HubClient:
         self.config = config
         self.init_dir_params(self.config["path"])
         self.sub_clients = [VideoClient(path) for path in self.subdirs]
-        
+
     def init_dir_params(self, path):
         self.subdirs = dirlist(path)
         self.n_subdir = len(self.subdirs)
-        
+
     def job_lists(self):
         jobs = list()
 
@@ -31,12 +32,12 @@ class HubClient:
             jobs.append((client.run, f"client_{str(id)}"))
 
         return jobs
-        
-    
+
+
 class VideoClient:
     def __init__(self, path):
         self.path = path
-        
+
     async def run(self):
         print(f"  Run Model at {self.path}...")
         await asyncio.sleep(2)
@@ -58,15 +59,14 @@ class VideoClient:
         print(f"    {self.path} anomaly score is : {score * 100:.2f} %")
         await asyncio.sleep(2)
         return (anomal, output)
-    
+
     def scoring_func(self):
         # TEMP CODE
         # Randomize option
         return abs(random.normalvariate(mu=0, sigma=0.2))
-        
-    
+
     def detect_anomaly(self, score, threshold=0.7):
         if score >= threshold:
             return True
-        
-        return False    
+
+        return False

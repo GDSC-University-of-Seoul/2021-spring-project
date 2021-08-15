@@ -11,6 +11,7 @@ import json
 
 THRESHOLD = 0.4
 
+
 class AWSClient:
     """
     Client for AWS backend api server
@@ -55,13 +56,14 @@ class AWSClient:
 
         if flag is True:
             print(f"SEND DATA TO BACKEND {data}")
-            res = requests.post(self.url,
+            res = requests.post(
+                self.url,
                 headers=self.header,
                 data=json.dumps(data),
             )
             return res
         return data
-    
+
     async def run_model(self, dirpath, filepath):
         print(f"  Run Model {filepath} at {dirpath}...")
 
