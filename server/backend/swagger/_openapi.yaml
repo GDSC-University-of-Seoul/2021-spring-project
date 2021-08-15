@@ -7,7 +7,7 @@ info:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
 servers:
-  - description: dev servers
+  - description: localhost
     url: http://localhost:3000/api/
 paths:
   $ref: "./paths/index.yaml"
@@ -16,3 +16,12 @@ tags:
   - name: children care center
   - name: cctv
   - name: anomaly log
+  - name: auth
+components:
+  securitySchemes:
+    bearerAuth: # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - bearerAuth: []

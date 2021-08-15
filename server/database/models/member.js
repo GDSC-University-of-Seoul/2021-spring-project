@@ -20,7 +20,7 @@ module.exports = class Member extends Sequelize.Model {
           primaryKey: true,
         },
         password: {
-          type: DataTypes.STRING(50),
+          type: DataTypes.STRING(100),
           allowNull: false,
         },
         member_name: {

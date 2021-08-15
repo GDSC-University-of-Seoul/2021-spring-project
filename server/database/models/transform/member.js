@@ -162,49 +162,42 @@ module.exports = /*#__PURE__*/ (function (_Sequelize$Model) {
 
     return _super.apply(this, arguments);
   }
-
-  _createClass(Member, null, [
-    {
-      key: 'init',
-      value: function init(sequelize, DataTypes) {
-        return _get(_getPrototypeOf(Member), 'init', this).call(
-          this,
-          {
-            member_id: {
-              type: DataTypes.STRING(50),
-              primaryKey: true,
-            },
-            password: {
-              type: DataTypes.STRING(50),
-              allowNull: false,
-            },
-            member_name: {
-              type: DataTypes.STRING(10),
-              allowNull: false,
-            },
-            member_phone: {
-              type: DataTypes.STRING(12),
-              allowNull: false,
-            },
-            email: {
-              type: DataTypes.STRING(50),
-              allowNull: true,
-            },
-          },
-          {
-            sequelize: sequelize,
-            timestamps: false,
-            paranoid: false,
-            modelName: 'Member',
-            tableName: 'member',
-            freezetableName: false,
-            charset: 'utf8',
-            collate: 'utf8_general_cli',
-          },
-        );
-      },
-    },
-  ]);
-
+  
+  _createClass(Member, null, [{
+    key: "init",
+    value: function init(sequelize, DataTypes) {
+      return _get(_getPrototypeOf(Member), "init", this).call(this, {
+        member_id: {
+          type: DataTypes.STRING(50),
+          primaryKey: true
+        },
+        password: {
+          type: DataTypes.STRING(100),
+          allowNull: false
+        },
+        member_name: {
+          type: DataTypes.STRING(10),
+          allowNull: false
+        },
+        member_phone: {
+          type: DataTypes.STRING(12),
+          allowNull: false
+        },
+        email: {
+          type: DataTypes.STRING(50),
+          allowNull: true
+        }
+      }, {
+        sequelize: sequelize,
+        timestamps: false,
+        paranoid: false,
+        modelName: "Member",
+        tableName: "member",
+        freezetableName: false,
+        charset: "utf8",
+        collate: "utf8_general_cli"
+      });
+    }
+  }]);
   return Member;
 })(_sequelize['default'].Model);
