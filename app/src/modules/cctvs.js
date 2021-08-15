@@ -2,7 +2,7 @@
  * 백엔드 API를 통해 CCTV 데이터 관리
  */
 
-import { dateFormat, macApiFormat, macFormat } from "../utils/format/format";
+import { dateFormat, macApiFormat, macFormat } from "../utils/format";
 
 import axios from "axios";
 

@@ -1,3 +1,7 @@
+"""
+dump.py
+
+"""
 # cctv
 # cctv_id cctv 번호(int)    ::filename
 # area_id 설치 위치(int)
@@ -19,14 +23,7 @@
 # video_id 관련 동영상 파일(int)
 
 import json
-import asyncio
-import requests
 from datetime import datetime
-from api import run_process
-from apscheduler.jobstores.base import JobLookupError
-from apscheduler.schedulers.background import BlockingScheduler
-
-TOTAL_DIRECTORY = 4
 
 
 """
@@ -65,61 +62,3 @@ def dump_cctv_data(area_id, install_date, quality):
         }
     )
     return data
-
-
-class Scheduler:
-    def __init__(self):
-        self.max_instance = str(TOTAL_DIRECTORY * 2)
-        self.sched = BlockingScheduler(
-            {"apscheduler.job_defaults.max_instances": self.max_instance}
-        )
-        self.directory = "data/"
-
-    def __del__(self):
-        self.sched.shutdown()
-
-    def start_scheduler(self):
-        self.sched.start()
-
-    def kill_scheduler(self, job_id):
-        try:
-            self.sched.remove_job(job_id)
-        except JobLookupError as e:
-            print(f"fail to stop Scheduler: {e}")
-            return
-
-    def add_scheduler(self, type):
-        print(f"{type} Scheduler Start")
-        if type == "interval":
-            self.sched.add_job(self._request_job, type, seconds=10, id="hub_interval")
-        if type == "cron":
-            self.sched.add_job(self._request_job, type, hour="0", id="hub-cron")
-
-    def _request_job(self):
-        asyncio.run(run_process())
-
-    def request_job(self):
-        self.url = "http://localhost:3000/api/anomalies/"
-        res = requests.post(
-            self.url,
-            headers={"Content-Type": "application/json; charset=utf-8"},
-            data=self.data,
-        )
-
-    def get_data(self, data):
-        self.data = data
-        return
-
-
-async def main_async():
-    try:
-        sched = Scheduler()
-        sched.add_scheduler("interval")
-        sched.start_scheduler()
-    except:
-        print("Abort")
-        await asyncio.wait(30)
-
-
-if __name__ == "__main__":
-    asyncio.run(main_async())

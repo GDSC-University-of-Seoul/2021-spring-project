@@ -1,4 +1,4 @@
-import { deleteCookie, getCookie, setCookie } from "../utils/cookie/cookie";
+import { deleteCookie, getCookie, setCookie } from "../utils/cookie";
 
 import axios from "axios";
 
@@ -15,6 +15,7 @@ const LOGIN_ERROR = "login/LOGIN_ERROR";
 export const loginSubmit = (userId, userPw) => async (dispatch) => {
   try {
     // Todo : 로그인 서버 주소 지정
+
     const loginInfo = await axios.post(`${process.env.REACT_APP_API_SERVER}/`, {
       userId,
       userPw,

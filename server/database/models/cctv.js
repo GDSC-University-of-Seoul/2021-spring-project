@@ -1,4 +1,4 @@
-import Sequelize from "sequelize";
+import Sequelize from 'sequelize';
 
 /**
  * 설치된 cctv 관련 테이블
@@ -22,8 +22,8 @@ module.exports = class CCTV extends Sequelize.Model {
     return super.init(
       {
         cctv_id: {
-          type: DataTypes.INTEGER,
-          autoIncrement: true,
+          type: DataTypes.UUID,
+          defaultValue: DataTypes.UUIDV4,
           primaryKey: true,
         },
         cctv_name: {
@@ -37,7 +37,7 @@ module.exports = class CCTV extends Sequelize.Model {
         },
         quality: {
           type: DataTypes.ENUM({
-            values: ["SD", "HD", "FHD", "QHD", "UHD"],
+            values: ['SD', 'HD', 'FHD', 'QHD', 'UHD'],
           }),
           allowNull: false,
         },
@@ -54,22 +54,22 @@ module.exports = class CCTV extends Sequelize.Model {
         sequelize,
         timestamps: false,
         paranoid: false,
-        modelName: "CCTV",
-        tableName: "cctv",
+        modelName: 'CCTV',
+        tableName: 'cctv',
         freezeTableName: false,
-        charset: "utf8",
-        collate: "utf8_general_cli",
-      }
+        charset: 'utf8',
+        collate: 'utf8_general_cli',
+      },
     );
   }
   static associate(db) {
     db.CCTV.belongsTo(db.ChildCareCenter, {
-      foreignKey: "center_id",
-      targetKey: "center_id",
+      foreignKey: 'center_id',
+      targetKey: 'center_id',
     });
     db.CCTV.hasMany(db.Video, {
-      foreignKey: "cctv_id",
-      sourceKey: "cctv_id",
+      foreignKey: 'cctv_id',
+      sourceKey: 'cctv_id',
     });
   }
 };

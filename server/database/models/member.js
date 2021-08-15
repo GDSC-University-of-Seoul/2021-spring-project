@@ -1,4 +1,4 @@
-import Sequelize from "sequelize";
+import Sequelize from 'sequelize';
 
 /*
  * 로그인 관련 테이블
@@ -40,12 +40,12 @@ module.exports = class Member extends Sequelize.Model {
         sequelize,
         timestamps: false,
         paranoid: false,
-        modelName: "Member",
-        tableName: "member",
+        modelName: 'Member',
+        tableName: 'member',
         freezetableName: false,
-        charset: "utf8",
-        collate: "utf8_general_cli",
-      }
+        charset: 'utf8',
+        collate: 'utf8_general_cli',
+      },
     );
   }
 };

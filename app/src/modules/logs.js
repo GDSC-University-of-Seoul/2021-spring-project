@@ -1,4 +1,4 @@
-import { dateUTCFormat, timeUTCFormat } from "../utils/format/format";
+import { dateUTCFormat, timeUTCFormat } from "../utils/format";
 
 import axios from "axios";
 

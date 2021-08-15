@@ -1,23 +1,53 @@
+"""
+config.py
+
+"""
 import yaml
 import argparse
 
 
-def get_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--data",
-        type=str,
-        default="config.yml",
-        help="please input the config yaml path",
-    )
+class Config:
+    """
+    Configuration setting
+    """
 
-    return parser.parse_args()
+    def __init__(self):
+        # Configuration setting
+        args = self.parse_arguments()
+        configs = self.load_config(args.config)
 
+        # Parameter
+        self.data = configs["data"]
+        self.client = configs["client"]
+        self.scheduler = configs["scheduler"]
 
-def get_configs(opt=None):
-    opt = opt if opt else get_args()
+    def parse_arguments(self):
+        """
+        Get configuration environment for program
 
-    with open(opt.data) as f:
-        config = yaml.safe_load(f)
+        params:
+            --config : config.yaml path option
+        """
+        parser = argparse.ArgumentParser()
+        parser.add_argument(
+            "--config",
+            type=str,
+            default="config.yml",
+            help="please input the config yaml path",
+        )
 
-    return config
+        return parser.parse_args()
+
+    def load_config(self, config_path):
+        """
+        Load yaml file settings
+
+        params:
+            opt    console/default using config option
+
+        """
+
+        with open(config_path) as f:
+            config = yaml.safe_load(f)
+
+        return config
