@@ -165,62 +165,55 @@ module.exports = /*#__PURE__*/ (function (_Sequelize$Model) {
     return _super.apply(this, arguments);
   }
 
-  _createClass(AnomalyLog, null, [
-    {
-      key: 'init',
-      value: function init(sequelize, DataTypes) {
-        return _get(_getPrototypeOf(AnomalyLog), 'init', this).call(
-          this,
-          {
-            anomaly_log_id: {
-              type: DataTypes.INTEGER,
-              autoIncrement: true,
-              primaryKey: true,
-            },
-            center_name: {
-              type: DataTypes.STRING(150),
-              allowNull: false,
-            },
-            address: {
-              type: DataTypes.STRING(150),
-              allowNull: false,
-            },
-            record_date: {
-              type: DataTypes.DATE,
-              allowNull: false,
-            },
-            anomaly_type: {
-              type: DataTypes.STRING(20),
-              allowNull: false,
-            },
-            center_id: {
-              type: DataTypes.STRING(150),
-              allowNull: false,
-            },
-          },
-          {
-            sequelize: sequelize,
-            timestamps: false,
-            paranoid: false,
-            modelName: 'AnomalyLog',
-            tableName: 'anomaly_log',
-            freezeTableName: false,
-            charset: 'utf8',
-            collate: 'utf8_general_cli',
-          },
-        );
-      },
-    },
-    {
-      key: 'associate',
-      value: function associate(db) {
-        db.AnomalyLog.belongsTo(db.ChildCareCenter, {
-          foreignKey: 'center_id',
-          targetKey: 'center_id',
-        });
-      },
-    },
-  ]);
+  _createClass(AnomalyLog, null, [{
+    key: "init",
+    value: function init(sequelize, DataTypes) {
+      return _get(_getPrototypeOf(AnomalyLog), "init", this).call(this, {
+        anomaly_log_id: {
+          type: DataTypes.INTEGER,
+          autoIncrement: true,
+          primaryKey: true
+        },
+        center_name: {
+          type: DataTypes.STRING(150),
+          allowNull: false
+        },
+        address: {
+          type: DataTypes.STRING(150),
+          allowNull: false
+        },
+        record_date: {
+          type: DataTypes.DATE,
+          allowNull: false
+        },
+        anomaly_type: {
+          type: DataTypes.STRING(20),
+          allowNull: false
+        },
+        center_id: {
+          type: DataTypes.STRING(150),
+          allowNull: false
+        }
+      }, {
+        sequelize: sequelize,
+        timestamps: false,
+        paranoid: false,
+        modelName: "AnomalyLog",
+        tableName: "anomaly_log",
+        freezeTableName: false,
+        charset: "utf8",
+        collate: "utf8_general_cli"
+      });
+    }
+  }, {
+    key: "associate",
+    value: function associate(db) {
+      db.AnomalyLog.belongsTo(db.ChildCareCenter, {
+        foreignKey: "center_id",
+        targetKey: "center_id"
+      });
+    }
+  }]);
 
   return AnomalyLog;
 })(_sequelize['default'].Model);

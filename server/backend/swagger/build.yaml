@@ -7,7 +7,7 @@ info:
     name: Apache 2.0
     url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
 servers:
-  - description: dev servers
+  - description: localhost
     url: 'http://localhost:3000/api/'
 paths:
   /districts:
@@ -473,8 +473,113 @@ paths:
                     format: date
                   follow_up:
                     type: string
+  /auth/register:
+    post:
+      tags:
+        - auth
+      summary: login with member
+      description: null
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                member_id:
+                  type: string
+                password:
+                  type: string
+                member_name:
+                  type: string
+                member_phone:
+                  type: string
+                email:
+                  type: string
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /auth/login:
+    post:
+      tags:
+        - auth
+      summary: login
+      description: null
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                member_id:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  member_id:
+                    type: string
+                  member_name:
+                    type: string
+                  member_phone:
+                    type: string
+                  email:
+                    type: string
+  /auth/member:
+    put:
+      tags:
+        - auth
+      summary: update member
+      description: null
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+                member_name:
+                  type: string
+                member_phone:
+                  type: string
+                email:
+                  type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
 tags:
   - name: district
   - name: children care center
   - name: cctv
   - name: anomaly log
+  - name: auth
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - bearerAuth: []
