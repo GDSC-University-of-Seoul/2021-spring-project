@@ -1,11 +1,18 @@
 import { FaBell, FaUser } from "react-icons/fa";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import { Link } from "react-router-dom";
 import LogoutModal from "./LogoutModal";
 import UpdateLoginForm from "./UpdateLoginForm";
+import { loadSettingsState } from "../modules/settings";
 import useLocalStorage from "../hooks/useLocalStorage";
-import { useSelector } from "react-redux";
 
 /**
  * 홈페이지 헤더부 구성
@@ -108,7 +115,6 @@ function Header({ history }) {
       let target = e.target.closest("li");
 
       if (!target.dataset.id) return;
-
       const readId = target.dataset.id;
 
       // 이미 존재하는 경우 무시 => 다중 입력 방지
@@ -118,6 +124,24 @@ function Header({ history }) {
     [readAlarmsId, setReadAlarmsId]
   );
 
+  // 알림 메세지, 알림음 설정으로 헤더 메뉴 설정
+  const { settings } = useSelector((state) => state.settingsReducer);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(loadSettingsState());
+  }, [dispatch]);
+
+  // 신규 로그 발생 시 알람음 재생 (알림음 재생 설정 시에만)
+  const audioRef = useRef();
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.currentTime = 0;
+      audioRef.current.play();
+    }
+    return () => newLogsData;
+  }, [newLogsData]);
+
   return (
     <>
       <header>
@@ -125,10 +149,15 @@ function Header({ history }) {
         <div className="info">
           <div
             className={`newLogs-info${
-              unreadLogs.length !== 0 ? " logs-unread" : ""
+              unreadLogs.length !== 0 && settings.alarmMsgOn
+                ? " logs-unread"
+                : ""
             }`}
             onClick={(e) => e.stopPropagation()}
           >
+            {unreadLogs.length !== 0 && settings.alarmSoundOn && (
+              <audio src="src/assets/sound/alarm.mp3" autoPlay ref={audioRef} />
+            )}
             <FaBell
               className="header-icon"
               onClick={() =>
@@ -143,7 +172,7 @@ function Header({ history }) {
                   className="arrowbox-menu alarm-menu"
                   onClick={clickNewLogAlarm}
                 >
-                  {unreadLogs.length === 0 ? (
+                  {unreadLogs.length === 0 || !settings.alarmMsgOn ? (
                     <li>새로운 로그 정보가 없습니다.</li>
                   ) : (
                     unreadLogs.map((data) => (
