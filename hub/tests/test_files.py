@@ -15,7 +15,9 @@ def test_dirlist_return():  # 폴더 목록이 맞는지 확인
     ]
 
     # 실행시켰을 때 결과
-    path = "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata"
+    path = (
+        "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata"
+    )
     list = dirlist(path)
 
     # 결과 비교
@@ -30,7 +32,9 @@ def test_checkdir_return_true():  # 폴더 존재시 True 반환 확인
     __check = True  # 폴더가 존재
 
     # 실행시켰을 때 결과
-    path = "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata"
+    path = (
+        "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata"
+    )
     check = check_dir(path, True)
 
     # 결과 비교
