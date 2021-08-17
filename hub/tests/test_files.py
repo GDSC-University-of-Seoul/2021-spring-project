@@ -10,14 +10,12 @@ from utils.files import *
 def test_dirlist_return():  # 폴더 목록이 맞는지 확인
     # 정상적으로 작동해야 하는 결과
     __list = [
-        "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\models\\data\\cctv1",
-        "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\models\\data\\cctv2",
-        "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\models\\data\\cctv3",
-        "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\models\\data\\cctv4",
+        "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata\\testdata2",
+        "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata\\testdata3",
     ]
 
     # 실행시켰을 때 결과
-    path = "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\models\\data"
+    path = "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata"
     list = dirlist(path)
 
     # 결과 비교
@@ -32,7 +30,7 @@ def test_checkdir_return_true():  # 폴더 존재시 True 반환 확인
     __check = True  # 폴더가 존재
 
     # 실행시켰을 때 결과
-    path = "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\models\\data"
+    path = "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata"
     check = check_dir(path, True)
 
     # 결과 비교
@@ -59,10 +57,10 @@ def test_checkdir_return_false():  # 폴더 부재시 false or 경로 생성
 ###
 def test_checkfile_search_path():  # 경로가 있을 때 존재하는 파일 찾기
     # 정상적으로 작동해야 하는 결과
-    __file = "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\models\\data\\cctv1\\cctv1-2021-07-17.mp4"
+    __file = "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata\\testmp4.mp4"
 
     # 실행시켰을 때 결과
-    path = "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\models\\data\\cctv1\\cctv1-2021-07-17.mp4"
+    path = "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata\\testmp4.mp4"
     file = check_file(path)
 
     # 결과 비교
@@ -128,6 +126,7 @@ def test_searchfile_all():  # 폴더 안 모든 파일 리스트 출력(하위 �
         "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata\\test2mp4.mp4",
         "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata\\testdata2",
         "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata\\testdata2\\test2mp4.mp4",
+        "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata\\testdata3",
         "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata\\testmp4.mp4",
         "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata\\testtxt.txt",
     ]
@@ -167,6 +166,7 @@ def test_searchfile_parentfolder():  # 폴더 안 모든 파일 리스트 출력
     __files = [
         "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata\\test2mp4.mp4",
         "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata\\testdata2",
+        "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata\\testdata3",
         "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata\\testmp4.mp4",
         "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata\\testtxt.txt",
     ]
