@@ -68,35 +68,6 @@ paths:
                       type: string
                     count:
                       type: string
-  '/districts/{district_name}':
-    get:
-      tags:
-        - district
-      summary: get district by district name
-      description: null
-      parameters:
-        - name: district_name
-          in: path
-          required: true
-          description: 행정구역 이름
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    district_code:
-                      type: string
-                    district_name:
-                      type: string
-                    parent_code:
-                      type: string
-                    count:
-                      type: string
   /centers:
     get:
       tags:
@@ -106,12 +77,8 @@ paths:
       parameters:
         - name: district_code
           in: query
-          required: false
+          required: true
           description: 행정구역 코드
-        - name: district_name
-          in: query
-          required: false
-          description: 행정구역 이름
       responses:
         '200':
           description: OK
@@ -159,51 +126,6 @@ paths:
           in: path
           required: true
           description: 어린이집 ID
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  center_id:
-                    type: integer
-                  center_name:
-                    type: string
-                  operation_type:
-                    type: string
-                  operation_status:
-                    type: string
-                  zipcode:
-                    type: string
-                  address:
-                    type: string
-                  center_phone:
-                    type: string
-                  fax:
-                    type: string
-                  web_page:
-                    type: string
-                  latitude:
-                    type: string
-                  longtitude:
-                    type: string
-                  district_code:
-                    type: string
-                  district_name:
-                    type: string
-  '/centers/{center_name}':
-    get:
-      tags:
-        - children care center
-      summary: get center by name
-      description: null
-      parameters:
-        - name: center_name
-          in: path
-          required: true
-          description: 어린이집 이름
       responses:
         '200':
           description: OK
