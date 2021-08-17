@@ -1,9 +1,10 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import LogoutModal from "../components/LogoutModal";
 import ToggleBtn from "../components/ToggleBtn";
 import UpdateLoginForm from "../components/UpdateLoginForm";
-import { useSelector } from "react-redux";
+import { setSettingsState } from "../modules/settings";
 
 /**
  * `/settings` 페이지 렌더링
@@ -17,6 +18,9 @@ function Settings({ history }) {
   const [isChanged, setIsChanged] = useState(false); // 사용자 정보 변경창 열기
   const [isLogOut, setIsLogOut] = useState(false); // 로그아웃 창 열기
 
+  const { settings } = useSelector((state) => state.settingsReducer);
+  const dispatch = useDispatch();
+
   return (
     <>
       <section className="section settings">
@@ -25,11 +29,31 @@ function Settings({ history }) {
           <hr />
           <div className="message-control">
             <span className="label">알림 메세지 설정</span>
-            <ToggleBtn />
+            <ToggleBtn
+              state={settings.alarmMsgOn}
+              trigger={() =>
+                dispatch(
+                  setSettingsState({
+                    ...settings,
+                    alarmMsgOn: !settings.alarmMsgOn,
+                  })
+                )
+              }
+            />
           </div>
           <div className="alarm-control">
             <span className="label">경고음 설정</span>
-            <ToggleBtn />
+            <ToggleBtn
+              state={settings.alarmSoundOn}
+              trigger={() =>
+                dispatch(
+                  setSettingsState({
+                    ...settings,
+                    alarmSoundOn: !settings.alarmSoundOn,
+                  })
+                )
+              }
+            />
           </div>
         </div>
         <div className="container user-section">
