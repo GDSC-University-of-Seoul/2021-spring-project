@@ -66,19 +66,20 @@ def test_checkfile_search_path():  # 경로가 있을 때 존재하는 파일 �
     __file = "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\models\\data\\cctv1\\cctv1-2021-07-17.mp4"
 
     # 실행시켰을 때 결과
-    file = check_file(
-        "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\models\\data\\cctv1\\cctv1-2021-07-17.mp4"
-    )
+    path = "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\models\\data\\cctv1\\cctv1-2021-07-17.mp4"
+    file = check_file(path)
 
     # 결과 비교
     assert __file == file, f"Couldn't recognize file {__file}"
 
+
 def test_checkfile_search_name():  # 파일명이 있을 때 소속 폴더 내에서 찾기
     # 정상적으로 작동해야 하는 결과
     __file = ".\\testdata\\testmp4.mp4"
-    
+
     # 실행시켰을 때 결과
-    file = check_file("testmp4.mp4")
+    name = "testmp4.mp4"
+    file = check_file(name)
 
     # 결과 비교
     assert __file == file, f"Couldn't search file name {file}"
@@ -87,8 +88,16 @@ def test_checkfile_search_name():  # 파일명이 있을 때 소속 폴더 내�
 ###
 # test search_file
 ###
+"""
 def test_searchfile_one():  # 파일이 하나만 있을 때
-    a=1
+    # 정상적으로 작동해야 하는 결과
+    __files = ".\\"
+
+    # 실행시켰을 때 결과
+    # 결과 비교
 
 def test_searchfile_list():  # 파일이 여러 개 있을 때
-    b=1
+    # 정상적으로 작동해야 하는 결과
+    # 실행시켰을 때 결과
+    # 결과 비교
+"""
