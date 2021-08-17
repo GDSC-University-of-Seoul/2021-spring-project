@@ -89,7 +89,9 @@ def test_searchfile_one():  # 파일이 하나만 있을 때(파일명 지정)
     __files = "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata\\testmp4.mp4"
 
     # 실행시켰을 때 결과
-    directory = "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata"
+    directory = (
+        "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata"
+    )
     filename = "testmp4.mp4"
     recursive = True
     extension = None
@@ -107,7 +109,9 @@ def test_searchfile_list():  # 파일이 여러 개 있을 때(파일명 지정)
     ]
 
     # 실행시켰을 때 결과
-    directory = "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata"
+    directory = (
+        "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata"
+    )
     filename = "test2mp4.mp4"
     recursive = True
     extension = None
