@@ -247,7 +247,7 @@ paths:
       parameters:
         - name: center_id
           in: query
-          required: false
+          required: true
           description: 어린이집 id
       responses:
         '200':

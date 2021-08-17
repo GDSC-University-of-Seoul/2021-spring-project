@@ -1,10 +1,10 @@
-import CCTVService from "../services/cctv";
+import CCTVRepository from "../repositories/cctv";
 
 const create = async (req, res, next) => {
   const { center_id, cctv_name, cctv_mac, install_date, quality } = req.body;
 
   try {
-    const cctv = await CCTVService.create(
+    const cctv = await CCTVRepository.create(
       center_id,
       cctv_name,
       cctv_mac,
@@ -24,7 +24,7 @@ const create = async (req, res, next) => {
 const findByCenterId = async (req, res, next) => {
   try {
     const { center_id } = req.query;
-    const cctv = await CCTVService.findByCenterId(center_id);
+    const cctv = await CCTVRepository.findByCenterId(center_id);
     res.json(cctv);
   } catch (err) {
     console.error(err);
@@ -35,7 +35,7 @@ const findByCenterId = async (req, res, next) => {
 const updateByCctvMac = async (req, res, next) => {
   try {
     const { cctv_name, install_date, uninstall_date, quality } = req.body;
-    const cctv = CCTVService.updateByCctvMac(
+    const cctv = CCTVRepository.updateByCctvMac(
       req.params.cctv_mac,
       cctv_name,
       install_date,
@@ -51,7 +51,7 @@ const updateByCctvMac = async (req, res, next) => {
 
 const deleteByCctvMac = async (req, res, next) => {
   try {
-    CCTVService.deleteByCctvMac(req.params.cctv_mac);
+    CCTVRepository.deleteByCctvMac(req.params.cctv_mac);
     res.status(204).send();
   } catch (err) {
     console.error(err);

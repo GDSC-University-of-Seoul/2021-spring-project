@@ -1,16 +1,15 @@
-import districtService from "../services/district";
-import upperDistricts from "../utils/upperDistrict";
+import districtRepository from "../repositories/district";
 
-export const findByParentCode = async (req, res, next) => {
+export const findDistricts = async (req, res, next) => {
   try {
     const { parent_code } = req.query;
     if (parent_code) {
-      const districts = await districtService.findLowerDistrictsByParentCode(
+      const districts = await districtRepository.findLowerDistricts(
         parent_code
       );
       res.json(districts);
     } else {
-      const districts = await districtService.findUpperDistrictsByNullParentCode();
+      const districts = await districtRepository.findUpperDistricts();
       res.json(districts);
     }
   } catch (err) {
@@ -19,17 +18,14 @@ export const findByParentCode = async (req, res, next) => {
   }
 };
 
-export const findByDistrictCode = async (req, res, next) => {
+export const findDistrictByCode = async (req, res, next) => {
   try {
-    if (parseInt(req.params.district_code.slice(2, 4)) === 0) {
-      const district = await districtService.findUpperDistrictByDistrictCode(
-        req.params.district_code
-      );
+    let code = req.params.district_code;
+    if (parseInt(code.slice(2, 4)) === 0) {
+      const district = await districtRepository.findUpperDistrict(code);
       res.json(district);
     } else {
-      const district = await districtService.findLowerDistrictByDistrictCode(
-        req.params.district_code
-      );
+      const district = await districtRepository.findLowerDistrict(code);
       res.json(district);
     }
   } catch (err) {
@@ -38,23 +34,4 @@ export const findByDistrictCode = async (req, res, next) => {
   }
 };
 
-export const findByDistrictName = async (req, res, next) => {
-  try {
-    if (upperDistricts.includes(req.params.district_name)) {
-      const district = await districtService.findUpperDistrictByDistrictName(
-        req.params.district_name
-      );
-      res.json(district);
-    } else {
-      const district = await districtService.findLowerDistrictByDistrictName(
-        req.params.district_name
-      );
-      res.json(district);
-    }
-  } catch (err) {
-    console.error(err);
-    next(err);
-  }
-};
-
-export default { findByParentCode, findByDistrictCode, findByDistrictName };
+export default { findDistricts, findDistrictByCode };
