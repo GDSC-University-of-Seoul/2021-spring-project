@@ -50,8 +50,12 @@ def test_return_checkdir_false():  # 폴더 부재시 false or 경로 생성
     check_dir(path, True)
 
     # 결과 비교
-    assert check == __none_making, f"wrong recognize folder on {path}"  # 파일이 없다는 걸 인지했는지 확인
-    assert __making == os.path.isdir(path), f"Couldn't make folder on {path}"  # 폴더를 제대로 생성했는지 확인
+    assert (
+        check == __none_making
+    ), f"wrong recognize folder on {path}"  # 파일이 없다는 걸 인지했는지 확인
+    assert __making == os.path.isdir(
+        path
+    ), f"Couldn't make folder on {path}"  # 폴더를 제대로 생성했는지 확인
 
 
 ###
@@ -59,13 +63,16 @@ def test_return_checkdir_false():  # 폴더 부재시 false or 경로 생성
 ###
 def test_search_checkfile_mp4():  # 존재하는 파일 찾기
     # 정상적으로 작동해야 하는 결과
-    __file="C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\models\\data\\cctv1\\cctv1-2021-07-17.mp4"
+    __file = "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\models\\data\\cctv1\\cctv1-2021-07-17.mp4"
 
     # 실행시켰을 때 결과
-    file=check_file("C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\models\\data\\cctv1\\cctv1-2021-07-17.mp4")
+    file = check_file(
+        "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\models\\data\\cctv1\\cctv1-2021-07-17.mp4"
+    )
 
     # 결과 비교
     assert __file == file, f"Couldn't recognize file {__file}"
 
-file=check_file("cctv1.mp4")
+
+file = check_file("cctv1.mp4")
 print(file)
