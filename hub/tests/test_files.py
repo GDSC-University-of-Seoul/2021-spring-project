@@ -50,8 +50,12 @@ def test_checkdir_return_false():  # 폴더 부재시 false or 경로 생성
     check_dir(path, True)
 
     # 결과 비교
-    assert check == __none_making, f"wrong recognize folder on {path}"  # 파일이 없다는 걸 인지했는지 확인
-    assert __making == os.path.isdir(path), f"Couldn't make folder on {path}"  # 폴더를 제대로 생성했는지 확인
+    assert (
+        check == __none_making
+    ), f"wrong recognize folder on {path}"  # 파일이 없다는 걸 인지했는지 확인
+    assert __making == os.path.isdir(
+        path
+    ), f"Couldn't make folder on {path}"  # 폴더를 제대로 생성했는지 확인
 
 
 ###
@@ -118,7 +122,9 @@ def test_searchfile_list():  # 파일이 여러 개 있을 때(파일명 지정)
     files = search_file(directory, filename, recursive, extension)
 
     # 결과 비교
-    assert __files == files, f"Couldn't read all file list about {filename} on {directory}"
+    assert (
+        __files == files
+    ), f"Couldn't read all file list about {filename} on {directory}"
 
 
 def test_searchfile_all():  # 폴더 안 모든 파일 리스트 출력(하위 폴더 포함)
@@ -133,14 +139,18 @@ def test_searchfile_all():  # 폴더 안 모든 파일 리스트 출력(하위 �
     ]
 
     # 실행시켰을 때 결과
-    directory = "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata"
+    directory = (
+        "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata"
+    )
     filename = None
     recursive = True
     extension = None
     files = search_file(directory, filename, recursive, extension)
 
     # 결과 비교
-    assert __files == files, f"Couldn't read all file list on {directory} (include subfolders)"
+    assert (
+        __files == files
+    ), f"Couldn't read all file list on {directory} (include subfolders)"
 
 
 def test_searchfile_mp4():  # 폴더 안 모든 mp4 파일 리스트 출력(하위 폴더 포함)
@@ -152,7 +162,9 @@ def test_searchfile_mp4():  # 폴더 안 모든 mp4 파일 리스트 출력(하�
     ]
 
     # 실행시켰을 때 결과
-    directory = "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata"
+    directory = (
+        "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata"
+    )
     filename = None
     recursive = True
     extension = "mp4"
@@ -171,7 +183,9 @@ def test_searchfile_parentfolder():  # 폴더 안 모든 파일 리스트 출력
         "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata\\testtxt.txt",
     ]
     # 실행시켰을 때 결과
-    directory = "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata"
+    directory = (
+        "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata"
+    )
     filename = None
     recursive = False
     extension = None
@@ -179,4 +193,3 @@ def test_searchfile_parentfolder():  # 폴더 안 모든 파일 리스트 출력
 
     # 결과 비교
     assert __files == files, f"Couldn't read all file list on {directory}"
-
