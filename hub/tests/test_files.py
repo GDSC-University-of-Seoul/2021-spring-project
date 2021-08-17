@@ -73,10 +73,11 @@ def test_search_checkfile_path():  # 경로가 있을 때 존재하는 파일 �
     # 결과 비교
     assert __file == file, f"Couldn't recognize file {__file}"
 
+
 def test_search_checkfile_name():  # 파일명이 있을 때 소속 폴더 내에서 찾기
     # 정상적으로 작동해야 하는 결과
     __file = ".\\testdata\\testmp4.mp4"
-    
+
     # 실행시켰을 때 결과
     file = check_file("testmp4.mp4")
 
