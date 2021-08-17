@@ -61,7 +61,7 @@ def test_return_checkdir_false():  # 폴더 부재시 false or 경로 생성
 ###
 # test check_file
 ###
-def test_search_checkfile_mp4():  # 존재하는 파일 찾기
+def test_search_checkfile_path():  # 경로가 있을 때 존재하는 파일 찾기
     # 정상적으로 작동해야 하는 결과
     __file = "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\models\\data\\cctv1\\cctv1-2021-07-17.mp4"
 
@@ -73,6 +73,12 @@ def test_search_checkfile_mp4():  # 존재하는 파일 찾기
     # 결과 비교
     assert __file == file, f"Couldn't recognize file {__file}"
 
+def test_search_checkfile_name():  # 파일명이 있을 때 소속 폴더 내에서 찾기
+    # 정상적으로 작동해야 하는 결과
+    __file = ".\\testdata\\testmp4.mp4"
+    
+    # 실행시켰을 때 결과
+    file = check_file("testmp4.mp4")
 
-file = check_file("cctv1.mp4")
-print(file)
+    # 결과 비교
+    assert __file == file, f"Couldn't search file name {file}"
