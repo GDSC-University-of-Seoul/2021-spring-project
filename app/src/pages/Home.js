@@ -54,10 +54,10 @@ function Home() {
       let { assualt_count, fight_count, swoon_count, anomaly_count } = district;
 
       total = {
-        assualt: assualt + assualt_count,
-        fight: fight + fight_count,
-        swoon: swoon + swoon_count,
-        anomaly: anomaly + anomaly_count,
+        assualt: assualt + parseInt(assualt_count),
+        fight: fight + parseInt(fight_count),
+        swoon: swoon + parseInt(swoon_count),
+        anomaly: anomaly + parseInt(anomaly_count),
       };
     });
     setAnomalyCnt(total);
