@@ -37,8 +37,14 @@ paths:
                       type: string
                     parent_code:
                       type: string
-                    count:
-                      type: string
+                    assualt_count:
+                      type: integer
+                    fight_count:
+                      type: integer
+                    swoon_count:
+                      type: integer
+                    anomaly_count:
+                      type: integer
   '/districts/{district_code}':
     get:
       tags:
@@ -66,8 +72,14 @@ paths:
                       type: string
                     parent_code:
                       type: string
-                    count:
-                      type: string
+                    assualt_count:
+                      type: integer
+                    fight_count:
+                      type: integer
+                    swoon_count:
+                      type: integer
+                    anomaly_count:
+                      type: integer
   /centers:
     get:
       tags:
@@ -115,6 +127,14 @@ paths:
                       type: string
                     district_name:
                       type: string
+                    assault_count:
+                      type: integer
+                    fight_count:
+                      type: integer
+                    swoon_count:
+                      type: integer
+                    anomaly_count:
+                      type: integer
   '/centers/{center_id}':
     get:
       tags:
@@ -160,6 +180,14 @@ paths:
                     type: string
                   district_name:
                     type: string
+                  assault_count:
+                    type: integer
+                  fight_count:
+                    type: integer
+                  swoon_count:
+                    type: integer
+                  anomaly_count:
+                    type: integer
   /cctvs:
     get:
       tags:
