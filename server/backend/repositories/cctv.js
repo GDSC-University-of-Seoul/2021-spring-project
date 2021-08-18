@@ -5,41 +5,36 @@ import {
 } from "../../database/models/transform";
 
 const create = async (centerId, cctvName, cctvMac, installDate, quality) => {
-  try {
-    const cctv = await CCTV.create({
-      center_id: centerId,
-      cctv_name: cctvName,
-      cctv_mac: cctvMac,
-      install_date: installDate,
-      quality: quality,
-    });
-    return cctv;
-  } catch (err) {
-    console.error(err);
-  }
+  const cctv = await CCTV.create({
+    center_id: centerId,
+    cctv_name: cctvName,
+    cctv_mac: cctvMac,
+    install_date: installDate,
+    quality: quality,
+  });
+  return cctv;
 };
 
 const findOneByMacAddress = async (cctvMac) => {
-  try {
-    const cctv = await CCTV.findOne({
-      where: {
-        cctv_mac: cctvMac,
-      },
-    });
-    return cctv;
-  } catch (err) {
-    console.error(err);
-  }
+  const cctv = await CCTV.findOne({
+    where: {
+      cctv_mac: cctvMac,
+    },
+  });
+  return cctv;
 };
 
 const findByCenterId = async (centerId) => {
+  let filters = {};
+  if (centerId) {
+    filters.center_id = centerId;
+  }
+
   const cctv = await CCTV.findAll({
     include: {
       model: ChildCareCenter,
       attributes: [],
-      where: {
-        center_id: centerId,
-      },
+      where: filters,
     },
     attributes: [
       "cctv_id",
@@ -79,16 +74,11 @@ const updateByCctvMac = async (
 };
 
 const deleteByCctvMac = async (cctvMac) => {
-  try {
-    await CCTV.destroy({
-      where: {
-        cctv_mac: cctvMac,
-      },
-    });
-  } catch (err) {
-    console.error(err);
-    next(err);
-  }
+  await CCTV.destroy({
+    where: {
+      cctv_mac: cctvMac,
+    },
+  });
 };
 
 export default {

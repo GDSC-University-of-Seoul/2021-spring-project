@@ -13,7 +13,6 @@ export const findDistricts = async (req, res, next) => {
       res.json(districts);
     }
   } catch (err) {
-    console.error(err);
     next(err);
   }
 };
@@ -29,7 +28,6 @@ export const findDistrictByCode = async (req, res, next) => {
       res.json(district);
     }
   } catch (err) {
-    console.error(err);
     next(err);
   }
 };

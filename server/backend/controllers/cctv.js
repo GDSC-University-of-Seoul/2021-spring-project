@@ -1,3 +1,5 @@
+import { reset } from "nodemon";
+import { Sequelize } from "../../database/models/transform";
 import CCTVRepository from "../repositories/cctv";
 
 const create = async (req, res, next) => {
@@ -14,10 +16,10 @@ const create = async (req, res, next) => {
     res.status(201).json(cctv);
   } catch (err) {
     if (err instanceof Sequelize.UniqueConstraintError) {
-      res.status(409).send("Duplicate cctv_mac value.");
+      res.status(409).send({ message: err.errors });
+    } else {
+      next(err);
     }
-    console.error(err);
-    next(err);
   }
 };
 
@@ -27,7 +29,6 @@ const findByCenterId = async (req, res, next) => {
     const cctv = await CCTVRepository.findByCenterId(center_id);
     res.json(cctv);
   } catch (err) {
-    console.error(err);
     next(err);
   }
 };
@@ -44,7 +45,6 @@ const updateByCctvMac = async (req, res, next) => {
     );
     res.json(cctv);
   } catch (err) {
-    console.error(err);
     next(err);
   }
 };
@@ -54,7 +54,6 @@ const deleteByCctvMac = async (req, res, next) => {
     CCTVRepository.deleteByCctvMac(req.params.cctv_mac);
     res.status(204).send();
   } catch (err) {
-    console.error(err);
     next(err);
   }
 };

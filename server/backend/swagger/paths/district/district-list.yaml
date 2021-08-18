@@ -24,5 +24,11 @@ get:
                   type: string
                 parent_code:
                   type: string
-                count:
-                  type: string
+                assualt_count:
+                  type: integer
+                fight_count:
+                  type: integer
+                swoon_count:
+                  type: integer
+                anomaly_count:
+                  type: integer

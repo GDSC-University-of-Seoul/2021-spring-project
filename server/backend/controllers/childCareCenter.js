@@ -6,7 +6,6 @@ const findByDistrictCode = async (req, res, next) => {
     const centers = await centerRepository.findByDistrictCode(district_code);
     res.json(centers);
   } catch (err) {
-    console.error(err);
     next(err);
   }
 };
@@ -17,7 +16,6 @@ const findByCenterId = async (req, res, next) => {
     const centers = await centerRepository.findByCenterId(center_id);
     res.json(centers);
   } catch (err) {
-    console.error(err);
     next(err);
   }
 };

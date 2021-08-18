@@ -1,8 +1,10 @@
 import { sequelize } from "../../database/models/transform";
 
 const statement = `
-SELECT c.*, a.anomaly_type, COUNT(a.anomaly_type)
+SELECT c.*, d.district_name, a.anomaly_type, COUNT(a.anomaly_type)
 FROM child_care_center AS c
+INNER JOIN district AS d
+ON c.district_code = d.district_code
 LEFT OUTER JOIN anomaly_log AS a
 ON c.center_id = a.center_id AND a.anomaly_type IN ('실신', '싸움', '폭행')
 `;
@@ -25,24 +27,25 @@ const pivot = (anomalies) => {
         latitude: anomaly.latitude,
         longitude: anomaly.longitude,
         district_code: anomaly.district_code,
+        district_name: anomaly.district_name,
       };
     }
 
     if (anomaly.anomaly_type == "폭행") {
-      centers[center_id].assault_count = anomaly.count;
+      centers[center_id].assualt_count = anomaly.count;
     } else if (anomaly.anomaly_type == "싸움") {
       centers[center_id].fight_count = anomaly.count;
     } else if (anomaly.anomaly_type == "실신") {
       centers[center_id].swoon_count = anomaly.count;
     } else {
-      centers[center_id].total_count = anomaly.count;
+      centers[center_id].anomaly_count = anomaly.count;
     }
   }
 
   let res = [];
   for (let value of Object.values(centers)) {
-    if (!("assault_count" in value)) {
-      value["assault_count"] = "0";
+    if (!("assualt_count" in value)) {
+      value["assualt_count"] = "0";
     }
     if (!("fight_count" in value)) {
       value["fight_count"] = "0";
@@ -59,7 +62,7 @@ const findByDistrictCode = async (districtCode) => {
   const anomalies = await sequelize.query(
     statement +
       `WHERE c.district_code = '${districtCode}'
-      GROUP BY c.center_id, ROLLUP(a.anomaly_type)`,
+      GROUP BY c.center_id, d.district_name, ROLLUP(a.anomaly_type)`,
     { type: sequelize.QueryTypes.SELECT }
   );
   return pivot(anomalies);
@@ -69,7 +72,7 @@ const findByCenterId = async (centerId) => {
   const anomalies = await sequelize.query(
     statement +
       `WHERE c.center_id = '${centerId}'
-      GROUP BY c.center_id, ROLLUP(a.anomaly_type)`,
+      GROUP BY c.center_id, d.district_name, ROLLUP(a.anomaly_type)`,
     { type: sequelize.QueryTypes.SELECT }
   );
   return pivot(anomalies);

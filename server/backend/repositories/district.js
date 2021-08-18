@@ -33,20 +33,20 @@ const pivot = (anomalies) => {
     }
 
     if (anomaly.anomaly_type == "폭행") {
-      districts[code].assault_count = anomaly.count;
+      districts[code].assualt_count = anomaly.count;
     } else if (anomaly.anomaly_type == "싸움") {
       districts[code].fight_count = anomaly.count;
     } else if (anomaly.anomaly_type == "실신") {
       districts[code].swoon_count = anomaly.count;
     } else {
-      districts[code].total_count = anomaly.count;
+      districts[code].anomaly_count = anomaly.count;
     }
   }
 
   let res = [];
   for (let value of Object.values(districts)) {
-    if (!("assault_count" in value)) {
-      value["assault_count"] = "0";
+    if (!("assualt_count" in value)) {
+      value["assualt_count"] = "0";
     }
     if (!("fight_count" in value)) {
       value["fight_count"] = "0";

@@ -1,4 +1,5 @@
 import AnomalyService from "../services/anomalyLog";
+import AnomalyRepository from "../repositories/anomalyLog";
 
 const createAnomalyLog = async (req, res, next) => {
   try {
@@ -13,7 +14,6 @@ const createAnomalyLog = async (req, res, next) => {
     );
     res.status(201).json(anomalyLog);
   } catch (err) {
-    console.error(err);
     next(err);
   }
 };
@@ -21,10 +21,9 @@ const createAnomalyLog = async (req, res, next) => {
 const findAnomalyLogs = async (req, res, next) => {
   try {
     const { center_name } = req.query;
-    const anomalyLogs = await AnomalyService.findAnomalyLogs(center_name);
+    const anomalyLogs = await AnomalyRepository.findAnomalyLogs(center_name);
     res.status(200).json(anomalyLogs);
   } catch (err) {
-    console.error(err);
     next(err);
   }
 };
