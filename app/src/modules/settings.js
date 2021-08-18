@@ -8,6 +8,7 @@ const initialState = {
   },
 };
 
+// localStorage에서 사용자 설정 불러오기
 export const loadSettingsState = () => {
   const settings = window.localStorage.getItem("settings");
 
@@ -17,6 +18,11 @@ export const loadSettingsState = () => {
   };
 };
 
+/**
+ * localStorage에 사용자 설정 저장하기
+ *
+ * @param {Object} - alarmMsgOn {boolean} : 알람 메세지 설정 alarmSoundOn {boolean} : 경고음 설정
+ */
 export const setSettingsState = (settings) => {
   window.localStorage.setItem("settings", JSON.stringify(settings));
 

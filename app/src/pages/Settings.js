@@ -24,6 +24,7 @@ function Settings({ history }) {
   return (
     <>
       <section className="section settings">
+        {/* 모니터링 설정 메뉴 */}
         <div className="container settings-section">
           <div className="settings-title">모니터링 설정</div>
           <hr />
@@ -56,6 +57,7 @@ function Settings({ history }) {
             />
           </div>
         </div>
+        {/* 사용자 설정 메뉴 */}
         <div className="container user-section">
           <div className="settings-title">사용자 설정</div>
           <hr />

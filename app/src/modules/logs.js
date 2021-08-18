@@ -36,8 +36,8 @@ export const fetchLogsData = () => async (dispatch) => {
 };
 
 /**
- * befLogsData: 이전에 Fetch한 anomaly log 데이터
- * newLogsData: 새로 Fetch한 anomaly log 데이터
+ * newLogsData: 일정시간 내에 발생한 anomaly log 데이터 (현재 1시간 기준)
+ * recentLogsData: 전체 anomaly log 데이터
  */
 const initialState = {
   loading: false,

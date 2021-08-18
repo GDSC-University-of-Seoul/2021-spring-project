@@ -155,6 +155,7 @@ function Header({ history }) {
             }`}
             onClick={(e) => e.stopPropagation()}
           >
+            {/* 알림 설정 */}
             {unreadLogs.length !== 0 && settings.alarmSoundOn && (
               <audio src="src/assets/sound/alarm.mp3" autoPlay ref={audioRef} />
             )}
