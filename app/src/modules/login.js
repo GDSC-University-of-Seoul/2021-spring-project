@@ -23,10 +23,13 @@ export const loginSubmit = (userId, userPw) => async (dispatch) => {
       { withCredentials: true }
     );
 
+    const { member, token } = loginResponse.data;
+
     const loginInfo = {
-      userId: loginResponse.data.member_id,
-      userName: loginResponse.data.member_name,
-      email: loginResponse.data.email,
+      userId: member.member_id,
+      userName: member.member_name,
+      email: member.email,
+      userToken: token,
     };
 
     setCookie("loginInfo", JSON.stringify(loginInfo), 1);
@@ -55,14 +58,9 @@ export const getLoginCookie = () => {
  * @param {Object} history 리다이렉션을 위한 history 객체
  */
 export const logOut = (history) => async (dispatch) => {
-  try {
-    await axios.get(`${process.env.REACT_APP_API_SERVER}/api/auth/logout`);
-    deleteCookie("loginInfo");
-    dispatch({ type: LOGOUT });
-    history.push("/");
-  } catch (error) {
-    dispatch({ type: LOGIN_ERROR, payload: error });
-  }
+  deleteCookie("loginInfo");
+  dispatch({ type: LOGOUT });
+  history.push("/");
 };
 
 /**
@@ -71,14 +69,21 @@ export const logOut = (history) => async (dispatch) => {
  * @param {Object} userInfo 변경할 사용자 정보 {userId, userName, password, email}
  * @returns
  */
-export const loginInfoUpdate = (userInfo) => async (dispatch) => {
+export const loginInfoUpdate = (userInfo, userToken) => async (dispatch) => {
   try {
-    await axios.put(`${process.env.REACT_APP_API_SERVER}/api/auth/member`, {
-      member_id: userInfo.userId,
-      member_name: userInfo.userName,
-      password: userInfo.password,
-      email: userInfo.email,
-    });
+    await axios.put(
+      `${process.env.REACT_APP_API_SERVER}/api/auth/member`,
+      {
+        member_name: userInfo.userName,
+        password: userInfo.password,
+        email: userInfo.email,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+      }
+    );
   } catch (e) {
     dispatch({ type: LOGIN_ERROR, payload: e });
   }
@@ -97,6 +102,7 @@ const initialState = {
     userId: null,
     userName: null,
     email: null,
+    userToken: null,
   },
   error: null,
 };

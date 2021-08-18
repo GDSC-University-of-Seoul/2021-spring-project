@@ -1,5 +1,5 @@
 import { Button, TextField } from "@material-ui/core";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { logOut, loginInfoUpdate } from "../modules/login";
 
 import Modal from "./Modal";
@@ -17,9 +17,13 @@ function UpdateLoginForm({ loginInfo, history, setIsChanged }) {
   const [confirmUpdate, setConfirmUpdate] = useState(false); // 변경 완료 창 열기
   const [pwMatch, setPwMatch] = useState(true); // 비밀번호 일치여부
   const [pwConfirm, setpwConfirm] = useState({
-    userPw: "",
-    userPw2: "",
+    password: "",
+    password2: "",
   }); // 변경할 비밀번호
+
+  useEffect(() => {
+    return () => loginInfo;
+  }, [loginInfo]);
 
   // 비밀번호 입력값 저장
   const changePassword = useCallback(
@@ -41,23 +45,24 @@ function UpdateLoginForm({ loginInfo, history, setIsChanged }) {
       e.preventDefault();
 
       // 변경할 비밀번호 일치 여부 검사
-      if (pwConfirm.userPw !== pwConfirm.userPw2) {
+      if (pwConfirm.password !== pwConfirm.password2) {
         setPwMatch(false);
         return;
       }
 
       // 사용자 정보 변경
       setPwMatch(true);
-      const { userId, userName, password, email } = e.target;
+      const target = e.target;
+
       const updateInfo = {
-        userId,
-        userName,
-        password,
-        email,
+        userName: target.userName.value,
+        password: target.password.value,
+        email: target.email.value,
       };
-      dispatch(loginInfoUpdate(updateInfo)).then(() => setConfirmUpdate(true));
+      dispatch(loginInfoUpdate(updateInfo, loginInfo.userToken));
+      setConfirmUpdate(true);
     },
-    [pwConfirm, dispatch]
+    [pwConfirm, dispatch, loginInfo]
   );
 
   return (
@@ -94,7 +99,7 @@ function UpdateLoginForm({ loginInfo, history, setIsChanged }) {
             />
             <TextField
               label="관리자"
-              id="userId"
+              id="userName"
               InputLabelProps={{
                 shrink: true,
               }}
@@ -102,7 +107,7 @@ function UpdateLoginForm({ loginInfo, history, setIsChanged }) {
             />
             <TextField
               label="변경할 비밀번호"
-              id="userPw"
+              id="password"
               type="password"
               onChange={changePassword}
               InputLabelProps={{
@@ -111,7 +116,7 @@ function UpdateLoginForm({ loginInfo, history, setIsChanged }) {
             />
             <TextField
               label="비밀번호 확인"
-              id="userPw2"
+              id="password2"
               type="password"
               onChange={changePassword}
               InputLabelProps={{
@@ -123,7 +128,7 @@ function UpdateLoginForm({ loginInfo, history, setIsChanged }) {
             )}
             <TextField
               label="관리자 이메일"
-              id="userEmail"
+              id="email"
               type="email"
               InputLabelProps={{
                 shrink: true,
