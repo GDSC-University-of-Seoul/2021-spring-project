@@ -251,6 +251,7 @@ export default function mapboxEventReducer(state = initialState, action) {
         data: {
           ...state.data,
           level: 1,
+          popupInfo: null,
           sidoName: "",
           sggName: "",
           geojsonData: action.payload,
@@ -263,6 +264,7 @@ export default function mapboxEventReducer(state = initialState, action) {
         data: {
           ...state.data,
           level: 2,
+          popupInfo: null,
           sidoName: action.payload.sidoName,
           sggName: "",
           geojsonData: action.payload.geojson,

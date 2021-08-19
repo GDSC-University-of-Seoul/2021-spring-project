@@ -66,8 +66,13 @@ function MapBox({ geojson }) {
     zoom: districtViewport["대한민국"].zoom,
   });
 
+  // Popup 토글 on/off 를 위한 상태 → 동일한 어린이집 마커를 선택하면 on/off 다르면 전부 on
+  const [cdrPopup, setCdrPopup] = useState({
+    open: true,
+    centerId: null,
+  });
+
   // geojsonData 를 dependency 배열에 넣으면 시군구 기능이 정상적으로 동작하지 않음
-  /* eslint-disable */
   useEffect(() => {
     dispatch(resetToSidoDistrict(districtArea));
     if (!geojsonData) dispatch(setGeojsonData(districtArea));
@@ -76,6 +81,7 @@ function MapBox({ geojson }) {
       geojson,
       Layer,
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, districtArea, geojson]);
 
   /*
@@ -144,9 +150,14 @@ function MapBox({ geojson }) {
         );
         dispatch(markerClick(markerInfo[0]));
         dispatch(setCdrCenter(markerInfo[0]));
+
+        setCdrPopup({
+          open: cdrCenterId === cdrPopup.centerId ? !cdrPopup.open : true,
+          centerId: cdrCenterId,
+        });
       }
     },
-    [dispatch, cdrCentersInfo]
+    [dispatch, cdrCentersInfo, cdrPopup]
   );
   /*
    * Reset 버튼 click 이벤트 핸들러
@@ -163,12 +174,20 @@ function MapBox({ geojson }) {
 
     dispatch(resetToSidoDistrict(districtArea));
     dispatch(resetCdrCenter());
+    setCdrPopup({
+      open: true,
+      centerId: null,
+    });
   }, [dispatch, districtArea]);
 
   const resetToSggClick = useCallback(() => {
     dispatch(resetToSggDistrict(geojsonData, sidoName));
     dispatch(resetCdrCenter());
-  }, [geojsonData, sidoName]);
+    setCdrPopup({
+      open: true,
+      centerId: null,
+    });
+  }, [dispatch, geojsonData, sidoName]);
 
   if (error) <div>지도 오류 발생</div>;
 
@@ -194,10 +213,10 @@ function MapBox({ geojson }) {
               />
             )}
 
-            {(level === 2 || level == 3) && (
+            {(level === 2 || level === 3) && (
               <Layer {...getSggLayer(sggControl.diff)} />
             )}
-            {(level === 2 || level == 3) && (
+            {(level === 2 || level === 3) && (
               <Layer
                 {...getSggHighlightLayer(sggControl.diff)}
                 filter={filter}
@@ -206,7 +225,7 @@ function MapBox({ geojson }) {
           </Source>
         )}
         {/* 팝업 메세지로 행정구역의 정보 표시 */}
-        {selectedDistrictInfo.name !== "" && popupInfo && (
+        {selectedDistrictInfo.name !== "" && popupInfo && cdrPopup.open && (
           <Popup
             longitude={Number(popupInfo.longitude)}
             latitude={Number(popupInfo.latitude)}
@@ -214,7 +233,7 @@ function MapBox({ geojson }) {
             className="popup"
           >
             <h2>{popupInfo.districtName}</h2>
-            {level == 3 ? (
+            {level === 3 ? (
               <ul className="popup-content">
                 <li>사건·사고 건수 : {popupInfo.anomalyCount}건</li>
                 <li>폭행 건수 : {popupInfo.assualtCount}건</li>
@@ -260,7 +279,7 @@ function MapBox({ geojson }) {
                 color="primary"
                 disableElevation
                 onClick={resetToSggClick}
-                disabled={level == 1}
+                disabled={level === 1}
               >
                 시·군·구
               </Button>
