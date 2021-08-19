@@ -8,7 +8,8 @@ import {
 } from "../utils/mapStyle";
 import {
   markerClick,
-  resetDistrict,
+  resetToSggDistrict,
+  resetToSidoDistrict,
   setGeojsonData,
   sggClick,
   sggHover,
@@ -38,12 +39,12 @@ function MapBox({ geojson }) {
    * MapBox 컴포넌트에서 사용하는 상태
    * - level : 도, 광역시 / 시,군,구의 기능을 구분
    * - popupInfo : hover 이벤트 간 발생하는 정보
-   * - geojsonData : 행정구역을 렌더링하기 위핸 geojson 데이터
+   * - geojsonData : 행정구역을 렌더링하기 위한 geojson 데이터
    * - cdrCentersInfo : 시,군,구 내에 있는 어린이집 정보
    * - error : 발생한 에러
    */
   const {
-    data: { level, popupInfo, geojsonData, cdrCentersInfo },
+    data: { level, popupInfo, sidoName, geojsonData, cdrCentersInfo },
     error,
   } = useSelector((state) => state.mapboxEventReducer, shallowEqual);
   const dispatch = useDispatch();
@@ -68,7 +69,7 @@ function MapBox({ geojson }) {
   // geojsonData 를 dependency 배열에 넣으면 시군구 기능이 정상적으로 동작하지 않음
   /* eslint-disable */
   useEffect(() => {
-    dispatch(resetDistrict(districtArea));
+    dispatch(resetToSidoDistrict(districtArea));
     if (!geojsonData) dispatch(setGeojsonData(districtArea));
 
     return {
@@ -151,7 +152,7 @@ function MapBox({ geojson }) {
    * Reset 버튼 click 이벤트 핸들러
    * - level과 geojson 데이터를 도, 광역시 기준으로 초기화
    */
-  const resetClickHandler = useCallback(() => {
+  const resetToSidoClick = useCallback(() => {
     setViewport({
       width: 770,
       height: 800,
@@ -159,9 +160,15 @@ function MapBox({ geojson }) {
       longitude: districtViewport["대한민국"].lng,
       zoom: districtViewport["대한민국"].zoom,
     });
-    dispatch(resetDistrict(districtArea));
+
+    dispatch(resetToSidoDistrict(districtArea));
     dispatch(resetCdrCenter());
   }, [dispatch, districtArea]);
+
+  const resetToSggClick = useCallback(() => {
+    dispatch(resetToSggDistrict(geojsonData, sidoName));
+    dispatch(resetCdrCenter());
+  }, [geojsonData, sidoName]);
 
   if (error) <div>지도 오류 발생</div>;
 
@@ -234,20 +241,30 @@ function MapBox({ geojson }) {
             ))}
         </div>
       </ReactMapGL>
-      {/* 어린이집 개수에 기반한 범주 */}
+      {/* 어린이집 이상행동 개수에 기반한 범주 */}
       {level && (
         <>
           {/* 도, 광역시 기준으로 초기화하는 버튼 */}
           <MapBoxCategory level={level}>
-            <Button
-              className="reset-button"
-              variant="contained"
-              color="primary"
-              disableElevation
-              onClick={resetClickHandler}
-            >
-              검색 초기화
-            </Button>
+            <div className="control-button">
+              <Button
+                variant="contained"
+                color="primary"
+                disableElevation
+                onClick={resetToSidoClick}
+              >
+                도·광역시
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                disableElevation
+                onClick={resetToSggClick}
+                disabled={level == 1}
+              >
+                시·군·구
+              </Button>
+            </div>
           </MapBoxCategory>
         </>
       )}
