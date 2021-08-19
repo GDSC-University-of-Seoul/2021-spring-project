@@ -1,5 +1,4 @@
 .popup {
-  z-index: 10;
   font-size: 0.9rem;
   padding: 0;
 
@@ -25,5 +24,34 @@
   &:hover {
     width: 2rem;
     height: 3rem;
+  }
+}
+.noResult-modal {
+  display: flex;
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  justify-content: center;
+  align-items: center;
+  width: calc(100% - 30px);
+  height: calc(100% - 30px);
+  background-color: rgba(0, 0, 0, 0.3);
+
+  section {
+    display: flex;
+    text-align: center;
+    width: 280px;
+    flex-direction: column;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    z-index: 5;
+    animation: modal-sliding 0.4s ease-in-out;
+
+    button {
+      margin-top: 15px;
+    }
   }
 }

@@ -72,6 +72,9 @@ function MapBox({ geojson }) {
     centerId: null,
   });
 
+  // 시·군·구 내에 어린이집 이상행동 검색 결과가 없으면 에러창 출력
+  const [noCdrResult, setNoCdrResult] = useState(false);
+
   // geojsonData 를 dependency 배열에 넣으면 시군구 기능이 정상적으로 동작하지 않음
   useEffect(() => {
     dispatch(resetToSidoDistrict(districtArea));
@@ -133,7 +136,11 @@ function MapBox({ geojson }) {
           const sggnmFind = geojsonData.features.find(
             (data) => data.properties.sggnm === selectedDistrictInfo.name
           );
-          if (sggnmFind) dispatch(sggClick(selectedDistrictInfo));
+          if (!sggnmFind) return;
+
+          dispatch(sggClick(selectedDistrictInfo)).then(() =>
+            setNoCdrResult(true)
+          );
         }
       }
     } catch (e) {
@@ -178,6 +185,7 @@ function MapBox({ geojson }) {
       open: true,
       centerId: null,
     });
+    setNoCdrResult(false);
   }, [dispatch, districtArea]);
 
   const resetToSggClick = useCallback(() => {
@@ -187,6 +195,7 @@ function MapBox({ geojson }) {
       open: true,
       centerId: null,
     });
+    setNoCdrResult(false);
   }, [dispatch, geojsonData, sidoName]);
 
   if (error) <div>지도 오류 발생</div>;
@@ -260,6 +269,22 @@ function MapBox({ geojson }) {
             ))}
         </div>
       </ReactMapGL>
+      {/* 검색결과 에러창 */}
+      {noCdrResult && cdrCentersInfo.length === 0 && (
+        <div className="noResult-modal">
+          <section className="noResult-modal-section">
+            ⚠️ 검색결과가 없습니다.
+            <Button
+              variant="contained"
+              color="primary"
+              disableElevation
+              onClick={resetToSggClick}
+            >
+              확인
+            </Button>
+          </section>
+        </div>
+      )}
       {/* 어린이집 이상행동 개수에 기반한 범주 */}
       {level && (
         <>
