@@ -18,6 +18,7 @@ import {
 import { resetCdrCenter, setCdrCenter } from "../modules/cdrCenter";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 
+import { Button } from "@material-ui/core";
 import MapBoxCategory from "./MapBoxCategory";
 import districtViewport from "../utils/districtViewport";
 
@@ -234,11 +235,22 @@ function MapBox({ geojson }) {
         </div>
       </ReactMapGL>
       {/* 어린이집 개수에 기반한 범주 */}
-      {level && <MapBoxCategory level={level} />}
-      {/* 도, 광역시 기준으로 초기화하는 버튼 */}
-      <button onClick={resetClickHandler} className="reset-button">
-        Reset
-      </button>
+      {level && (
+        <>
+          {/* 도, 광역시 기준으로 초기화하는 버튼 */}
+          <MapBoxCategory level={level}>
+            <Button
+              className="reset-button"
+              variant="contained"
+              color="primary"
+              disableElevation
+              onClick={resetClickHandler}
+            >
+              검색 초기화
+            </Button>
+          </MapBoxCategory>
+        </>
+      )}
     </>
   );
 }
