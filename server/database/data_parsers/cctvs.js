@@ -11,7 +11,7 @@ function makeRandomNumber(divisor) {
 }
 
 // cctv_mac 생성 함수
-const HEXADEMICAL = [1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F'];
+const HEXADEMICAL = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F'];
 function randomMac() {
   let macTemp = [];
   for (let i = 0; i < 12; i++) {
