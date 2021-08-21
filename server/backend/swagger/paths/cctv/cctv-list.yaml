@@ -3,10 +3,18 @@ tags:
 summary: get all cctvs
 description:
 parameters:
-  - name: center_id
+  - name: list_size
     in: query
     required: true
-    description: 어린이집 id
+    description: 페이지 내 데이터 개수
+  - name: range
+    in: query
+    required: true
+    description: 현재 페이지의 범위
+  - name: page
+    in: query
+    required: true
+    description: 현재 범위 내 페이지
 responses:
   200:
     description: OK

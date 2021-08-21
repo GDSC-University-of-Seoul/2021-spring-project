@@ -18,9 +18,11 @@
     $ref: "cctv/cctv-delete.yaml"
 /anomalies/logs:
   get:
-    $ref: "log/log-list.yaml"
+    $ref: "log/log-list-all.yaml"
   post:
     $ref: "log/log-create.yaml"
+/anomalies/logs/recent:
+  $ref: "log/log-list-recent.yaml"
 /auth/register:
   $ref: "auth/register.yaml"
 /auth/login:

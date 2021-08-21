@@ -21,6 +21,10 @@ const createAnomalyLog = async (req, res, next) => {
 const findAllLogs = async (req, res, next) => {
   try {
     const { list_size, page, range } = req.query;
+    if (!(list_size && page && range)) {
+      res.status(400).send("Pagination query paramters required.");
+      return;
+    }
     const anomalyLogs = await AnomalyRepository.findAllLogs(
       list_size,
       page,
@@ -35,6 +39,10 @@ const findAllLogs = async (req, res, next) => {
 const findRecentLogs = async (req, res, next) => {
   try {
     const { list_size, page, range } = req.query;
+    if (!(list_size && page && range)) {
+      res.status(400).send("Pagination query paramters required.");
+      return;
+    }
     const anomalyLogs = await AnomalyRepository.findRecentLogs(
       list_size,
       page,

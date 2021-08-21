@@ -195,10 +195,18 @@ paths:
       summary: get all cctvs
       description: null
       parameters:
-        - name: center_id
+        - name: list_size
           in: query
           required: true
-          description: 어린이집 id
+          description: 페이지 내 데이터 개수
+        - name: range
+          in: query
+          required: true
+          description: 현재 페이지의 범위
+        - name: page
+          in: query
+          required: true
+          description: 현재 범위 내 페이지
       responses:
         '200':
           description: OK
@@ -347,10 +355,18 @@ paths:
       summary: get all anomaly logs
       description: null
       parameters:
-        - name: center_name
+        - name: list_size
           in: query
-          required: false
-          description: 어린이집 이름
+          required: true
+          description: 페이지 내 데이터 개수
+        - name: range
+          in: query
+          required: true
+          description: 현재 페이지의 범위
+        - name: page
+          in: query
+          required: true
+          description: 현재 범위 내 페이지
       responses:
         '200':
           description: OK
@@ -423,6 +439,46 @@ paths:
                     format: date
                   follow_up:
                     type: string
+  /anomalies/logs/recent:
+    get:
+      tags:
+        - anomaly log
+      summary: get recent anomaly logs
+      description: null
+      parameters:
+        - name: list_size
+          in: query
+          required: true
+          description: 페이지 내 데이터 개수
+        - name: range
+          in: query
+          required: true
+          description: 현재 페이지의 범위
+        - name: page
+          in: query
+          required: true
+          description: 현재 범위 내 페이지
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    anomaly_log_id:
+                      type: integer
+                    center_name:
+                      type: string
+                    address:
+                      type: string
+                    record_date:
+                      type: string
+                      format: date
+                    anomaly_type:
+                      type: string
   /auth/register:
     post:
       tags:

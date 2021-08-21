@@ -27,6 +27,7 @@ const findOneByMacAddress = async (cctvMac) => {
 
 const findAll = async (listSize, page, range) => {
   const { offset, limit } = await getPagination(listSize, page, range);
+
   let cctv = await CCTV.findAndCountAll({
     include: {
       model: ChildCareCenter,
