@@ -105,13 +105,10 @@ export const deleteCctvsData = (deleteData, pagination) => async (dispatch) => {
 };
 
 // CCTV 현재 페이지네이션 정보 설정
-export const cctvsPagination = (pagination) => (dispatch) => {
-  try {
-    dispatch({ type: CCTVS_PAGINATION, payload: pagination });
-  } catch (e) {
-    dispatch({ type: CCTVS_DATA_ERROR, payload: e });
-  }
-};
+export const cctvsPagination = (pagination) => ({
+  type: CCTVS_PAGINATION,
+  payload: pagination,
+});
 
 const initialState = {
   loading: false,

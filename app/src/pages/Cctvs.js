@@ -23,7 +23,9 @@ import { openModal } from "../modules/cctvsModal";
 function Cctvs() {
   const CCTVS_LIST_SIZE = 20;
 
-  const { loading, cctvsData } = useSelector((state) => state.cctvsReducer);
+  const { loading, pagination, cctvsData, count } = useSelector(
+    (state) => state.cctvsReducer
+  );
   const { selectedData, clickedData } = useSelector(
     (state) => state.cctvsTableEventReducer
   );
@@ -98,7 +100,13 @@ function Cctvs() {
           {loading ? (
             <Loading />
           ) : (
-            cctvsData && <CctvTableContainer cctvsData={cctvsData} />
+            cctvsData && (
+              <CctvTableContainer
+                pagination={pagination}
+                cctvsData={cctvsData}
+                count={count}
+              />
+            )
           )}
         </div>
       </section>
