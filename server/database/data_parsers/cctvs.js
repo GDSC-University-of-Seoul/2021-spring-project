@@ -11,8 +11,8 @@ function makeRandomNumber(divisor) {
 }
 
 // cctv_mac 생성 함수
-const HEXADEMICAL = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F'];
 function randomMac() {
+  const HEXADEMICAL = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F'];
   let macTemp = [];
   for (let i = 0; i < 12; i++) {
     macTemp.push(HEXADEMICAL[makeRandomNumber(16)]);
@@ -44,6 +44,5 @@ for (let i = 0; i < 1000; i++) {
 }
 
 const cctvJson = JSON.stringify(cctvs);
-// fs.writeFileSync('1000cctvs.json', cctvJson);
-// console.log(cctvs);
+fs.writeFileSync('1000cctvs.json', cctvJson);
 exports.cctvs = cctvs;
