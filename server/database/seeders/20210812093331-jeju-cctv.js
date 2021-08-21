@@ -56,9 +56,15 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    const op = Sequelize.Op;
     await queryInterface.bulkDelete('cctv', {
-      cctv_name: { [op.or]: { [op.substring]: '제주', [op.startsWith]: '서귀포' } },
+      cctv_mac: [
+        '44C4153B5737',
+        '0A2B3C4D5E6F',
+        '5A564D3F2916',
+        '154D6E881337',
+        '8A5C1D0F0B9E',
+        '04850B9B1A07',
+      ],
     });
   },
 };

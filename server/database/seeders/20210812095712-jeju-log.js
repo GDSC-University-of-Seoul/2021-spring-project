@@ -51,7 +51,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    const op = Sequelize.Op;
-    await queryInterface.bulkDelete('anomaly_log', { address: { [op.startsWith]: '제주' } });
+    await queryInterface.bulkDelete('anomaly_log', { record_date: ['2021-08-12'] });
   },
 };
