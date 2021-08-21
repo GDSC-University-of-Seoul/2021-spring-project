@@ -6,7 +6,7 @@ const SIDO_CLICK = "mapboxEvent/SIDO_CLICK";
 const SGG_CLICK = "mapboxEvent/SGG_CLICK";
 const RESET_TO_SIDO_DISTRICT = "mapboxEvent/RESET_TO_SIDO_DISTRICT";
 const RESET_TO_SGG_DISTRICT = "mapboxEvent/RESET_TO_SGG_DISTRICT";
-const MARKER_Click = "mapboxEvent/MARKER_Click";
+const MARKER_CLICK = "mapboxEvent/MARKER_CLICK";
 const ERROR = "mapboxEvent/ERROR";
 
 /**
@@ -179,7 +179,7 @@ export const markerClick = (markerInfo) => async (dispatch) => {
     swoonCount: markerInfo.swoon_count,
     anomalyCount: markerInfo.anomaly_count,
   };
-  dispatch({ type: MARKER_Click, payload: popupInfo });
+  dispatch({ type: MARKER_CLICK, payload: popupInfo });
 };
 
 const initialState = {
@@ -273,7 +273,7 @@ export default function mapboxEventReducer(state = initialState, action) {
       };
 
     // 마커 클릭 이벤트
-    case MARKER_Click:
+    case MARKER_CLICK:
       return {
         data: {
           ...state.data,
