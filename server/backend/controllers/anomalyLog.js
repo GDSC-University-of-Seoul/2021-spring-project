@@ -18,14 +18,32 @@ const createAnomalyLog = async (req, res, next) => {
   }
 };
 
-const findAnomalyLogs = async (req, res, next) => {
+const findAllLogs = async (req, res, next) => {
   try {
-    const { center_name } = req.query;
-    const anomalyLogs = await AnomalyRepository.findAnomalyLogs(center_name);
+    const { list_size, page, range } = req.query;
+    const anomalyLogs = await AnomalyRepository.findAllLogs(
+      list_size,
+      page,
+      range
+    );
     res.status(200).json(anomalyLogs);
   } catch (err) {
     next(err);
   }
 };
 
-export default { createAnomalyLog, findAnomalyLogs };
+const findRecentLogs = async (req, res, next) => {
+  try {
+    const { list_size, page, range } = req.query;
+    const anomalyLogs = await AnomalyRepository.findRecentLogs(
+      list_size,
+      page,
+      range
+    );
+    res.status(200).json(anomalyLogs);
+  } catch (err) {
+    next(err);
+  }
+};
+
+export default { createAnomalyLog, findAllLogs, findRecentLogs };

@@ -1,23 +1,55 @@
 import { AnomalyLog, Sequelize } from "../../database/models/transform";
+import getPagination from "../utils/getPagination";
 
-const findAnomalyLogs = async (centerName) => {
-  let logFilters = {};
-  if (centerName) {
-    logFilters.center_name = centerName;
-  }
+const findAllLogs = async (listSize, page, range) => {
+  const { offset, limit } = await getPagination(listSize, page, range);
 
   const endDate = new Date();
   let startDate = new Date();
   endDate.setHours(endDate.getHours() + 9);
   startDate.setDate(endDate.getDate() - 60);
-  logFilters.record_date = {
-    [Sequelize.Op.between]: [startDate, endDate],
-  };
 
-  const anomalyLogs = await AnomalyLog.findAll({
-    where: logFilters,
+  const anomalyLogs = await AnomalyLog.findAndCountAll({
+    where: {
+      record_date: {
+        [Sequelize.Op.between]: [startDate, endDate],
+      },
+    },
+    offset: offset,
+    limit: limit,
+    raw: true,
   });
+
+  anomalyLogs.count = {
+    listCount: anomalyLogs.count,
+    pageCount: Math.ceil(anomalyLogs.count / listSize),
+  };
   return anomalyLogs;
 };
 
-export default { findAnomalyLogs };
+const findRecentLogs = async (listSize, page, range) => {
+  const { offset, limit } = await getPagination(listSize, page, range);
+  const endDate = new Date();
+  let startDate = new Date();
+  endDate.setHours(endDate.getHours() + 9);
+  startDate.setDate(endDate.getDate() - 1);
+
+  const anomalyLogs = await AnomalyLog.findAndCountAll({
+    where: {
+      record_date: {
+        [Sequelize.Op.between]: [startDate, endDate],
+      },
+    },
+    offset: offset,
+    limit: limit,
+    raw: true,
+  });
+
+  anomalyLogs.count = {
+    listCount: anomalyLogs.count,
+    pageCount: Math.ceil(anomalyLogs.count / listSize),
+  };
+  return anomalyLogs;
+};
+
+export default { findAllLogs, findRecentLogs };

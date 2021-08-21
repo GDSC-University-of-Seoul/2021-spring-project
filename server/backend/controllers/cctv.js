@@ -1,4 +1,3 @@
-import { reset } from "nodemon";
 import { Sequelize } from "../../database/models/transform";
 import CCTVRepository from "../repositories/cctv";
 
@@ -23,10 +22,10 @@ const create = async (req, res, next) => {
   }
 };
 
-const findByCenterId = async (req, res, next) => {
+const findAll = async (req, res, next) => {
   try {
-    const { center_id } = req.query;
-    const cctv = await CCTVRepository.findByCenterId(center_id);
+    const { list_size, page, range } = req.query;
+    const cctv = await CCTVRepository.findAll(list_size, page, range);
     res.json(cctv);
   } catch (err) {
     next(err);
@@ -58,4 +57,4 @@ const deleteByCctvMac = async (req, res, next) => {
   }
 };
 
-export default { create, findByCenterId, updateByCctvMac, deleteByCctvMac };
+export default { create, findAll, updateByCctvMac, deleteByCctvMac };

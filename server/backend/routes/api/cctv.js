@@ -3,10 +3,7 @@ import cctvController from "../../controllers/cctv";
 
 const router = express.Router();
 
-router
-  .route("/")
-  .get(cctvController.findByCenterId)
-  .post(cctvController.create);
+router.route("/").get(cctvController.findAll).post(cctvController.create);
 
 router
   .route("/:cctv_mac")

@@ -3,6 +3,7 @@ import {
   ChildCareCenter,
   CCTV,
 } from "../../database/models/transform";
+import getPagination from "../utils/getPagination";
 
 const create = async (centerId, cctvName, cctvMac, installDate, quality) => {
   const cctv = await CCTV.create({
@@ -24,17 +25,12 @@ const findOneByMacAddress = async (cctvMac) => {
   return cctv;
 };
 
-const findByCenterId = async (centerId) => {
-  let filters = {};
-  if (centerId) {
-    filters.center_id = centerId;
-  }
-
-  const cctv = await CCTV.findAll({
+const findAll = async (listSize, page, range) => {
+  const { offset, limit } = await getPagination(listSize, page, range);
+  let cctv = await CCTV.findAndCountAll({
     include: {
       model: ChildCareCenter,
       attributes: [],
-      where: filters,
     },
     attributes: [
       "cctv_id",
@@ -47,7 +43,16 @@ const findByCenterId = async (centerId) => {
       [Sequelize.col("ChildCareCenter.center_name"), "center_name"],
       [Sequelize.col("ChildCareCenter.address"), "address"],
     ],
+    offset: offset,
+    limit: limit,
+    raw: true,
   });
+
+  cctv.count = {
+    listCount: cctv.count,
+    pageCount: Math.ceil(cctv.count / listSize),
+  };
+
   return cctv;
 };
 
@@ -84,7 +89,7 @@ const deleteByCctvMac = async (cctvMac) => {
 export default {
   create,
   findOneByMacAddress,
-  findByCenterId,
+  findAll,
   updateByCctvMac,
   deleteByCctvMac,
 };
