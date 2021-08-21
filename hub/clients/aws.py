@@ -42,9 +42,7 @@ class AWSClient:
         url = f"{self.base_url}/api/anomalies/logs"
 
         try:
-            print(f"Send data to {url} : \n {data}")
-            response = requests.post(url, headers=self.header, data=json.dumps(data))
-            return response
+            return requests.post(url, headers=self.header, data=json.dumps(data))
         except Exception as e:
             logger.warning(e)
 
