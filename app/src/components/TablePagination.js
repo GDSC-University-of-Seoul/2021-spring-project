@@ -1,83 +1,105 @@
-import React, { useCallback, useEffect, useState } from "react";
-
-import useOrderArray from "../hooks/useOrderArray";
+import React, { useCallback, useState } from "react";
 
 function TablePagination({
+  pagination,
   data,
+  count,
   itemId,
   categories,
   checkOpt,
+  setPagination,
+  fetchData,
   itemCheckHandler,
   itemClickHandler,
 }) {
-  const PAGE_DATA_CNT = 20; // 한 페이지에 보여줄 데이터 수
-  const PAGE_CNT = 10; // 출력할 페이지네이션 번호 개수
-  const END_PAGE_NUM = Math.ceil(data.length / PAGE_DATA_CNT); // 마지막 페이지네이션 번호
+  /**
+   * listSize : 렌더링할 데이터 개수
+   * range : 페이지네이션 번호
+   * page : range 내의 순서
+   * pageCount : 마지막 페이지네이션 번호
+   */
+  const { listSize, range, page } = pagination;
+  const { pageCount } = count;
+  const PAGINATION_SIZE = 10;
 
-  const [pageNumArr, setPageNumArr] = useOrderArray(
-    1,
-    END_PAGE_NUM < PAGE_CNT ? END_PAGE_NUM : PAGE_CNT
-  );
-  const [currPageNum, setCurrPageNum] = useState(1); // 현재 페이지 번호
-  const [pageData, setPageData] = useState(data.slice(0, PAGE_DATA_CNT)); // 페이지 번호에 대한 데이터
+  // 페이지네이션 순서 배열 생성
+  const [pageNumArr] = useState(() => {
+    const start = (range - 1) * PAGINATION_SIZE + 1;
+    const end = range * PAGINATION_SIZE;
+    const maxVal = pageCount;
+
+    const orderArr = [];
+    for (let i = start; i <= Math.min(end, maxVal); i++) orderArr.push(i);
+
+    return orderArr;
+  });
 
   // 페이지 번호 클릭
   const pageNumClick = useCallback(
     (pageNum) => {
-      // 현재 페이지 번호 변경
-      setCurrPageNum(pageNum);
+      const newPagination = {
+        listSize,
+        range,
+        page: pageNum,
+      };
 
-      // 현재 페이지 번호에 따라 데이터 변경
-      setPageData(
-        data.slice((pageNum - 1) * PAGE_DATA_CNT, pageNum * PAGE_DATA_CNT)
-      );
+      setPagination(newPagination);
+      fetchData(newPagination);
     },
-    [data]
+    [fetchData, listSize, range, setPagination]
   );
-
-  useEffect(() => [pageData, pageNumArr]);
 
   // 이전 페이지 번호(<) 클릭
   const prevPageClick = useCallback(() => {
-    // 이전 페이지 번호의 첫 페이지 번호 찾기
-    const pageStartNum = (parseInt(currPageNum / PAGE_CNT) - 1) * PAGE_CNT + 1;
+    if (range === 1) return;
 
-    // 첫 페이지 번호를 벗어나면 무시
-    if (pageStartNum < 0) return;
+    const newPagination = {
+      listSize,
+      range: range - 1,
+      page: 1,
+    };
 
-    setPageNumArr(pageStartNum, pageStartNum - 1 + PAGE_CNT);
-    pageNumClick(pageStartNum);
-  }, [currPageNum, pageNumClick, setPageNumArr]);
+    setPagination(newPagination);
+    fetchData(newPagination);
+  }, [fetchData, listSize, range, setPagination]);
 
   // 다음 페이지(>) 클릭
   const nextPageClick = useCallback(() => {
-    // 다음 페이지 번호의 첫 페이지 번호 찾기
-    const pageStartNum =
-      parseInt((currPageNum - 1) / PAGE_CNT + 1) * PAGE_CNT + 1;
+    if (range === parseInt(pageCount / PAGINATION_SIZE) + 1) return;
 
-    // 마지막 페이지 번호를 벗어나면 무시
-    if (pageStartNum > END_PAGE_NUM) return;
+    const newPagination = {
+      listSize,
+      range: range + 1,
+      page: 1,
+    };
 
-    const pageEndNum = pageStartNum - 1 + PAGE_CNT;
-    if (pageStartNum < END_PAGE_NUM) setPageNumArr(pageStartNum, pageEndNum);
-    else setPageNumArr(pageStartNum, END_PAGE_NUM);
-
-    pageNumClick(pageStartNum);
-  }, [END_PAGE_NUM, currPageNum, pageNumClick, setPageNumArr]);
+    setPagination(newPagination);
+    fetchData(newPagination);
+  }, [fetchData, listSize, pageCount, range, setPagination]);
 
   // 첫 페이지(<<) 클릭
   const startPageClick = useCallback(() => {
-    setPageNumArr(1, END_PAGE_NUM < PAGE_CNT ? END_PAGE_NUM : PAGE_CNT);
-    pageNumClick(1);
-  }, [setPageNumArr, END_PAGE_NUM, pageNumClick]);
+    const newPagination = {
+      listSize,
+      range: 1,
+      page: 1,
+    };
+
+    setPagination(newPagination);
+    fetchData(newPagination);
+  }, [fetchData, listSize, setPagination]);
 
   // 마지막 페이지(>>) 클릭
   const endPageClick = useCallback(() => {
-    const endPageStart = parseInt((END_PAGE_NUM - 1) / PAGE_CNT) * PAGE_CNT + 1;
+    const newPagination = {
+      listSize,
+      range: parseInt(pageCount / PAGINATION_SIZE) + 1,
+      page: pageCount % PAGINATION_SIZE,
+    };
 
-    setPageNumArr(endPageStart, END_PAGE_NUM);
-    pageNumClick(END_PAGE_NUM);
-  }, [END_PAGE_NUM, pageNumClick, setPageNumArr]);
+    setPagination(newPagination);
+    fetchData(newPagination);
+  }, [fetchData, listSize, pageCount, setPagination]);
 
   // 이벤트 전파로 클릭 이벤트 관리
   const clickHandler = useCallback(
@@ -86,7 +108,7 @@ function TablePagination({
 
       if (id === "startPage") startPageClick();
       else if (id === "prevPage") prevPageClick();
-      else if (id === "pageNum") pageNumClick(e.target.dataset.id);
+      else if (id === "pageNum") pageNumClick(parseInt(e.target.dataset.id));
       else if (id === "nextPage") nextPageClick();
       else if (id === "endPage") endPageClick();
     },
@@ -97,7 +119,7 @@ function TablePagination({
     <>
       <tbody onChange={itemCheckHandler} onClick={itemClickHandler}>
         {/* 페이지 데이터 */}
-        {pageData.map((element, index) => {
+        {data.map((element, index) => {
           return (
             <tr key={index} data-id={element[itemId]}>
               <td onClick={(e) => e.stopPropagation()}>
@@ -117,11 +139,11 @@ function TablePagination({
             <ul>
               <li id="startPage">{"<<"}</li>
               <li id="prevPage">{"<"}</li>
-              {pageNumArr.map((num) => (
+              {pageNumArr.map((num, idx) => (
                 <li
                   id="pageNum"
-                  className={num === currPageNum ? "currentPage" : ""}
-                  data-id={num}
+                  data-id={idx + 1}
+                  className={idx + 1 === page ? "currentPage" : null}
                   key={num}
                 >
                   {num}
