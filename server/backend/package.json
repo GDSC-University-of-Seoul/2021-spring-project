@@ -6,7 +6,7 @@
   "scripts": {
     "swagger": "swagger-cli bundle swagger/_openapi.yaml --outfile swagger/build.yaml --type yaml",
     "start": "nodemon app --exec babel-node app.js",
-    "prod": "pm2 start app.js --interpreter-args node_modules/@babel/node/bin/babel-node.js"
+    "prod": "pm2 start app.js -i max --interpreter-args node_modules/@babel/node/bin/babel-node.js"
   },
   "devDependencies": {
     "@babel/cli": "^7.13.16",
