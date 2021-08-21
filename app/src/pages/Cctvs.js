@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Button from "@material-ui/core/Button";
 import CctvModalContainer from "../containers/CctvModalContainer";
 import CctvTableContainer from "../containers/CctvTableContainer";
+import Loading from "../components/Loading";
 import { clickCctvData } from "../modules/cctvsTableEvent";
 import { fetchCctvsData } from "../modules/cctvs";
 import { openModal } from "../modules/cctvsModal";
@@ -20,7 +21,7 @@ import { openModal } from "../modules/cctvsModal";
  */
 
 function Cctvs() {
-  const { cctvsData } = useSelector((state) => state.cctvsReducer);
+  const { loading, cctvsData } = useSelector((state) => state.cctvsReducer);
   const { selectedData, clickedData } = useSelector(
     (state) => state.cctvsTableEventReducer
   );
@@ -84,7 +85,11 @@ function Cctvs() {
         </div>
         {/* CCTV 데이터 표 */}
         <div className="container cctvs-section">
-          {cctvsData && <CctvTableContainer cctvsData={cctvsData} />}
+          {loading ? (
+            <Loading />
+          ) : (
+            cctvsData && <CctvTableContainer cctvsData={cctvsData} />
+          )}
         </div>
       </section>
     </>

@@ -2,9 +2,15 @@
   min-width: 1400px;
 
   .cctvs-section {
+    display: flex;
+    justify-content: center;
     min-width: 100%;
     padding: 10px;
     height: 100vh;
+
+    .loading-container {
+      top: 50%;
+    }
   }
   .cctvs-menu {
     width: 300px;
