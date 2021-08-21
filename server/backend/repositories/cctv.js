@@ -26,7 +26,7 @@ const findOneByMacAddress = async (cctvMac) => {
 };
 
 const findAll = async (listSize, page, range) => {
-  const { offset, limit } = await getPagination(listSize, page, range);
+  const offset = await getPagination(listSize, page, range);
 
   let cctv = await CCTV.findAndCountAll({
     include: {
@@ -45,7 +45,7 @@ const findAll = async (listSize, page, range) => {
       [Sequelize.col("ChildCareCenter.address"), "address"],
     ],
     offset: offset,
-    limit: limit,
+    limit: listSize,
     raw: true,
   });
 

@@ -2,7 +2,7 @@ import { AnomalyLog, Sequelize } from "../../database/models/transform";
 import getPagination from "../utils/getPagination";
 
 const findAllLogs = async (listSize, page, range) => {
-  const { offset, limit } = await getPagination(listSize, page, range);
+  const offset = await getPagination(listSize, page, range);
 
   const endDate = new Date();
   let startDate = new Date();
@@ -16,7 +16,7 @@ const findAllLogs = async (listSize, page, range) => {
       },
     },
     offset: offset,
-    limit: limit,
+    limit: listSize,
     raw: true,
   });
 
@@ -28,7 +28,7 @@ const findAllLogs = async (listSize, page, range) => {
 };
 
 const findRecentLogs = async (listSize, page, range) => {
-  const { offset, limit } = await getPagination(listSize, page, range);
+  const offset = await getPagination(listSize, page, range);
   const endDate = new Date();
   let startDate = new Date();
   endDate.setHours(endDate.getHours() + 9);
@@ -41,7 +41,7 @@ const findRecentLogs = async (listSize, page, range) => {
       },
     },
     offset: offset,
-    limit: limit,
+    limit: listSize,
     raw: true,
   });
 
