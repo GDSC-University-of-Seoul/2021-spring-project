@@ -15,7 +15,7 @@ const HEXADEMICAL = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F']
 function randomMac() {
   let macTemp = [];
   for (let i = 0; i < 12; i++) {
-    macTemp.push(HEXADEMICAL[makeRandomNumber(15)]);
+    macTemp.push(HEXADEMICAL[makeRandomNumber(16)]);
   }
   let mac = macTemp.join('');
   return mac;
@@ -36,7 +36,7 @@ for (let i = 0; i < 1000; i++) {
   cctvs.push({
     cctv_id: uuidv4(),
     cctv_name: cctv_name,
-    cctv_mac: String(randomMac()),
+    cctv_mac: randomMac(),
     quality: 'HD',
     install_date: '2021-08-20',
     center_id: cctv_id,
