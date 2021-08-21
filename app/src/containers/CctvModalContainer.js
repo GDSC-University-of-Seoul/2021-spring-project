@@ -109,7 +109,9 @@ function CctvModalContainer({ selectedData, clickedData }) {
       }
       // 2. center_id, cctv_mac 모두 변경되지 않은 경우 (기존 CCTV 정보 변경)
       else {
-        dispatch(updateCctvsData(submitInfo)).then(() => closeHandler());
+        dispatch(updateCctvsData(submitInfo, pagination)).then(() =>
+          closeHandler()
+        );
       }
     }
   };
@@ -126,7 +128,7 @@ function CctvModalContainer({ selectedData, clickedData }) {
 
   // CCTV 데이터 제거 (Delete)
   const deleteCctvData = () => {
-    dispatch(deleteCctvsData(selectedData));
+    dispatch(deleteCctvsData(selectedData, pagination));
     dispatch(initSelectCctvData([]));
     closeHandler();
   };
