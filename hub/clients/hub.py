@@ -44,7 +44,7 @@ class VideoClient:
         self.cctv_mac = mac_id
 
         self.target_file = None
-        
+
     def fetch_latest_file(self, extension="None"):
         # Fetch Latest updated File
         files = search_file(directory=self.path, extension=extension)
@@ -55,43 +55,42 @@ class VideoClient:
         else:
             logger.info("No new files were found.")
             # raise
-        
+
     def fetch_ctime(self):
         # Fetch file created time
         ctime = os.path.getctime(self.target_file)
-        
+
         ctime = datetime.fromtimestamp(ctime)
         stime = ctime + timedelta(seconds=random.randrange(2))
         etime = stime + timedelta(seconds=random.randrange(2))
-        
+
         self.record_date = ctime.strftime("%Y-%m-%d %H:%M:%S")
         self.start_time = stime.strftime("%Y-%m-%d %H:%M:%S")
         self.end_time = etime.strftime("%Y-%m-%d %H:%M:%S")
         os.remove(self.target_file)
 
-        
     def fetch_mac_id(self):
-        # TODO: 
+        # TODO:
         # 현재 mac주소는 랜덤값으로 설정해서 db에 저장하기 위한 데이터로 활용
         # 실제 데이터로 연동할 때에는 cctv mac 주소 고정
-        with open("data/mac.json", mode="r", encoding='utf-8') as f:
+        with open("data/mac.json", mode="r", encoding="utf-8") as f:
             centers = json.load(f)
-        
+
         self.cctv_mac = centers[random.randrange(len(centers))]["cctv_mac"]
-        
+
     async def analize_video(self):
         # Connect Analize Code
         await asyncio.sleep(10)
 
         self.score = self.scoring_func()
         self.anomal, self.anomal_type = self.detect_anomaly(self.score)
-        
-        return self.anomal, self.anomal_type   
+
+        return self.anomal, self.anomal_type
 
     def scoring_func(self):
         # TEMP CODE
         # Randomize option
-        return abs(random.normalvariate(mu=0, sigma=0.5))
+        return abs(random.normalvariate(mu=0, sigma=0.7))
 
     def detect_anomaly(self, score, threshold=0.7):
         # TEMP CODE
@@ -100,13 +99,13 @@ class VideoClient:
             return True, ANOMALY_LIST[random.randrange(3)]
 
         return False, None
-    
+
     def output(self):
         return {
             "video": {
                 "record_date": self.record_date,
                 "cctv_mac": self.cctv_mac,
-                "storage_name": self.path
+                "storage_name": self.path,
             },
             "anomaly_type": self.anomal_type,
             "start_time": self.start_time,

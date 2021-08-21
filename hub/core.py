@@ -49,7 +49,6 @@ class KidsKeeper(object):
         check_update()
         logger.info("Kids Keeper - protect service is now running")
         while True:
-            time.sleep(self.intervals)
             asyncio.run(self.process())
 
     async def process(self):
@@ -64,22 +63,23 @@ class KidsKeeper(object):
 
         cur_time = datetime.now()
         filename = os.path.join(hub_client.path, to_file_format(cur_time))
-        
+
         with open(f"{filename}.mp4", mode="w") as f:
             f.write("")
 
         hub_client.fetch_latest_file(extension="mp4")
         hub_client.fetch_ctime()
         hub_client.fetch_mac_id()
-        
+
         is_anomal, anomal_type = await hub_client.analize_video()
-        
+
         logger.info(f"    {hub_client.path} score is : {hub_client.score * 100:.2f} %")
         if is_anomal:
-            logger.info(f" {hub_client.path} is anomaly!!!")
             response = self.aws_client.send_anomaly(data=hub_client.output())
-            logger.info(" >> response ", response)
-            await asyncio.sleep(1)
+            logger.info(f" {hub_client.target_file} is anomaly!!! >> {response}")
+
+        await asyncio.sleep(self.intervals)
+
 
 def init_runner():
     def runner():
@@ -88,7 +88,7 @@ def init_runner():
 
     return runner
 
-    
+
 if __name__ == "__main__":
     runner = init_runner()
     runner()

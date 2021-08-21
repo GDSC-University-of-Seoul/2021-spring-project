@@ -30,7 +30,6 @@ def check_dir(path: Path, force=True):
     return True
 
 
-
 def check_file(file: Path):
     """
     Search for file if not found
