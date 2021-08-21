@@ -65,16 +65,16 @@ function MapBoxSelectContainer() {
           data={cdrCenter.data}
           className="cdrCenter-info"
         />
-        <a
-          className="cdrcenter-link"
-          href={
-            cdrCenter.data.web_page ? urlFormat(cdrCenter.data.web_page) : null
-          }
-          target="_blank"
-          rel="noreferrer"
-        >
-          어린이집 홈페이지 바로가기 <FiExternalLink />
-        </a>
+        {cdrCenter.data.web_page && (
+          <a
+            className="cdrcenter-link"
+            href={cdrCenter.data.web_page}
+            target="_blank"
+            rel="noreferrer"
+          >
+            어린이집 홈페이지 바로가기 <FiExternalLink />
+          </a>
+        )}
       </div>
       <h1>이상행동 정보</h1>
       <hr />

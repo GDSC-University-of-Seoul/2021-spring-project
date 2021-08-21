@@ -11,7 +11,7 @@ import TextField from "@material-ui/core/TextField";
  * @param {Object} level 도, 광역시 / 시,군,구의 기능을 구분
  * @return {JSX.Element} 범주 컴포넌트
  */
-function MapBoxCategory({ level }) {
+function MapBoxCategory({ level, children }) {
   const { sidoControl, sggControl } = useSelector(
     (state) => state.mapboxCategoryReducer
   );
@@ -122,6 +122,7 @@ function MapBoxCategory({ level }) {
           );
         })}
       </form>
+      {children}
     </div>
   );
 }
