@@ -9,7 +9,7 @@ const findAllLogs = async (listSize, page, range) => {
   endDate.setHours(endDate.getHours() + 9);
   startDate.setDate(endDate.getDate() - 60);
 
-  const anomalyLogs = await AnomalyLog.findAndCountAll({
+  let anomalyLogs = await AnomalyLog.findAndCountAll({
     where: {
       record_date: {
         [Sequelize.Op.between]: [startDate, endDate],
@@ -34,7 +34,7 @@ const findRecentLogs = async (listSize, page, range) => {
   endDate.setHours(endDate.getHours() + 9);
   startDate.setDate(endDate.getDate() - 1);
 
-  const anomalyLogs = await AnomalyLog.findAndCountAll({
+  let anomalyLogs = await AnomalyLog.findAndCountAll({
     where: {
       record_date: {
         [Sequelize.Op.between]: [startDate, endDate],

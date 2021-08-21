@@ -48,6 +48,7 @@ app.use("/api/docs/", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 
 // internal server error handler
 app.use((err, req, res, next) => {
+  console.error(err);
   res.status(500).send({ errors: err.errors });
 });
 
