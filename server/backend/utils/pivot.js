@@ -45,8 +45,8 @@ export const centerPivot = (anomalies) => {
       centers[center_id] = {
         center_id: anomaly.center_id,
         center_name: anomaly.center_name,
-        operation_type: anomaly.anomaly_type,
-        operation_status: anomaly.anomaly_status,
+        operation_type: anomaly.operation_type,
+        operation_status: anomaly.operation_status,
         zip_code: anomaly.zip_code,
         address: anomaly.address,
         center_phone: anomaly.center_phone,
