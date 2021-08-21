@@ -30,6 +30,7 @@ def check_dir(path: Path, force=True):
     return True
 
 
+
 def check_file(file: Path):
     """
     Search for file if not found
@@ -64,5 +65,5 @@ def search_file(directory: Path, filename=None, recursive=True, extension=None):
     if len(files) == 1:
         return files[0]
 
-    assert len(files), f"No files is not founded : {target_file}"
+    assert len(files), f"Any file is not founded : {target_file}"
     return files
