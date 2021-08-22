@@ -1,11 +1,11 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { fetchRecentLogs, recentLogsPagination } from "../modules/recentLogs";
 import { useDispatch, useSelector } from "react-redux";
 
 import ChartContainer from "../containers/ChartContainer";
 import Loading from "../components/Loading";
 import LogTableContainer from "../containers/LogTableContainer";
 import { fetchData } from "../modules/mapbox";
-import { fetchLogsData } from "../modules/logs";
 
 /**
  * `/` 페이지 렌더링
@@ -13,10 +13,14 @@ import { fetchLogsData } from "../modules/logs";
  * @return {JSX.Element} `/` 페이지를 구성하는 컴포넌트
  */
 function Home() {
+  const RECENT_LOGS_SIZE = 15;
+
   const {
-    loading,
-    data: { newLogsData, recentLogsData },
-  } = useSelector((state) => state.logsReducer);
+    loading: recentLogsLoading,
+    pagination,
+    recentLogs,
+    count,
+  } = useSelector((state) => state.recentLogsReducer);
 
   const {
     loading: mapLoading,
@@ -38,22 +42,29 @@ function Home() {
 
   useEffect(() => {
     // 헤더부 - 어린이집 이상행동 정보 설정
-    if (districts.length === 0) {
-      dispatch(fetchData()).then(() => {
-        const total = initialState;
+    dispatch(fetchData()).then(() => {
+      const total = initialState;
 
-        for (let district in districts) {
-          total.assualt += district.assualt_cnt;
-          total.fight += district.fight_cnt;
-          total.swoon += district.swoon_cnt;
-          total.anomaly += district.anomaly_cnt;
-        }
-        setAnomalyCnt(total);
-      });
-    }
-    // 로그 데이터 설정
-    if (recentLogsData.length === 0) dispatch(fetchLogsData());
-  }, [dispatch, districts, initialState, recentLogsData]);
+      for (let district in districts) {
+        total.assualt += district.assualt_cnt;
+        total.fight += district.fight_cnt;
+        total.swoon += district.swoon_cnt;
+        total.anomaly += district.anomaly_cnt;
+      }
+      setAnomalyCnt(total);
+    });
+
+    // 최근 로그 데이터 초기화
+    const initPagination = {
+      listSize: RECENT_LOGS_SIZE,
+      range: 1,
+      page: 1,
+    };
+    dispatch(recentLogsPagination(initPagination));
+    dispatch(fetchRecentLogs(initPagination));
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const HeaderItem = ({ title, children }) => {
     return (
@@ -102,7 +113,18 @@ function Home() {
           </div>
         </div>
         <div className="container log-section">
-          <LogTableContainer loading={loading} logsData={newLogsData} />
+          <LogTableContainer
+            loading={recentLogsLoading}
+            pagination={pagination}
+            logsData={recentLogs}
+            count={count}
+            setPagination={(pagination) =>
+              dispatch(fetchRecentLogs(pagination))
+            }
+            fetchData={(pagination) =>
+              dispatch(recentLogsPagination(pagination))
+            }
+          />
         </div>
       </section>
     </>
