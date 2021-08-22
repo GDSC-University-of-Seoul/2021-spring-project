@@ -207,6 +207,14 @@ paths:
           in: query
           required: true
           description: 현재 범위 내 페이지
+        - name: type
+          in: query
+          required: false
+          description: 검색할 유형 (컬럼)
+        - name: keyword
+          in: query
+          required: false
+          description: 검색할 키워드
       responses:
         '200':
           description: OK
@@ -367,6 +375,14 @@ paths:
           in: query
           required: true
           description: 현재 범위 내 페이지
+        - name: type
+          in: query
+          required: false
+          description: 검색할 유형 (컬럼)
+        - name: keyword
+          in: query
+          required: false
+          description: 검색할 키워드
       responses:
         '200':
           description: OK
@@ -458,6 +474,14 @@ paths:
           in: query
           required: true
           description: 현재 범위 내 페이지
+        - name: type
+          in: query
+          required: false
+          description: 검색할 유형 (컬럼)
+        - name: keyword
+          in: query
+          required: false
+          description: 검색할 키워드
       responses:
         '200':
           description: OK
