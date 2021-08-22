@@ -3,7 +3,7 @@ import {
   ChildCareCenter,
   CCTV,
 } from "../../database/models/transform";
-import getPagination from "../utils/getPagination";
+import { getOffset, getCctvOption } from "../utils/getPageOption";
 
 const create = async (centerId, cctvName, cctvMac, installDate, quality) => {
   const cctv = await CCTV.create({
@@ -25,14 +25,17 @@ const findOneByMacAddress = async (cctvMac) => {
   return cctv;
 };
 
-const findAll = async (listSize, page, range) => {
-  const offset = await getPagination(listSize, page, range);
+const findAll = async (listSize, page, range, type, keyword) => {
+  const offset = await getOffset(listSize, page, range);
+  const { cctvFilter, centerFilter } = await getCctvOption(type, keyword);
 
   let cctv = await CCTV.findAndCountAll({
     include: {
       model: ChildCareCenter,
       attributes: [],
+      where: centerFilter,
     },
+    where: cctvFilter,
     attributes: [
       "cctv_id",
       "cctv_name",

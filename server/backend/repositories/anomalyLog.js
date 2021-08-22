@@ -1,20 +1,29 @@
 import { AnomalyLog, Sequelize } from "../../database/models/transform";
-import getPagination from "../utils/getPagination";
+import { getOffset, getLogOption } from "../utils/getPageOption";
 
-const findAllLogs = async (listSize, page, range) => {
-  const offset = await getPagination(listSize, page, range);
+const findAllLogs = async (listSize, page, range, type, keyword, recent) => {
+  const offset = await getOffset(listSize, page, range);
+  const logFilter = await getLogOption(type, keyword);
 
-  const endDate = new Date();
-  let startDate = new Date();
-  endDate.setHours(endDate.getHours() + 9);
-  startDate.setDate(endDate.getDate() - 60);
+  if (!logFilter.record_date) {
+    const endDate = new Date();
+    let startDate = new Date();
+
+    if (recent) {
+      endDate.setHours(endDate.getHours() + 9);
+      startDate.setDate(endDate.getDate() - 1);
+    } else {
+      endDate.setHours(endDate.getHours() + 9);
+      startDate.setDate(endDate.getDate() - 60);
+    }
+
+    logFilter.record_date = {
+      [Sequelize.Op.between]: [startDate, endDate],
+    };
+  }
 
   let anomalyLogs = await AnomalyLog.findAndCountAll({
-    where: {
-      record_date: {
-        [Sequelize.Op.between]: [startDate, endDate],
-      },
-    },
+    where: logFilter,
     offset: offset,
     limit: listSize,
     raw: true,
@@ -27,29 +36,4 @@ const findAllLogs = async (listSize, page, range) => {
   return anomalyLogs;
 };
 
-const findRecentLogs = async (listSize, page, range) => {
-  const offset = await getPagination(listSize, page, range);
-  const endDate = new Date();
-  let startDate = new Date();
-  endDate.setHours(endDate.getHours() + 9);
-  startDate.setDate(endDate.getDate() - 1);
-
-  let anomalyLogs = await AnomalyLog.findAndCountAll({
-    where: {
-      record_date: {
-        [Sequelize.Op.between]: [startDate, endDate],
-      },
-    },
-    offset: offset,
-    limit: listSize,
-    raw: true,
-  });
-
-  anomalyLogs.count = {
-    listCount: anomalyLogs.count,
-    pageCount: Math.ceil(anomalyLogs.count / listSize),
-  };
-  return anomalyLogs;
-};
-
-export default { findAllLogs, findRecentLogs };
+export default { findAllLogs };

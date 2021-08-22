@@ -24,15 +24,25 @@ const create = async (req, res, next) => {
 
 const findAll = async (req, res, next) => {
   try {
-    const { list_size, page, range } = req.query;
+    const { list_size, page, range, type, keyword } = req.query;
     if (!(list_size && page && range)) {
       res.status(400).send("Pagination query paramters required.");
       return;
     }
-    const cctv = await CCTVRepository.findAll(list_size, page, range);
+    const cctv = await CCTVRepository.findAll(
+      list_size,
+      page,
+      range,
+      type,
+      keyword
+    );
     res.json(cctv);
   } catch (err) {
-    next(err);
+    if (err.name === "SearchError") {
+      res.status(400).send("Invalid Search Type.");
+    } else {
+      next(err);
+    }
   }
 };
 
