@@ -59,7 +59,7 @@ const initialState = {
   error: null,
 };
 
-export default function logsReducer(state = initialState, action) {
+export default function recentLogsReducer(state = initialState, action) {
   switch (action.type) {
     case RECENT_LOGS_LOADING:
       return {
