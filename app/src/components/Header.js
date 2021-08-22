@@ -141,7 +141,6 @@ function Header({ history }) {
   // 신규 로그 발생 시 알람음 재생 (알림음 재생 설정 시에만)
   const audioRef = useRef();
   useEffect(() => {
-    console.log(allRecentLogs);
     if (audioRef.current) {
       audioRef.current.currentTime = 0;
       audioRef.current.play();
