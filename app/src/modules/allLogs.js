@@ -23,7 +23,7 @@ export const fetchAllLogs = (pagination) => async (dispatch) => {
       const recordDate = new Date(logData.record_date);
 
       return {
-        ...allLogs,
+        ...logData,
         record_date: `${dateUTCFormat(recordDate)} ${timeUTCFormat(
           recordDate
         )}`,

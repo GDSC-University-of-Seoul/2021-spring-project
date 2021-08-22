@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 function TablePagination({
   pagination,
@@ -22,17 +22,24 @@ function TablePagination({
   const { pageCount } = count;
   const PAGINATION_SIZE = 10;
 
-  // 페이지네이션 순서 배열 생성
-  const [pageNumArr] = useState(() => {
+  // 순서 배열 생성
+  const orderArr = useCallback(() => {
     const start = (range - 1) * PAGINATION_SIZE + 1;
     const end = range * PAGINATION_SIZE;
     const maxVal = pageCount;
 
-    const orderArr = [];
-    for (let i = start; i <= Math.min(end, maxVal); i++) orderArr.push(i);
+    const arr = [];
+    for (let i = start; i <= Math.min(end, maxVal); i++) arr.push(i);
 
-    return orderArr;
-  });
+    return arr;
+  }, [pageCount, range]);
+
+  // 페이지네이션 번호
+  const [pageNumArr, setPageNumArr] = useState(orderArr);
+
+  useEffect(() => {
+    setPageNumArr(orderArr);
+  }, [count, orderArr]);
 
   // 페이지 번호 클릭
   const pageNumClick = useCallback(
@@ -65,7 +72,7 @@ function TablePagination({
 
   // 다음 페이지(>) 클릭
   const nextPageClick = useCallback(() => {
-    if (range === parseInt(pageCount / PAGINATION_SIZE) + 1) return;
+    if (range === parseInt((pageCount - 1) / PAGINATION_SIZE) + 1) return;
 
     const newPagination = {
       listSize,
@@ -93,8 +100,8 @@ function TablePagination({
   const endPageClick = useCallback(() => {
     const newPagination = {
       listSize,
-      range: parseInt(pageCount / PAGINATION_SIZE) + 1,
-      page: pageCount % PAGINATION_SIZE,
+      range: parseInt((pageCount - 1) / PAGINATION_SIZE) + 1,
+      page: ((pageCount - 1) % PAGINATION_SIZE) + 1,
     };
 
     setPagination(newPagination);
