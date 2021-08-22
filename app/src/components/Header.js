@@ -6,12 +6,14 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { dateFormat, timeFormat } from "../utils/format";
 import { useDispatch, useSelector } from "react-redux";
 
 import { Link } from "react-router-dom";
 import LogoutModal from "./LogoutModal";
 import UpdateLoginForm from "./UpdateLoginForm";
 import { loadSettingsState } from "../modules/settings";
+import { recentLogsAllFetch } from "../modules/recentLogs";
 import useLocalStorage from "../hooks/useLocalStorage";
 
 /**
@@ -22,8 +24,13 @@ import useLocalStorage from "../hooks/useLocalStorage";
  */
 
 function Header({ history }) {
-  const ONE_HOUR = 3600000;
-  const [date, setDate] = useState(null); // 날짜·시간 정보 저장
+  const ONE_DAY = 24 * 60 * 60 * 1000;
+
+  // 현재 날짜·시간 정보 저장
+  const [currDate, setCurrDate] = useState({
+    date: null,
+    time: null,
+  });
 
   const initMenuOpen = useMemo(
     () => ({
@@ -37,9 +44,9 @@ function Header({ history }) {
   const [isLogOut, setIsLogOut] = useState(false); // 사용자 로그아웃
 
   const { loginInfo } = useSelector((state) => state.loginReducer);
-  const {
-    data: { newLogsData },
-  } = useSelector((state) => state.logsReducer);
+  const { allRecentLogs, count } = useSelector(
+    (state) => state.recentLogsReducer
+  );
 
   // 이미 읽은 신규 알림 로그 ID
   const [readAlarmsId, setReadAlarmsId] = useLocalStorage("readAlarms", []);
@@ -47,10 +54,23 @@ function Header({ history }) {
   // 읽지 않은 알림 로그
   const [unreadLogs, setunreadLogs] = useState([]);
 
+  const dispatch = useDispatch();
+
+  // 모든 최신 로그 Fetch
+  useEffect(() => {
+    dispatch(
+      recentLogsAllFetch({
+        listSize: count.listCount,
+        range: 1,
+        page: 1,
+      })
+    );
+  }, [count, dispatch]);
+
   useEffect(() => {
     // 읽지 않은 알림 로그 필터링
     setunreadLogs(
-      newLogsData.filter(
+      allRecentLogs.filter(
         (data) =>
           !readAlarmsId.find(
             (element) => String(element) === String(data.anomaly_log_id)
@@ -58,39 +78,24 @@ function Header({ history }) {
       )
     );
 
-    // 신규 로그가 생성되는 한 시간마다 초기화 (선택 시 시간 연장됨)
+    // 신규 로그가 생성되는 하루마다 초기화 (선택 시 시간 연장됨)
     const readLogsIdClear = setTimeout(() => {
       setReadAlarmsId([]);
-    }, ONE_HOUR);
+    }, ONE_DAY);
 
     return () => clearInterval(readLogsIdClear);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [newLogsData, readAlarmsId]);
-
-  // 날짜·시간 포맷팅 (yyyy-mm-dd hh:mm:ss)
-  const format = useCallback((timeInfo) => {
-    Object.keys(timeInfo).forEach((key) => {
-      timeInfo[key] =
-        timeInfo[key] < 10
-          ? "0" + String(timeInfo[key])
-          : String(timeInfo[key]);
-    });
-    return timeInfo;
-  }, []);
+  }, [allRecentLogs, readAlarmsId]);
 
   //  날짜·시간 표기 함수 (1초 마다 비동기 처리)
   useEffect(() => {
     const getTime = setInterval(() => {
       const time = new Date();
-      const timeInfo = {
-        year: time.getFullYear(),
-        month: time.getMonth() + 1,
-        day: time.getDate(),
-        hours: time.getHours(),
-        minutes: time.getMinutes(),
-        seconds: time.getSeconds(),
-      };
-      setDate(format(timeInfo));
+
+      setCurrDate({
+        date: dateFormat(time),
+        time: timeFormat(time),
+      });
     }, 1000);
 
     return () => clearInterval(getTime);
@@ -125,8 +130,9 @@ function Header({ history }) {
   );
 
   // 알림 메세지, 알림음 설정으로 헤더 메뉴 설정
-  const { settings } = useSelector((state) => state.settingsReducer);
-  const dispatch = useDispatch();
+  const {
+    settings: { alarmMsgOn, alarmSoundOn },
+  } = useSelector((state) => state.settingsReducer);
 
   useEffect(() => {
     dispatch(loadSettingsState());
@@ -135,12 +141,14 @@ function Header({ history }) {
   // 신규 로그 발생 시 알람음 재생 (알림음 재생 설정 시에만)
   const audioRef = useRef();
   useEffect(() => {
+    console.log(allRecentLogs);
     if (audioRef.current) {
       audioRef.current.currentTime = 0;
       audioRef.current.play();
     }
-    return () => newLogsData;
-  }, [newLogsData]);
+    return () => allRecentLogs;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [audioRef]);
 
   return (
     <>
@@ -149,14 +157,12 @@ function Header({ history }) {
         <div className="info">
           <div
             className={`newLogs-info${
-              unreadLogs.length !== 0 && settings.alarmMsgOn
-                ? " logs-unread"
-                : ""
+              unreadLogs.length !== 0 && alarmMsgOn ? " logs-unread" : ""
             }`}
             onClick={(e) => e.stopPropagation()}
           >
             {/* 알림 설정 */}
-            {unreadLogs.length !== 0 && settings.alarmSoundOn && (
+            {unreadLogs.length !== 0 && alarmMsgOn && alarmSoundOn && (
               <audio src="src/assets/sound/alarm.mp3" autoPlay ref={audioRef} />
             )}
             <FaBell
@@ -173,7 +179,7 @@ function Header({ history }) {
                   className="arrowbox-menu alarm-menu"
                   onClick={clickNewLogAlarm}
                 >
-                  {unreadLogs.length === 0 || !settings.alarmMsgOn ? (
+                  {unreadLogs.length === 0 || !alarmMsgOn ? (
                     <li>새로운 로그 정보가 없습니다.</li>
                   ) : (
                     unreadLogs.map((data) => (
@@ -211,8 +217,8 @@ function Header({ history }) {
             )}
           </div>
           <div className="time-info">
-            <div>{date && `${date.year}-${date.month}-${date.day}`}</div>
-            <div>{date && `${date.hours}:${date.minutes}:${date.seconds}`}</div>
+            <div>{currDate.date}</div>
+            <div>{currDate.time}</div>
           </div>
         </div>
       </header>
