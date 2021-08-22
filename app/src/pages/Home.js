@@ -13,7 +13,7 @@ import { fetchData } from "../modules/mapbox";
  * @return {JSX.Element} `/` 페이지를 구성하는 컴포넌트
  */
 function Home() {
-  const RECENT_LOGS_SIZE = 15;
+  const RECENT_LOGS_SIZE = 10;
 
   const {
     loading: recentLogsLoading,

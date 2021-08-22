@@ -4,7 +4,7 @@
   .logs-menu {
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 
     button {
       background-color: white;
@@ -23,8 +23,7 @@
   }
   .newLogs-section {
     padding: 20px;
-    height: 380px;
-    overflow: auto;
+    height: 420px;
     position: relative;
 
     .loading-container {
@@ -36,14 +35,39 @@
   .entireLogs-section {
     margin-top: 10px;
     padding: 20px;
-    height: 400px;
-    overflow: auto;
+    height: 420px;
     position: relative;
 
     .loading-container {
       position: absolute;
       top: 40%;
       left: 50%;
+    }
+  }
+
+  .table {
+    height: 360px;
+
+    thead th,
+    tbody td {
+      &:nth-child(2) {
+        max-width: 220px;
+        width: 220px;
+      }
+      &:nth-child(3) {
+        width: 200px;
+      }
+      &:nth-child(4) {
+        width: 300px;
+      }
+      &:nth-child(5) {
+        max-width: 200px;
+      }
+    }
+  }
+  .tablePagination {
+    ul {
+      margin: 4px 0;
     }
   }
 }

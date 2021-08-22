@@ -138,6 +138,7 @@ function TablePagination({
             </tr>
           );
         })}
+        <tr></tr>
       </tbody>
       {/* 페이지 넘버링 네비게이션 */}
       <tfoot className="tablePagination">
