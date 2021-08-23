@@ -4,15 +4,6 @@
 /* config */
 @import "config/reset.scss";
 
-/* pages */
-@import "pages/pages";
-@import "pages/login";
-@import "pages/home";
-@import "pages/monitoring";
-@import "pages/cctvs";
-@import "pages/logs";
-@import "pages/settings";
-
 /* components */
 @import "components/header";
 @import "components/sideBar";
@@ -25,6 +16,16 @@
 @import "components/searchCenterModal";
 @import "components/updateLoginForm";
 @import "components/LogoutModal";
+@import "components/tablePagenation";
+
+/* pages */
+@import "pages/pages";
+@import "pages/login";
+@import "pages/home";
+@import "pages/monitoring";
+@import "pages/cctvs";
+@import "pages/logs";
+@import "pages/settings";
 
 * {
   box-sizing: border-box;

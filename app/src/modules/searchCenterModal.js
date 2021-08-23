@@ -69,7 +69,8 @@ export const selectCenter = (centerId) => async (dispatch) => {
     const centerInfo = await axios.get(
       `${process.env.REACT_APP_API_SERVER}/api/centers/${centerId}`
     );
-    dispatch({ type: SELECTED_CENTER, payload: centerInfo.data });
+
+    dispatch({ type: SELECTED_CENTER, payload: centerInfo.data[0] });
   } catch (e) {
     dispatch({ type: SEARCH_CENTER_ERROR, payload: e });
   }

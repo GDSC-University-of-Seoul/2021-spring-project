@@ -26,10 +26,12 @@ import SearchCenterModal from "../components/searchCenterModal";
 /**
  * CCTV 모달창 컨테이너 컴포넌트
  *
- * @param {Object} selectedData: 체크된 데이터, clickedData: 클릭한 데이터
+ * @param {Object} - selectedData: 체크된 데이터, clickedData: 클릭한 데이터
  * @returns {JSX.Element} CCTV 모달창 컨테이너
  */
 function CctvModalContainer({ selectedData, clickedData }) {
+  const { pagination } = useSelector((state) => state.cctvsReducer);
+
   const {
     isOpen,
     macValid,
@@ -85,7 +87,7 @@ function CctvModalContainer({ selectedData, clickedData }) {
 
     // MAC 주소 중복 체크 이후 CCTV 데이터 생성 (Create)
     if (createData) {
-      dispatch(createCctvsData(submitInfo)).then(() => {
+      dispatch(createCctvsData(submitInfo, pagination)).then(() => {
         if (!checkDuplicatedMac()) closeHandler();
       });
     }
@@ -98,16 +100,18 @@ function CctvModalContainer({ selectedData, clickedData }) {
       ) {
         if (!submitInfo.center_id) submitInfo.center_id = befInfo.center_id;
 
-        dispatch(createCctvsData(submitInfo)).then(() => {
+        dispatch(createCctvsData(submitInfo, pagination)).then(() => {
           if (!checkDuplicatedMac()) {
-            dispatch(deleteCctvsData([befInfo]));
+            dispatch(deleteCctvsData([befInfo], pagination));
             closeHandler();
           }
         });
       }
       // 2. center_id, cctv_mac 모두 변경되지 않은 경우 (기존 CCTV 정보 변경)
       else {
-        dispatch(updateCctvsData(submitInfo)).then(() => closeHandler());
+        dispatch(updateCctvsData(submitInfo, pagination)).then(() =>
+          closeHandler()
+        );
       }
     }
   };
@@ -124,7 +128,7 @@ function CctvModalContainer({ selectedData, clickedData }) {
 
   // CCTV 데이터 제거 (Delete)
   const deleteCctvData = () => {
-    dispatch(deleteCctvsData(selectedData));
+    dispatch(deleteCctvsData(selectedData, pagination));
     dispatch(initSelectCctvData([]));
     closeHandler();
   };
