@@ -96,7 +96,7 @@ export const sidoClick =
         sggsDistrictData.data.forEach((sggDistrictData) => {
           if (sggFeatures.properties.sggnm === sggDistrictData.district_name)
             sggFeatures.properties.sgg_cnt = parseInt(
-              sggDistrictData.count,
+              sggDistrictData.anomaly_count,
               10
             );
         });

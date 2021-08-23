@@ -5,6 +5,7 @@
     min-width: 100%;
     padding: 10px;
     height: 100vh;
+    overflow: auto;
   }
   .cctvs-menu {
     width: 300px;
@@ -15,6 +16,22 @@
     button {
       background-color: white;
       font-weight: 600;
+    }
+  }
+  .table tbody td,
+  .table tbody tr {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    &:nth-child(2) {
+      max-width: 200px;
+    }
+    &:nth-child(3) {
+      max-width: 200px;
+    }
+    &:nth-child(4) {
+      max-width: 300px;
     }
   }
 }
