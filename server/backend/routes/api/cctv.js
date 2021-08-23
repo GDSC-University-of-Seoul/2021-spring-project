@@ -10,4 +10,4 @@ router
   .put(cctvController.updateByCctvMac)
   .delete(cctvController.deleteByCctvMac);
 
-module.exports = router;
+export default router;

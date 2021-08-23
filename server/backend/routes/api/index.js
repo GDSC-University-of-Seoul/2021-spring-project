@@ -14,4 +14,4 @@ router.use("/cctvs", cctvRouter);
 router.use("/anomalies/logs", logRouter);
 router.use("/auth", authRouter);
 
-module.exports = router;
+export default router;
