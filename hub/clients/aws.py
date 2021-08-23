@@ -9,6 +9,8 @@ import asyncio
 import requests
 import json
 
+from utils.logger import Logger
+logger = Logger().get_logger()
 THRESHOLD = 0.4
 
 
@@ -37,21 +39,20 @@ class AWSClient:
         return header_base
 
     def send_anomaly(self, data):
-        url = f"{self.base_url}/api/anomalies"
+        url = f"{self.base_url}/api/anomalies/logs"
 
         try:
-            print(f"Send data to {url} : {data}")
+            print(f"Send data to {url} : \n {data}")
             response = requests.post(url, headers=self.header, data=json.dumps(data))
-            print(response)
             return response
-        except:
-            # TODO: Do Something
-            pass
+        except Exception as e:
+            logger.warning(e)
 
         return None
 
     async def server_api(self, dirpath):
         files = os.listdir(dirpath)
+        
         (flag, data) = await self.run_model(dirpath, files[-1])
 
         if flag is True:
@@ -66,6 +67,7 @@ class AWSClient:
 
     async def run_model(self, dirpath, filepath):
         print(f"  Run Model {filepath} at {dirpath}...")
+        
 
         ## RUN MODEL
         score = abs(random.normalvariate(mu=0, sigma=0.2))

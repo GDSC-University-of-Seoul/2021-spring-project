@@ -8,9 +8,9 @@ import LogTableContainer from "../containers/LogTableContainer";
 import { fetchData } from "../modules/mapbox";
 
 /**
- * `/` 페이지 렌더링
+ * `/home` 페이지 렌더링
  *
- * @return {JSX.Element} `/` 페이지를 구성하는 컴포넌트
+ * @return {JSX.Element} `/home` 페이지를 구성하는 컴포넌트
  */
 function Home() {
   const RECENT_LOGS_SIZE = 10;
@@ -29,7 +29,7 @@ function Home() {
 
   const dispatch = useDispatch();
 
-  const initialState = useMemo(
+  const initialAnomalyCnt = useMemo(
     () => ({
       assualt: 0,
       fight: 0,
@@ -38,21 +38,12 @@ function Home() {
     }),
     []
   );
-  const [anomalyCnt, setAnomalyCnt] = useState(initialState);
+
+  const [anomalyCnt, setAnomalyCnt] = useState(initialAnomalyCnt); // 이상행동 건수
 
   useEffect(() => {
-    // 헤더부 - 어린이집 이상행동 정보 설정
-    dispatch(fetchData()).then(() => {
-      const total = initialState;
-
-      for (let district in districts) {
-        total.assualt += district.assualt_cnt;
-        total.fight += district.fight_cnt;
-        total.swoon += district.swoon_cnt;
-        total.anomaly += district.anomaly_cnt;
-      }
-      setAnomalyCnt(total);
-    });
+    // 구역 정보 Fetch - 어린이집 이상행동 건수 추출용
+    dispatch(fetchData());
 
     // 최근 로그 데이터 초기화
     const initPagination = {
@@ -64,7 +55,26 @@ function Home() {
     dispatch(fetchRecentLogs(initPagination));
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, []); 
+
+  // 이상행동 건수 집계
+  useEffect(() => {
+    let total = initialAnomalyCnt;
+
+    districts.forEach((district) => {
+      let { assualt, fight, swoon, anomaly } = total;
+      let { assualt_count, fight_count, swoon_count, anomaly_count } = district;
+
+      total = {
+        assualt: assualt + parseInt(assualt_count),
+        fight: fight + parseInt(fight_count),
+        swoon: swoon + parseInt(swoon_count),
+        anomaly: anomaly + parseInt(anomaly_count),
+      };
+    });
+    setAnomalyCnt(total);
+  }, [districts, initialAnomalyCnt]);
+
 
   const HeaderItem = ({ title, children }) => {
     return (

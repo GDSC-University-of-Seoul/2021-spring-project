@@ -8,7 +8,8 @@ import {
 } from "../utils/mapStyle";
 import {
   markerClick,
-  resetDistrict,
+  resetToSggDistrict,
+  resetToSidoDistrict,
   setGeojsonData,
   sggClick,
   sggHover,
@@ -18,6 +19,7 @@ import {
 import { resetCdrCenter, setCdrCenter } from "../modules/cdrCenter";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 
+import { Button } from "@material-ui/core";
 import MapBoxCategory from "./MapBoxCategory";
 import districtViewport from "../utils/districtViewport";
 
@@ -37,12 +39,12 @@ function MapBox({ geojson }) {
    * MapBox 컴포넌트에서 사용하는 상태
    * - level : 도, 광역시 / 시,군,구의 기능을 구분
    * - popupInfo : hover 이벤트 간 발생하는 정보
-   * - geojsonData : 행정구역을 렌더링하기 위핸 geojson 데이터
+   * - geojsonData : 행정구역을 렌더링하기 위한 geojson 데이터
    * - cdrCentersInfo : 시,군,구 내에 있는 어린이집 정보
    * - error : 발생한 에러
    */
   const {
-    data: { level, popupInfo, geojsonData, cdrCentersInfo },
+    data: { level, popupInfo, sidoName, geojsonData, cdrCentersInfo },
     error,
   } = useSelector((state) => state.mapboxEventReducer, shallowEqual);
   const dispatch = useDispatch();
@@ -64,16 +66,25 @@ function MapBox({ geojson }) {
     zoom: districtViewport["대한민국"].zoom,
   });
 
+  // Popup 토글 on/off 를 위한 상태 → 동일한 어린이집 마커를 선택하면 on/off 다르면 전부 on
+  const [cdrPopup, setCdrPopup] = useState({
+    open: true,
+    centerId: null,
+  });
+
+  // 시·군·구 내에 어린이집 이상행동 검색 결과가 없으면 에러창 출력
+  const [noCdrResult, setNoCdrResult] = useState(false);
+
   // geojsonData 를 dependency 배열에 넣으면 시군구 기능이 정상적으로 동작하지 않음
-  /* eslint-disable */
   useEffect(() => {
-    dispatch(resetDistrict(districtArea));
+    dispatch(resetToSidoDistrict(districtArea));
     if (!geojsonData) dispatch(setGeojsonData(districtArea));
 
     return {
       geojson,
       Layer,
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, districtArea, geojson]);
 
   /*
@@ -125,7 +136,11 @@ function MapBox({ geojson }) {
           const sggnmFind = geojsonData.features.find(
             (data) => data.properties.sggnm === selectedDistrictInfo.name
           );
-          if (sggnmFind) dispatch(sggClick(selectedDistrictInfo));
+          if (!sggnmFind) return;
+
+          dispatch(sggClick(selectedDistrictInfo)).then(() =>
+            setNoCdrResult(true)
+          );
         }
       }
     } catch (e) {
@@ -142,15 +157,20 @@ function MapBox({ geojson }) {
         );
         dispatch(markerClick(markerInfo[0]));
         dispatch(setCdrCenter(markerInfo[0]));
+
+        setCdrPopup({
+          open: cdrCenterId === cdrPopup.centerId ? !cdrPopup.open : true,
+          centerId: cdrCenterId,
+        });
       }
     },
-    [dispatch, cdrCentersInfo]
+    [dispatch, cdrCentersInfo, cdrPopup]
   );
   /*
    * Reset 버튼 click 이벤트 핸들러
    * - level과 geojson 데이터를 도, 광역시 기준으로 초기화
    */
-  const resetClickHandler = useCallback(() => {
+  const resetToSidoClick = useCallback(() => {
     setViewport({
       width: 770,
       height: 800,
@@ -158,9 +178,25 @@ function MapBox({ geojson }) {
       longitude: districtViewport["대한민국"].lng,
       zoom: districtViewport["대한민국"].zoom,
     });
-    dispatch(resetDistrict(districtArea));
+
+    dispatch(resetToSidoDistrict(districtArea));
     dispatch(resetCdrCenter());
+    setCdrPopup({
+      open: true,
+      centerId: null,
+    });
+    setNoCdrResult(false);
   }, [dispatch, districtArea]);
+
+  const resetToSggClick = useCallback(() => {
+    dispatch(resetToSggDistrict(geojsonData, sidoName));
+    dispatch(resetCdrCenter());
+    setCdrPopup({
+      open: true,
+      centerId: null,
+    });
+    setNoCdrResult(false);
+  }, [dispatch, geojsonData, sidoName]);
 
   if (error) <div>지도 오류 발생</div>;
 
@@ -186,10 +222,10 @@ function MapBox({ geojson }) {
               />
             )}
 
-            {(level === 2 || level == 3) && (
+            {(level === 2 || level === 3) && (
               <Layer {...getSggLayer(sggControl.diff)} />
             )}
-            {(level === 2 || level == 3) && (
+            {(level === 2 || level === 3) && (
               <Layer
                 {...getSggHighlightLayer(sggControl.diff)}
                 filter={filter}
@@ -198,7 +234,7 @@ function MapBox({ geojson }) {
           </Source>
         )}
         {/* 팝업 메세지로 행정구역의 정보 표시 */}
-        {selectedDistrictInfo.name !== "" && popupInfo && (
+        {selectedDistrictInfo.name !== "" && popupInfo && cdrPopup.open && (
           <Popup
             longitude={Number(popupInfo.longitude)}
             latitude={Number(popupInfo.latitude)}
@@ -206,7 +242,7 @@ function MapBox({ geojson }) {
             className="popup"
           >
             <h2>{popupInfo.districtName}</h2>
-            {level == 3 ? (
+            {level === 3 ? (
               <ul className="popup-content">
                 <li>사건·사고 건수 : {popupInfo.anomalyCount}건</li>
                 <li>폭행 건수 : {popupInfo.assualtCount}건</li>
@@ -233,12 +269,49 @@ function MapBox({ geojson }) {
             ))}
         </div>
       </ReactMapGL>
-      {/* 어린이집 개수에 기반한 범주 */}
-      {level && <MapBoxCategory level={level} />}
-      {/* 도, 광역시 기준으로 초기화하는 버튼 */}
-      <button onClick={resetClickHandler} className="reset-button">
-        Reset
-      </button>
+      {/* 검색결과 에러창 */}
+      {noCdrResult && cdrCentersInfo.length === 0 && (
+        <div className="noResult-modal">
+          <section className="noResult-modal-section">
+            ⚠️ 검색결과가 없습니다.
+            <Button
+              variant="contained"
+              color="primary"
+              disableElevation
+              onClick={resetToSggClick}
+            >
+              확인
+            </Button>
+          </section>
+        </div>
+      )}
+      {/* 어린이집 이상행동 개수에 기반한 범주 */}
+      {level && (
+        <>
+          {/* 도, 광역시 기준으로 초기화하는 버튼 */}
+          <MapBoxCategory level={level}>
+            <div className="control-button">
+              <Button
+                variant="contained"
+                color="primary"
+                disableElevation
+                onClick={resetToSidoClick}
+              >
+                도·광역시
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                disableElevation
+                onClick={resetToSggClick}
+                disabled={level === 1}
+              >
+                시·군·구
+              </Button>
+            </div>
+          </MapBoxCategory>
+        </>
+      )}
     </>
   );
 }

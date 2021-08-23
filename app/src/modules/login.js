@@ -14,12 +14,23 @@ const LOGIN_ERROR = "login/LOGIN_ERROR";
  */
 export const loginSubmit = (userId, userPw) => async (dispatch) => {
   try {
-    // Todo : 로그인 서버 주소 지정
+    const loginResponse = await axios.post(
+      `${process.env.REACT_APP_API_SERVER}/api/auth/login`,
+      {
+        member_id: userId,
+        password: userPw,
+      },
+      { withCredentials: true }
+    );
 
-    const loginInfo = await axios.post(`${process.env.REACT_APP_API_SERVER}/`, {
-      userId,
-      userPw,
-    });
+    const { member, token } = loginResponse.data;
+
+    const loginInfo = {
+      userId: member.member_id,
+      userName: member.member_name,
+      email: member.email,
+      userToken: token,
+    };
 
     setCookie("loginInfo", JSON.stringify(loginInfo), 1);
     dispatch({
@@ -46,7 +57,7 @@ export const getLoginCookie = () => {
  *
  * @param {Object} history 리다이렉션을 위한 history 객체
  */
-export const logOut = (history) => (dispatch) => {
+export const logOut = (history) => async (dispatch) => {
   deleteCookie("loginInfo");
   dispatch({ type: LOGOUT });
   history.push("/");
@@ -58,10 +69,21 @@ export const logOut = (history) => (dispatch) => {
  * @param {Object} userInfo 변경할 사용자 정보 {userId, userName, password, email}
  * @returns
  */
-export const loginInfoUpdate = (userInfo) => async (dispatch) => {
+export const loginInfoUpdate = (userInfo, userToken) => async (dispatch) => {
   try {
-    // Todo : 로그인 서버 주소 지정
-    await axios.put(`${process.env.REACT_APP_API_SERVER}/`, userInfo);
+    await axios.put(
+      `${process.env.REACT_APP_API_SERVER}/api/auth/member`,
+      {
+        member_name: userInfo.userName,
+        password: userInfo.password,
+        email: userInfo.email,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+      }
+    );
   } catch (e) {
     dispatch({ type: LOGIN_ERROR, payload: e });
   }
@@ -80,6 +102,7 @@ const initialState = {
     userId: null,
     userName: null,
     email: null,
+    userToken: null,
   },
   error: null,
 };
