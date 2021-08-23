@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { BiRefresh } from "react-icons/bi";
 import { Button } from "@material-ui/core";
 import LogTableContainer from "../containers/LogTableContainer";
+import SearchBar from "../components/SearchBar";
 
 /**
  * `/logs` 페이지 렌더링
@@ -15,6 +16,22 @@ import LogTableContainer from "../containers/LogTableContainer";
  */
 function Logs() {
   const LOGS_SIZE = 10;
+
+  const logSearchCategories = [
+    { value: "center_name", text: "어린이집 명" },
+    {
+      value: "anomaly_type",
+      text: "의심 유형",
+    },
+    {
+      value: "record_date",
+      text: "발생 시간",
+    },
+    {
+      value: "address",
+      text: "상세주소",
+    },
+  ];
 
   const {
     loading: rLogsLoading,
@@ -105,6 +122,7 @@ function Logs() {
           >
             새로고침
           </Button>
+          <SearchBar searchCategories={logSearchCategories} />
         </div>
         <div className="container newLogs-section">
           <div className="newLogs section-title">

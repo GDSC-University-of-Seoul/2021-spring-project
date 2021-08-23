@@ -11,6 +11,7 @@ import Button from "@material-ui/core/Button";
 import CctvModalContainer from "../containers/CctvModalContainer";
 import CctvTableContainer from "../containers/CctvTableContainer";
 import Loading from "../components/Loading";
+import SearchBar from "../components/SearchBar";
 import { clickCctvData } from "../modules/cctvsTableEvent";
 import { openModal } from "../modules/cctvsModal";
 
@@ -22,6 +23,29 @@ import { openModal } from "../modules/cctvsModal";
 
 function Cctvs() {
   const CCTVS_LIST_SIZE = 20;
+
+  const cctvSearchCategories = [
+    {
+      value: "center_name",
+      text: "어린이집 명",
+    },
+    {
+      value: "address",
+      text: "어린이집 주소",
+    },
+    {
+      value: "cctv_mac",
+      text: "MAC 주소",
+    },
+    {
+      value: "quality",
+      text: "화질",
+    },
+    {
+      value: "install_date",
+      text: "설치 일자",
+    },
+  ];
 
   const { loading, pagination, cctvsData, count } = useSelector(
     (state) => state.cctvsReducer
@@ -94,6 +118,7 @@ function Cctvs() {
           >
             삭제
           </Button>
+          <SearchBar searchCategories={cctvSearchCategories} />
         </div>
         {/* CCTV 데이터 표 */}
         <div className="container cctvs-section">
