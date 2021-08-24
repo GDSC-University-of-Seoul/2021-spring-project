@@ -37,6 +37,8 @@ const findAllLogs = async (req, res, next) => {
   } catch (err) {
     if (err.name === "SearchTypeError") {
       res.status(400).send("Invalid Search Type.");
+    } else if (err.name === "SearchKeywordError") {
+      res.status(400).send("Invalid Search Keyword.");
     } else {
       next(err);
     }
@@ -60,8 +62,10 @@ const findRecentLogs = async (req, res, next) => {
     );
     res.status(200).json(anomalyLogs);
   } catch (err) {
-    if (err.name === "SearchError") {
+    if (err.name === "SearchTypeError") {
       res.status(400).send("Invalid Search Type.");
+    } else if (err.name === "SearchKeywordError") {
+      res.status(400).send("Invalid Search Keyword.");
     } else {
       next(err);
     }
