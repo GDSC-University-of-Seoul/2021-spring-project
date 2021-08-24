@@ -35,7 +35,7 @@ const findAllLogs = async (req, res, next) => {
     );
     res.status(200).json(anomalyLogs);
   } catch (err) {
-    if (err.name === "SearchError") {
+    if (err.name === "SearchTypeError") {
       res.status(400).send("Invalid Search Type.");
     } else {
       next(err);

@@ -1,5 +1,5 @@
-import { Sequelize } from "../../database/models/transform";
-
+import { CCTV, Sequelize } from "../../database/models/transform";
+import { validateDate, validateQuality } from "../utils/validate";
 export const getOffset = async (listSize, page, range) => {
   const currentPage = (parseInt(range) - 1) * 10 + parseInt(page);
   const offset = (currentPage - 1) * listSize;
@@ -16,7 +16,11 @@ export const getCctvOption = async (type, keyword) => {
 
   if (type && keyword) {
     if (cctvColumns.includes(type)) {
-      if (type === "install_date") {
+      if (type === "quality") {
+        await validateQuality(keyword);
+        cctvFilter[type] = keyword;
+      } else if (type === "install_date") {
+        await validateDate(keyword);
         cctvFilter[type] = {
           [Sequelize.Op.gte]: new Date(keyword),
         };
@@ -31,7 +35,7 @@ export const getCctvOption = async (type, keyword) => {
       };
     } else {
       const err = new Error("Ivalid search type.");
-      err.name = "SearchError";
+      err.name = "SearchTypeError";
       throw err;
     }
   }
@@ -46,6 +50,7 @@ export const getLogOption = async (type, keyword) => {
   if (type && keyword) {
     if (logColumns.includes(type)) {
       if (type === "record_date") {
+        await validateDate(keyword);
         logFilter[type] = {
           [Sequelize.Op.gte]: new Date(keyword),
         };
@@ -56,7 +61,7 @@ export const getLogOption = async (type, keyword) => {
       }
     } else {
       const err = new Error("Ivalid search type.");
-      err.name = "SearchError";
+      err.name = "SearchTypeError";
       throw err;
     }
   }

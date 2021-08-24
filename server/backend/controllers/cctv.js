@@ -38,8 +38,10 @@ const findAll = async (req, res, next) => {
     );
     res.json(cctv);
   } catch (err) {
-    if (err.name === "SearchError") {
+    if (err.name === "SearchTypeError") {
       res.status(400).send("Invalid Search Type.");
+    } else if (err.name === "SearchKeywordError") {
+      res.status(400).send("Invalid Search Keyword.");
     } else {
       next(err);
     }
