@@ -5,14 +5,14 @@ const findAllLogs = async (listSize, page, range, type, keyword, recent) => {
   const offset = await getOffset(listSize, page, range);
   const logFilter = await getLogOption(type, keyword);
 
-  const endDate = new Date();
+  let endDate = new Date();
+  endDate.setHours(endDate.getHours() + 9);
   let startDate = new Date();
+  startDate.setHours(startDate.getHours() + 9);
 
   if (recent) {
-    endDate.setHours(endDate.getHours() + 9);
     startDate.setDate(endDate.getDate() - 1);
   } else {
-    endDate.setHours(endDate.getHours() + 9);
     startDate.setDate(endDate.getDate() - 60);
   }
 
