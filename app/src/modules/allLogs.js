@@ -6,40 +6,51 @@ const ALL_LOGS_LOADING = "logs/ALL_LOGS_LOADING";
 const ALL_LOGS_FETCH = "logs/ALL_LOGS_FETCH";
 const ALL_LOGS_ERROR = "logs/ALL_LOGS_ERROR";
 const ALL_LOGS_PAGINATION = "logs/ALL_LOGS_PAGINATION";
+const ALL_LOGS_SEARCH = "logs/ALL_LOGS_SEARCH";
 
 // 백엔드 API 를 통해 anomaly log 데이터 Fetch
-export const fetchAllLogs = (pagination) => async (dispatch) => {
-  try {
-    dispatch({ type: ALL_LOGS_LOADING });
+export const fetchAllLogs =
+  ({ listSize, range, page }, { type, keyword }) =>
+  async (dispatch) => {
+    try {
+      dispatch({ type: ALL_LOGS_LOADING });
 
-    const { listSize, range, page } = pagination;
+      let allLogs = await axios.get(
+        `${
+          process.env.REACT_APP_API_SERVER
+        }/api/anomalies/logs?list_size=${listSize}&range=${range}&page=${page}${
+          keyword !== "" ? `&type=${type}&keyword=${keyword}` : ""
+        }`
+      );
 
-    let allLogs = await axios.get(
-      `${process.env.REACT_APP_API_SERVER}/api/anomalies/logs?list_size=${listSize}&range=${range}&page=${page}`
-    );
+      // 날짜 형식 변경
+      allLogs.data.rows = allLogs.data.rows.map((logData) => {
+        const recordDate = new Date(logData.record_date);
 
-    // 날짜 형식 변경
-    allLogs.data.rows = allLogs.data.rows.map((logData) => {
-      const recordDate = new Date(logData.record_date);
+        return {
+          ...logData,
+          record_date: `${dateUTCFormat(recordDate)} ${timeUTCFormat(
+            recordDate
+          )}`,
+        };
+      });
 
-      return {
-        ...logData,
-        record_date: `${dateUTCFormat(recordDate)} ${timeUTCFormat(
-          recordDate
-        )}`,
-      };
-    });
-
-    dispatch({ type: ALL_LOGS_FETCH, payload: allLogs.data });
-  } catch (e) {
-    dispatch({ type: ALL_LOGS_ERROR, payload: e });
-  }
-};
+      dispatch({ type: ALL_LOGS_FETCH, payload: allLogs.data });
+    } catch (e) {
+      dispatch({ type: ALL_LOGS_ERROR, payload: e });
+    }
+  };
 
 // 전체 로그의 현재 페이지네이션 정보 설정
 export const allLogsPagination = (pagination) => ({
   type: ALL_LOGS_PAGINATION,
   payload: pagination,
+});
+
+// 검색 조건 설정
+export const searchAllLogs = (searchInfo) => ({
+  type: ALL_LOGS_SEARCH,
+  payload: searchInfo,
 });
 
 const initialState = {
@@ -55,6 +66,11 @@ const initialState = {
     // 전체 페이지네이션 정보
     listCount: 1,
     pageCount: 1,
+  },
+  searchInfo: {
+    // 검색 조건
+    type: "",
+    keyword: "",
   },
   error: null,
 };
@@ -87,6 +103,11 @@ export default function allLogsReducer(state = initialState, action) {
         loading: false,
         pagination: action.payload,
         error: null,
+      };
+    case ALL_LOGS_SEARCH:
+      return {
+        ...state,
+        searchInfo: action.payload,
       };
     default:
       return state;

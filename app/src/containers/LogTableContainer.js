@@ -13,6 +13,7 @@ function LogTableContainer({
   pagination,
   logsData,
   count,
+  searchInfo,
   setPagination,
   fetchData,
 }) {
@@ -33,6 +34,7 @@ function LogTableContainer({
       count={count}
       categories={categories}
       checkOpt={false}
+      searchInfo={searchInfo}
       setPagination={setPagination}
       fetchData={fetchData}
     />
