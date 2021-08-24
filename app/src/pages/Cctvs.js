@@ -3,7 +3,7 @@ import {
   AiOutlinePlusSquare,
   AiOutlineRetweet,
 } from "react-icons/ai";
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { cctvsPagination, fetchCctvsData, searchCctvs } from "../modules/cctvs";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -24,28 +24,36 @@ import { openModal } from "../modules/cctvsModal";
 function Cctvs() {
   const CCTVS_LIST_SIZE = 20;
 
-  const cctvSearchCategories = [
-    {
-      value: "center_name",
-      text: "어린이집 명",
-    },
-    {
-      value: "address",
-      text: "어린이집 주소",
-    },
-    {
-      value: "cctv_mac",
-      text: "MAC 주소",
-    },
-    {
-      value: "quality",
-      text: "화질",
-    },
-    {
-      value: "install_date",
-      text: "설치 일자",
-    },
-  ];
+  const cctvSearchCategories = useMemo(
+    () => [
+      {
+        value: "center_name",
+        text: "어린이집 명",
+        type: "text",
+      },
+      {
+        value: "address",
+        text: "어린이집 주소",
+        type: "text",
+      },
+      {
+        value: "cctv_mac",
+        text: "MAC 주소",
+        type: "text",
+      },
+      {
+        value: "quality",
+        text: "화질",
+        type: "text",
+      },
+      {
+        value: "install_date",
+        text: "설치 일자",
+        type: "date",
+      },
+    ],
+    []
+  );
 
   const { loading, pagination, cctvsData, count, searchInfo } = useSelector(
     (state) => state.cctvsReducer

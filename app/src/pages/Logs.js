@@ -27,18 +27,21 @@ function Logs() {
 
   const logSearchCategories = useMemo(
     () => [
-      { value: "center_name", text: "어린이집 명" },
+      { value: "center_name", text: "어린이집 명", type: "text" },
       {
         value: "anomaly_type",
         text: "의심 유형",
+        type: "text",
       },
       {
         value: "record_date",
         text: "발생 시간",
+        type: "date",
       },
       {
         value: "address",
         text: "상세주소",
+        type: "text",
       },
     ],
     []
