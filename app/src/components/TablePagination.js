@@ -5,6 +5,7 @@ function TablePagination({
   data,
   count,
   itemId,
+  searchInfo,
   categories,
   checkOpt,
   setPagination,
@@ -51,9 +52,9 @@ function TablePagination({
       };
 
       setPagination(newPagination);
-      fetchData(newPagination);
+      fetchData(newPagination, searchInfo);
     },
-    [fetchData, listSize, range, setPagination]
+    [fetchData, searchInfo, listSize, range, setPagination]
   );
 
   // 이전 페이지 번호(<) 클릭
@@ -67,8 +68,8 @@ function TablePagination({
     };
 
     setPagination(newPagination);
-    fetchData(newPagination);
-  }, [fetchData, listSize, range, setPagination]);
+    fetchData(newPagination, searchInfo);
+  }, [fetchData, searchInfo, listSize, range, setPagination]);
 
   // 다음 페이지(>) 클릭
   const nextPageClick = useCallback(() => {
@@ -81,11 +82,13 @@ function TablePagination({
     };
 
     setPagination(newPagination);
-    fetchData(newPagination);
-  }, [fetchData, listSize, pageCount, range, setPagination]);
+    fetchData(newPagination, searchInfo);
+  }, [fetchData, searchInfo, listSize, pageCount, range, setPagination]);
 
   // 첫 페이지(<<) 클릭
   const startPageClick = useCallback(() => {
+    if (range === 1 && page === 1) return;
+
     const newPagination = {
       listSize,
       range: 1,
@@ -93,20 +96,25 @@ function TablePagination({
     };
 
     setPagination(newPagination);
-    fetchData(newPagination);
-  }, [fetchData, listSize, setPagination]);
+    fetchData(newPagination, searchInfo);
+  }, [range, page, listSize, setPagination, fetchData, searchInfo]);
 
   // 마지막 페이지(>>) 클릭
   const endPageClick = useCallback(() => {
+    const endRange = parseInt((pageCount - 1) / PAGINATION_SIZE) + 1;
+    const endPage = ((pageCount - 1) % PAGINATION_SIZE) + 1;
+
+    if (pageCount === 0 || (range === endRange) & (page === endPage)) return;
+
     const newPagination = {
       listSize,
-      range: parseInt((pageCount - 1) / PAGINATION_SIZE) + 1,
-      page: ((pageCount - 1) % PAGINATION_SIZE) + 1,
+      range: endRange,
+      page: endPage,
     };
 
     setPagination(newPagination);
-    fetchData(newPagination);
-  }, [fetchData, listSize, pageCount, setPagination]);
+    fetchData(newPagination, searchInfo);
+  }, [pageCount, range, page, listSize, setPagination, fetchData, searchInfo]);
 
   // 이벤트 전파로 클릭 이벤트 관리
   const clickHandler = useCallback(
