@@ -1,22 +1,22 @@
 import { Button, FormControl, MenuItem, Select } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 
 import { AiOutlineSearch } from "react-icons/ai";
 
-function SearchBar({ searchCategories, searchInfo, setSearchInfo }) {
-  const [searchType, setType] = useState();
+function SearchBar({ searchCategories, setSearchInfo }) {
+  const [searchType, setType] = useState(searchCategories[0].value);
 
-  const changeType = (e) => {
-    setType(e.target.value);
-  };
-  const submitForm = (e) => {
-    e.preventDefault();
+  const submitForm = useCallback(
+    (e) => {
+      e.preventDefault();
 
-    setSearchInfo({
-      type: searchType,
-      keyword: e.target.keyword.value,
-    });
-  };
+      setSearchInfo({
+        type: searchType,
+        keyword: e.target.keyword.value,
+      });
+    },
+    [searchType, setSearchInfo]
+  );
 
   return (
     <div className="searchForm">
@@ -24,7 +24,7 @@ function SearchBar({ searchCategories, searchInfo, setSearchInfo }) {
         <FormControl variant="outlined">
           <Select
             defaultValue={searchCategories[0].value}
-            onChange={changeType}
+            onChange={(e) => setType(e.target.value)}
           >
             {searchCategories.map((category) => (
               <MenuItem id="type" value={category.value} key={category.value}>
