@@ -67,7 +67,7 @@ class KidsKeeper(object):
         ano_time = cur_time + timedelta(minutes=1, seconds=45)
         end_time = cur_time + timedelta(minutes=5)
         filename = os.path.join(path, to_file_format(cur_time))
-        
+
         with open(f"{filename}.mp4", mode="w") as f:
             f.write("")
 
