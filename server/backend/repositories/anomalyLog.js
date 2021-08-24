@@ -6,8 +6,8 @@ const findAllLogs = async (listSize, page, range, type, keyword, recent) => {
   const logFilter = await getLogOption(type, keyword);
 
   let endDate = new Date();
-  endDate.setHours(endDate.getHours() + 9);
   let startDate = new Date();
+  endDate.setHours(endDate.getHours() + 9);
   startDate.setHours(startDate.getHours() + 9);
 
   if (recent) {
@@ -21,7 +21,7 @@ const findAllLogs = async (listSize, page, range, type, keyword, recent) => {
       const keywordDate = new Date(keyword);
       if (keywordDate < startDate) {
         logFilter.record_date = {
-          [Sequelize.Op.between]: [startDate, endDate],
+          [Sequelize.Op.gte]: startDate,
         };
       }
     }
