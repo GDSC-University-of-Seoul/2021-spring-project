@@ -4,7 +4,7 @@ import {
   AiOutlineRetweet,
 } from "react-icons/ai";
 import React, { useEffect } from "react";
-import { cctvsPagination, fetchCctvsData } from "../modules/cctvs";
+import { cctvsPagination, fetchCctvsData, searchCctvs } from "../modules/cctvs";
 import { useDispatch, useSelector } from "react-redux";
 
 import Button from "@material-ui/core/Button";
@@ -47,7 +47,7 @@ function Cctvs() {
     },
   ];
 
-  const { loading, pagination, cctvsData, count } = useSelector(
+  const { loading, pagination, cctvsData, count, searchInfo } = useSelector(
     (state) => state.cctvsReducer
   );
   const { selectedData, clickedData } = useSelector(
@@ -62,10 +62,28 @@ function Cctvs() {
       range: 1,
       page: 1,
     };
+    const initSearchInfo = {
+      type: cctvSearchCategories[0].value,
+      keyword: "",
+    };
+    dispatch(cctvsPagination(initPagination));
+    dispatch(searchCctvs(initSearchInfo));
+    dispatch(fetchCctvsData(initPagination, searchInfo));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // 검색어 변경에 따른 데이터 Fetch
+  useEffect(() => {
+    const initPagination = {
+      listSize: CCTVS_LIST_SIZE,
+      range: 1,
+      page: 1,
+    };
 
     dispatch(cctvsPagination(initPagination));
-    dispatch(fetchCctvsData(initPagination));
-  }, [dispatch]);
+    dispatch(fetchCctvsData(initPagination, searchInfo));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchInfo]);
 
   // 생성 버튼 이벤트
   const createHandler = () => {
@@ -118,7 +136,10 @@ function Cctvs() {
           >
             삭제
           </Button>
-          <SearchBar searchCategories={cctvSearchCategories} />
+          <SearchBar
+            searchCategories={cctvSearchCategories}
+            setSearchInfo={(searchInfo) => dispatch(searchCctvs(searchInfo))}
+          />
         </div>
         {/* CCTV 데이터 표 */}
         <div className="container cctvs-section">
@@ -130,6 +151,7 @@ function Cctvs() {
                 pagination={pagination}
                 cctvsData={cctvsData}
                 count={count}
+                searchInfo={searchInfo}
               />
             )
           )}
