@@ -2,7 +2,6 @@ import React, { useEffect, useMemo } from "react";
 
 import CategoryTextField from "../components/CategoryTextField";
 import { FiExternalLink } from "react-icons/fi";
-import { urlFormat } from "../utils/format";
 import { useSelector } from "react-redux";
 
 function MapBoxSelectContainer() {
