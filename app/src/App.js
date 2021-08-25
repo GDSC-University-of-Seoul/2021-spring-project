@@ -35,7 +35,7 @@ function App() {
       {/* 로그인 이후 라우팅 */}
       {loginSuccess ? (
         <>
-          <Header />
+          <Route component={Header} />
           <SideBar />
           <Route path="/home" component={Home} />
           <Route path="/monitoring" component={Monitoring} />
