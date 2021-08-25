@@ -37,7 +37,7 @@ def test_checkdir_return_true():
 
     # 실행시켰을 때 결과
     path = ".\\testdata"
-    check = check_dir(path, True)
+    check = check_dir(path, force=True)
 
     # 결과 비교
     FILE_NOT_FOUND_MSG = f"Couldn't recognize folder on {path}"
@@ -55,8 +55,8 @@ def test_checkdir_return_false():
 
     # 실행시켰을 때 결과
     path = ".\\data"
-    check = check_dir(path, False)
-    check_dir(path, True)
+    check = check_dir(path, force=False)
+    check_dir(path, force=True)
 
     # 결과 비교
     FOUND_WRONG_FOLDER_MSG = f"wrong recognize folder on {path}"
