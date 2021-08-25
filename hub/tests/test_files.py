@@ -14,13 +14,13 @@ def test_dirlist_return():
     """
     # 정상적으로 작동해야 하는 결과
     __list = [
-        "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata\\testdata2",
-        "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata\\testdata3",
+        ".\\testdata\\testdata2",
+        ".\\testdata\\testdata3",
     ]
 
     # 실행시켰을 때 결과
     path = (
-        "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata"
+        ".\\testdata"
     )
     list = dirlist(path)
 
@@ -41,7 +41,7 @@ def test_checkdir_return_true():
 
     # 실행시켰을 때 결과
     path = (
-        "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata"
+        ".\\testdata"
     )
     check = check_dir(path, True)
 
@@ -59,7 +59,7 @@ def test_checkdir_return_false():
     __none_making = False
 
     # 실행시켰을 때 결과
-    path = "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\data"
+    path = ".\\data"
     check = check_dir(path, False)
     check_dir(path, True)
 
@@ -81,10 +81,10 @@ def test_checkfile_search_path():
     경로가 있을 때 존재하는 파일 찾기
     """
     # 정상적으로 작동해야 하는 결과
-    __file = "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata\\testmp4.mp4"
+    __file = ".\\testdata\\testmp4.mp4"
 
     # 실행시켰을 때 결과
-    path = "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata\\testmp4.mp4"
+    path = ".\\testdata\\testmp4.mp4"
     file = check_file(path)
 
     # 결과 비교
@@ -116,11 +116,11 @@ def test_searchfile_one():
     파일이 하나만 있을 때(파일명 지정)
     """
     # 정상적으로 작동해야 하는 결과
-    __files = "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata\\testmp4.mp4"
+    __files = ".\\testdata\\testmp4.mp4"
 
     # 실행시켰을 때 결과
     directory = (
-        "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata"
+        ".\\testdata"
     )
     files = search_file(
         directory, filename="testmp4.mp4", recursive=True, extension=None
@@ -137,13 +137,13 @@ def test_searchfile_list():
     """
     # 정상적으로 작동해야 하는 결과
     __files = [
-        "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata\\test2mp4.mp4",
-        "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata\\testdata2\\test2mp4.mp4",
+        ".\\testdata\\test2mp4.mp4",
+        ".\\testdata\\testdata2\\test2mp4.mp4",
     ]
 
     # 실행시켰을 때 결과
     directory = (
-        "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata"
+        ".\\testdata"
     )
     files = search_file(
         directory, filename="test2mp4.mp4", recursive=True, extension=None
@@ -162,18 +162,18 @@ def test_searchfile_all():
     """
     # 정상적으로 작동해야 하는 결과
     __files = [
-        "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata\\",
-        "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata\\test2mp4.mp4",
-        "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata\\testdata2",
-        "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata\\testdata2\\test2mp4.mp4",
-        "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata\\testdata3",
-        "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata\\testmp4.mp4",
-        "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata\\testtxt.txt",
+        ".\\testdata\\",
+        ".\\testdata\\test2mp4.mp4",
+        ".\\testdata\\testdata2",
+        ".\\testdata\\testdata2\\test2mp4.mp4",
+        ".\\testdata\\testdata3",
+        ".\\testdata\\testmp4.mp4",
+        ".\\testdata\\testtxt.txt",
     ]
 
     # 실행시켰을 때 결과
     directory = (
-        "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata"
+        ".\\testdata"
     )
     files = search_file(directory, filename=None, recursive=True, extension=None)
 
@@ -190,19 +190,19 @@ def test_searchfile_mp4():
     """
     # 정상적으로 작동해야 하는 결과
     __files = [
-        "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata\\test2mp4.mp4",
-        "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata\\testmp4.mp4",
-        "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata\\testdata2\\test2mp4.mp4",
+        ".\\testdata\\test2mp4.mp4",
+        ".\\testdata\\testmp4.mp4",
+        ".\\testdata\\testdata2\\test2mp4.mp4",
     ]
 
     # 실행시켰을 때 결과
     directory = (
-        "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata"
+        ".\\testdata"
     )
     files = search_file(directory, filename=None, recursive=True, extension="mp4")
 
     # 결과 비교
-    assert __files == files, f"Couldn't read all {extension} file list on {directory}"
+    assert __files == files, f"Couldn't read all .mp4 file list on {directory}"
 
 
 def test_searchfile_parentfolder():
@@ -212,15 +212,15 @@ def test_searchfile_parentfolder():
     """
     # 정상적으로 작동해야 하는 결과
     __files = [
-        "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata\\test2mp4.mp4",
-        "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata\\testdata2",
-        "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata\\testdata3",
-        "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata\\testmp4.mp4",
-        "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata\\testtxt.txt",
+        ".\\testdata\\test2mp4.mp4",
+        ".\\testdata\\testdata2",
+        ".\\testdata\\testdata3",
+        ".\\testdata\\testmp4.mp4",
+        ".\\testdata\\testtxt.txt",
     ]
     # 실행시켰을 때 결과
     directory = (
-        "C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\tests\\testdata"
+        ".\\testdata"
     )
     files = search_file(directory, filename=None, recursive=False, extension=None)
 
