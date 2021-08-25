@@ -16,9 +16,7 @@ def test_dirlist_return():
     ]
 
     # 실행시켰을 때 결과
-    path = (
-        ".\\testdata"
-    )
+    path = ".\\testdata"
     list = dirlist(path)
 
     # 결과 비교
@@ -37,9 +35,7 @@ def test_checkdir_return_true():
     __check = True  # 폴더가 존재
 
     # 실행시켰을 때 결과
-    path = (
-        ".\\testdata"
-    )
+    path = ".\\testdata"
     check = check_dir(path, True)
 
     # 결과 비교
@@ -116,9 +112,7 @@ def test_searchfile_one():
     __files = ".\\testdata\\testmp4.mp4"
 
     # 실행시켰을 때 결과
-    directory = (
-        ".\\testdata"
-    )
+    directory = ".\\testdata"
     files = search_file(
         directory, filename="testmp4.mp4", recursive=True, extension=None
     )
@@ -139,9 +133,7 @@ def test_searchfile_list():
     ]
 
     # 실행시켰을 때 결과
-    directory = (
-        ".\\testdata"
-    )
+    directory = ".\\testdata"
     files = search_file(
         directory, filename="test2mp4.mp4", recursive=True, extension=None
     )
@@ -169,9 +161,7 @@ def test_searchfile_all():
     ]
 
     # 실행시켰을 때 결과
-    directory = (
-        ".\\testdata"
-    )
+    directory = ".\\testdata"
     files = search_file(directory, filename=None, recursive=True, extension=None)
 
     # 결과 비교
@@ -193,9 +183,7 @@ def test_searchfile_mp4():
     ]
 
     # 실행시켰을 때 결과
-    directory = (
-        ".\\testdata"
-    )
+    directory = ".\\testdata"
     files = search_file(directory, filename=None, recursive=True, extension="mp4")
 
     # 결과 비교
@@ -216,9 +204,7 @@ def test_searchfile_parentfolder():
         ".\\testdata\\testtxt.txt",
     ]
     # 실행시켰을 때 결과
-    directory = (
-        ".\\testdata"
-    )
+    directory = ".\\testdata"
     files = search_file(directory, filename=None, recursive=False, extension=None)
 
     # 결과 비교
