@@ -1,7 +1,4 @@
-import sys
 import os
-
-sys.path.append("C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\")
 from utils.files import *
 
 ###
