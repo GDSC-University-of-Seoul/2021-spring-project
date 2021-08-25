@@ -183,7 +183,7 @@ def test_searchfile_mp4():
     # 실행시켰을 때 결과
     directory = ".\\testdata"
     extension = "mp4"
-    files = search_file(directory, filename=None, recursive=True, extension)
+    files = search_file(directory, filename=None, recursive=True, extension="mp4")
 
     # 결과 비교
     FOUND_WRONG_LIST_MSG = f"Couldn't read all {extension} file list on {directory}"
