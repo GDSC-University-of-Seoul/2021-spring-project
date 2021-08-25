@@ -115,7 +115,9 @@ def test_searchfile_one_file():
 
     # 실행시켰을 때 결과
     directory = ".\\testdata"
-    file = search_file(directory, filename="testmp4.mp4", recursive=True, extension=None)
+    file = search_file(
+        directory, filename="testmp4.mp4", recursive=True, extension=None
+    )
 
     # 결과 비교
     FILE_NOT_FOUND_MSG = f"File is not found : {file}"
@@ -139,7 +141,9 @@ def test_searchfile_files_list():
     files = search_file(directory, filename, recursive=True, extension=None)
 
     # 결과 비교
-    FOUND_WRONG_LIST_MSG = f"Couldn't read all file list about {filename} on {directory}"
+    FOUND_WRONG_LIST_MSG = (
+        f"Couldn't read all file list about {filename} on {directory}"
+    )
     assert __files == files, FOUND_WRONG_LIST_MSG
 
 
@@ -164,7 +168,9 @@ def test_searchfile_all_files():
     files = search_file(directory, filename=None, recursive=True, extension=None)
 
     # 결과 비교
-    FOUND_WRONG_LIST_MSG = f"Couldn't read all file list on {directory} (include subfolders)"
+    FOUND_WRONG_LIST_MSG = (
+        f"Couldn't read all file list on {directory} (include subfolders)"
+    )
     assert __files == files, FOUND_WRONG_LIST_MSG
 
 
