@@ -20,7 +20,8 @@ def test_dirlist_return():
     list = dirlist(path)
 
     # 결과 비교
-    assert __list == list, f"Wrong list of folder in {path}"
+    FOUND_WRONG_LIST_MSG = f"Wrong list of folder in {path}"
+    assert __list == list, FOUND_WRONG_LIST_MSG
 
 
 ###
@@ -32,14 +33,15 @@ def test_checkdir_return_true():
     폴더 존재시 True 반환 확인
     """
     # 정상적으로 작동해야 하는 결과
-    __check = True  # 폴더가 존재
+    __check = True
 
     # 실행시켰을 때 결과
     path = ".\\testdata"
     check = check_dir(path, True)
 
     # 결과 비교
-    assert __check == check, f"Couldn't recognize folder on {path}"
+    FILE_NOT_FOUND_MSG = f"Couldn't recognize folder on {path}"
+    assert __check == check, FILE_NOT_FOUND_MSG
 
 
 def test_checkdir_return_false():
@@ -57,12 +59,10 @@ def test_checkdir_return_false():
     check_dir(path, True)
 
     # 결과 비교
-    assert (
-        check == __none_making
-    ), f"wrong recognize folder on {path}"  # 파일이 없다는 걸 인지했는지 확인
-    assert __making == os.path.isdir(
-        path
-    ), f"Couldn't make folder on {path}"  # 폴더를 제대로 생성했는지 확인
+    FOUND_WRONG_FOLDER_MSG = f"wrong recognize folder on {path}"
+    NO_MAKE_FOLDER_MSG = f"Couldn't make folder on {path}"
+    assert check == __none_making, FOUND_WRONG_FOLDER_MSG
+    assert __making == os.path.isdir(path), NO_MAKE_FOLDER_MSG
 
 
 ###
@@ -81,7 +81,8 @@ def test_checkfile_search_path():
     file = check_file(path)
 
     # 결과 비교
-    assert __file == file, f"Couldn't recognize file {__file}"
+    FILE_NOT_FOUND_MSG = f"Couldn't recognize file {__file}"
+    assert __file == file, FILE_NOT_FOUND_MSG
 
 
 def test_checkfile_search_name():
@@ -97,7 +98,8 @@ def test_checkfile_search_name():
     file = check_file(name)
 
     # 결과 비교
-    assert __file == file, f"Couldn't search file name {file}"
+    FILE_NOT_FOUND_MSG = f"Couldn't search file name {file}"
+    assert __file == file, FILE_NOT_FOUND_MSG
 
 
 ###
@@ -113,12 +115,11 @@ def test_searchfile_one():
 
     # 실행시켰을 때 결과
     directory = ".\\testdata"
-    files = search_file(
-        directory, filename="testmp4.mp4", recursive=True, extension=None
-    )
+    files = search_file(directory, filename="testmp4.mp4", recursive=True, extension=None)
 
     # 결과 비교
-    assert __files == files, f"No file is found : {files}"
+    FILE_NOT_FOUND_MSG = f"File is not found : {files}"
+    assert __files == files, FILE_NOT_FOUND_MSG
 
 
 def test_searchfile_list():
@@ -134,14 +135,12 @@ def test_searchfile_list():
 
     # 실행시켰을 때 결과
     directory = ".\\testdata"
-    files = search_file(
-        directory, filename="test2mp4.mp4", recursive=True, extension=None
-    )
+    filename="test2mp4.mp4"
+    files = search_file(directory, filename, recursive=True, extension=None)
 
     # 결과 비교
-    assert (
-        __files == files
-    ), f"Couldn't read all file list about {filename} on {directory}"
+    FOUND_WRONG_LIST_MSG = f"Couldn't read all file list about {filename} on {directory}"
+    assert __files == files, FOUND_WRONG_LIST_MSG
 
 
 def test_searchfile_all():
@@ -165,9 +164,8 @@ def test_searchfile_all():
     files = search_file(directory, filename=None, recursive=True, extension=None)
 
     # 결과 비교
-    assert (
-        __files == files
-    ), f"Couldn't read all file list on {directory} (include subfolders)"
+    FOUND_WRONG_LIST_MSG = f"Couldn't read all file list on {directory} (include subfolders)"
+    assert __files == files, FOUND_WRONG_LIST_MSG
 
 
 def test_searchfile_mp4():
@@ -184,10 +182,12 @@ def test_searchfile_mp4():
 
     # 실행시켰을 때 결과
     directory = ".\\testdata"
-    files = search_file(directory, filename=None, recursive=True, extension="mp4")
+    extension = "mp4"
+    files = search_file(directory, filename=None, recursive=True, extension)
 
     # 결과 비교
-    assert __files == files, f"Couldn't read all .mp4 file list on {directory}"
+    FOUND_WRONG_LIST_MSG = f"Couldn't read all {extension} file list on {directory}"
+    assert __files == files, FOUND_WRONG_LIST_MSG
 
 
 def test_searchfile_parentfolder():
@@ -208,4 +208,5 @@ def test_searchfile_parentfolder():
     files = search_file(directory, filename=None, recursive=False, extension=None)
 
     # 결과 비교
-    assert __files == files, f"Couldn't read all file list on {directory}"
+    FOUND_WRONG_LIST_MSG = f"Couldn't read all file list on {directory}"
+    assert __files == files, FOUND_WRONG_LIST_MSG
