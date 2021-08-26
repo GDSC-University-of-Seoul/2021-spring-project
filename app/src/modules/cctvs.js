@@ -26,37 +26,45 @@ const cctvDataFormat = (cctvData) => {
   };
 };
 
+// 새로운 CCTV 데이터 Fetch
+const fetchData = async ({ listSize, range, page }, { type, keyword }) => {
+  try {
+    let cctvsData = await axios.get(
+      `${
+        process.env.REACT_APP_API_SERVER
+      }/api/cctvs?list_size=${listSize}&range=${range}&page=${page}${
+        keyword !== "" ? `&type=${type}&keyword=${keyword}` : ""
+      }`
+    );
+
+    // CCTV 데이터 형식 설정
+    cctvsData.data.rows = cctvsData.data.rows.map((cctvData) =>
+      cctvDataFormat(cctvData)
+    );
+
+    return cctvsData.data;
+  } catch (e) {
+    throw e;
+  }
+};
+
 // 모든 CCTV Data 가져오기 (READ)
-export const fetchCctvsData =
-  ({ listSize, range, page }, { type, keyword }) =>
-  async (dispatch) => {
-    try {
-      dispatch({ type: CCTVS_DATA_LOADING });
+export const fetchCctvsData = (pagination, searchInfo) => async (dispatch) => {
+  dispatch({ type: CCTVS_DATA_LOADING });
 
-      // CCTV 데이터 Fetch
-      let cctvsData = await axios.get(
-        `${
-          process.env.REACT_APP_API_SERVER
-        }/api/cctvs?list_size=${listSize}&range=${range}&page=${page}${
-          keyword !== "" ? `&type=${type}&keyword=${keyword}` : ""
-        }`
-      );
+  try {
+    // CCTV 데이터 Fetch
+    const cctvsData = await fetchData(pagination, searchInfo);
 
-      // CCTV 데이터 형식 설정
-      cctvsData.data.rows = cctvsData.data.rows.map((cctvData) =>
-        cctvDataFormat(cctvData)
-      );
-
-      dispatch({ type: CCTVS_DATA_FETCH, payload: cctvsData.data });
-    } catch (e) {
-      dispatch({ type: CCTVS_DATA_ERROR, payload: e });
-    }
-  };
+    dispatch({ type: CCTVS_DATA_FETCH, payload: cctvsData });
+  } catch (e) {
+    dispatch({ type: CCTVS_DATA_ERROR, payload: e });
+  }
+};
 
 // CCTV 데이터 추가 (CREATE - center_id 기준)
 export const createCctvsData =
-  (createInfo, { listSize }, { type, keyword }) =>
-  async (dispatch) => {
+  (createInfo, pagination, searchInfo) => async (dispatch) => {
     try {
       dispatch({ type: CCTVS_DATA_LOADING });
       createInfo.cctv_mac = macApiFormat(createInfo.cctv_mac);
@@ -68,24 +76,13 @@ export const createCctvsData =
       );
 
       // 새로운 CCTV 데이터 Fetch
-      let cctvsData = await axios.get(
-        `${
-          process.env.REACT_APP_API_SERVER
-        }/api/cctvs?list_size=${listSize}&range=1&page=1${
-          keyword !== "" ? `&type=${type}&keyword=${keyword}` : ""
-        }`
-      );
-
-      // CCTV 데이터 형식 설정
-      cctvsData.data.rows = cctvsData.data.rows.map((cctvData) =>
-        cctvDataFormat(cctvData)
-      );
+      const cctvsData = await fetchData(pagination, searchInfo);
 
       dispatch({
         type: CCTVS_DATA_UPDATE,
         payload: {
-          pagination: { listSize, range: 1, page: 1 },
-          ...cctvsData.data,
+          ...cctvsData,
+          pagination: { listSize: pagination.listSize, range: 1, page: 1 },
         },
       });
     } catch (e) {
@@ -95,8 +92,7 @@ export const createCctvsData =
 
 // CCTV 데이터 갱신 (UPDATE - cctv_mac 기준)
 export const updateCctvsData =
-  (updateInfo, { listSize }, { type, keyword }) =>
-  async (dispatch) => {
+  (updateInfo, pagination, searchInfo) => async (dispatch) => {
     try {
       dispatch({ type: CCTVS_DATA_LOADING });
 
@@ -109,24 +105,13 @@ export const updateCctvsData =
       );
 
       // 새로운 CCTV 데이터 Fetch
-      let cctvsData = await axios.get(
-        `${
-          process.env.REACT_APP_API_SERVER
-        }/api/cctvs?list_size=${listSize}&range=1&page=1${
-          keyword !== "" ? `&type=${type}&keyword=${keyword}` : ""
-        }`
-      );
-
-      // CCTV 데이터 형식 설정
-      cctvsData.data.rows = cctvsData.data.rows.map((cctvData) =>
-        cctvDataFormat(cctvData)
-      );
+      const cctvsData = await fetchData(pagination, searchInfo);
 
       dispatch({
         type: CCTVS_DATA_UPDATE,
         payload: {
-          pagination: { listSize, range: 1, page: 1 },
-          ...cctvsData.data,
+          ...cctvsData,
+          pagination: { listSize: pagination.listSize, range: 1, page: 1 },
         },
       });
     } catch (e) {
@@ -136,8 +121,7 @@ export const updateCctvsData =
 
 // CCTV Data 삭제하기 (DELETE - cctv_mac 기준)
 export const deleteCctvsData =
-  (deleteData, { listSize }, { type, keyword }) =>
-  async (dispatch) => {
+  (deleteData, pagination, searchInfo) => async (dispatch) => {
     try {
       dispatch({ type: CCTVS_DATA_LOADING });
 
@@ -151,24 +135,13 @@ export const deleteCctvsData =
       }
 
       // 새로운 CCTV 데이터 Fetch
-      let cctvsData = await axios.get(
-        `${
-          process.env.REACT_APP_API_SERVER
-        }/api/cctvs?list_size=${listSize}&range=1&page=1${
-          keyword !== "" ? `&type=${type}&keyword=${keyword}` : ""
-        }`
-      );
-
-      // CCTV 데이터 형식 설정
-      cctvsData.data.rows = cctvsData.data.rows.map((cctvData) =>
-        cctvDataFormat(cctvData)
-      );
+      const cctvsData = await fetchData(pagination, searchInfo);
 
       dispatch({
         type: CCTVS_DATA_UPDATE,
         payload: {
-          pagination: { listSize, range: 1, page: 1 },
-          ...cctvsData.data,
+          ...cctvsData,
+          pagination: { listSize: pagination.listSize, range: 1, page: 1 },
         },
       });
     } catch (e) {
