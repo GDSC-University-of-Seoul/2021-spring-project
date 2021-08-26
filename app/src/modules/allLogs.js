@@ -1,6 +1,4 @@
-import { dateUTCFormat, timeUTCFormat } from "../utils/format";
-
-import axios from "axios";
+import { getAllLogs } from "../api/allLogs";
 
 const ALL_LOGS_LOADING = "logs/ALL_LOGS_LOADING";
 const ALL_LOGS_FETCH = "logs/ALL_LOGS_FETCH";
@@ -8,38 +6,18 @@ const ALL_LOGS_ERROR = "logs/ALL_LOGS_ERROR";
 const ALL_LOGS_PAGINATION = "logs/ALL_LOGS_PAGINATION";
 const ALL_LOGS_SEARCH = "logs/ALL_LOGS_SEARCH";
 
-// 백엔드 API 를 통해 anomaly log 데이터 Fetch
-export const fetchAllLogs =
-  ({ listSize, range, page }, { type, keyword }) =>
-  async (dispatch) => {
-    try {
-      dispatch({ type: ALL_LOGS_LOADING });
+// 현재 페이지네이션의 모든 로그 데이터 Fetch
+export const fetchAllLogs = (pagination, searchInfo) => async (dispatch) => {
+  try {
+    dispatch({ type: ALL_LOGS_LOADING });
 
-      let allLogs = await axios.get(
-        `${
-          process.env.REACT_APP_API_SERVER
-        }/api/anomalies/logs?list_size=${listSize}&range=${range}&page=${page}${
-          keyword !== "" ? `&type=${type}&keyword=${keyword}` : ""
-        }`
-      );
+    const allLogs = getAllLogs(pagination, searchInfo);
 
-      // 날짜 형식 변경
-      allLogs.data.rows = allLogs.data.rows.map((logData) => {
-        const recordDate = new Date(logData.record_date);
-
-        return {
-          ...logData,
-          record_date: `${dateUTCFormat(recordDate)} ${timeUTCFormat(
-            recordDate
-          )}`,
-        };
-      });
-
-      dispatch({ type: ALL_LOGS_FETCH, payload: allLogs.data });
-    } catch (e) {
-      dispatch({ type: ALL_LOGS_ERROR, payload: e });
-    }
-  };
+    dispatch({ type: ALL_LOGS_FETCH, payload: allLogs });
+  } catch (e) {
+    dispatch({ type: ALL_LOGS_ERROR, payload: e });
+  }
+};
 
 // 전체 로그의 현재 페이지네이션 정보 설정
 export const allLogsPagination = (pagination) => ({
