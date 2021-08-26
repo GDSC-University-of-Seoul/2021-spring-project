@@ -49,6 +49,13 @@ const fetchData = async ({ listSize, range, page }, { type, keyword }) => {
   }
 };
 
+// 검색 에러 핸들링
+const searchError = (e) => {
+  if (e.response.status === 400) return "⚠️ 잘못된 검색어를 입력하였습니다";
+  else if (e.response.status === 500)
+    return "⚠️ 서버에서 에러가 발생하였습니다";
+};
+
 // 모든 CCTV Data 가져오기 (READ)
 export const fetchCctvsData = (pagination, searchInfo) => async (dispatch) => {
   dispatch({ type: CCTVS_DATA_LOADING });
@@ -59,11 +66,10 @@ export const fetchCctvsData = (pagination, searchInfo) => async (dispatch) => {
 
     dispatch({ type: CCTVS_DATA_FETCH, payload: cctvsData });
   } catch (e) {
-    if (e.response.status === 400)
-      dispatch({
-        type: CCTVS_DATA_ERROR,
-        payload: "⚠️ 잘못된 검색어를 입력하였습니다",
-      });
+    dispatch({
+      type: CCTVS_DATA_ERROR,
+      payload: searchError(e),
+    });
   }
 };
 
@@ -91,7 +97,10 @@ export const createCctvsData =
         },
       });
     } catch (e) {
-      dispatch({ type: CCTVS_DATA_ERROR, payload: e });
+      dispatch({
+        type: CCTVS_DATA_ERROR,
+        payload: searchError(e),
+      });
     }
   };
 
@@ -120,7 +129,10 @@ export const updateCctvsData =
         },
       });
     } catch (e) {
-      dispatch({ type: CCTVS_DATA_ERROR, payload: e });
+      dispatch({
+        type: CCTVS_DATA_ERROR,
+        payload: searchError(e),
+      });
     }
   };
 
@@ -150,7 +162,10 @@ export const deleteCctvsData =
         },
       });
     } catch (e) {
-      dispatch({ type: CCTVS_DATA_ERROR, payload: e });
+      dispatch({
+        type: CCTVS_DATA_ERROR,
+        payload: searchError(e),
+      });
     }
   };
 
