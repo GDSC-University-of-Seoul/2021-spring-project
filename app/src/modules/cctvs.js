@@ -12,6 +12,7 @@ const CCTVS_DATA_ERROR = "cctvs/CCTVS_DATA_ERROR";
 const CCTVS_PAGINATION = "cctvs/CCTVS_PAGINATION";
 const CCTVS_DATA_UPDATE = "cctvs/CCTVS_DATA_UPDATE";
 const CCTVS_SEARCH = "cctvs/CCTVS_SEARCH";
+const CCTVS_CHECK_ERROR = "cctvs/CCTVS_CHECK_ERROR";
 
 // CCTV 데이터 형식 설정 (MAC 주소, 날짜)
 const cctvDataFormat = (cctvData) => {
@@ -58,7 +59,11 @@ export const fetchCctvsData = (pagination, searchInfo) => async (dispatch) => {
 
     dispatch({ type: CCTVS_DATA_FETCH, payload: cctvsData });
   } catch (e) {
-    dispatch({ type: CCTVS_DATA_ERROR, payload: e });
+    if (e.response.status === 400)
+      dispatch({
+        type: CCTVS_DATA_ERROR,
+        payload: "⚠️ 잘못된 검색어를 입력하였습니다",
+      });
   }
 };
 
@@ -155,9 +160,15 @@ export const cctvsPagination = (pagination) => ({
   payload: pagination,
 });
 
+// CCTV 검색어 설정
 export const searchCctvs = (searchInfo) => ({
   type: CCTVS_SEARCH,
   payload: searchInfo,
+});
+
+// CCTV 에러 확인 완료
+export const checkCctvsError = () => ({
+  type: CCTVS_CHECK_ERROR,
 });
 
 const initialState = {
@@ -223,6 +234,11 @@ export default function cctvsReducer(state = initialState, action) {
       return {
         ...state,
         searchInfo: action.payload,
+      };
+    case CCTVS_CHECK_ERROR:
+      return {
+        ...state,
+        error: null,
       };
     default:
       return state;
