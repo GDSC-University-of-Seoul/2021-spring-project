@@ -11,7 +11,7 @@ export const fetchAllLogs = (pagination, searchInfo) => async (dispatch) => {
   try {
     dispatch({ type: ALL_LOGS_LOADING });
 
-    const allLogs = getAllLogs(pagination, searchInfo);
+    const allLogs = await getAllLogs(pagination, searchInfo);
 
     dispatch({ type: ALL_LOGS_FETCH, payload: allLogs });
   } catch (e) {

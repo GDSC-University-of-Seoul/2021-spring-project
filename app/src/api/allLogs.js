@@ -3,7 +3,7 @@ import { dateUTCFormat, timeUTCFormat } from "../utils/format";
 import axios from "axios";
 
 /**
- * 주어진 페이지네이션을 기반으로 모든 로그 데이터를 GET
+ * 주어진 페이지네이션과 검색 조건을 기반으로 모든 로그 데이터를 GET
  *
  * @param {Object} pagination - 현재 페이지네이션 {listSize: 페이지를 구성하는 데이터 수, range: 페이지 범위, page: range내에 속한 페이지 번호}
  * @param {Object} searchInfo - 검색 조건 {type: 검색 조건, keyword: 검색어}
@@ -35,6 +35,8 @@ export const getAllLogs = async (pagination, searchInfo) => {
         )}`,
       };
     });
+
+    return allLogs.data;
   } catch (e) {
     throw e;
   }
