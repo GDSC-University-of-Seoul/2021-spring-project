@@ -1,6 +1,4 @@
-import { dateUTCFormat, timeUTCFormat } from "../utils/format";
-
-import axios from "axios";
+import { getRecentLogs } from "../api/recentLogs";
 
 const RECENT_LOGS_LOADING = "recentLogs/RECENT_LOGS_LOADING";
 const RECENT_LOGS_FETCH = "recentLogs/RECENT_LOGS_FETCH";
@@ -9,76 +7,38 @@ const RECENT_LOGS_PAGINATION = "recentLogs/RECENT_LOGS_PAGINATION";
 const RECENT_LOGS_ALL_FETCH = "recentLogs/RECENT_LOGS_ALL_FETCH";
 const RECENT_LOGS_SEARCH = "recentLogs/RECENT_LOGS_SEARCH";
 
-// 백엔드 API 를 통해 anomaly log 데이터 Fetch
-export const fetchRecentLogs =
-  ({ listSize, range, page }, searchInfo) =>
-  async (dispatch) => {
-    try {
-      dispatch({ type: RECENT_LOGS_LOADING });
+// 현재 페이지네이션의 최근 로그 데이터 Fetch
+export const fetchRecentLogs = (pagination, searchInfo) => async (dispatch) => {
+  try {
+    dispatch({ type: RECENT_LOGS_LOADING });
 
-      let recentLogs = await axios.get(
-        `${
-          process.env.REACT_APP_API_SERVER
-        }/api/anomalies/logs/recent?list_size=${listSize}&range=${range}&page=${page}${
-          searchInfo && searchInfo.keyword !== ""
-            ? `&type=${searchInfo.type}&keyword=${searchInfo.keyword}`
-            : ""
-        }`
-      );
+    const recentLogs = await getRecentLogs(pagination, searchInfo);
 
-      // 날짜 형식 변경
-      recentLogs.data.rows = recentLogs.data.rows.map((logData) => {
-        const recordDate = new Date(logData.record_date);
+    dispatch({ type: RECENT_LOGS_FETCH, payload: recentLogs });
+  } catch (e) {
+    dispatch({ type: RECENT_LOGS_ERROR, payload: e });
+  }
+};
 
-        return {
-          ...logData,
-          record_date: `${dateUTCFormat(recordDate)} ${timeUTCFormat(
-            recordDate
-          )}`,
-        };
-      });
+// 모든 최근 로그 데이터 Fetch
+export const recentLogsAllFetch = (pagination) => async (dispatch) => {
+  try {
+    const recentAllLogs = await getRecentLogs(pagination);
 
-      dispatch({ type: RECENT_LOGS_FETCH, payload: recentLogs.data });
-    } catch (e) {
-      dispatch({ type: RECENT_LOGS_ERROR, payload: e });
-    }
-  };
+    dispatch({
+      type: RECENT_LOGS_ALL_FETCH,
+      payload: recentAllLogs.rows,
+    });
+  } catch (e) {
+    dispatch({ type: RECENT_LOGS_ERROR, payload: e });
+  }
+};
 
 // 최근 로그의 현재 페이지네이션 정보 설정
 export const recentLogsPagination = (pagination) => ({
   type: RECENT_LOGS_PAGINATION,
   payload: pagination,
 });
-
-// 모든 최근 로그 데이터 Fetch
-export const recentLogsAllFetch =
-  ({ listSize, range, page }) =>
-  async (dispatch) => {
-    try {
-      let allRecentLogs = await axios.get(
-        `${process.env.REACT_APP_API_SERVER}/api/anomalies/logs/recent?list_size=${listSize}&range=${range}&page=${page}`
-      );
-
-      // 날짜 형식 변경
-      allRecentLogs.data.rows = allRecentLogs.data.rows.map((logData) => {
-        const recordDate = new Date(logData.record_date);
-
-        return {
-          ...logData,
-          record_date: `${dateUTCFormat(recordDate)} ${timeUTCFormat(
-            recordDate
-          )}`,
-        };
-      });
-
-      dispatch({
-        type: RECENT_LOGS_ALL_FETCH,
-        payload: allRecentLogs.data.rows,
-      });
-    } catch (e) {
-      dispatch({ type: RECENT_LOGS_ERROR, payload: e });
-    }
-  };
 
 // 검색 조건 설정
 export const searchRecentLogs = (searchInfo) => ({
