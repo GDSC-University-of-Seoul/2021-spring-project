@@ -38,7 +38,7 @@ async def server_api(dirpath):
     return data
 
 
-def run_model(dirpath, filepath):
+async def run_model(dirpath, filepath):
     print(f"  Run Model {filepath} at {dirpath}...")
 
     ## RUN MODEL
@@ -57,5 +57,5 @@ def run_model(dirpath, filepath):
     ## Done MODEL
     print(f"            {filepath} anomaly score is : {score * 100:.2f} %")
 
-    # await asyncio.sleep(2)
+    await asyncio.sleep(2)
     return (anomal, output)
