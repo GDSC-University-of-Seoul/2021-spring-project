@@ -1,6 +1,12 @@
-import { deleteCookie, getCookie, setCookie } from "../utils/cookie";
+import {
+  deleteCookie,
+  getCookie,
+  setCookie,
+  updateCookie,
+} from "../utils/cookie";
 
 import axios from "axios";
+import { getCheckJWTValid } from "../api/userInfo";
 
 const LOGIN_SUCCESS = "login/LOGIN_SUCCESS";
 const LOGOUT = "login/LOGOUT";
@@ -33,7 +39,7 @@ export const loginSubmit = (userId, userPw) => async (dispatch) => {
       userToken: token,
     };
 
-    setCookie("loginInfo", JSON.stringify(loginInfo), 1);
+    setCookie("loginInfo", JSON.stringify(loginInfo), 10);
     dispatch({
       type: LOGIN_SUCCESS,
       payload: loginInfo,
@@ -45,15 +51,29 @@ export const loginSubmit = (userId, userPw) => async (dispatch) => {
 };
 
 /**
- * 기존에 저장된 로그인 쿠키 정보 Fetch
+ * 기존에 저장된 로그인 쿠키 정보 Fetch, 이후 토큰 유효성 검사로 로그인 여부 결정
  */
-export const getLoginCookie = () => {
-  const loginInfo = JSON.parse(getCookie("loginInfo"));
+export const getLoginCookie = () => async (dispatch) => {
+  try {
+    // loginInfo 쿠키 존재 여부 확인
+    const loginInfo = JSON.parse(getCookie("loginInfo"));
 
-  // valid 로직 체크
-  if (loginInfo) return { type: LOGIN_SUCCESS, payload: loginInfo };
+    // 기존에 쿠키가 없거나 만료되어 사라지면 로그아웃 처리
+    if (!loginInfo || !loginInfo.userToken) {
+      dispatch({ type: LOGOUT });
+      return;
+    }
 
-  return { type: LOGIN_ERROR, payload: null };
+    // 사용자 토큰 유효성 검사
+    await getCheckJWTValid(loginInfo.userToken);
+
+    dispatch({ type: LOGIN_SUCCESS, payload: loginInfo });
+  } catch (e) {
+    dispatch({
+      type: LOGIN_ERROR,
+      payload: "⚠️ 사용자 정보를 가져올 수 없습니다.",
+    });
+  }
 };
 
 /**
