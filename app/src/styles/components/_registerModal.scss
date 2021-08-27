@@ -1,0 +1,33 @@
+.register-form {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+
+  .MuiFormControl-root {
+    margin: 10px;
+  }
+
+  .MuiInput-underline.Mui-disabled:before {
+    border-bottom-style: solid !important;
+  }
+  .pw-notMatch {
+    color: red;
+    margin: 0 10px;
+    font-size: 0.8rem;
+  }
+  .registerForm-button {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+
+    button:first-child {
+      margin-right: 30px;
+    }
+  }
+  .checkValid {
+    color: red;
+    font-size: 0.9rem;
+    font-weight: 400;
+    padding: 0 10px;
+  }
+}
