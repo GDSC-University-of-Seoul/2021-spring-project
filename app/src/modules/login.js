@@ -67,6 +67,8 @@ export const getLoginCookie = () => async (dispatch) => {
     // 사용자 토큰 유효성 검사
     await getCheckJWTValid(loginInfo.userToken);
 
+    // 유효시간 연장
+    updateCookie("loginInfo", 10);
     dispatch({ type: LOGIN_SUCCESS, payload: loginInfo });
   } catch (e) {
     dispatch({

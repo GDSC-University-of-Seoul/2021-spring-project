@@ -1,6 +1,9 @@
+import React, { useEffect } from "react";
+
 import MapBoxContainer from "../containers/MapBoxContainer";
 import MapBoxSelectContainer from "../containers/MapBoxSelectContainer";
-import React from "react";
+import { getLoginCookie } from "../modules/login";
+import { useDispatch } from "react-redux";
 
 /**
  * `/monitoring` 페이지 렌더링
@@ -8,6 +11,13 @@ import React from "react";
  * @return {JSX.Element} `/monitoring` 페이지를 구성하는 컴포넌트
  */
 function Monitoring() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // 유저 정보 확인
+    dispatch(getLoginCookie());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <>
       <section className="section monitoring">

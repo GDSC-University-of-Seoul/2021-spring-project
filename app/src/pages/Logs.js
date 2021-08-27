@@ -16,6 +16,7 @@ import { BiRefresh } from "react-icons/bi";
 import { Button } from "@material-ui/core";
 import LogTableContainer from "../containers/LogTableContainer";
 import SearchBar from "../components/SearchBar";
+import { getLoginCookie } from "../modules/login";
 
 /**
  * `/logs` 페이지 렌더링
@@ -119,6 +120,8 @@ function Logs() {
     dispatch(recentLogsPagination(initPagination));
     dispatch(fetchRecentLogs(initPagination, initSearchInfo));
 
+    // 유저 정보 확인
+    dispatch(getLoginCookie());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

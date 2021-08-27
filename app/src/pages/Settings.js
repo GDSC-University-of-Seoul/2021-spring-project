@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import LogoutModal from "../components/LogoutModal";
 import ToggleBtn from "../components/ToggleBtn";
 import UpdateLoginForm from "../components/UpdateLoginForm";
+import { getLoginCookie } from "../modules/login";
 import { setSettingsState } from "../modules/settings";
 import { useHistory } from "react-router-dom";
 
@@ -22,6 +23,12 @@ function Settings() {
   const { settings } = useSelector((state) => state.settingsReducer);
   const dispatch = useDispatch();
   const history = useHistory();
+
+  useEffect(() => {
+    // 유저 정보 확인
+    dispatch(getLoginCookie());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>

@@ -6,6 +6,7 @@ import ChartContainer from "../containers/ChartContainer";
 import Loading from "../components/Loading";
 import LogTableContainer from "../containers/LogTableContainer";
 import { fetchData } from "../modules/mapbox";
+import { getLoginCookie } from "../modules/login";
 
 /**
  * `/home` 페이지 렌더링
@@ -54,8 +55,10 @@ function Home() {
     dispatch(recentLogsPagination(initPagination));
     dispatch(fetchRecentLogs(initPagination));
 
+    // 유저 정보 확인
+    dispatch(getLoginCookie());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); 
+  }, []);
 
   // 이상행동 건수 집계
   useEffect(() => {
@@ -74,7 +77,6 @@ function Home() {
     });
     setAnomalyCnt(total);
   }, [districts, initialAnomalyCnt]);
-
 
   const HeaderItem = ({ title, children }) => {
     return (

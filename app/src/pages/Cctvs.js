@@ -19,6 +19,7 @@ import CctvModalContainer from "../containers/CctvModalContainer";
 import CctvTableContainer from "../containers/CctvTableContainer";
 import Loading from "../components/Loading";
 import SearchBar from "../components/SearchBar";
+import { getLoginCookie } from "../modules/login";
 import { openModal } from "../modules/cctvsModal";
 
 /**
@@ -84,6 +85,9 @@ function Cctvs() {
     dispatch(fetchCctvsData(initPagination, searchInfo));
 
     dispatch(initSelectCctvData());
+
+    // 유저 정보 확인
+    dispatch(getLoginCookie());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
