@@ -10,6 +10,7 @@ import {
   fetchCctvsData,
   searchCctvs,
 } from "../modules/cctvs";
+import { clickCctvData, initSelectCctvData } from "../modules/cctvsTableEvent";
 import { useDispatch, useSelector } from "react-redux";
 
 import Button from "@material-ui/core/Button";
@@ -18,7 +19,6 @@ import CctvTableContainer from "../containers/CctvTableContainer";
 import ErrorModal from "../components/ErrorModal";
 import Loading from "../components/Loading";
 import SearchBar from "../components/SearchBar";
-import { clickCctvData } from "../modules/cctvsTableEvent";
 import { openModal } from "../modules/cctvsModal";
 
 /**
@@ -82,6 +82,8 @@ function Cctvs() {
     dispatch(cctvsPagination(initPagination));
     dispatch(searchCctvs(initSearchInfo));
     dispatch(fetchCctvsData(initPagination, searchInfo));
+
+    dispatch(initSelectCctvData());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -95,6 +97,8 @@ function Cctvs() {
 
     dispatch(cctvsPagination(initPagination));
     dispatch(fetchCctvsData(initPagination, searchInfo));
+
+    dispatch(initSelectCctvData());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchInfo]);
 

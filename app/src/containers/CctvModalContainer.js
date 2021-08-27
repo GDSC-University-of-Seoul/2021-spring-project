@@ -132,7 +132,7 @@ function CctvModalContainer({ selectedData, clickedData }) {
   // CCTV 데이터 제거 (Delete)
   const deleteCctvData = () => {
     dispatch(deleteCctvsData(selectedData, pagination, searchInfo));
-    dispatch(initSelectCctvData([]));
+    dispatch(initSelectCctvData());
     closeHandler();
   };
 
