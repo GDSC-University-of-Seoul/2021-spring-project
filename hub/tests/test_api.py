@@ -1,4 +1,7 @@
-# sys.path.append("C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\")
+# FIXME
+import sys
+sys.path.append("C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub\\")
+
 from utils.api import *
 
 ###
@@ -14,7 +17,7 @@ def test_runmodel_anomaly_type():  # TODO
     _type_assault = "폭행"
 
     # 실행시켰을 때 결과
-    dirpath = "models/data/cctv1"
+    dirpath = "tests/apitestdata"
     file = "cctv1-2021-07-17.mp4"
 
     (anomal, output) = run_model(dirpath, file)
