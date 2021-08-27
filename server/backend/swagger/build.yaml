@@ -527,7 +527,7 @@ paths:
                   type: string
       responses:
         '201':
-          description: OK
+          description: Created
           content:
             application/json:
               schema:
@@ -599,6 +599,19 @@ paths:
                 properties:
                   message:
                     type: string
+  /auth/valid:
+    get:
+      tags:
+        - auth
+      summary: check if JWT is valid
+      description: null
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
 tags:
   - name: district
   - name: children care center

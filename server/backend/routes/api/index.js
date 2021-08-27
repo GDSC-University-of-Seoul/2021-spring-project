@@ -7,7 +7,7 @@ import authRouter from "./auth";
 
 const router = new express.Router();
 
-// TODO: add passport.authenticate("jwt") middleware in all APIs
+// TODO: add passport.authenticate("jwt") middleware if needed
 router.use("/districts", districtRouter);
 router.use("/centers", centerRouter);
 router.use("/cctvs", cctvRouter);

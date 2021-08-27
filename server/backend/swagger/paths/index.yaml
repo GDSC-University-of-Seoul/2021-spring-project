@@ -29,3 +29,5 @@
   $ref: "auth/login.yaml"
 /auth/member:
   $ref: "auth/member-update.yaml"
+/auth/valid:
+  $ref: "auth/valid.yaml"
