@@ -6,6 +6,7 @@ from utils.api import *
 ###
 def test_runmodel_anomaly_type():  # TODO
     """
+    test returning anomaly type when anomal change
     anomal에 따라 anomaly_type이 정상적으로 바뀌어 나오는지 확인
     """
     # 정상적으로 작동해야 하는 결과
