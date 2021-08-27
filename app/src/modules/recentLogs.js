@@ -4,7 +4,6 @@ const RECENT_LOGS_LOADING = "recentLogs/RECENT_LOGS_LOADING";
 const RECENT_LOGS_FETCH = "recentLogs/RECENT_LOGS_FETCH";
 const RECENT_LOGS_ERROR = "recentLogs/RECENT_LOGS_ERROR";
 const RECENT_LOGS_PAGINATION = "recentLogs/RECENT_LOGS_PAGINATION";
-const RECENT_LOGS_ALL_FETCH = "recentLogs/RECENT_LOGS_ALL_FETCH";
 const RECENT_LOGS_SEARCH = "recentLogs/RECENT_LOGS_SEARCH";
 
 // 현재 페이지네이션의 최근 로그 데이터 Fetch
@@ -15,20 +14,6 @@ export const fetchRecentLogs = (pagination, searchInfo) => async (dispatch) => {
     const recentLogs = await getRecentLogs(pagination, searchInfo);
 
     dispatch({ type: RECENT_LOGS_FETCH, payload: recentLogs });
-  } catch (e) {
-    dispatch({ type: RECENT_LOGS_ERROR, payload: e });
-  }
-};
-
-// 모든 최근 로그 데이터 Fetch
-export const recentLogsAllFetch = (pagination) => async (dispatch) => {
-  try {
-    const recentAllLogs = await getRecentLogs(pagination);
-
-    dispatch({
-      type: RECENT_LOGS_ALL_FETCH,
-      payload: recentAllLogs.rows,
-    });
   } catch (e) {
     dispatch({ type: RECENT_LOGS_ERROR, payload: e });
   }
@@ -55,7 +40,6 @@ const initialState = {
     page: 1,
   },
   recentLogs: [], // 페이지네이션에 대한 최근 로그 데이터
-  allRecentLogs: [], // 모든 최근 로그 데이터
   count: {
     // 전체 페이지네이션 정보
     listCount: 1,
@@ -96,13 +80,6 @@ export default function recentLogsReducer(state = initialState, action) {
         ...state,
         loading: false,
         pagination: action.payload,
-        error: null,
-      };
-    case RECENT_LOGS_ALL_FETCH:
-      return {
-        ...state,
-        loading: false,
-        allRecentLogs: action.payload,
         error: null,
       };
     case RECENT_LOGS_SEARCH:

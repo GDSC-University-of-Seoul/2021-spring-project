@@ -7,13 +7,14 @@ import React, {
   useState,
 } from "react";
 import { dateFormat, timeFormat } from "../utils/format";
+import { getAllRecentLogs, getRecentLogs } from "../api/recentLogs";
 import { useDispatch, useSelector } from "react-redux";
 
 import { Link } from "react-router-dom";
 import LogoutModal from "./LogoutModal";
 import UpdateLoginForm from "./UpdateLoginForm";
 import { loadSettingsState } from "../modules/settings";
-import { recentLogsAllFetch } from "../modules/recentLogs";
+import useAsync from "../hooks/useAsync";
 import useLocalStorage from "../hooks/useLocalStorage";
 
 /**
@@ -39,33 +40,23 @@ function Header({ history }) {
     }),
     []
   );
+
   const [menuOpen, setMenuOpen] = useState(initMenuOpen); // 헤더 메뉴 열기
   const [isChanged, setIsChanged] = useState(false); // 사용자 정보 변경
   const [isLogOut, setIsLogOut] = useState(false); // 사용자 로그아웃
 
   const { loginInfo } = useSelector((state) => state.loginReducer);
-  const { allRecentLogs, count } = useSelector(
-    (state) => state.recentLogsReducer
-  );
 
-  // 이미 읽은 신규 알림 로그 ID
-  const [readAlarmsId, setReadAlarmsId] = useLocalStorage("readAlarms", []);
+  // 모든 최신 로그
+  const [allRecentLogs] = useAsync(() => getAllRecentLogs(), [], "rows");
 
   // 읽지 않은 알림 로그
   const [unreadLogs, setunreadLogs] = useState([]);
 
-  const dispatch = useDispatch();
+  // 이미 읽은 신규 알림 로그 ID
+  const [readAlarmsId, setReadAlarmsId] = useLocalStorage("readAlarms", []);
 
-  // 모든 최신 로그 Fetch
-  useEffect(() => {
-    dispatch(
-      recentLogsAllFetch({
-        listSize: count.listCount,
-        range: 1,
-        page: 1,
-      })
-    );
-  }, [count, dispatch]);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     // 읽지 않은 알림 로그 필터링
@@ -145,7 +136,6 @@ function Header({ history }) {
       audioRef.current.currentTime = 0;
       audioRef.current.play();
     }
-    return () => allRecentLogs;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [audioRef]);
 

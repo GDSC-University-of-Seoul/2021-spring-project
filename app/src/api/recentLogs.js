@@ -41,3 +41,35 @@ export const getRecentLogs = async (pagination, searchInfo) => {
     throw e;
   }
 };
+
+/**
+ * 모든 최신 로그 데이터를 GET
+ *
+ * @returns 모든 최신 로그 데이터
+ */
+export const getAllRecentLogs = async () => {
+  try {
+    // 모든 최신 로그의 개수를 파악하기 위한 기본 요청
+    const fetchListSize = await axios.get(
+      `${process.env.REACT_APP_API_SERVER}/api/anomalies/logs/recent?list_size=1&range=1&page=1`
+    );
+
+    const { count } = fetchListSize.data;
+
+    // 최신 로그가 없는 경우
+    if (count.listCount === 0)
+      return {
+        count,
+        rows: [],
+      };
+
+    // 모든 최신 로그 Fetch
+    return await getRecentLogs({
+      listSize: count.listCount,
+      range: 1,
+      page: 1,
+    });
+  } catch (e) {
+    throw e;
+  }
+};
