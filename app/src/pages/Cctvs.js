@@ -3,14 +3,15 @@ import {
   AiOutlinePlusSquare,
   AiOutlineRetweet,
 } from "react-icons/ai";
-import React, { useEffect } from "react";
-import { cctvsPagination, fetchCctvsData } from "../modules/cctvs";
+import React, { useEffect, useMemo } from "react";
+import { cctvsPagination, fetchCctvsData, searchCctvs } from "../modules/cctvs";
 import { useDispatch, useSelector } from "react-redux";
 
 import Button from "@material-ui/core/Button";
 import CctvModalContainer from "../containers/CctvModalContainer";
 import CctvTableContainer from "../containers/CctvTableContainer";
 import Loading from "../components/Loading";
+import SearchBar from "../components/SearchBar";
 import { clickCctvData } from "../modules/cctvsTableEvent";
 import { openModal } from "../modules/cctvsModal";
 
@@ -23,7 +24,38 @@ import { openModal } from "../modules/cctvsModal";
 function Cctvs() {
   const CCTVS_LIST_SIZE = 20;
 
-  const { loading, pagination, cctvsData, count } = useSelector(
+  const cctvSearchCategories = useMemo(
+    () => [
+      {
+        value: "center_name",
+        text: "어린이집 명",
+        type: "text",
+      },
+      {
+        value: "address",
+        text: "어린이집 주소",
+        type: "text",
+      },
+      {
+        value: "cctv_mac",
+        text: "MAC 주소",
+        type: "text",
+      },
+      {
+        value: "quality",
+        text: "화질",
+        type: "text",
+      },
+      {
+        value: "install_date",
+        text: "설치 일자",
+        type: "date",
+      },
+    ],
+    []
+  );
+
+  const { loading, pagination, cctvsData, count, searchInfo } = useSelector(
     (state) => state.cctvsReducer
   );
   const { selectedData, clickedData } = useSelector(
@@ -38,10 +70,28 @@ function Cctvs() {
       range: 1,
       page: 1,
     };
+    const initSearchInfo = {
+      type: cctvSearchCategories[0].value,
+      keyword: "",
+    };
+    dispatch(cctvsPagination(initPagination));
+    dispatch(searchCctvs(initSearchInfo));
+    dispatch(fetchCctvsData(initPagination, searchInfo));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // 검색어 변경에 따른 데이터 Fetch
+  useEffect(() => {
+    const initPagination = {
+      listSize: CCTVS_LIST_SIZE,
+      range: 1,
+      page: 1,
+    };
 
     dispatch(cctvsPagination(initPagination));
-    dispatch(fetchCctvsData(initPagination));
-  }, [dispatch]);
+    dispatch(fetchCctvsData(initPagination, searchInfo));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchInfo]);
 
   // 생성 버튼 이벤트
   const createHandler = () => {
@@ -94,6 +144,10 @@ function Cctvs() {
           >
             삭제
           </Button>
+          <SearchBar
+            searchCategories={cctvSearchCategories}
+            setSearchInfo={(searchInfo) => dispatch(searchCctvs(searchInfo))}
+          />
         </div>
         {/* CCTV 데이터 표 */}
         <div className="container cctvs-section">
@@ -105,6 +159,7 @@ function Cctvs() {
                 pagination={pagination}
                 cctvsData={cctvsData}
                 count={count}
+                searchInfo={searchInfo}
               />
             )
           )}

@@ -11,6 +11,7 @@ const CCTVS_DATA_FETCH = "cctvs/CCTVS_DATA_FETCH";
 const CCTVS_DATA_ERROR = "cctvs/CCTVS_DATA_ERROR";
 const CCTVS_PAGINATION = "cctvs/CCTVS_PAGINATION";
 const CCTVS_DATA_UPDATE = "cctvs/CCTVS_DATA_UPDATE";
+const CCTVS_SEARCH = "cctvs/CCTVS_SEARCH";
 
 // CCTV 데이터 형식 설정 (MAC 주소, 날짜)
 const cctvDataFormat = (cctvData) => {
@@ -27,14 +28,18 @@ const cctvDataFormat = (cctvData) => {
 
 // 모든 CCTV Data 가져오기 (READ)
 export const fetchCctvsData =
-  ({ listSize, range, page }) =>
+  ({ listSize, range, page }, { type, keyword }) =>
   async (dispatch) => {
     try {
       dispatch({ type: CCTVS_DATA_LOADING });
 
       // CCTV 데이터 Fetch
       let cctvsData = await axios.get(
-        `${process.env.REACT_APP_API_SERVER}/api/cctvs?list_size=${listSize}&range=${range}&page=${page}`
+        `${
+          process.env.REACT_APP_API_SERVER
+        }/api/cctvs?list_size=${listSize}&range=${range}&page=${page}${
+          keyword !== "" ? `&type=${type}&keyword=${keyword}` : ""
+        }`
       );
 
       // CCTV 데이터 형식 설정
@@ -50,7 +55,7 @@ export const fetchCctvsData =
 
 // CCTV 데이터 추가 (CREATE - center_id 기준)
 export const createCctvsData =
-  (createInfo, { listSize, range, page }) =>
+  (createInfo, { listSize }, { type, keyword }) =>
   async (dispatch) => {
     try {
       dispatch({ type: CCTVS_DATA_LOADING });
@@ -64,7 +69,11 @@ export const createCctvsData =
 
       // 새로운 CCTV 데이터 Fetch
       let cctvsData = await axios.get(
-        `${process.env.REACT_APP_API_SERVER}/api/cctvs?list_size=${listSize}&range=${range}&page=${page}`
+        `${
+          process.env.REACT_APP_API_SERVER
+        }/api/cctvs?list_size=${listSize}&range=1&page=1${
+          keyword !== "" ? `&type=${type}&keyword=${keyword}` : ""
+        }`
       );
 
       // CCTV 데이터 형식 설정
@@ -86,7 +95,7 @@ export const createCctvsData =
 
 // CCTV 데이터 갱신 (UPDATE - cctv_mac 기준)
 export const updateCctvsData =
-  (updateInfo, { listSize, range, page }) =>
+  (updateInfo, { listSize }, { type, keyword }) =>
   async (dispatch) => {
     try {
       dispatch({ type: CCTVS_DATA_LOADING });
@@ -101,7 +110,11 @@ export const updateCctvsData =
 
       // 새로운 CCTV 데이터 Fetch
       let cctvsData = await axios.get(
-        `${process.env.REACT_APP_API_SERVER}/api/cctvs?list_size=${listSize}&range=${range}&page=${page}`
+        `${
+          process.env.REACT_APP_API_SERVER
+        }/api/cctvs?list_size=${listSize}&range=1&page=1${
+          keyword !== "" ? `&type=${type}&keyword=${keyword}` : ""
+        }`
       );
 
       // CCTV 데이터 형식 설정
@@ -111,7 +124,10 @@ export const updateCctvsData =
 
       dispatch({
         type: CCTVS_DATA_UPDATE,
-        payload: { pagination: { listSize, range, page }, ...cctvsData.data },
+        payload: {
+          pagination: { listSize, range: 1, page: 1 },
+          ...cctvsData.data,
+        },
       });
     } catch (e) {
       dispatch({ type: CCTVS_DATA_ERROR, payload: e });
@@ -120,7 +136,7 @@ export const updateCctvsData =
 
 // CCTV Data 삭제하기 (DELETE - cctv_mac 기준)
 export const deleteCctvsData =
-  (deleteData, { listSize, range, page }) =>
+  (deleteData, { listSize }, { type, keyword }) =>
   async (dispatch) => {
     try {
       dispatch({ type: CCTVS_DATA_LOADING });
@@ -136,7 +152,11 @@ export const deleteCctvsData =
 
       // 새로운 CCTV 데이터 Fetch
       let cctvsData = await axios.get(
-        `${process.env.REACT_APP_API_SERVER}/api/cctvs?list_size=${listSize}&range=${range}&page=${page}`
+        `${
+          process.env.REACT_APP_API_SERVER
+        }/api/cctvs?list_size=${listSize}&range=1&page=1${
+          keyword !== "" ? `&type=${type}&keyword=${keyword}` : ""
+        }`
       );
 
       // CCTV 데이터 형식 설정
@@ -162,6 +182,11 @@ export const cctvsPagination = (pagination) => ({
   payload: pagination,
 });
 
+export const searchCctvs = (searchInfo) => ({
+  type: CCTVS_SEARCH,
+  payload: searchInfo,
+});
+
 const initialState = {
   loading: false,
   pagination: {
@@ -175,6 +200,11 @@ const initialState = {
     // 전체 페이지네이션 정보
     listCount: 1,
     pageCount: 1,
+  },
+  searchInfo: {
+    // 검색 조건
+    type: "",
+    keyword: "",
   },
   error: null,
 };
@@ -215,6 +245,11 @@ export default function cctvsReducer(state = initialState, action) {
         pagination: action.payload.pagination,
         cctvsData: action.payload.rows,
         count: action.payload.count,
+      };
+    case CCTVS_SEARCH:
+      return {
+        ...state,
+        searchInfo: action.payload,
       };
     default:
       return state;

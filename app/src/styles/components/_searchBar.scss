@@ -1,0 +1,31 @@
+.searchForm {
+  .MuiFormControl-root {
+    display: flex;
+    flex-direction: row;
+    padding: 0;
+    margin-left: 10px;
+  }
+  .MuiSelect-root {
+    background-color: white;
+  }
+  fieldset {
+    border-radius: 4px 0 0 4px;
+  }
+  .MuiOutlinedInput-input {
+    padding: 10px 14px;
+  }
+  .MuiButton-root {
+    border-radius: 0 4px 4px 0;
+  }
+  button {
+    background-color: #6c5ce7 !important;
+  }
+}
+.searchContent {
+  width: 400px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-left: none;
+  border-right: none;
+  font-size: 1.1rem;
+  padding: 0 7px;
+}

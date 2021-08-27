@@ -1,12 +1,21 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { allLogsPagination, fetchAllLogs } from "../modules/allLogs";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  allLogsPagination,
+  fetchAllLogs,
+  searchAllLogs,
+} from "../modules/allLogs";
 import { dateFormat, timeFormat } from "../utils/format";
-import { fetchRecentLogs, recentLogsPagination } from "../modules/recentLogs";
+import {
+  fetchRecentLogs,
+  recentLogsPagination,
+  searchRecentLogs,
+} from "../modules/recentLogs";
 import { useDispatch, useSelector } from "react-redux";
 
 import { BiRefresh } from "react-icons/bi";
 import { Button } from "@material-ui/core";
 import LogTableContainer from "../containers/LogTableContainer";
+import SearchBar from "../components/SearchBar";
 
 /**
  * `/logs` 페이지 렌더링
@@ -16,11 +25,34 @@ import LogTableContainer from "../containers/LogTableContainer";
 function Logs() {
   const LOGS_SIZE = 10;
 
+  const logSearchCategories = useMemo(
+    () => [
+      { value: "center_name", text: "어린이집 명", type: "text" },
+      {
+        value: "anomaly_type",
+        text: "의심 유형",
+        type: "text",
+      },
+      {
+        value: "record_date",
+        text: "발생 시간",
+        type: "date",
+      },
+      {
+        value: "address",
+        text: "상세주소",
+        type: "text",
+      },
+    ],
+    []
+  );
+
   const {
     loading: rLogsLoading,
     pagination: rLogsPagination,
     recentLogs,
     count: rLogsCount,
+    searchInfo: rLogsSearchInfo,
   } = useSelector((state) => state.recentLogsReducer);
 
   const {
@@ -28,6 +60,7 @@ function Logs() {
     pagination: aLogsPagination,
     allLogs,
     count: aLogsCount,
+    searchInfo: aLogsSearchInfo,
   } = useSelector((state) => state.allLogsReducer);
 
   const dispatch = useDispatch();
@@ -58,11 +91,15 @@ function Logs() {
       range: 1,
       page: 1,
     };
+    const initSearchInfo = {
+      type: logSearchCategories[0].value,
+      keyword: "",
+    };
 
-    dispatch(fetchAllLogs(initPagination));
-    dispatch(fetchRecentLogs(initPagination));
+    dispatch(fetchAllLogs(initPagination, initSearchInfo));
+    dispatch(fetchRecentLogs(initPagination, initSearchInfo));
     getTimer();
-  }, [dispatch, getTimer]);
+  }, [dispatch, getTimer, logSearchCategories]);
 
   useEffect(() => {
     const initPagination = {
@@ -70,13 +107,36 @@ function Logs() {
       range: 1,
       page: 1,
     };
+    const initSearchInfo = {
+      type: logSearchCategories[0].value,
+      keyword: "",
+    };
+    dispatch(searchAllLogs(initSearchInfo));
     dispatch(allLogsPagination(initPagination));
-    dispatch(fetchAllLogs(initPagination));
+    dispatch(fetchAllLogs(initPagination, initSearchInfo));
+
+    dispatch(searchRecentLogs(initSearchInfo));
     dispatch(recentLogsPagination(initPagination));
-    dispatch(fetchRecentLogs(initPagination));
+    dispatch(fetchRecentLogs(initPagination, initSearchInfo));
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // 검색어 변경에 따른 데이터 Fetch
+  useEffect(() => {
+    const initPagination = {
+      listSize: LOGS_SIZE,
+      range: 1,
+      page: 1,
+    };
+
+    dispatch(allLogsPagination(initPagination));
+    dispatch(fetchAllLogs(initPagination, aLogsSearchInfo));
+
+    dispatch(recentLogsPagination(initPagination));
+    dispatch(fetchRecentLogs(initPagination, rLogsSearchInfo));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [aLogsSearchInfo, rLogsSearchInfo]);
 
   useEffect(() => {
     // 페이지 초기화
@@ -92,6 +152,15 @@ function Logs() {
     return () => clearInterval(tick);
   }, [ONE_DAY, initial, refreshLogsData]);
 
+  // 검색 상태 설정
+  const setSearchInfo = useCallback(
+    (searchInfo) => {
+      dispatch(searchAllLogs(searchInfo));
+      dispatch(searchRecentLogs(searchInfo));
+    },
+    [dispatch]
+  );
+
   return (
     <>
       <section className="section logs">
@@ -105,6 +174,10 @@ function Logs() {
           >
             새로고침
           </Button>
+          <SearchBar
+            searchCategories={logSearchCategories}
+            setSearchInfo={setSearchInfo}
+          />
         </div>
         <div className="container newLogs-section">
           <div className="newLogs section-title">
@@ -117,11 +190,12 @@ function Logs() {
             pagination={rLogsPagination}
             logsData={recentLogs}
             count={rLogsCount}
+            searchInfo={rLogsSearchInfo}
             setPagination={(pagination) =>
-              dispatch(fetchRecentLogs(pagination))
-            }
-            fetchData={(pagination) =>
               dispatch(recentLogsPagination(pagination))
+            }
+            fetchData={(pagination, rLogsSearchInfo) =>
+              dispatch(fetchRecentLogs(pagination, rLogsSearchInfo))
             }
           />
         </div>
@@ -136,10 +210,13 @@ function Logs() {
             pagination={aLogsPagination}
             logsData={allLogs}
             count={aLogsCount}
+            searchInfo={aLogsSearchInfo}
             setPagination={(pagination) =>
               dispatch(allLogsPagination(pagination))
             }
-            fetchData={(pagination) => dispatch(fetchAllLogs(pagination))}
+            fetchData={(pagination, aLogsSearchInfo) =>
+              dispatch(fetchAllLogs(pagination, aLogsSearchInfo))
+            }
           />
         </div>
       </section>

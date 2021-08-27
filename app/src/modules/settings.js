@@ -14,7 +14,7 @@ export const loadSettingsState = () => {
 
   return {
     type: LOAD_SETTINGS_STATE,
-    payload: settings ? JSON.parse(settings) : initialState,
+    payload: settings ? JSON.parse(settings) : initialState.settings,
   };
 };
 
