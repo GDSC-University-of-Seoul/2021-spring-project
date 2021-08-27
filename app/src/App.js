@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
-import { Redirect, Route, useHistory } from "react-router-dom";
-import { getLoginCookie, logOut } from "./modules/login";
+import { Redirect, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import Cctvs from "./pages/Cctvs";
@@ -11,6 +10,7 @@ import Logs from "./pages/Logs";
 import Monitoring from "./pages/Monitoring";
 import Settings from "./pages/Settings";
 import SideBar from "./components/SideBar";
+import { getLoginCookie } from "./modules/login";
 
 /**
  * URL에 따라 렌더링할 컴포넌트 결정
@@ -20,21 +20,11 @@ import SideBar from "./components/SideBar";
 function App() {
   const { loginSuccess } = useSelector((state) => state.loginReducer);
   const dispatch = useDispatch();
-  const history = useHistory();
 
   // 로그인 쿠키 여부 확인
   useEffect(() => {
     dispatch(getLoginCookie());
   }, [dispatch]);
-
-  // 웹 페이지를 닫을 때 로그아웃
-  useEffect(() => {
-    const clearCookie = document.body.addEventListener(
-      "unload",
-      dispatch(logOut(history))
-    );
-    return () => clearCookie;
-  }, [dispatch, history]);
 
   return (
     <>
