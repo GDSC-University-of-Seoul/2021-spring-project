@@ -13,10 +13,10 @@ import {
 import { clickCctvData, initSelectCctvData } from "../modules/cctvsTableEvent";
 import { useDispatch, useSelector } from "react-redux";
 
+import AlertModal from "../components/AlertModal";
 import Button from "@material-ui/core/Button";
 import CctvModalContainer from "../containers/CctvModalContainer";
 import CctvTableContainer from "../containers/CctvTableContainer";
-import ErrorModal from "../components/ErrorModal";
 import Loading from "../components/Loading";
 import SearchBar from "../components/SearchBar";
 import { openModal } from "../modules/cctvsModal";
@@ -175,9 +175,9 @@ function Cctvs() {
         </div>
       </section>
       {error && (
-        <ErrorModal closeModal={() => dispatch(checkCctvsError())}>
+        <AlertModal closeModal={() => dispatch(checkCctvsError())}>
           {error}
-        </ErrorModal>
+        </AlertModal>
       )}
     </>
   );
