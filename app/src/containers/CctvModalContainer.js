@@ -19,6 +19,7 @@ import { useDispatch, useSelector, useStore } from "react-redux";
 import { Button } from "@material-ui/core";
 import CctvDeleteModal from "../components/CctvDeleteModal";
 import CctvInputModal from "../components/CctvInputModal";
+import ErrorModal from "../components/ErrorModal";
 import Modal from "../components/Modal";
 import React from "react";
 import SearchCenterModal from "../components/searchCenterModal";
@@ -202,36 +203,16 @@ function CctvModalContainer({ selectedData, clickedData }) {
       ) : (updateData || deleteData) && selectedData.length === 0 ? (
         <>
           {/* 에러 모달창 1 - 데이터 선택 안함 */}
-          <Modal>
-            <div className="cctvModal-warning">
-              ⚠️ 데이터를 선택해주세요
-              <Button
-                variant="contained"
-                color="primary"
-                disableElevation
-                onClick={closeHandler}
-              >
-                확인
-              </Button>
-            </div>
-          </Modal>
+          <ErrorModal closeModal={closeHandler}>
+            ⚠️ 데이터를 선택해주세요
+          </ErrorModal>
         </>
       ) : updateData && selectedData.length >= 2 ? (
         <>
           {/* 에러 모달창 2 - 복수 데이터 선택 */}
-          <Modal>
-            <div className="cctvModal-warning">
-              ⚠️ 1개의 데이터만 선택해주세요
-              <Button
-                variant="contained"
-                color="primary"
-                disableElevation
-                onClick={closeHandler}
-              >
-                확인
-              </Button>
-            </div>
-          </Modal>
+          <ErrorModal closeModal={closeHandler}>
+            ⚠️ 1개의 데이터만 선택해주세요
+          </ErrorModal>
         </>
       ) : (
         deleteData && (
