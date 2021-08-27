@@ -1,4 +1,5 @@
 import { FaBell, FaUser } from "react-icons/fa";
+import { Link, useHistory } from "react-router-dom";
 import React, {
   useCallback,
   useEffect,
@@ -7,12 +8,11 @@ import React, {
   useState,
 } from "react";
 import { dateFormat, timeFormat } from "../utils/format";
-import { getAllRecentLogs, getRecentLogs } from "../api/recentLogs";
 import { useDispatch, useSelector } from "react-redux";
 
-import { Link } from "react-router-dom";
 import LogoutModal from "./LogoutModal";
 import UpdateLoginForm from "./UpdateLoginForm";
+import { getAllRecentLogs } from "../api/recentLogs";
 import { loadSettingsState } from "../modules/settings";
 import useAsync from "../hooks/useAsync";
 import useLocalStorage from "../hooks/useLocalStorage";
@@ -24,8 +24,9 @@ import useLocalStorage from "../hooks/useLocalStorage";
  * @returns {JSX.Element} 홈페이지 헤더부 컴포넌트
  */
 
-function Header({ history }) {
+function Header() {
   const ONE_DAY = 24 * 60 * 60 * 1000;
+  const history = useHistory();
 
   // 현재 날짜·시간 정보 저장
   const [currDate, setCurrDate] = useState({

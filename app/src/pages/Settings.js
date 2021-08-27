@@ -5,13 +5,14 @@ import LogoutModal from "../components/LogoutModal";
 import ToggleBtn from "../components/ToggleBtn";
 import UpdateLoginForm from "../components/UpdateLoginForm";
 import { setSettingsState } from "../modules/settings";
+import { useHistory } from "react-router-dom";
 
 /**
  * `/settings` 페이지 렌더링
  *
  * @return {JSX.Element} `/settings` 페이지를 구성하는 컴포넌트
  */
-function Settings({ history }) {
+function Settings() {
   const { loginInfo } = useSelector((state) => state.loginReducer);
   const { userId, userName, email } = loginInfo;
 
@@ -20,6 +21,7 @@ function Settings({ history }) {
 
   const { settings } = useSelector((state) => state.settingsReducer);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   return (
     <>
