@@ -15,3 +15,20 @@ export const postUserRegister = async (registerInfo) => {
     throw e;
   }
 };
+
+/**
+ * 사용자 JWT 토큰의 유효성을 검사
+ *
+ * @param {String} userToken - 검사할 JWT 토큰
+ */
+export const getCheckJWTValid = async (userToken) => {
+  try {
+    await axios.get(`${process.env.REACT_APP_API_SERVER}/api/auth/valid`, {
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+      },
+    });
+  } catch (e) {
+    throw e;
+  }
+};
