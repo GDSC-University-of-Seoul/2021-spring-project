@@ -25,9 +25,8 @@ export const clickCctvData = (clickedData) => ({
 });
 
 // selectedData 초기화
-export const initSelectCctvData = (selectedData) => ({
+export const initSelectCctvData = () => ({
   type: CCTV_ITEM_INIT_SELECTED,
-  payload: selectedData,
 });
 
 /*
@@ -61,7 +60,7 @@ export default function cctvsTableEventReducer(state = initialState, action) {
     case CCTV_ITEM_INIT_SELECTED:
       return {
         ...state,
-        selectedData: action.payload,
+        selectedData: [],
       };
     default:
       return state;

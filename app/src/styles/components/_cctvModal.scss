@@ -16,7 +16,8 @@
   }
 }
 .cctvModal-delete {
-  margin-bottom: 20px;
+  font-size: 1rem;
+  font-weight: 400;
 
   span {
     font-size: 1.2rem;
@@ -26,23 +27,12 @@
 .cctvModal-button {
   display: flex;
   justify-content: center;
-  margin-top: 20px;
 
   & > button:first-child {
     margin-right: 30px;
   }
 }
-.cctvModal-warning {
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  font-size: 1.2rem;
-  font-weight: 600;
 
-  button {
-    margin-top: 20px;
-  }
-}
 .search-cdrCenter {
   margin: 0 10px !important;
 }

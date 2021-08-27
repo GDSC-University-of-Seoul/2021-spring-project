@@ -1,8 +1,9 @@
 import React, { useEffect, useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import CategoryTextField from "../components/CategoryTextField";
 import { FiExternalLink } from "react-icons/fi";
-import { useSelector } from "react-redux";
+import { resetCdrCenter } from "../modules/cdrCenter";
 
 function MapBoxSelectContainer() {
   const district = useSelector((state) => state.mapboxEventReducer);
@@ -44,6 +45,13 @@ function MapBoxSelectContainer() {
       cdrCenter,
     };
   }, [district, cdrCenter]);
+
+  // 어린이집, 이상행동 input창 초기화
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(resetCdrCenter());
+  }, [dispatch]);
 
   return (
     <>

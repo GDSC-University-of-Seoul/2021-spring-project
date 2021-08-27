@@ -32,7 +32,7 @@ function Table({
           <th id="check"></th>
           {Object.keys(categories).map((category, index) => (
             <th key={index} id={category}>
-              <div id={category}>{categories[category]}</div>
+              {categories[category]}
             </th>
           ))}
         </tr>

@@ -11,16 +11,7 @@
     font-size: 1.2rem;
     font-weight: 600;
     transition: all 0.3s ease-in-out;
-
-    &:hover:not(#check) {
-      background-color: #dfe0e0;
-      cursor: pointer;
-    }
-    div {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+    text-align: center;
   }
   tbody {
     tr,

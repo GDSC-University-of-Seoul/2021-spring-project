@@ -14,14 +14,9 @@ function BarGraph({ data, keys, indexBy, maxVal }) {
     fontSize: 14,
   };
 
-  // data value의 최대 길이 계산 => 동적 margin 활용
-  let maxlen = 0;
-
-  data.forEach((d) => {
-    Object.values(d).forEach(
-      (value) => (maxlen = Math.max(maxlen, String(value).length))
-    );
-  });
+  // y축 동적 margin 활용
+  let maxlen = 2;
+  maxlen = Math.max(maxlen, String(maxVal).length);
 
   return (
     <ResponsiveBar

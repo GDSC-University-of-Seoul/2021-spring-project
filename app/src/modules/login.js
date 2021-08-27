@@ -5,6 +5,7 @@ import axios from "axios";
 const LOGIN_SUCCESS = "login/LOGIN_SUCCESS";
 const LOGOUT = "login/LOGOUT";
 const LOGIN_ERROR = "login/LOGIN_ERROR";
+const CHECK_LOGIN_ERROR = "login/CHECK_LOGIN_ERROR";
 
 /**
  * 로그인 시도
@@ -38,7 +39,8 @@ export const loginSubmit = (userId, userPw) => async (dispatch) => {
       payload: loginInfo,
     });
   } catch (e) {
-    dispatch({ type: LOGIN_ERROR, payload: e });
+    if (e.response.status === 401)
+      dispatch({ type: LOGIN_ERROR, payload: "⚠️ 로그인에 실패하였습니다" });
   }
 };
 
@@ -47,6 +49,8 @@ export const loginSubmit = (userId, userPw) => async (dispatch) => {
  */
 export const getLoginCookie = () => {
   const loginInfo = JSON.parse(getCookie("loginInfo"));
+
+  // valid 로직 체크
   if (loginInfo) return { type: LOGIN_SUCCESS, payload: loginInfo };
 
   return { type: LOGIN_ERROR, payload: null };
@@ -89,12 +93,13 @@ export const loginInfoUpdate = (userInfo, userToken) => async (dispatch) => {
   }
 };
 
-/**
- * 로그인 정보 초기화
- */
+// 로그인 정보 초기화
 export const initLogin = () => {
   return { type: LOGOUT };
 };
+
+// 로그인 에러 확인
+export const checkLoginError = () => ({ type: CHECK_LOGIN_ERROR });
 
 const initialState = {
   loginSuccess: false,
@@ -125,6 +130,11 @@ export default function loginReducer(state = initialState, action) {
       return {
         loginSuccess: false,
         loginInfo: null,
+        error: null,
+      };
+    case CHECK_LOGIN_ERROR:
+      return {
+        ...state,
         error: null,
       };
     default:

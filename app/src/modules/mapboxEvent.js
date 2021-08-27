@@ -89,12 +89,17 @@ export const sidoClick =
       );
       // 도, 광역시 내에 속해있는 시,군,구 geojson 데이터 필터링
       const sggsFeatures = geojsonData.features.filter(
-        (data) => data.properties.sidonm === selectedDistrictInfo.name
+        (data) =>
+          data.properties.sido === selectedDistrictInfo.code.substr(0, 2)
       );
+
       // geojson 데이터에 시,군,구 어린이집 개수(sgg_cnt) 정보 저장
       sggsFeatures.forEach((sggFeatures) => {
         sggsDistrictData.data.forEach((sggDistrictData) => {
-          if (sggFeatures.properties.sggnm === sggDistrictData.district_name)
+          if (
+            sggFeatures.properties.sgg ===
+            sggDistrictData.district_code.substr(0, 5)
+          )
             sggFeatures.properties.sgg_cnt = parseInt(
               sggDistrictData.anomaly_count,
               10

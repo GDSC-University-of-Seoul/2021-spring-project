@@ -62,6 +62,7 @@
         width: 300px;
       }
       &:nth-child(5) {
+        min-width: 100px;
         max-width: 200px;
       }
     }

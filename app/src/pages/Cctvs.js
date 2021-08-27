@@ -4,15 +4,21 @@ import {
   AiOutlineRetweet,
 } from "react-icons/ai";
 import React, { useEffect, useMemo } from "react";
-import { cctvsPagination, fetchCctvsData, searchCctvs } from "../modules/cctvs";
+import {
+  cctvsPagination,
+  checkCctvsError,
+  fetchCctvsData,
+  searchCctvs,
+} from "../modules/cctvs";
+import { clickCctvData, initSelectCctvData } from "../modules/cctvsTableEvent";
 import { useDispatch, useSelector } from "react-redux";
 
 import Button from "@material-ui/core/Button";
 import CctvModalContainer from "../containers/CctvModalContainer";
 import CctvTableContainer from "../containers/CctvTableContainer";
+import ErrorModal from "../components/ErrorModal";
 import Loading from "../components/Loading";
 import SearchBar from "../components/SearchBar";
-import { clickCctvData } from "../modules/cctvsTableEvent";
 import { openModal } from "../modules/cctvsModal";
 
 /**
@@ -55,9 +61,8 @@ function Cctvs() {
     []
   );
 
-  const { loading, pagination, cctvsData, count, searchInfo } = useSelector(
-    (state) => state.cctvsReducer
-  );
+  const { loading, pagination, cctvsData, count, searchInfo, error } =
+    useSelector((state) => state.cctvsReducer);
   const { selectedData, clickedData } = useSelector(
     (state) => state.cctvsTableEventReducer
   );
@@ -77,6 +82,8 @@ function Cctvs() {
     dispatch(cctvsPagination(initPagination));
     dispatch(searchCctvs(initSearchInfo));
     dispatch(fetchCctvsData(initPagination, searchInfo));
+
+    dispatch(initSelectCctvData());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -90,6 +97,8 @@ function Cctvs() {
 
     dispatch(cctvsPagination(initPagination));
     dispatch(fetchCctvsData(initPagination, searchInfo));
+
+    dispatch(initSelectCctvData());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchInfo]);
 
@@ -165,6 +174,11 @@ function Cctvs() {
           )}
         </div>
       </section>
+      {error && (
+        <ErrorModal closeModal={() => dispatch(checkCctvsError())}>
+          {error}
+        </ErrorModal>
+      )}
     </>
   );
 }
