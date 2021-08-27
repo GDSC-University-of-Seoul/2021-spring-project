@@ -16,11 +16,9 @@ import {
 } from "../modules/cctvs";
 import { useDispatch, useSelector, useStore } from "react-redux";
 
-import { Button } from "@material-ui/core";
 import CctvDeleteModal from "../components/CctvDeleteModal";
 import CctvInputModal from "../components/CctvInputModal";
 import ErrorModal from "../components/ErrorModal";
-import Modal from "../components/Modal";
 import React from "react";
 import SearchCenterModal from "../components/searchCenterModal";
 
