@@ -144,6 +144,10 @@ function Header() {
     <>
       <header>
         <div className="logo" />
+        <div className="warning">
+          ⚠️ 현재 사용중인 CCTV 및 이상행동 데이터는 이해를 돕기 위한 더미
+          데이터로 실제와 관련이 없습니다.
+        </div>
         <div className="info">
           <div
             className={`newLogs-info${
