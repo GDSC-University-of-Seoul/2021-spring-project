@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import CategoryTextField from "../components/CategoryTextField";
 import { FiExternalLink } from "react-icons/fi";
-import { urlFormat } from "../utils/format";
-import { useSelector } from "react-redux";
+import { resetCdrCenter } from "../modules/cdrCenter";
 
 function MapBoxSelectContainer() {
   const district = useSelector((state) => state.mapboxEventReducer);
@@ -46,6 +46,13 @@ function MapBoxSelectContainer() {
     };
   }, [district, cdrCenter]);
 
+  // 어린이집, 이상행동 input창 초기화
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(resetCdrCenter());
+  }, [dispatch]);
+
   return (
     <>
       <h1>지역 정보</h1>
@@ -65,16 +72,16 @@ function MapBoxSelectContainer() {
           data={cdrCenter.data}
           className="cdrCenter-info"
         />
-        <a
-          className="cdrcenter-link"
-          href={
-            cdrCenter.data.web_page ? urlFormat(cdrCenter.data.web_page) : null
-          }
-          target="_blank"
-          rel="noreferrer"
-        >
-          어린이집 홈페이지 바로가기 <FiExternalLink />
-        </a>
+        {cdrCenter.data.web_page && (
+          <a
+            className="cdrcenter-link"
+            href={cdrCenter.data.web_page}
+            target="_blank"
+            rel="noreferrer"
+          >
+            어린이집 홈페이지 바로가기 <FiExternalLink />
+          </a>
+        )}
       </div>
       <h1>이상행동 정보</h1>
       <hr />

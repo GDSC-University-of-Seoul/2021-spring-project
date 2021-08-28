@@ -6,12 +6,8 @@ get:
   parameters:
     - name: district_code
       in: query
-      required: false
+      required: true
       description: 행정구역 코드
-    - name: district_name
-      in: query
-      required: false
-      description: 행정구역 이름
   responses:
     200:
       description: OK
@@ -48,3 +44,11 @@ get:
                   type: string
                 district_name:
                   type: string
+                assault_count:
+                  type: integer
+                fight_count:
+                  type: integer
+                swoon_count:
+                  type: integer
+                anomaly_count:
+                  type: integer

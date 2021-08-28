@@ -22,11 +22,13 @@ export const fetchData = () => async (dispatch) => {
     );
     districts = districts.data;
 
-    // geojson 데이터에 어린이집 개수 property 추가
-    // Todo : geojson 데이터에 어린이집 사건·사고 property 추가
+    // geojson 데이터에 어린이집 사건·사고 개수 property 추가
     districtsGeojson.features.forEach((districtGeojson) => {
       districts.forEach((district) => {
-        if (districtGeojson.properties.sidonm === district.district_name)
+        if (
+          districtGeojson.properties.sido ===
+          district.district_code.substr(0, 2)
+        )
           districtGeojson.properties.sido_cnt = parseInt(
             district.anomaly_count,
             10

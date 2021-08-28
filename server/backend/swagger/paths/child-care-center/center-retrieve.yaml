@@ -1,0 +1,52 @@
+get:
+  tags:
+    - children care center
+  summary: get center by center id
+  description:
+  parameters:
+    - name: center_id
+      in: path
+      required: true
+      description: 어린이집 ID
+  responses:
+    200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              center_id:
+                type: integer
+              center_name:
+                type: string
+              operation_type:
+                type: string
+              operation_status:
+                type: string
+              zipcode:
+                type: string
+              address:
+                type: string
+              center_phone:
+                type: string
+              fax:
+                type: string
+              web_page:
+                type: string
+              latitude:
+                type: string
+              longtitude:
+                type: string
+              district_code:
+                type: string
+              district_name:
+                type: string
+              assault_count:
+                type: integer
+              fight_count:
+                type: integer
+              swoon_count:
+                type: integer
+              anomaly_count:
+                type: integer

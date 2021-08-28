@@ -1,0 +1,46 @@
+tags:
+  - anomaly log
+summary: get all anomaly logs
+description:
+parameters:
+  - name: list_size
+    in: query
+    required: true
+    description: 페이지 내 데이터 개수
+  - name: range
+    in: query
+    required: true
+    description: 현재 페이지의 범위
+  - name: page
+    in: query
+    required: true
+    description: 현재 범위 내 페이지
+  - name: type
+    in: query
+    required: false
+    description: 검색할 유형 (컬럼)
+  - name: keyword
+    in: query
+    required: false
+    description: 검색할 키워드
+responses:
+  200:
+    description: OK
+    content:
+      application/json:
+        schema:
+          type: array
+          items:
+            type: object
+            properties:
+              anomaly_log_id:
+                type: integer
+              center_name:
+                type: string
+              address:
+                type: string
+              record_date:
+                type: string
+                format: date
+              anomaly_type:
+                type: string

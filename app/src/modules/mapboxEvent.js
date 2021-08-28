@@ -4,8 +4,9 @@ const SET_GEOJSON_DATA = "mapboxEvent/SET_GEOJSON_DATA";
 const SET_HOVER_INFO = "mapboxEvent/SET_HOVER_INFO";
 const SIDO_CLICK = "mapboxEvent/SIDO_CLICK";
 const SGG_CLICK = "mapboxEvent/SGG_CLICK";
-const RESET_DISTRICT = "mapboxEvent/RESET";
-const MARKER_Click = "mapboxEvent/MARKER_Click";
+const RESET_TO_SIDO_DISTRICT = "mapboxEvent/RESET_TO_SIDO_DISTRICT";
+const RESET_TO_SGG_DISTRICT = "mapboxEvent/RESET_TO_SGG_DISTRICT";
+const MARKER_CLICK = "mapboxEvent/MARKER_CLICK";
 const ERROR = "mapboxEvent/ERROR";
 
 /**
@@ -88,14 +89,19 @@ export const sidoClick =
       );
       // 도, 광역시 내에 속해있는 시,군,구 geojson 데이터 필터링
       const sggsFeatures = geojsonData.features.filter(
-        (data) => data.properties.sidonm === selectedDistrictInfo.name
+        (data) =>
+          data.properties.sido === selectedDistrictInfo.code.substr(0, 2)
       );
+
       // geojson 데이터에 시,군,구 어린이집 개수(sgg_cnt) 정보 저장
       sggsFeatures.forEach((sggFeatures) => {
         sggsDistrictData.data.forEach((sggDistrictData) => {
-          if (sggFeatures.properties.sggnm === sggDistrictData.district_name)
+          if (
+            sggFeatures.properties.sgg ===
+            sggDistrictData.district_code.substr(0, 5)
+          )
             sggFeatures.properties.sgg_cnt = parseInt(
-              sggDistrictData.count,
+              sggDistrictData.anomaly_count,
               10
             );
         });
@@ -151,9 +157,15 @@ export const sggClick = (selectedDistrictInfo) => async (dispatch) => {
  *
  * @param {Object} selectedDistrictInfo hover 중인 영역의 정보 (지역명, 코드)
  */
-export const resetDistrict = (geojsonData) => async (dispatch) => {
-  dispatch({ type: RESET_DISTRICT, payload: geojsonData });
-};
+export const resetToSidoDistrict = (geojson) => ({
+  type: RESET_TO_SIDO_DISTRICT,
+  payload: geojson,
+});
+
+export const resetToSggDistrict = (geojson, sidoName) => ({
+  type: RESET_TO_SGG_DISTRICT,
+  payload: { geojson, sidoName },
+});
 
 /**
  * 마커 클릭 이벤트를 처리하는 액션함수
@@ -172,7 +184,7 @@ export const markerClick = (markerInfo) => async (dispatch) => {
     swoonCount: markerInfo.swoon_count,
     anomalyCount: markerInfo.anomaly_count,
   };
-  dispatch({ type: MARKER_Click, payload: popupInfo });
+  dispatch({ type: MARKER_CLICK, payload: popupInfo });
 };
 
 const initialState = {
@@ -238,20 +250,35 @@ export default function mapboxEventReducer(state = initialState, action) {
         },
         error: null,
       };
-    // reset 이벤트
-    case RESET_DISTRICT:
+    // 도, 광역시 기준 초기화
+    case RESET_TO_SIDO_DISTRICT:
       return {
         data: {
           ...state.data,
           level: 1,
+          popupInfo: null,
           sidoName: "",
           sggName: "",
           geojsonData: action.payload,
           cdrCentersInfo: null,
         },
       };
+    // 시,군,구 기준 초기화
+    case RESET_TO_SGG_DISTRICT:
+      return {
+        data: {
+          ...state.data,
+          level: 2,
+          popupInfo: null,
+          sidoName: action.payload.sidoName,
+          sggName: "",
+          geojsonData: action.payload.geojson,
+          cdrCentersInfo: null,
+        },
+      };
+
     // 마커 클릭 이벤트
-    case MARKER_Click:
+    case MARKER_CLICK:
       return {
         data: {
           ...state.data,

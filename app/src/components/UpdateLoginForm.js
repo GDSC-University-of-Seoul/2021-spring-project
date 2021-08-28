@@ -1,5 +1,5 @@
 import { Button, TextField } from "@material-ui/core";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { logOut, loginInfoUpdate } from "../modules/login";
 
 import Modal from "./Modal";
@@ -15,49 +15,43 @@ function UpdateLoginForm({ loginInfo, history, setIsChanged }) {
   const dispatch = useDispatch();
 
   const [confirmUpdate, setConfirmUpdate] = useState(false); // 변경 완료 창 열기
-  const [pwMatch, setPwMatch] = useState(true); // 비밀번호 일치여부
-  const [pwConfirm, setpwConfirm] = useState({
-    userPw: "",
-    userPw2: "",
-  }); // 변경할 비밀번호
+  const [valid, setValid] = useState({
+    password: true,
+    phone: true,
+  });
 
-  // 비밀번호 입력값 저장
-  const changePassword = useCallback(
-    (e) => {
-      setPwMatch(true);
-
-      const { id, value } = e.target;
-      const pwInput = { ...pwConfirm };
-      pwInput[id] = value;
-
-      setpwConfirm(pwInput);
-    },
-    [pwConfirm]
-  );
+  useEffect(() => {
+    return () => loginInfo;
+  }, [loginInfo]);
 
   // 사용자 정보 변경
   const updateLogin = useCallback(
     (e) => {
       e.preventDefault();
 
-      // 변경할 비밀번호 일치 여부 검사
-      if (pwConfirm.userPw !== pwConfirm.userPw2) {
-        setPwMatch(false);
+      const updateInfo = {
+        userName: e.target.userName.value,
+        password: e.target.password.value,
+        password2: e.target.password2.value,
+        userPhone: e.target.userPhone.value,
+        email: e.target.email.value,
+      };
+
+      // 패스워드 유효성 검사
+      if (updateInfo.password !== updateInfo.password2) {
+        setValid({ ...valid, password: false });
+        return;
+      }
+      // 전화번호 유효성 검사
+      if (!updateInfo.userPhone.match(/^[0-9]{11}$/)) {
+        setValid({ ...valid, phone: false });
         return;
       }
 
-      // 사용자 정보 변경
-      setPwMatch(true);
-      const { userId, userName, password, email } = e.target;
-      const updateInfo = {
-        userId,
-        userName,
-        password,
-        email,
-      };
-      dispatch(loginInfoUpdate(updateInfo)).then(() => setConfirmUpdate(true));
+      dispatch(loginInfoUpdate(updateInfo, loginInfo.userToken));
+      setConfirmUpdate(true);
     },
-    [pwConfirm, dispatch]
+    [dispatch, loginInfo, valid]
   );
 
   return (
@@ -94,7 +88,7 @@ function UpdateLoginForm({ loginInfo, history, setIsChanged }) {
             />
             <TextField
               label="관리자"
-              id="userId"
+              id="userName"
               InputLabelProps={{
                 shrink: true,
               }}
@@ -102,28 +96,42 @@ function UpdateLoginForm({ loginInfo, history, setIsChanged }) {
             />
             <TextField
               label="변경할 비밀번호"
-              id="userPw"
+              id="password"
               type="password"
-              onChange={changePassword}
               InputLabelProps={{
                 shrink: true,
               }}
+              onChange={() => setValid({ ...valid, password: true })}
             />
             <TextField
               label="비밀번호 확인"
-              id="userPw2"
+              id="password2"
               type="password"
-              onChange={changePassword}
               InputLabelProps={{
                 shrink: true,
               }}
+              onChange={() => setValid({ ...valid, password: true })}
             />
-            {!pwMatch && (
-              <div className="pw-notMatch">비밀번호가 일치하지 않습니다.</div>
+            {!valid.password && (
+              <div className="checkValid">비밀번호가 일치하지 않습니다.</div>
+            )}
+            <TextField
+              label="관리자 연락처"
+              id="userPhone"
+              type="text"
+              placeholder="-를 빼고 입력하세요."
+              defaultValue={loginInfo.userPhone}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              onChange={() => setValid({ ...valid, phone: true })}
+            />
+            {!valid.phone && (
+              <div className="checkValid">전화번호 형식에 맞지 않습니다.</div>
             )}
             <TextField
               label="관리자 이메일"
-              id="userEmail"
+              id="email"
               type="email"
               InputLabelProps={{
                 shrink: true,

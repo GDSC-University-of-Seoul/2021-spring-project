@@ -2,6 +2,7 @@
   width: 100vw;
   height: 100vh;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   background-color: #f6f5f6;
@@ -31,12 +32,16 @@
       background-color: white;
     }
   }
-  .loginFail-modal {
-    display: flex;
-    flex-direction: column;
+  .userRegister {
+    margin-top: 20px;
 
-    button {
-      margin-top: 20px;
+    span {
+      color: #3f51b5;
+      cursor: pointer;
+
+      &:hover {
+        color: red;
+      }
     }
   }
 }

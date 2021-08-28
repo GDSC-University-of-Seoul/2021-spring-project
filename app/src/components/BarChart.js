@@ -13,13 +13,18 @@ function BarGraph({ data, keys, indexBy, maxVal }) {
   const theme = {
     fontSize: 14,
   };
+
+  // y축 동적 margin 활용
+  let maxlen = 2;
+  maxlen = Math.max(maxlen, String(maxVal).length);
+
   return (
     <ResponsiveBar
       data={data}
       keys={keys}
       indexBy={indexBy}
       theme={theme}
-      margin={{ top: 20, right: 75, bottom: 40, left: 40 }}
+      margin={{ top: 20, right: 75, bottom: 40, left: (maxlen + 1) * 10 }}
       padding={0.3}
       maxValue={maxVal === 0 ? 10 : "auto"}
       valueScale={{ type: "linear" }}
@@ -34,6 +39,7 @@ function BarGraph({ data, keys, indexBy, maxVal }) {
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,
+        format: (e) => Math.floor(e) === e && e,
       }}
       labelSkipWidth={12}
       labelSkipHeight={12}

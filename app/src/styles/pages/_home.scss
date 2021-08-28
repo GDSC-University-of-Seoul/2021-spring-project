@@ -2,7 +2,7 @@
   min-height: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 120px 1fr 1fr;
+  grid-template-rows: 120px 440px 1fr;
   grid-gap: 20px;
 
   .header {
@@ -55,6 +55,28 @@
       position: absolute;
       top: 40%;
       left: 50%;
+    }
+
+    .table {
+      height: 360px;
+
+      thead th,
+      tbody td {
+        &:nth-child(2) {
+          max-width: 220px;
+          width: 220px;
+        }
+        &:nth-child(3) {
+          width: 200px;
+        }
+        &:nth-child(4) {
+          width: 300px;
+        }
+        &:nth-child(5) {
+          min-width: 100px;
+          max-width: 200px;
+        }
+      }
     }
   }
 }

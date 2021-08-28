@@ -17,6 +17,7 @@ class Config:
         configs = self.load_config(args.config)
 
         # Parameter
+        self.hub = configs["hub"]
         self.data = configs["data"]
         self.client = configs["client"]
         self.scheduler = configs["scheduler"]
