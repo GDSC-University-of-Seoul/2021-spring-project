@@ -1,6 +1,7 @@
 # FIXME (delete sys)
 import sys
 from pathlib import Path
+import pytest
 
 sys.path.append("C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub")
 from clients.hub import *
@@ -8,7 +9,8 @@ from clients.hub import *
 ###
 # test run_model
 ###
-def test_run_anomaly_type():
+@pytest.mark.asyncio
+async def test_run_anomaly_type():
     """
     test returning anomaly type when anomal change
     anomal에 따라 anomaly_type이 정상적으로 바뀌어 나오는지 확인
