@@ -2,7 +2,7 @@ import { Button } from "@material-ui/core";
 import Modal from "./Modal";
 import React from "react";
 
-function ErrorModal({ closeModal, children }) {
+function AlertModal({ closeModal, children }) {
   return (
     <Modal>
       {children}
@@ -18,4 +18,4 @@ function ErrorModal({ closeModal, children }) {
   );
 }
 
-export default ErrorModal;
+export default AlertModal;

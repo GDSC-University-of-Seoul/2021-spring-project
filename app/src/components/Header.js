@@ -138,7 +138,7 @@ function Header() {
       audioRef.current.play();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [audioRef]);
+  }, []);
 
   return (
     <>

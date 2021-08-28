@@ -2,6 +2,7 @@
   width: 100vw;
   height: 100vh;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   background-color: #f6f5f6;
@@ -29,6 +30,18 @@
       justify-content: space-between;
       box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
       background-color: white;
+    }
+  }
+  .userRegister {
+    margin-top: 20px;
+
+    span {
+      color: #3f51b5;
+      cursor: pointer;
+
+      &:hover {
+        color: red;
+      }
     }
   }
 }

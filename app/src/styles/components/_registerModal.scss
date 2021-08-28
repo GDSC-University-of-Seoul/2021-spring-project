@@ -1,4 +1,4 @@
-.updateLogin-form {
+.register-form {
   display: flex;
   flex-direction: column;
   width: 400px;
@@ -10,29 +10,24 @@
   .MuiInput-underline.Mui-disabled:before {
     border-bottom-style: solid !important;
   }
-  .checkValid {
+  .pw-notMatch {
     color: red;
     margin: 0 10px;
     font-size: 0.8rem;
   }
-  .updateUserForm-button {
+  .registerForm-button {
     display: flex;
     justify-content: center;
-    margin-top: 20px;
+    margin-top: 10px;
 
     button:first-child {
       margin-right: 30px;
     }
   }
-}
-
-.updateUserInfo-confirm {
-  display: flex;
-  flex-direction: column;
-  font-size: 1.25rem;
-  font-weight: 600;
-
-  button {
-    margin-top: 20px;
+  .checkValid {
+    color: red;
+    font-size: 0.9rem;
+    font-weight: 400;
+    padding: 0 10px;
   }
 }

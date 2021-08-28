@@ -3,7 +3,8 @@ import React, { useCallback } from "react";
 import { checkLoginError, loginSubmit } from "../modules/login";
 import { useDispatch, useSelector } from "react-redux";
 
-import ErrorModal from "../components/ErrorModal";
+import AlertModal from "../components/AlertModal";
+import RegisterContainer from "../containers/RegisterContainer";
 
 function Login() {
   const { error } = useSelector((state) => state.loginReducer);
@@ -46,11 +47,12 @@ function Login() {
         </form>
         {/* 로그인 실패 */}
         {error && (
-          <ErrorModal closeModal={() => dispatch(checkLoginError())}>
+          <AlertModal closeModal={() => dispatch(checkLoginError())}>
             {error}
-          </ErrorModal>
+          </AlertModal>
         )}
       </div>
+      <RegisterContainer />
     </section>
   );
 }
