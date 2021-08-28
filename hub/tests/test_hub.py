@@ -31,6 +31,8 @@ def test_run_anomaly_type():
     else:
         anomaly_type = output["anomaly_type"]
         ANOMAL_NOT_FOUND_MSG = "There is no anomal alert return"
-        RETURN_ANOTHER_ANOMAL_MSG = f"Found another anomal alert {anomal} ({__anomal_assault})"
+        RETURN_ANOTHER_ANOMAL_MSG = (
+            f"Found another anomal alert {anomal} ({__anomal_assault})"
+        )
         assert anomal != False, ANOMAL_NOT_FOUND_MSG
         assert anomaly_type == __type_assault, RETURN_ANOTHER_ANOMAL_MSG
