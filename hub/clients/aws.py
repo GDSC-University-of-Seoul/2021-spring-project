@@ -10,6 +10,7 @@ import requests
 import json
 
 from utils.logger import Logger
+
 logger = Logger().get_logger()
 THRESHOLD = 0.4
 
@@ -52,7 +53,7 @@ class AWSClient:
 
     async def server_api(self, dirpath):
         files = os.listdir(dirpath)
-        
+
         (flag, data) = await self.run_model(dirpath, files[-1])
 
         if flag is True:
@@ -67,7 +68,6 @@ class AWSClient:
 
     async def run_model(self, dirpath, filepath):
         print(f"  Run Model {filepath} at {dirpath}...")
-        
 
         ## RUN MODEL
         score = abs(random.normalvariate(mu=0, sigma=0.2))
