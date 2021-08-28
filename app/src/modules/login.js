@@ -35,6 +35,7 @@ export const loginSubmit = (userId, userPw) => async (dispatch) => {
     const loginInfo = {
       userId: member.member_id,
       userName: member.member_name,
+      userPhone: member.member_phone,
       email: member.email,
       userToken: token,
     };
@@ -102,6 +103,7 @@ export const loginInfoUpdate = (userInfo, userToken) => async (dispatch) => {
       {
         member_name: userInfo.userName,
         password: userInfo.password,
+        member_phone: userInfo.userPhone,
         email: userInfo.email,
       },
       {

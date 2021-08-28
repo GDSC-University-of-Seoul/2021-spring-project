@@ -32,7 +32,7 @@ function RegisterModal({ registerUser, closeModal }) {
         id: "userName",
       },
       {
-        label: "연락처",
+        label: "관리자 연락처",
         id: "userPhone",
         type: "text",
         placeholder: "-를 빼고 입력하세요",

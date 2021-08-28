@@ -15,7 +15,7 @@ import { useHistory } from "react-router-dom";
  */
 function Settings() {
   const { loginInfo } = useSelector((state) => state.loginReducer);
-  const { userId, userName, email } = loginInfo;
+  const { userId, userName, userPhone, email } = loginInfo;
 
   const [isChanged, setIsChanged] = useState(false); // 사용자 정보 변경창 열기
   const [isLogOut, setIsLogOut] = useState(false); // 로그아웃 창 열기
@@ -77,6 +77,10 @@ function Settings() {
             </li>
             <li>
               <span>계정 ID</span> <input type="text" value={userId} disabled />
+            </li>
+            <li>
+              <span>관리자 연락처</span>
+              <input type="text" value={userPhone} disabled />
             </li>
             <li>
               <span>관리자 이메일</span>
