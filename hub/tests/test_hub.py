@@ -1,9 +1,5 @@
-# FIXME (delete sys)
-import sys
 from pathlib import Path
 import pytest
-
-sys.path.append("C:\\Users\\user\\Documents\\GitHub\\2021-spring-project\\hub")
 from clients.hub import *
 
 ###
