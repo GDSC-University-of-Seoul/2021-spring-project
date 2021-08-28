@@ -26,9 +26,9 @@ def check_dir(path: Path, force=True):
             return False
         else:
             os.makedirs(path)
-            
+
     check_dir(path=path, force=True)
-    
+
     return True
 
 
