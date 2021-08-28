@@ -26,11 +26,15 @@ async def test_run_anomaly_type():
     # 결과 비교 (else 코드 TODO)
     if anomal == __anomal_assault:
         anomaly_type = output["anomaly_type"]
-        WRONG_ANOMALY_TYPE_MSG = f"Wrong anomaly type {anomaly_type} return ({__type_assault})"
+        WRONG_ANOMALY_TYPE_MSG = (
+            f"Wrong anomaly type {anomaly_type} return ({__type_assault})"
+        )
         assert anomaly_type == __type_assault, WRONG_ANOMALY_TYPE_MSG
     else:
         anomaly_type = output["anomaly_type"]
         ANOMAL_NOT_FOUND_MSG = "There is no anomal alert return"
-        RETURN_ANOTHER_ANOMAL_MSG = f"Found another anomal alert {anomal} ({__anomal_assault})"
+        RETURN_ANOTHER_ANOMAL_MSG = (
+            f"Found another anomal alert {anomal} ({__anomal_assault})"
+        )
         assert anomal != False, ANOMAL_NOT_FOUND_MSG
         assert anomaly_type == __type_assault, RETURN_ANOTHER_ANOMAL_MSG
