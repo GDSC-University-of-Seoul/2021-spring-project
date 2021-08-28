@@ -9,6 +9,7 @@ import mapboxCategoryReducer from "./mapboxCategory";
 import mapboxEventReducer from "./mapboxEvent";
 import mapboxReducer from "./mapbox";
 import searchCenterReducer from "./searchCenterModal";
+import settingsReducer from "./settings";
 
 // 여러 개의 리듀서를 통합
 const rootReducers = combineReducers({
@@ -22,6 +23,7 @@ const rootReducers = combineReducers({
   searchCenterReducer,
   logsReducer,
   loginReducer,
+  settingsReducer,
 });
 
 export default rootReducers;

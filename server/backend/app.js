@@ -4,12 +4,15 @@ import dotenv from "dotenv";
 import path from "path";
 import swaggerUi from "swagger-ui-express";
 import yaml from "yamljs";
+import cors from "cors";
+import passport from "passport";
 
 import { sequelize } from "../database/models/transform";
 import indexRouter from "./routes";
-import cors from "cors";
+import passportConfig from "./passports";
 
 dotenv.config();
+passportConfig();
 
 const app = express();
 app.set("port", process.env.PORT || 3000);
@@ -25,17 +28,24 @@ sequelize
     console.log(err);
   });
 
-app.use(cors());
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+  })
+);
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use("/", indexRouter);
 
 const swaggerSpecs = yaml.load(path.join(__dirname, "/swagger/build.yaml"));
 app.use("/api/docs/", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 
-// 포트 연결
 app.listen(app.get("port"), () => {
-  console.log(app.get("port"), "빈 포트에서 대기중.");
+  console.log(app.get("port"), "HTTP server listening on port.");
 });

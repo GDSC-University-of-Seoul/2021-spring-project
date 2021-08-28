@@ -104,6 +104,21 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkDelete('cctv', null);
+    await queryInterface.bulkDelete('cctv', {
+      cctv_mac: [
+        '54C4153B5737',
+        '1A2B3C4D5E6F',
+        '6A564D3F2916',
+        '254D6E881337',
+        '9A5C1D0F0B9E',
+        '94850B9B1A07',
+        '0A182D3D4D5B',
+        '1234567890AB',
+        '12C4B6987654',
+        '6B5B4C332217',
+        '3C5F8E0A2B7C',
+        '6C8C5D063C7D',
+      ],
+    });
   },
 };

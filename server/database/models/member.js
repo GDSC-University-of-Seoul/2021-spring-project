@@ -4,7 +4,7 @@ import Sequelize from 'sequelize';
  * 로그인 관련 테이블
  * <FIELDS>           <DATA TYPE>        <INDEX>   <NULLABLE>
  * member_id          : String(50)          PK        FALSE
- * password           : String(50)                    FALSE
+ * password           : String(100)                    FALSE
  * member_name        : String(10)                    FALSE
  * member_phone       : String(12)                    FALSE
  * email              : String(50)                    TRUE
@@ -20,7 +20,7 @@ module.exports = class Member extends Sequelize.Model {
           primaryKey: true,
         },
         password: {
-          type: DataTypes.STRING(50),
+          type: DataTypes.STRING(100),
           allowNull: false,
         },
         member_name: {
