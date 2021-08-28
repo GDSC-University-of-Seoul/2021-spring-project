@@ -15,6 +15,7 @@ with open("../../../.dummy/region_code_name.json", "r", encoding="UTF-8") as f:
 # api 호출에 쓰일 시군구코드 추출
 sigungu_code = []
 
+
 def get_sigungu_code():
     real_data = json_data["존재"]
     sejong_written = 1
@@ -40,8 +41,10 @@ def get_sigungu_code():
 
             sigungu_code.append(key[:5])
 
+
 # 반복문 돌며 어린이집 정보 딕셔너리 형태로 저장 (키 : 어린이집코드, 값 : 튜플)
 target_data = {}
+
 
 def parse_center_info(district_code):
     base_url = os.getenv("OPERATION_URL")
@@ -84,6 +87,7 @@ def parse_center_info(district_code):
         target_data[center_id] = center_info
 
     time.sleep(5)
+
 
 # 실행 부분
 get_sigungu_code()
