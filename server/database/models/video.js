@@ -31,7 +31,7 @@ module.exports = class Video extends Sequelize.Model {
           allowNull: false,
         },
         storage_name: {
-          type: DataTypes.STRING(20),
+          type: DataTypes.STRING(128),
           allowNull: false,
         },
       },

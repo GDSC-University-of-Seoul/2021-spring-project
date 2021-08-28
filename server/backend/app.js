@@ -21,10 +21,10 @@ app.set("port", process.env.PORT || 3000);
 sequelize
   .sync({ force: false, alter: false })
   .then(() => {
-    console.log("DB 연결 성공");
+    console.log("DB connection succeeded.");
   })
   .catch((err) => {
-    console.log("DB 연결 실패");
+    console.log("DB connection fail.");
     console.error(err);
   });
 

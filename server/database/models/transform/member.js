@@ -34,7 +34,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
  * 로그인 관련 테이블
  * <FIELDS>           <DATA TYPE>        <INDEX>   <NULLABLE>
  * member_id          : String(50)          PK        FALSE
- * password           : String(50)                    FALSE
+ * password           : String(100)                    FALSE
  * member_name        : String(10)                    FALSE
  * member_phone       : String(12)                    FALSE
  * email              : String(50)                    TRUE
