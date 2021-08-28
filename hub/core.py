@@ -49,63 +49,36 @@ class KidsKeeper(object):
         check_update()
         logger.info("Kids Keeper - protect service is now running")
         while True:
-            time.sleep(self.intervals)
             asyncio.run(self.process())
-            # asyncio.run(self.scheduling(self.process))
 
     async def process(self):
-        logger.info(f"Run Process ( Interval : {self.intervals} )")
+        logger.info(f"Run Process ( Interval : {self.intervals} sec )")
 
         subclients = self.hub_client.sub_clients
-        coroutines = [self.analize(sub.path) for sub in subclients]
+        coroutines = [self.analize(sub) for sub in subclients]
         await asyncio.wait(coroutines)
 
-    async def analize(self, path):
-        print(f"  Run Model at {path}...")
+    async def analize(self, hub_client):
+        logger.info(f"Run Model at {hub_client.path}...")
 
         cur_time = datetime.now()
-        ano_time = cur_time + timedelta(minutes=1, seconds=45)
-        end_time = cur_time + timedelta(minutes=5)
-        filename = os.path.join(path, to_file_format(cur_time))
+        filename = os.path.join(hub_client.path, to_file_format(cur_time))
 
         with open(f"{filename}.mp4", mode="w") as f:
             f.write("")
 
-        await asyncio.sleep(2)
-        ## RUN MODEL
-        score = self.scoring_func()
-        anomal = self.detect_anomaly(score)
+        hub_client.fetch_latest_file(extension="mp4")
+        hub_client.fetch_ctime()
+        hub_client.fetch_mac_id()
 
-        output = {
-            "video": {
-                "record_date": str(cur_time),
-                "cctv_mac": "54C4153B5737",
-                "storage_name": path,
-            },
-            "anomaly_type": "폭행" if anomal else None,
-            "start_time": str(ano_time) if anomal else None,
-            "end_time": str(end_time) if anomal else None,
-        }
+        is_anomal, anomal_type = await hub_client.analize_video()
 
-        ## Done MODEL
-        print(f"    {path} anomaly score is : {score * 100:.2f} %")
+        logger.info(f"    {hub_client.path} score is : {hub_client.score * 100:.2f} %")
+        if is_anomal:
+            response = self.aws_client.send_anomaly(data=hub_client.output())
+            logger.info(f" {hub_client.target_file} is anomaly!!! >> {response}")
 
-        if anomal is True:
-            print(f" {path} is anomaly!!!")
-            response = self.aws_client.send_anomaly(data=output)
-            print(" >> response ", response)
-            await asyncio.sleep(2)
-        return (anomal, output)
-
-    def scoring_func(self):
-        # TEMP CODE
-        # Randomize option
-        return abs(random.normalvariate(mu=0, sigma=0.5))
-
-    def detect_anomaly(self, score, threshold=0.7):
-        if score >= threshold:
-            return True
-        return False
+        await asyncio.sleep(self.intervals)
 
 
 def init_runner():
