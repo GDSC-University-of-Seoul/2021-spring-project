@@ -1,10 +1,11 @@
-import React from "react";
+import { cctvsPagination, fetchCctvsData } from "../modules/cctvs";
 import {
   clickCctvData,
   selectCctvData,
   selectOffCctvData,
 } from "../modules/cctvsTableEvent";
 
+import React from "react";
 import Table from "../components/Table";
 import { openModal } from "../modules/cctvsModal";
 import { useDispatch } from "react-redux";
@@ -12,10 +13,10 @@ import { useDispatch } from "react-redux";
 /**
  * CCTV 데이터에 기반한 표 구성
  *
- * @param {Object} cctvData : CCTV 데이터
+ * @param {Object} - pagination: 현재 페이지네이션 정보 cctvsData : CCTV 데이터 count: 전체 페이지네이션 정보 searchInfo : 검색 키워드
  * @returns {JSX.Element} CCTV 데이터 표 컴포넌트
  */
-function CctvTableContainer({ cctvsData }) {
+function CctvTableContainer({ pagination, cctvsData, count, searchInfo }) {
   const dispatch = useDispatch();
 
   // CCTV 데이터 카테고리
@@ -64,9 +65,16 @@ function CctvTableContainer({ cctvsData }) {
 
   return (
     <Table
+      pagination={pagination}
       data={cctvsData}
+      count={count}
       categories={categories}
       itemId={"cctv_mac"}
+      searchInfo={searchInfo}
+      setPagination={(pagination) => dispatch(cctvsPagination(pagination))}
+      fetchData={(pagination, searchInfo) =>
+        dispatch(fetchCctvsData(pagination, searchInfo))
+      }
       itemCheckHandler={itemCheckHandler}
       itemClickHandler={itemClickHandler}
     />

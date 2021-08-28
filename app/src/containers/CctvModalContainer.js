@@ -16,20 +16,21 @@ import {
 } from "../modules/cctvs";
 import { useDispatch, useSelector, useStore } from "react-redux";
 
-import { Button } from "@material-ui/core";
 import CctvDeleteModal from "../components/CctvDeleteModal";
 import CctvInputModal from "../components/CctvInputModal";
-import Modal from "../components/Modal";
+import ErrorModal from "../components/ErrorModal";
 import React from "react";
 import SearchCenterModal from "../components/searchCenterModal";
 
 /**
  * CCTV 모달창 컨테이너 컴포넌트
  *
- * @param {Object} selectedData: 체크된 데이터, clickedData: 클릭한 데이터
+ * @param {Object} - selectedData: 체크된 데이터, clickedData: 클릭한 데이터
  * @returns {JSX.Element} CCTV 모달창 컨테이너
  */
 function CctvModalContainer({ selectedData, clickedData }) {
+  const { pagination, searchInfo } = useSelector((state) => state.cctvsReducer);
+
   const {
     isOpen,
     macValid,
@@ -85,7 +86,7 @@ function CctvModalContainer({ selectedData, clickedData }) {
 
     // MAC 주소 중복 체크 이후 CCTV 데이터 생성 (Create)
     if (createData) {
-      dispatch(createCctvsData(submitInfo)).then(() => {
+      dispatch(createCctvsData(submitInfo, pagination, searchInfo)).then(() => {
         if (!checkDuplicatedMac()) closeHandler();
       });
     }
@@ -98,16 +99,20 @@ function CctvModalContainer({ selectedData, clickedData }) {
       ) {
         if (!submitInfo.center_id) submitInfo.center_id = befInfo.center_id;
 
-        dispatch(createCctvsData(submitInfo)).then(() => {
-          if (!checkDuplicatedMac()) {
-            dispatch(deleteCctvsData([befInfo]));
-            closeHandler();
+        dispatch(createCctvsData(submitInfo, pagination, searchInfo)).then(
+          () => {
+            if (!checkDuplicatedMac()) {
+              dispatch(deleteCctvsData([befInfo], pagination, searchInfo));
+              closeHandler();
+            }
           }
-        });
+        );
       }
       // 2. center_id, cctv_mac 모두 변경되지 않은 경우 (기존 CCTV 정보 변경)
       else {
-        dispatch(updateCctvsData(submitInfo)).then(() => closeHandler());
+        dispatch(updateCctvsData(submitInfo, pagination, searchInfo)).then(() =>
+          closeHandler()
+        );
       }
     }
   };
@@ -124,8 +129,8 @@ function CctvModalContainer({ selectedData, clickedData }) {
 
   // CCTV 데이터 제거 (Delete)
   const deleteCctvData = () => {
-    dispatch(deleteCctvsData(selectedData));
-    dispatch(initSelectCctvData([]));
+    dispatch(deleteCctvsData(selectedData, pagination, searchInfo));
+    dispatch(initSelectCctvData());
     closeHandler();
   };
 
@@ -196,36 +201,16 @@ function CctvModalContainer({ selectedData, clickedData }) {
       ) : (updateData || deleteData) && selectedData.length === 0 ? (
         <>
           {/* 에러 모달창 1 - 데이터 선택 안함 */}
-          <Modal>
-            <div className="cctvModal-warning">
-              ⚠️ 데이터를 선택해주세요
-              <Button
-                variant="contained"
-                color="primary"
-                disableElevation
-                onClick={closeHandler}
-              >
-                확인
-              </Button>
-            </div>
-          </Modal>
+          <ErrorModal closeModal={closeHandler}>
+            ⚠️ 데이터를 선택해주세요
+          </ErrorModal>
         </>
       ) : updateData && selectedData.length >= 2 ? (
         <>
           {/* 에러 모달창 2 - 복수 데이터 선택 */}
-          <Modal>
-            <div className="cctvModal-warning">
-              ⚠️ 1개의 데이터만 선택해주세요
-              <Button
-                variant="contained"
-                color="primary"
-                disableElevation
-                onClick={closeHandler}
-              >
-                확인
-              </Button>
-            </div>
-          </Modal>
+          <ErrorModal closeModal={closeHandler}>
+            ⚠️ 1개의 데이터만 선택해주세요
+          </ErrorModal>
         </>
       ) : (
         deleteData && (

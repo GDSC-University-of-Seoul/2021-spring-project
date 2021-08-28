@@ -11,18 +11,16 @@
     font-size: 1.2rem;
     font-weight: 600;
     transition: all 0.3s ease-in-out;
-
-    &:hover:not(#check) {
-      background-color: #dfe0e0;
-      cursor: pointer;
-    }
-    div {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+    text-align: center;
   }
   tbody {
+    tr,
+    td {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
     tr {
       background-color: rgba(128, 128, 128, 0);
       transition: all 0.3s ease-in-out;
@@ -31,11 +29,19 @@
       &:hover {
         background-color: rgba(241, 241, 241, 1);
       }
+
+      &:not(:last-child) {
+        height: 28px;
+      }
     }
     td {
       padding: 5px;
     }
   }
+  .tablePagination ul {
+    margin: 10px 0;
+  }
+
   input[type="checkbox"] {
     width: 15px;
     height: 15px;

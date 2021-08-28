@@ -8,7 +8,15 @@ import Table from "../components/Table";
  * @returns {JSX.Element} 로그 데이터 기반 표 컴포넌트
  */
 
-function LogTableContainer({ loading, logsData }) {
+function LogTableContainer({
+  loading,
+  pagination,
+  logsData,
+  count,
+  searchInfo,
+  setPagination,
+  fetchData,
+}) {
   // 로그 카테고리
   const categories = {
     center_name: "어린이집 명",
@@ -19,6 +27,17 @@ function LogTableContainer({ loading, logsData }) {
 
   if (loading) return <Loading />;
 
-  return <Table data={logsData} categories={categories} checkOpt={false} />;
+  return (
+    <Table
+      pagination={pagination}
+      data={logsData}
+      count={count}
+      categories={categories}
+      checkOpt={false}
+      searchInfo={searchInfo}
+      setPagination={setPagination}
+      fetchData={fetchData}
+    />
+  );
 }
 export default LogTableContainer;

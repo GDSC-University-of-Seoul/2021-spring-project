@@ -5,6 +5,7 @@ import axios from "axios";
 const LOGIN_SUCCESS = "login/LOGIN_SUCCESS";
 const LOGOUT = "login/LOGOUT";
 const LOGIN_ERROR = "login/LOGIN_ERROR";
+const CHECK_LOGIN_ERROR = "login/CHECK_LOGIN_ERROR";
 
 /**
  * 로그인 시도
@@ -14,12 +15,23 @@ const LOGIN_ERROR = "login/LOGIN_ERROR";
  */
 export const loginSubmit = (userId, userPw) => async (dispatch) => {
   try {
-    // Todo : 로그인 서버 주소 지정
+    const loginResponse = await axios.post(
+      `${process.env.REACT_APP_API_SERVER}/api/auth/login`,
+      {
+        member_id: userId,
+        password: userPw,
+      },
+      { withCredentials: true }
+    );
 
-    const loginInfo = await axios.post(`${process.env.REACT_APP_API_SERVER}/`, {
-      userId,
-      userPw,
-    });
+    const { member, token } = loginResponse.data;
+
+    const loginInfo = {
+      userId: member.member_id,
+      userName: member.member_name,
+      email: member.email,
+      userToken: token,
+    };
 
     setCookie("loginInfo", JSON.stringify(loginInfo), 1);
     dispatch({
@@ -27,7 +39,8 @@ export const loginSubmit = (userId, userPw) => async (dispatch) => {
       payload: loginInfo,
     });
   } catch (e) {
-    dispatch({ type: LOGIN_ERROR, payload: e });
+    if (e.response.status === 401)
+      dispatch({ type: LOGIN_ERROR, payload: "⚠️ 로그인에 실패하였습니다" });
   }
 };
 
@@ -36,6 +49,8 @@ export const loginSubmit = (userId, userPw) => async (dispatch) => {
  */
 export const getLoginCookie = () => {
   const loginInfo = JSON.parse(getCookie("loginInfo"));
+
+  // valid 로직 체크
   if (loginInfo) return { type: LOGIN_SUCCESS, payload: loginInfo };
 
   return { type: LOGIN_ERROR, payload: null };
@@ -46,7 +61,7 @@ export const getLoginCookie = () => {
  *
  * @param {Object} history 리다이렉션을 위한 history 객체
  */
-export const logOut = (history) => (dispatch) => {
+export const logOut = (history) => async (dispatch) => {
   deleteCookie("loginInfo");
   dispatch({ type: LOGOUT });
   history.push("/");
@@ -58,21 +73,33 @@ export const logOut = (history) => (dispatch) => {
  * @param {Object} userInfo 변경할 사용자 정보 {userId, userName, password, email}
  * @returns
  */
-export const loginInfoUpdate = (userInfo) => async (dispatch) => {
+export const loginInfoUpdate = (userInfo, userToken) => async (dispatch) => {
   try {
-    // Todo : 로그인 서버 주소 지정
-    await axios.put(`${process.env.REACT_APP_API_SERVER}/`, userInfo);
+    await axios.put(
+      `${process.env.REACT_APP_API_SERVER}/api/auth/member`,
+      {
+        member_name: userInfo.userName,
+        password: userInfo.password,
+        email: userInfo.email,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+      }
+    );
   } catch (e) {
     dispatch({ type: LOGIN_ERROR, payload: e });
   }
 };
 
-/**
- * 로그인 정보 초기화
- */
+// 로그인 정보 초기화
 export const initLogin = () => {
   return { type: LOGOUT };
 };
+
+// 로그인 에러 확인
+export const checkLoginError = () => ({ type: CHECK_LOGIN_ERROR });
 
 const initialState = {
   loginSuccess: false,
@@ -80,6 +107,7 @@ const initialState = {
     userId: null,
     userName: null,
     email: null,
+    userToken: null,
   },
   error: null,
 };
@@ -102,6 +130,11 @@ export default function loginReducer(state = initialState, action) {
       return {
         loginSuccess: false,
         loginInfo: null,
+        error: null,
+      };
+    case CHECK_LOGIN_ERROR:
+      return {
+        ...state,
         error: null,
       };
     default:

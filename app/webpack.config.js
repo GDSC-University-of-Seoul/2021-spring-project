@@ -2,6 +2,7 @@ const path = require("path");
 const webpack = require("webpack");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { WebpackManifestPlugin } = require("webpack-manifest-plugin");
 const dotenv = require("dotenv");
 
 dotenv.config();
@@ -65,5 +66,6 @@ module.exports = {
         REACT_APP_API_SERVER: JSON.stringify(process.env.REACT_APP_API_SERVER),
       },
     }),
+    new WebpackManifestPlugin(),
   ],
 };
