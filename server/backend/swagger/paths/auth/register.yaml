@@ -21,7 +21,7 @@ post:
               type: string
   responses:
     201:
-      description: OK
+      description: Created
       content:
         application/json:
           schema:

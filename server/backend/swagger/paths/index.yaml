@@ -1,15 +1,11 @@
 /districts:
   $ref: "district/district-list.yaml"
 /districts/{district_code}:
-  $ref: "district/district-retrieve-by-code.yaml"
-/districts/{district_name}:
-  $ref: "district/district-retrieve-by-name.yaml"
+  $ref: "district/district-retrieve.yaml"
 /centers:
   $ref: "child-care-center/center-list.yaml"
 /centers/{center_id}:
-  $ref: "child-care-center/center-retrieve-by-id.yaml"
-/centers/{center_name}:
-  $ref: "child-care-center/center-retrieve-by-name.yaml"
+  $ref: "child-care-center/center-retrieve.yaml"
 /cctvs:
   get:
     $ref: "cctv/cctv-list.yaml"
@@ -22,12 +18,16 @@
     $ref: "cctv/cctv-delete.yaml"
 /anomalies/logs:
   get:
-    $ref: "log/log-list.yaml"
+    $ref: "log/log-list-all.yaml"
   post:
     $ref: "log/log-create.yaml"
+/anomalies/logs/recent:
+  $ref: "log/log-list-recent.yaml"
 /auth/register:
   $ref: "auth/register.yaml"
 /auth/login:
   $ref: "auth/login.yaml"
 /auth/member:
   $ref: "auth/member-update.yaml"
+/auth/valid:
+  $ref: "auth/valid.yaml"

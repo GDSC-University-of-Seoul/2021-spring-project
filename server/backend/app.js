@@ -21,11 +21,11 @@ app.set("port", process.env.PORT || 3000);
 sequelize
   .sync({ force: false, alter: false })
   .then(() => {
-    console.log("DB 연결 성공");
+    console.log("DB connection succeeded.");
   })
   .catch((err) => {
-    console.log("DB 연결 실패");
-    console.log(err);
+    console.log("DB connection fail.");
+    console.error(err);
   });
 
 app.use(
@@ -45,6 +45,11 @@ app.use("/", indexRouter);
 
 const swaggerSpecs = yaml.load(path.join(__dirname, "/swagger/build.yaml"));
 app.use("/api/docs/", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
+
+// internal server error handler
+app.use((err, req, res, next) => {
+  res.status(500).send({ errors: err.errors });
+});
 
 app.listen(app.get("port"), () => {
   console.log(app.get("port"), "HTTP server listening on port.");

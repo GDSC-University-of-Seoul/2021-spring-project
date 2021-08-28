@@ -37,8 +37,14 @@ paths:
                       type: string
                     parent_code:
                       type: string
-                    count:
-                      type: string
+                    assualt_count:
+                      type: integer
+                    fight_count:
+                      type: integer
+                    swoon_count:
+                      type: integer
+                    anomaly_count:
+                      type: integer
   '/districts/{district_code}':
     get:
       tags:
@@ -66,37 +72,14 @@ paths:
                       type: string
                     parent_code:
                       type: string
-                    count:
-                      type: string
-  '/districts/{district_name}':
-    get:
-      tags:
-        - district
-      summary: get district by district name
-      description: null
-      parameters:
-        - name: district_name
-          in: path
-          required: true
-          description: 행정구역 이름
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    district_code:
-                      type: string
-                    district_name:
-                      type: string
-                    parent_code:
-                      type: string
-                    count:
-                      type: string
+                    assualt_count:
+                      type: integer
+                    fight_count:
+                      type: integer
+                    swoon_count:
+                      type: integer
+                    anomaly_count:
+                      type: integer
   /centers:
     get:
       tags:
@@ -106,12 +89,8 @@ paths:
       parameters:
         - name: district_code
           in: query
-          required: false
+          required: true
           description: 행정구역 코드
-        - name: district_name
-          in: query
-          required: false
-          description: 행정구역 이름
       responses:
         '200':
           description: OK
@@ -148,6 +127,14 @@ paths:
                       type: string
                     district_name:
                       type: string
+                    assault_count:
+                      type: integer
+                    fight_count:
+                      type: integer
+                    swoon_count:
+                      type: integer
+                    anomaly_count:
+                      type: integer
   '/centers/{center_id}':
     get:
       tags:
@@ -193,51 +180,14 @@ paths:
                     type: string
                   district_name:
                     type: string
-  '/centers/{center_name}':
-    get:
-      tags:
-        - children care center
-      summary: get center by name
-      description: null
-      parameters:
-        - name: center_name
-          in: path
-          required: true
-          description: 어린이집 이름
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  center_id:
+                  assault_count:
                     type: integer
-                  center_name:
-                    type: string
-                  operation_type:
-                    type: string
-                  operation_status:
-                    type: string
-                  zipcode:
-                    type: string
-                  address:
-                    type: string
-                  center_phone:
-                    type: string
-                  fax:
-                    type: string
-                  web_page:
-                    type: string
-                  latitude:
-                    type: string
-                  longtitude:
-                    type: string
-                  district_code:
-                    type: string
-                  district_name:
-                    type: string
+                  fight_count:
+                    type: integer
+                  swoon_count:
+                    type: integer
+                  anomaly_count:
+                    type: integer
   /cctvs:
     get:
       tags:
@@ -245,10 +195,26 @@ paths:
       summary: get all cctvs
       description: null
       parameters:
-        - name: center_id
+        - name: list_size
+          in: query
+          required: true
+          description: 페이지 내 데이터 개수
+        - name: range
+          in: query
+          required: true
+          description: 현재 페이지의 범위
+        - name: page
+          in: query
+          required: true
+          description: 현재 범위 내 페이지
+        - name: type
           in: query
           required: false
-          description: 어린이집 id
+          description: 검색할 유형 (컬럼)
+        - name: keyword
+          in: query
+          required: false
+          description: 검색할 키워드
       responses:
         '200':
           description: OK
@@ -397,10 +363,26 @@ paths:
       summary: get all anomaly logs
       description: null
       parameters:
-        - name: center_name
+        - name: list_size
+          in: query
+          required: true
+          description: 페이지 내 데이터 개수
+        - name: range
+          in: query
+          required: true
+          description: 현재 페이지의 범위
+        - name: page
+          in: query
+          required: true
+          description: 현재 범위 내 페이지
+        - name: type
           in: query
           required: false
-          description: 어린이집 이름
+          description: 검색할 유형 (컬럼)
+        - name: keyword
+          in: query
+          required: false
+          description: 검색할 키워드
       responses:
         '200':
           description: OK
@@ -473,6 +455,54 @@ paths:
                     format: date
                   follow_up:
                     type: string
+  /anomalies/logs/recent:
+    get:
+      tags:
+        - anomaly log
+      summary: get recent anomaly logs
+      description: null
+      parameters:
+        - name: list_size
+          in: query
+          required: true
+          description: 페이지 내 데이터 개수
+        - name: range
+          in: query
+          required: true
+          description: 현재 페이지의 범위
+        - name: page
+          in: query
+          required: true
+          description: 현재 범위 내 페이지
+        - name: type
+          in: query
+          required: false
+          description: 검색할 유형 (컬럼)
+        - name: keyword
+          in: query
+          required: false
+          description: 검색할 키워드
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    anomaly_log_id:
+                      type: integer
+                    center_name:
+                      type: string
+                    address:
+                      type: string
+                    record_date:
+                      type: string
+                      format: date
+                    anomaly_type:
+                      type: string
   /auth/register:
     post:
       tags:
@@ -497,7 +527,7 @@ paths:
                   type: string
       responses:
         '201':
-          description: OK
+          description: Created
           content:
             application/json:
               schema:
@@ -569,6 +599,19 @@ paths:
                 properties:
                   message:
                     type: string
+  /auth/valid:
+    get:
+      tags:
+        - auth
+      summary: check if JWT is valid
+      description: null
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
 tags:
   - name: district
   - name: children care center

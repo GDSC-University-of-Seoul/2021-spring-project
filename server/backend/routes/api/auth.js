@@ -92,4 +92,12 @@ router.put(
   }
 );
 
-module.exports = router;
+router.get(
+  "/valid",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    res.send("Authorized");
+  }
+);
+
+export default router;
