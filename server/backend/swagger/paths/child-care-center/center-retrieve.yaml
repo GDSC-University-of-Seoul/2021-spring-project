@@ -42,3 +42,11 @@ get:
                 type: string
               district_name:
                 type: string
+              assault_count:
+                type: integer
+              fight_count:
+                type: integer
+              swoon_count:
+                type: integer
+              anomaly_count:
+                type: integer

@@ -1,0 +1,12 @@
+get:
+  tags:
+    - auth
+  summary: check if JWT is valid
+  description:
+  responses:
+    200:
+      description: OK
+      content:
+        text/plain:
+          schema:
+            type: string

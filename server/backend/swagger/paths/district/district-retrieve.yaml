@@ -1,13 +1,13 @@
 get:
   tags:
     - district
-  summary: get district by district name
+  summary: get district by district code
   description:
   parameters:
-    - name: district_name
+    - name: district_code
       in: path
       required: true
-      description: 행정구역 이름
+      description: 행정구역 코드
   responses:
     200:
       description: OK
@@ -24,5 +24,11 @@ get:
                   type: string
                 parent_code:
                   type: string
-                count:
-                  type: string
+                assualt_count:
+                  type: integer
+                fight_count:
+                  type: integer
+                swoon_count:
+                  type: integer
+                anomaly_count:
+                  type: integer

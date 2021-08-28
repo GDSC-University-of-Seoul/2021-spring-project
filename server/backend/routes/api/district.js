@@ -3,8 +3,7 @@ import districtController from "../../controllers/district";
 
 const router = express.Router();
 
-router.get("/", districtController.findByParentCode);
-router.get("/:district_code(\\d+)", districtController.findByDistrictCode);
-router.get("/:district_name", districtController.findByDistrictName);
+router.get("/", districtController.findDistricts);
+router.get("/:district_code", districtController.findDistrictByCode);
 
 module.exports = router;
