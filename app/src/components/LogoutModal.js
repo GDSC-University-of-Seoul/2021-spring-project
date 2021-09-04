@@ -7,16 +7,16 @@ import { useDispatch } from "react-redux";
 /**
  * 로그아웃 알림 모달창
  *
- * @param {Object} props history: History 객체, setIsLogOut: 모달창을 닫기 위한 useState의 상태 변경 callback
+ * @param {Object} props setIsLogOut: 모달창을 닫기 위한 useState의 상태 변경 callback
  * @returns {HTMLElement} 로그아웃 알림 모달창
  */
-function LogoutModal({ history, setIsLogOut }) {
+function LogoutModal({ setIsLogOut }) {
   const dispatch = useDispatch();
 
   // 로그아웃
   const logOutHandler = useCallback(() => {
-    dispatch(logOut(history));
-  }, [dispatch, history]);
+    dispatch(logOut());
+  }, [dispatch]);
 
   return (
     <Modal>

@@ -1,5 +1,4 @@
 import { FaBell, FaUser } from "react-icons/fa";
-import { Link, useHistory } from "react-router-dom";
 import React, {
   useCallback,
   useEffect,
@@ -10,6 +9,7 @@ import React, {
 import { dateFormat, timeFormat } from "../utils/format";
 import { useDispatch, useSelector } from "react-redux";
 
+import { Link } from "react-router-dom";
 import LogoutModal from "./LogoutModal";
 import UpdateLoginForm from "./UpdateLoginForm";
 import { getAllRecentLogs } from "../api/recentLogs";
@@ -20,13 +20,11 @@ import useLocalStorage from "../hooks/useLocalStorage";
 /**
  * 홈페이지 헤더부 구성
  *
- * @param {Object} props history: 리다이렉션을 위한 history 객체
  * @returns {JSX.Element} 홈페이지 헤더부 컴포넌트
  */
 
 function Header() {
   const ONE_DAY = 24 * 60 * 60 * 1000;
-  const history = useHistory();
 
   // 현재 날짜·시간 정보 저장
   const [currDate, setCurrDate] = useState({
@@ -100,11 +98,6 @@ function Header() {
 
     return () => window.removeEventListener("click", menuClick);
   }, [initMenuOpen]);
-
-  // 언마운트 시 history 객체 반환
-  useEffect(() => {
-    return history;
-  }, [history]);
 
   // 알람 로그 클릭 이벤트 (읽음 처리)
   const clickNewLogAlarm = useCallback(
@@ -218,14 +211,10 @@ function Header() {
       </header>
       {/* 사용자 정보 변경 */}
       {isChanged && (
-        <UpdateLoginForm
-          loginInfo={loginInfo}
-          history={history}
-          setIsChanged={setIsChanged}
-        />
+        <UpdateLoginForm loginInfo={loginInfo} setIsChanged={setIsChanged} />
       )}
       {/* 로그아웃 창 */}
-      {isLogOut && <LogoutModal history={history} setIsLogOut={setIsLogOut} />}
+      {isLogOut && <LogoutModal setIsLogOut={setIsLogOut} />}
     </>
   );
 }

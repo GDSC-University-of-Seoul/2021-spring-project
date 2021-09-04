@@ -8,10 +8,10 @@ import { useDispatch } from "react-redux";
 /**
  * 사용자 변경 입력 폼을 담은 모달창
  *
- * @param {Object} props loginInfo: 사용자 정보, history: History 객체, setIsChanged: 사용자 변경창을 닫기 위한 useState의 상태변경 Callback
+ * @param {Object} props loginInfo: 사용자 정보, setIsChanged: 사용자 변경창을 닫기 위한 useState의 상태변경 Callback
  * @returns {HTMLElement} 사용자 변경 입력 폼을 담은 모달창
  */
-function UpdateLoginForm({ loginInfo, history, setIsChanged }) {
+function UpdateLoginForm({ loginInfo, setIsChanged }) {
   const dispatch = useDispatch();
 
   const [confirmUpdate, setConfirmUpdate] = useState(false); // 변경 완료 창 열기
@@ -66,7 +66,7 @@ function UpdateLoginForm({ loginInfo, history, setIsChanged }) {
                 variant="contained"
                 color="primary"
                 disableElevation
-                onClick={() => dispatch(logOut(history))}
+                onClick={() => dispatch(logOut())}
               >
                 확인
               </Button>

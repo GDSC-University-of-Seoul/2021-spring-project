@@ -73,15 +73,11 @@ export const getLoginCookie = () => async (dispatch) => {
   }
 };
 
-/**
- * 사용자 로그아웃
- *
- * @param {Object} history 리다이렉션을 위한 history 객체
- */
-export const logOut = (history) => async (dispatch) => {
+// 사용자 로그아웃
+export const logOut = () => (dispatch) => {
   deleteCookie("loginInfo");
   dispatch({ type: LOGOUT });
-  history.push("/");
+  window.location.href = "/";
 };
 
 /**

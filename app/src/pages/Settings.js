@@ -6,7 +6,6 @@ import ToggleBtn from "../components/ToggleBtn";
 import UpdateLoginForm from "../components/UpdateLoginForm";
 import { getLoginCookie } from "../modules/login";
 import { setSettingsState } from "../modules/settings";
-import { useHistory } from "react-router-dom";
 
 /**
  * `/settings` 페이지 렌더링
@@ -22,7 +21,6 @@ function Settings() {
 
   const { settings } = useSelector((state) => state.settingsReducer);
   const dispatch = useDispatch();
-  const history = useHistory();
 
   useEffect(() => {
     // 유저 정보 확인
@@ -98,16 +96,10 @@ function Settings() {
         </div>
         {/* 사용자 정보 변경 */}
         {isChanged && (
-          <UpdateLoginForm
-            loginInfo={loginInfo}
-            history={history}
-            setIsChanged={setIsChanged}
-          />
+          <UpdateLoginForm loginInfo={loginInfo} setIsChanged={setIsChanged} />
         )}
         {/* 로그아웃 */}
-        {isLogOut && (
-          <LogoutModal history={history} setIsLogOut={setIsLogOut} />
-        )}
+        {isLogOut && <LogoutModal setIsLogOut={setIsLogOut} />}
       </section>
     </>
   );
