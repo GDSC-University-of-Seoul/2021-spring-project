@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 
-import Modal from "./Modal";
-import { logOut } from "../modules/login";
+import Modal from "@components/Modal";
+import { logOut } from "@modules/login";
 import { useDispatch } from "react-redux";
 
 /**

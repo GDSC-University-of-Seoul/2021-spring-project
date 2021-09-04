@@ -2,15 +2,15 @@ import React, { useEffect } from "react";
 import { Redirect, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import Cctvs from "./pages/Cctvs";
-import Header from "./components/Header";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
-import Logs from "./pages/Logs";
-import Monitoring from "./pages/Monitoring";
-import Settings from "./pages/Settings";
-import SideBar from "./components/SideBar";
-import { getLoginCookie } from "./modules/login";
+import Cctvs from "@pages/Cctvs";
+import Header from "@layouts/Header";
+import Home from "@pages/Home";
+import Login from "@pages/Login";
+import Logs from "@pages/Logs";
+import Monitoring from "@pages/Monitoring";
+import Settings from "@pages/Settings";
+import SideBar from "@layouts/SideBar";
+import { getLoginCookie } from "@modules/login";
 
 /**
  * URL에 따라 렌더링할 컴포넌트 결정

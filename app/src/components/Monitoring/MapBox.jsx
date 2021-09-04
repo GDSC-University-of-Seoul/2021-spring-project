@@ -5,7 +5,7 @@ import {
   getSggLayer,
   getSidoHighlightLayer,
   getSidoLayer,
-} from "../utils/mapStyle";
+} from "@utils/mapStyle";
 import {
   markerClick,
   resetToSggDistrict,
@@ -15,13 +15,13 @@ import {
   sggHover,
   sidoClick,
   sidoHover,
-} from "../modules/mapboxEvent";
-import { resetCdrCenter, setCdrCenter } from "../modules/cdrCenter";
+} from "@modules/mapboxEvent";
+import { resetCdrCenter, setCdrCenter } from "@modules/cdrCenter";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 
 import { Button } from "@material-ui/core";
-import MapBoxCategory from "./MapBoxCategory";
-import districtViewport from "../utils/districtViewport";
+import MapBoxCategory from "@components/Monitoring/MapBoxCategory";
+import districtViewport from "@utils/districtViewport";
 
 const MapboxAccessToken = process.env.REACT_APP_MAPBOX;
 

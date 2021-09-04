@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 
-import MapBoxContainer from "../containers/MapBoxContainer";
-import MapBoxSelectContainer from "../containers/MapBoxSelectContainer";
-import { getLoginCookie } from "../modules/login";
+import MapBoxContainer from "@components/Monitoring/MapBoxContainer";
+import MapBoxSelectContainer from "@components/Monitoring/MapBoxSelectContainer";
+import { getLoginCookie } from "@modules/login";
 import { useDispatch } from "react-redux";
 
 /**

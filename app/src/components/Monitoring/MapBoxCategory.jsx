@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { controlSgg, controlSido } from "../modules/mapboxCategory";
+import { controlSgg, controlSido } from "@modules/mapboxCategory";
 import { useDispatch, useSelector } from "react-redux";
 
 import Slider from "@material-ui/core/Slider";

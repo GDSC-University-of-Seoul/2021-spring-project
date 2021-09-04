@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import Loading from "../components/Loading";
-import MapBox from "../components/MapBox";
-import { fetchData } from "../modules/mapbox";
+import Loading from "@components/Loading";
+import MapBox from "@components/Monitoring/MapBox";
+import { fetchData } from "@modules/mapbox";
 
 /**
  * Redux에 저장된 MapBox 상태를 구독하고 상태를 정제. 이후 상태에 따라 렌더링할 컴포넌트를 지정

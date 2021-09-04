@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 
-import AlertModal from "../components/AlertModal";
-import RegisterModal from "../components/RegisterModal";
-import { postUserRegister } from "../api/userInfo";
+import AlertModal from "@components/Modal/AlertModal";
+import RegisterModal from "@components/Login/RegisterModal";
+import { postUserRegister } from "@api/userInfo";
 
 function RegisterContainer() {
   const [modalOpen, setModalOpen] = useState(false);

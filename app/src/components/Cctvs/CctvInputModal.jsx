@@ -2,7 +2,7 @@ import Button from "@material-ui/core/Button";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
-import Modal from "./Modal";
+import Modal from "@components/Modal";
 import React from "react";
 import Select from "@material-ui/core/Select";
 import TextField from "@material-ui/core/TextField";

@@ -1,7 +1,7 @@
 import { Button, TextField } from "@material-ui/core";
 import React, { useCallback, useMemo, useState } from "react";
 
-import Modal from "./Modal";
+import Modal from "@components/Modal";
 
 function RegisterModal({ registerUser, closeModal }) {
   const [valid, setValid] = useState({

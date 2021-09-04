@@ -1,5 +1,5 @@
 import Button from "@material-ui/core/Button";
-import Modal from "./Modal";
+import Modal from "@components/Modal";
 import React from "react";
 
 /**

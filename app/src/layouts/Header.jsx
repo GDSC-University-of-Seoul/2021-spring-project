@@ -6,16 +6,16 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { dateFormat, timeFormat } from "../utils/format";
+import { dateFormat, timeFormat } from "@utils/format";
 import { useDispatch, useSelector } from "react-redux";
 
 import { Link } from "react-router-dom";
-import LogoutModal from "./LogoutModal";
-import UpdateLoginForm from "./UpdateLoginForm";
-import { getAllRecentLogs } from "../api/recentLogs";
-import { loadSettingsState } from "../modules/settings";
-import useAsync from "../hooks/useAsync";
-import useLocalStorage from "../hooks/useLocalStorage";
+import LogoutModal from "@components/Login/LogoutModal";
+import UpdateLoginForm from "@components/Login/UpdateLoginForm";
+import { getAllRecentLogs } from "@api/recentLogs";
+import { loadSettingsState } from "@modules/settings";
+import useAsync from "@hooks/useAsync";
+import useLocalStorage from "@hooks/useLocalStorage";
 
 /**
  * 홈페이지 헤더부 구성

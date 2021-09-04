@@ -3,20 +3,20 @@ import {
   allLogsPagination,
   fetchAllLogs,
   searchAllLogs,
-} from "../modules/allLogs";
-import { dateFormat, timeFormat } from "../utils/format";
+} from "@modules/allLogs";
+import { dateFormat, timeFormat } from "@utils/format";
 import {
   fetchRecentLogs,
   recentLogsPagination,
   searchRecentLogs,
-} from "../modules/recentLogs";
+} from "@modules/recentLogs";
 import { useDispatch, useSelector } from "react-redux";
 
 import { BiRefresh } from "react-icons/bi";
 import { Button } from "@material-ui/core";
-import LogTableContainer from "../containers/LogTableContainer";
-import SearchBar from "../components/SearchBar";
-import { getLoginCookie } from "../modules/login";
+import LogTableContainer from "@components/Logs/LogTableContainer";
+import SearchBar from "@components/SearchBar";
+import { getLoginCookie } from "@modules/login";
 
 /**
  * `/logs` 페이지 렌더링

@@ -1,10 +1,10 @@
 import { Button, TextField } from "@material-ui/core";
 import React, { useCallback } from "react";
-import { checkLoginError, loginSubmit } from "../modules/login";
+import { checkLoginError, loginSubmit } from "@modules/login";
 import { useDispatch, useSelector } from "react-redux";
 
-import AlertModal from "../components/AlertModal";
-import RegisterContainer from "../containers/RegisterContainer";
+import AlertModal from "@components/Modal/AlertModal";
+import RegisterContainer from "@components/Login/RegisterContainer";
 
 function Login() {
   const { error } = useSelector((state) => state.loginReducer);

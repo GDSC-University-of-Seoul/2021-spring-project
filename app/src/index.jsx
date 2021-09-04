@@ -8,7 +8,7 @@ import { Provider } from "react-redux";
 import React from "react";
 import ReactDOM from "react-dom";
 import ReduxThunk from "redux-thunk";
-import rootReducers from "./modules";
+import rootReducers from "@modules";
 
 // Redux 스토어 생성
 const store = createStore(rootReducers, applyMiddleware(ReduxThunk));

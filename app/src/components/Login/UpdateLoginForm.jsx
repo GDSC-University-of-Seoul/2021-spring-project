@@ -1,8 +1,8 @@
 import { Button, TextField } from "@material-ui/core";
 import React, { useCallback, useEffect, useState } from "react";
-import { logOut, loginInfoUpdate } from "../modules/login";
+import { logOut, loginInfoUpdate } from "@modules/login";
 
-import Modal from "./Modal";
+import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
 
 /**

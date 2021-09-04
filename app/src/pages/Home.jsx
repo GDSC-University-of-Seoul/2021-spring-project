@@ -1,12 +1,12 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { fetchRecentLogs, recentLogsPagination } from "../modules/recentLogs";
+import { fetchRecentLogs, recentLogsPagination } from "@modules/recentLogs";
 import { useDispatch, useSelector } from "react-redux";
 
-import ChartContainer from "../containers/ChartContainer";
-import Loading from "../components/Loading";
-import LogTableContainer from "../containers/LogTableContainer";
-import { fetchData } from "../modules/mapbox";
-import { getLoginCookie } from "../modules/login";
+import ChartContainer from "@components/Home/ChartContainer";
+import Loading from "@components/Loading";
+import LogTableContainer from "@components/Logs/LogTableContainer";
+import { fetchData } from "@modules/mapbox";
+import { getLoginCookie } from "@modules/login";
 
 /**
  * `/home` 페이지 렌더링

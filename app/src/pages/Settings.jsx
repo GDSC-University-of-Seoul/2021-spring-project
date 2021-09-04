@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import LogoutModal from "../components/LogoutModal";
-import ToggleBtn from "../components/ToggleBtn";
-import UpdateLoginForm from "../components/UpdateLoginForm";
-import { getLoginCookie } from "../modules/login";
-import { setSettingsState } from "../modules/settings";
+import LogoutModal from "@components/Login/LogoutModal";
+import ToggleBtn from "@components/ToggleBtn";
+import UpdateLoginForm from "@components/Login/UpdateLoginForm";
+import { getLoginCookie } from "@modules/login";
+import { setSettingsState } from "@modules/settings";
 
 /**
  * `/settings` 페이지 렌더링

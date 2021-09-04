@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import CategoryTextField from "../components/CategoryTextField";
+import CategoryTextField from "@components/CategoryTextField";
 import { FiExternalLink } from "react-icons/fi";
-import { resetCdrCenter } from "../modules/cdrCenter";
+import { resetCdrCenter } from "@modules/cdrCenter";
 
 function MapBoxSelectContainer() {
   const district = useSelector((state) => state.mapboxEventReducer);

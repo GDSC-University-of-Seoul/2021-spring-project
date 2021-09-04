@@ -1,6 +1,6 @@
-import Loading from "../components/Loading";
+import Loading from "@components/Loading";
 import React from "react";
-import Table from "../components/Table";
+import Table from "@components/Table";
 
 /**
  * 로그 데이터에 기반한 표 구성

@@ -1,13 +1,13 @@
-import { cctvsPagination, fetchCctvsData } from "../modules/cctvs";
+import { cctvsPagination, fetchCctvsData } from "@modules/cctvs";
 import {
   clickCctvData,
   selectCctvData,
   selectOffCctvData,
-} from "../modules/cctvsTableEvent";
+} from "@modules/cctvsTableEvent";
 
 import React from "react";
-import Table from "../components/Table";
-import { openModal } from "../modules/cctvsModal";
+import Table from "@components/Table";
+import { openModal } from "@modules/cctvsModal";
 import { useDispatch } from "react-redux";
 
 /**

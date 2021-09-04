@@ -6,7 +6,7 @@ import {
   Select,
 } from "@material-ui/core";
 
-import Modal from "./Modal";
+import Modal from "@components/Modal";
 import React from "react";
 
 /**

@@ -9,18 +9,18 @@ import {
   checkCctvsError,
   fetchCctvsData,
   searchCctvs,
-} from "../modules/cctvs";
-import { clickCctvData, initSelectCctvData } from "../modules/cctvsTableEvent";
+} from "@modules/cctvs";
+import { clickCctvData, initSelectCctvData } from "@modules/cctvsTableEvent";
 import { useDispatch, useSelector } from "react-redux";
 
-import AlertModal from "../components/AlertModal";
+import AlertModal from "@components/Modal/AlertModal";
 import Button from "@material-ui/core/Button";
-import CctvModalContainer from "../containers/CctvModalContainer";
-import CctvTableContainer from "../containers/CctvTableContainer";
-import Loading from "../components/Loading";
-import SearchBar from "../components/SearchBar";
-import { getLoginCookie } from "../modules/login";
-import { openModal } from "../modules/cctvsModal";
+import CctvModalContainer from "@components/Cctvs/cctvModalContainer";
+import CctvTableContainer from "@components/Cctvs/CctvTableContainer";
+import Loading from "@components/Loading";
+import SearchBar from "@components/SearchBar";
+import { getLoginCookie } from "@modules/login";
+import { openModal } from "@modules/cctvsModal";
 
 /**
  * `/cctvs` 페이지 렌더링

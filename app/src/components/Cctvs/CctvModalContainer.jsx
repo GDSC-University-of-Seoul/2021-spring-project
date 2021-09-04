@@ -1,5 +1,5 @@
-import { clickCctvData, initSelectCctvData } from "../modules/cctvsTableEvent";
-import { closeModal, setMacValid } from "../modules/cctvsModal";
+import { clickCctvData, initSelectCctvData } from "@modules/cctvsTableEvent";
+import { closeModal, setMacValid } from "@modules/cctvsModal";
 import {
   closeSearchModal,
   fetchCenter,
@@ -8,19 +8,19 @@ import {
   initSearchModal,
   openSearchModal,
   selectCenter,
-} from "../modules/searchCenterModal";
+} from "@modules/searchCenterModal";
 import {
   createCctvsData,
   deleteCctvsData,
   updateCctvsData,
-} from "../modules/cctvs";
+} from "@modules/cctvs";
 import { useDispatch, useSelector, useStore } from "react-redux";
 
-import AlertModal from "../components/AlertModal";
-import CctvDeleteModal from "../components/CctvDeleteModal";
-import CctvInputModal from "../components/CctvInputModal";
+import AlertModal from "@components/Modal/AlertModal";
+import CctvDeleteModal from "@components/Cctvs/CctvDeleteModal";
+import CctvInputModal from "@components/Cctvs/CctvInputModal";
 import React from "react";
-import SearchCenterModal from "../components/searchCenterModal";
+import SearchCenterModal from "@components/Cctvs/SearchCenterModal";
 
 /**
  * CCTV 모달창 컨테이너 컴포넌트

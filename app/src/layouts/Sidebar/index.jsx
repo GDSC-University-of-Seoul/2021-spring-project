@@ -4,7 +4,7 @@ import { AiOutlineFileText } from "react-icons/ai";
 import { BiCctv } from "react-icons/bi";
 import { FaHome } from "react-icons/fa";
 import React from "react";
-import SideMenu from "./SideMenu";
+import SideMenu from "@layouts/Sidebar/SideMenu";
 
 /**
  * 사이드 메뉴바를 구성
