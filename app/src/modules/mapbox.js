@@ -1,4 +1,4 @@
-import axios from "axios";
+import { getDistrictsGeojson, getSidoData } from "../api/districts";
 
 const FETCH_DATA_LOADING = "mapbox/FETCH_DATA_LOADING";
 const FETCH_DATA_SUCCESS = "mapbox/FETCH_DATA_SUCCESS";
@@ -12,25 +12,15 @@ const FETCH_DATA_FAILURE = "mapbox/FETCH_DATA_FAILURE";
 export const fetchData = () => async (dispatch) => {
   dispatch({ type: FETCH_DATA_LOADING });
   try {
-    let districtsGeojson = await axios.get(
-      "/src/assets/data/KoreaDistrict.geojson"
-    );
-    districtsGeojson = districtsGeojson.data;
-
-    let districts = await axios.get(
-      `${process.env.REACT_APP_API_SERVER}/api/districts`
-    );
-    districts = districts.data;
+    let districtsGeojson = await getDistrictsGeojson();
+    let sidoData = await getSidoData();
 
     // geojson 데이터에 어린이집 사건·사고 개수 property 추가
     districtsGeojson.features.forEach((districtGeojson) => {
-      districts.forEach((district) => {
-        if (
-          districtGeojson.properties.sido ===
-          district.district_code.substr(0, 2)
-        )
+      sidoData.forEach((sido) => {
+        if (districtGeojson.properties.sido === sido.district_code.substr(0, 2))
           districtGeojson.properties.sido_cnt = parseInt(
-            district.anomaly_count,
+            sido.anomaly_count,
             10
           );
       });
@@ -40,7 +30,7 @@ export const fetchData = () => async (dispatch) => {
       type: FETCH_DATA_SUCCESS,
       payload: {
         districtsGeojson,
-        districts,
+        sidoData,
       },
     });
   } catch (e) {
@@ -77,7 +67,7 @@ export default function mapboxReducer(state = initialState, action) {
         loading: false,
         data: {
           districtsGeojson: action.payload.districtsGeojson,
-          districts: action.payload.districts,
+          districts: action.payload.sidoData,
         },
         error: false,
       };

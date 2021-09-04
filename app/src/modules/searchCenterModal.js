@@ -1,8 +1,7 @@
-/**
- * 어린이집 검색 모달창 상태 관리
- */
+// 어린이집 검색 모달창 상태 관리
 
-import axios from "axios";
+import { getCenter, getSggCenters } from "../api/centers";
+import { getSggData, getSidoData } from "../api/districts";
 
 const OPEN_MODAL = "searchCenterModal/OPEN_MODAL";
 const CLOSE_MODAL = "searchCenterModal/CLOSE_MODAL";
@@ -27,10 +26,9 @@ export const initSearchModal = () => ({ type: INIT_MODAL });
 export const fetchSido = () => async (dispatch) => {
   try {
     dispatch({ type: SEARCH_CENTER_LOADING });
-    const sido = await axios.get(
-      `${process.env.REACT_APP_API_SERVER}/api/districts`
-    );
-    dispatch({ type: FETCH_SIDO, payload: sido.data });
+
+    const sido = await getSidoData();
+    dispatch({ type: FETCH_SIDO, payload: sido });
   } catch (e) {
     dispatch({ type: SEARCH_CENTER_ERROR, payload: e });
   }
@@ -40,10 +38,9 @@ export const fetchSido = () => async (dispatch) => {
 export const fetchSgg = (sidoCode) => async (dispatch) => {
   try {
     dispatch({ type: SEARCH_CENTER_LOADING });
-    const sgg = await axios.get(
-      `${process.env.REACT_APP_API_SERVER}/api/districts?parent_code=${sidoCode}`
-    );
-    dispatch({ type: FETCH_SGG, payload: sgg.data });
+
+    const sgg = await getSggData(sidoCode);
+    dispatch({ type: FETCH_SGG, payload: sgg });
   } catch (e) {
     dispatch({ type: SEARCH_CENTER_ERROR, payload: e });
   }
@@ -53,10 +50,9 @@ export const fetchSgg = (sidoCode) => async (dispatch) => {
 export const fetchCenter = (sggCode) => async (dispatch) => {
   try {
     dispatch({ type: SEARCH_CENTER_LOADING });
-    const center = await axios.get(
-      `${process.env.REACT_APP_API_SERVER}/api/centers?district_code=${sggCode}`
-    );
-    dispatch({ type: FETCH_CENTER, payload: center.data });
+
+    const centers = await getSggCenters(sggCode);
+    dispatch({ type: FETCH_CENTER, payload: centers });
   } catch (e) {
     dispatch({ type: SEARCH_CENTER_ERROR, payload: e });
   }
@@ -66,11 +62,9 @@ export const fetchCenter = (sggCode) => async (dispatch) => {
 export const selectCenter = (centerId) => async (dispatch) => {
   try {
     dispatch({ type: SEARCH_CENTER_LOADING });
-    const centerInfo = await axios.get(
-      `${process.env.REACT_APP_API_SERVER}/api/centers/${centerId}`
-    );
 
-    dispatch({ type: SELECTED_CENTER, payload: centerInfo.data[0] });
+    const centerInfo = await getCenter(centerId);
+    dispatch({ type: SELECTED_CENTER, payload: centerInfo });
   } catch (e) {
     dispatch({ type: SEARCH_CENTER_ERROR, payload: e });
   }
