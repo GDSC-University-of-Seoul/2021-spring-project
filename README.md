@@ -1,5 +1,7 @@
-# 2021-spring-project
-Repository for DSC-UOS Spring Project Team
+# Kids Keeper
+Repository for DSC-UOS Spring Project Team 
+
+Child protection monitoring service using deep learning
 
 # Member
 
