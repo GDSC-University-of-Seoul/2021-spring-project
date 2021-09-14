@@ -1,4 +1,4 @@
-import { dateFormat, macApiFormat, macFormat } from "../utils/format";
+import { dateFormat, macApiFormat, macFormat } from "@utils/format";
 
 import axios from "axios";
 

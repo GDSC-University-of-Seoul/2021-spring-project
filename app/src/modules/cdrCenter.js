@@ -1,12 +1,12 @@
 const FETCH_CDRCENTER_DATA = "cdrCenter/FETCH_CDRCENTER_DATA";
 const RESET_CDRCENTER = "cdrCenter/RESET_CDRCENTER";
 
-export const setCdrCenter = (cdrCenterInfo) => async (dispatch) => {
-  dispatch({ type: FETCH_CDRCENTER_DATA, payload: cdrCenterInfo });
+export const setCdrCenter = (cdrCenterInfo) => {
+  return { type: FETCH_CDRCENTER_DATA, payload: cdrCenterInfo };
 };
 
-export const resetCdrCenter = () => (dispatch) => {
-  dispatch({ type: RESET_CDRCENTER });
+export const resetCdrCenter = () => {
+  return { type: RESET_CDRCENTER };
 };
 
 const initialState = {

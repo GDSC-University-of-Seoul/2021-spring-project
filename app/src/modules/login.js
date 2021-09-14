@@ -4,8 +4,8 @@ import {
   setCookie,
   updateCookie,
 } from "../utils/cookie";
+import { postLogin, putUserInfo } from "../api/login";
 
-import axios from "axios";
 import { getCheckJWTValid } from "../api/userInfo";
 
 const LOGIN_SUCCESS = "login/LOGIN_SUCCESS";
@@ -21,22 +21,16 @@ const CHECK_LOGIN_ERROR = "login/CHECK_LOGIN_ERROR";
  */
 export const loginSubmit = (userId, userPw) => async (dispatch) => {
   try {
-    const loginResponse = await axios.post(
-      `${process.env.REACT_APP_API_SERVER}/api/auth/login`,
-      {
-        member_id: userId,
-        password: userPw,
-      },
-      { withCredentials: true }
-    );
-
-    const { member, token } = loginResponse.data;
+    const {
+      member: { member_id, member_name, member_phone, email },
+      token,
+    } = await postLogin(userId, userPw);
 
     const loginInfo = {
-      userId: member.member_id,
-      userName: member.member_name,
-      userPhone: member.member_phone,
-      email: member.email,
+      userId: member_id,
+      userName: member_name,
+      userPhone: member_phone,
+      email: email,
       userToken: token,
     };
 
@@ -79,15 +73,11 @@ export const getLoginCookie = () => async (dispatch) => {
   }
 };
 
-/**
- * 사용자 로그아웃
- *
- * @param {Object} history 리다이렉션을 위한 history 객체
- */
-export const logOut = (history) => async (dispatch) => {
+// 사용자 로그아웃
+export const logOut = () => (dispatch) => {
   deleteCookie("loginInfo");
   dispatch({ type: LOGOUT });
-  history.push("/");
+  window.location.href = "/";
 };
 
 /**
@@ -98,20 +88,7 @@ export const logOut = (history) => async (dispatch) => {
  */
 export const loginInfoUpdate = (userInfo, userToken) => async (dispatch) => {
   try {
-    await axios.put(
-      `${process.env.REACT_APP_API_SERVER}/api/auth/member`,
-      {
-        member_name: userInfo.userName,
-        password: userInfo.password,
-        member_phone: userInfo.userPhone,
-        email: userInfo.email,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${userToken}`,
-        },
-      }
-    );
+    await putUserInfo(userInfo, userToken);
   } catch (e) {
     dispatch({ type: LOGIN_ERROR, payload: e });
   }

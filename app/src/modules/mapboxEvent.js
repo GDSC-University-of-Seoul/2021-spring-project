@@ -1,4 +1,5 @@
-import axios from "axios";
+import { getSggCenters } from "../api/centers";
+import { getSggData } from "../api/districts";
 
 const SET_GEOJSON_DATA = "mapboxEvent/SET_GEOJSON_DATA";
 const SET_HOVER_INFO = "mapboxEvent/SET_HOVER_INFO";
@@ -84,9 +85,8 @@ export const sidoClick =
       };
 
       // 도, 광역시 코드에 기반해 속해있는 시,군,구 구역 데이터를 Fetch
-      const sggsDistrictData = await axios.get(
-        `${process.env.REACT_APP_API_SERVER}/api/districts?parent_code=${selectedDistrictInfo.code}`
-      );
+      const sggData = await getSggData(selectedDistrictInfo.code);
+
       // 도, 광역시 내에 속해있는 시,군,구 geojson 데이터 필터링
       const sggsFeatures = geojsonData.features.filter(
         (data) =>
@@ -95,7 +95,7 @@ export const sidoClick =
 
       // geojson 데이터에 시,군,구 어린이집 개수(sgg_cnt) 정보 저장
       sggsFeatures.forEach((sggFeatures) => {
-        sggsDistrictData.data.forEach((sggDistrictData) => {
+        sggData.forEach((sggDistrictData) => {
           if (
             sggFeatures.properties.sgg ===
             sggDistrictData.district_code.substr(0, 5)
@@ -129,12 +129,10 @@ export const sidoClick =
 export const sggClick = (selectedDistrictInfo) => async (dispatch) => {
   try {
     // 시,군,구 코드에 기반해 어린이집 데이터를 Fetch
-    const fetchCdrCenter = await axios.get(
-      `${process.env.REACT_APP_API_SERVER}/api/centers?district_code=${selectedDistrictInfo.code}`
-    );
+    const sggCenters = await getSggCenters(selectedDistrictInfo.code);
 
     // 이상행동 건수가 있는 어린이집만 체크
-    const anomalyCdrCenter = fetchCdrCenter.data.filter(
+    const anomalyCdrCenter = sggCenters.filter(
       (data) => data.anomaly_count > 0
     );
 
